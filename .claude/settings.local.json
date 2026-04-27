@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:celepar07web.pr.gov.br)",
+      "Bash(curl -s -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\" --compressed \"https://celepar07web.pr.gov.br/agrotoxicos/pesquisar.asp\")",
+      "Bash(iconv -f windows-1252 -t utf-8)",
+      "Bash(curl -s -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\" --compressed \"https://celepar07web.pr.gov.br/agrotoxicos/facapesquisa.asp\")",
+      "Bash(curl -s -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36' -X POST -d 'criterioAgrotoxico=&criterioIngredienteAtivo=&criterioRegistrante=&criterioClassificacaoToxicologica=&criterioPraga=&criterioSituacao=&criterioClasse=&criterioCulturaInfestada=&criterioExpurgo=&criterioAplicacaoAerea=&criterioTratamentoSementes=&select11=null&select1=&select5=null&select4=null&select9=null&select6=null&select3=null&select7=null&descIngrediente=&numeroRegistro=&ClassificacaoQuiBio=QUI&submit1=Pesquisar' https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp)",
+      "Bash(curl -s -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36' -X POST -d 'criterioAgrotoxico=BELURE&criterioIngredienteAtivo=&criterioRegistrante=&criterioClassificacaoToxicologica=&criterioPraga=&criterioSituacao=&criterioClasse=&criterioCulturaInfestada=&criterioExpurgo=&criterioAplicacaoAerea=&criterioTratamentoSementes=&select11=null&select1=&select5=null&select4=null&select9=null&select6=null&select3=null&select7=null&descIngrediente=&numeroRegistro=&ClassificacaoQuiBio=QUI&submit1=Pesquisar' https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp)"
+    ]
+  }
+}

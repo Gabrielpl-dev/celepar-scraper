@@ -17,7 +17,20 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const BASE_URL = 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp';
+const BASE_URL    = 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp';
+const PESQUISA_URL = 'https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp';
+const PESQUISA_KEY = '__pesquisa__';
+// Payload fixo — equivale a clicar "Pesquisar" sem filtros no facapesquisa.asp
+const PESQUISA_BODY = new URLSearchParams({
+  criterioAgrotoxico: '', criterioIngredienteAtivo: '', criterioRegistrante: '',
+  criterioClassificacaoToxicologica: '', criterioPraga: '', criterioSituacao: '',
+  criterioClasse: '', criterioCulturaInfestada: '', criterioExpurgo: '',
+  criterioAplicacaoAerea: '', criterioTratamentoSementes: '',
+  select11: 'null', select1: '', select5: 'null', select4: 'null',
+  select9: 'null', select6: 'null', select3: 'null', select7: 'null',
+  descIngrediente: '', numeroRegistro: '', ClassificacaoQuiBio: 'QUI',
+  submit1: 'Pesquisar'
+}).toString();
 
 // ---------- helpers ----------
 
@@ -101,6 +114,69 @@ async function fetchPage(url) {
 
   cache.set(url, { html, ts: Date.now() });
   return html;
+}
+
+async function fetchPesquisa() {
+  const cached = cache.get(PESQUISA_KEY);
+  if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.html;
+
+  const res = await fetch(PESQUISA_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'
+    },
+    body: PESQUISA_BODY
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} ao buscar resultadoPesquisa`);
+
+  const buf = Buffer.from(await res.arrayBuffer());
+  let html;
+  try { html = new TextDecoder('windows-1252').decode(buf); }
+  catch { html = buf.toString('latin1'); }
+
+  cache.set(PESQUISA_KEY, { html, ts: Date.now() });
+  return html;
+}
+
+function parsePesquisaRows(html) {
+  const $ = cheerio.load(html);
+  const rows = [];
+
+  $('table#tb1 tr').slice(1).each((_, tr) => {
+    const tds = $(tr).find('td');
+    if (tds.length < 4) return;
+
+    const linkEl = $(tds[0]).find('a').first();
+    const nome = linkEl.text().trim();
+    if (!nome) return;
+
+    const href = linkEl.attr('href') || '';
+    const codMatch = href.match(/[?&]Cod=(\d+)/);
+    const cod = codMatch ? codMatch[1] : null;
+
+    const statusTd = $(tds[1]);
+    const colorFont = statusTd.find('font[color]').first();
+    let situacao, cor;
+    if (colorFont.length) {
+      situacao = colorFont.text().trim();
+      cor = colorFont.attr('color').toLowerCase();
+    } else {
+      situacao = statusTd.text().trim();
+      cor = null;
+    }
+
+    rows.push({
+      nome,
+      cod,
+      situacao,
+      cor,
+      classificacao: $(tds[2]).text().trim(),
+      empresa:       $(tds[3]).text().trim()
+    });
+  });
+
+  return rows;
 }
 
 // Replica o querySelectorAll('tr') + leitura dos tds dos scripts originais.
@@ -243,41 +319,19 @@ app.post('/api/comparar', async (req, res) => {
   }
 });
 
-// POST /api/verificar  { termo, params }  → "Verificar se ta ok ou n#U00e3o.js"
-// Procura linhas que contenham `termo` (case-insensitive) e devolve o status pela cor do <font>.
+// POST /api/verificar  { termo }  → busca produto por nome em resultadoPesquisa.asp
 app.post('/api/verificar', async (req, res) => {
   try {
-    const { termo, params = {} } = req.body;
+    const { termo } = req.body;
     if (!termo) return res.status(400).json({ ok: false, error: 'termo é obrigatório' });
 
-    const html = await fetchPage(buildUrl(params));
-    const rows = parseRows(html);
+    const html = await fetchPesquisa();
+    const rows = parsePesquisaRows(html);
 
-    const alvo = String(termo).toUpperCase();
-    const achados = [];
+    const t = norm(termo);
+    const filtered = rows.filter(r => norm(r.nome).includes(t));
 
-    rows.forEach(r => {
-      if (r.rawText.toUpperCase().includes(alvo)) {
-        // Pega cor do primeiro <font> da linha (igual ao script original)
-        const cor = (r.produtos[0] && r.produtos[0].cor) || null;
-        const status = cor === 'red'   ? '❌ VERMELHO (Tóxico)'
-                     : cor === 'green' ? '✅ VERDE (Seguro)'
-                     : cor ? '⚪ ' + cor
-                     : '⚪ Não encontrada';
-
-        achados.push({
-          cultura: r.cultura,
-          cod2: r.cod2,
-          alvo: r.alvo,
-          texto: r.rawText,
-          cor,
-          status,
-          produtos: r.produtos
-        });
-      }
-    });
-
-    res.json({ ok: true, termo, total: achados.length, rows: achados });
+    res.json({ ok: true, termo, total: filtered.length, rows: filtered });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
