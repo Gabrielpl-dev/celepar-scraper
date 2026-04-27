@@ -69,18 +69,18 @@ function tableHTML(headers, rowsHTML, toolbar = '') {
 // ---------- EXTRAIR ----------
 async function runExtrair() {
   const cultura = document.getElementById('extCultura').value.trim();
-  if (!cultura) return alert('informe a cultura');
   setStatus('extrair', 'loading', 'consultando celepar...');
   const t0 = performance.now();
   try {
     const data = await api.extrairCultura(cultura, getParams());
     const took = Math.round(performance.now() - t0);
     if (!data.ok) throw new Error(data.error);
-    const rows = data.rows.map(r => `
+    const rows = data.rows.map((r, i) => `
       <tr>
         <td>${r.cultura}</td>
         <td><span class="cod2-pill">${r.cod2}</span></td>
         <td>${r.alvo}</td>
+        <td style="text-align:center"><input type="checkbox" data-idx="${i}"></td>
       </tr>`).join('');
     const toolbar = `
       <button class="ghost" onclick='exportExtrair(${JSON.stringify(data.rows).replace(/'/g, '&apos;')})'>↓ exportar csv</button>
@@ -88,7 +88,7 @@ async function runExtrair() {
     const el = document.getElementById('result-extrair');
     el.hidden = false;
     el.innerHTML = data.rows.length
-      ? tableHTML(['Cultura', 'Cod2', 'Alvo'], rows, toolbar)
+      ? tableHTML(['Cultura', 'Cod2', 'Alvo', '✓'], rows, toolbar)
       : `<div class="empty-state">Nenhum registro para <code>${cultura}</code>.</div>`;
     setStatus('extrair', 'ok', 'sucesso —', data.total, took);
   } catch (e) {

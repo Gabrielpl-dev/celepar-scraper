@@ -257,13 +257,12 @@ app.post('/api/buscar-cod2', async (req, res) => {
 app.post('/api/extrair-cultura', async (req, res) => {
   try {
     const { cultura, params = {} } = req.body;
-    if (!cultura) return res.status(400).json({ ok: false, error: 'cultura é obrigatória' });
 
     const html = await fetchPage(buildUrl(params));
     const rows = parseRows(html);
 
     const alvo = norm(cultura);
-    const filtrados = rows.filter(r => norm(r.cultura) === alvo);
+    const filtrados = alvo ? rows.filter(r => norm(r.cultura) === alvo) : rows;
 
     res.json({ ok: true, cultura, total: filtrados.length, rows: filtrados });
   } catch (err) {
