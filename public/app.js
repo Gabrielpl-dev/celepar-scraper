@@ -39,7 +39,7 @@ async function call(endpoint, body, method = 'POST') {
 // ---------- api layer (React-ready: copy to src/services/api.js) ----------
 const api = {
   extrairCultura: (cultura, params) => call('extrair-cultura', { cultura, params }),
-  buscarCod2:     (cod2, params)    => call('buscar-cod2', { cod2, params }),
+  buscarSiagro:   (siagro, params)  => call('buscar-siagro', { siagro, params }),
   comparar:       (c1, c2, params)  => call('comparar', { cultura1: c1, cultura2: c2, params }),
   verificar:      (termo, params)   => call('verificar', { termo, params }),
   listar:         (params)          => fetch('/api/listar?' + new URLSearchParams(params)).then(r => r.json()),
@@ -78,7 +78,7 @@ async function runExtrair() {
     const rows = data.rows.map((r, i) => `
       <tr>
         <td>${r.cultura}</td>
-        <td><span class="cod2-pill">${r.cod2}</span></td>
+        <td><span class="siagro-pill">${r.siagro}</span></td>
         <td>${r.alvo}</td>
         <td style="text-align:center"><input type="checkbox" data-idx="${i}"></td>
       </tr>`).join('');
@@ -88,7 +88,7 @@ async function runExtrair() {
     const el = document.getElementById('result-extrair');
     el.hidden = false;
     el.innerHTML = data.rows.length
-      ? tableHTML(['Cultura', 'Cod2', 'Alvo', '✓'], rows, toolbar)
+      ? tableHTML(['Cultura', 'SIAGRO', 'Alvo', '✓'], rows, toolbar)
       : `<div class="empty-state">Nenhum registro para <code>${cultura}</code>.</div>`;
     setStatus('extrair', 'ok', 'sucesso —', data.total, took);
   } catch (e) {
@@ -96,42 +96,42 @@ async function runExtrair() {
   }
 }
 function exportExtrair(rows) {
-  const csv = ['Cultura,Cod2,Alvo', ...rows.map(r => [r.cultura, r.cod2, r.alvo].map(csvEsc).join(','))];
+  const csv = ['Cultura,SIAGRO,Alvo', ...rows.map(r => [r.cultura, r.siagro, r.alvo].map(csvEsc).join(','))];
   downloadCSV('extrair_cultura.csv', csv);
 }
 
-// ---------- COD2 ----------
-async function runCod2() {
-  const cod2 = document.getElementById('cod2Alvo').value.trim();
-  if (!cod2) return alert('informe o Cod2');
-  setStatus('cod2', 'loading', 'consultando celepar...');
+// ---------- SIAGRO ----------
+async function runSiagro() {
+  const siagro = document.getElementById('siagroAlvo').value.trim();
+  if (!siagro) return alert('informe o SIAGRO');
+  setStatus('siagro', 'loading', 'consultando celepar...');
   const t0 = performance.now();
   try {
-    const data = await api.buscarCod2(cod2, getParams());
+    const data = await api.buscarSiagro(siagro, getParams());
     const took = Math.round(performance.now() - t0);
     if (!data.ok) throw new Error(data.error);
     const rows = data.rows.map(r => `
       <tr>
         <td>${r.cultura}</td>
-        <td><span class="cod2-pill">${r.cod2}</span></td>
+        <td><span class="siagro-pill">${r.siagro}</span></td>
         <td>${r.alvo}</td>
       </tr>`).join('');
     const toolbar = `
-      <button class="ghost" onclick='exportCod2(${JSON.stringify(data.rows).replace(/'/g, '&apos;')})'>↓ exportar csv</button>
-      <span style="color:var(--dim);font-size:11px">cod2: <b style="color:var(--text)">${data.cod2}</b></span>`;
-    const el = document.getElementById('result-cod2');
+      <button class="ghost" onclick='exportSiagro(${JSON.stringify(data.rows).replace(/'/g, '&apos;')})'>↓ exportar csv</button>
+      <span style="color:var(--dim);font-size:11px">siagro: <b style="color:var(--text)">${data.siagro}</b></span>`;
+    const el = document.getElementById('result-siagro');
     el.hidden = false;
     el.innerHTML = data.rows.length
-      ? tableHTML(['Cultura', 'Cod2', 'Alvo'], rows, toolbar)
-      : `<div class="empty-state">Cod2 <code>${cod2}</code> não encontrado.</div>`;
-    setStatus('cod2', 'ok', 'sucesso —', data.total, took);
+      ? tableHTML(['Cultura', 'SIAGRO', 'Alvo'], rows, toolbar)
+      : `<div class="empty-state">SIAGRO <code>${siagro}</code> não encontrado.</div>`;
+    setStatus('siagro', 'ok', 'sucesso —', data.total, took);
   } catch (e) {
-    setStatus('cod2', 'err', 'erro: ' + e.message);
+    setStatus('siagro', 'err', 'erro: ' + e.message);
   }
 }
-function exportCod2(rows) {
-  const csv = ['Cod2,Cultura,Alvo', ...rows.map(r => [r.cod2, r.cultura, r.alvo].map(csvEsc).join(','))];
-  downloadCSV('busca_cod2.csv', csv);
+function exportSiagro(rows) {
+  const csv = ['SIAGRO,Cultura,Alvo', ...rows.map(r => [r.siagro, r.cultura, r.alvo].map(csvEsc).join(','))];
+  downloadCSV('busca_siagro.csv', csv);
 }
 
 // ---------- COMPARAR ----------
@@ -155,13 +155,13 @@ async function runComparar() {
         <div class="cmp-box exclusivo1">
           <h4>Exclusivos · ${c1} <span class="count">${data.exclusivos1.length}</span></h4>
           <div class="cmp-list">
-            ${renderList(data.exclusivos1, r => `<div class="item"><span class="cod2-pill">${r.cod2}</span> ${r.alvo}</div>`)}
+            ${renderList(data.exclusivos1, r => `<div class="item"><span class="siagro-pill">${r.siagro}</span> ${r.alvo}</div>`)}
           </div>
         </div>
         <div class="cmp-box exclusivo2">
           <h4>Exclusivos · ${c2} <span class="count">${data.exclusivos2.length}</span></h4>
           <div class="cmp-list">
-            ${renderList(data.exclusivos2, r => `<div class="item"><span class="cod2-pill">${r.cod2}</span> ${r.alvo}</div>`)}
+            ${renderList(data.exclusivos2, r => `<div class="item"><span class="siagro-pill">${r.siagro}</span> ${r.alvo}</div>`)}
           </div>
         </div>
         <div class="cmp-box comum">
@@ -169,7 +169,7 @@ async function runComparar() {
           <div class="cmp-list">
             ${renderList(data.comuns, r => `
               <div class="item">
-                <span class="cod2-pill">${r.cod2}</span>
+                <span class="siagro-pill">${r.siagro}</span>
                 <div style="color:var(--dim);font-size:11px;margin-left:4px">${c1}: ${r.alvo1}</div>
                 <div style="color:var(--dim);font-size:11px;margin-left:4px">${c2}: ${r.alvo2}</div>
               </div>`)}
@@ -191,11 +191,11 @@ async function runComparar() {
   }
 }
 function exportComparar(d) {
-  const lines = ['Categoria,Cod2,Cultura,Alvo'];
-  d.exclusivos1.forEach(r => lines.push(['Exclusivo_1', r.cod2, d.cultura1, r.alvo].map(csvEsc).join(',')));
-  d.exclusivos2.forEach(r => lines.push(['Exclusivo_2', r.cod2, d.cultura2, r.alvo].map(csvEsc).join(',')));
+  const lines = ['Categoria,SIAGRO,Cultura,Alvo'];
+  d.exclusivos1.forEach(r => lines.push(['Exclusivo_1', r.siagro, d.cultura1, r.alvo].map(csvEsc).join(',')));
+  d.exclusivos2.forEach(r => lines.push(['Exclusivo_2', r.siagro, d.cultura2, r.alvo].map(csvEsc).join(',')));
   d.comuns.forEach(r =>
-    lines.push(['Comum', r.cod2, `${d.cultura1} | ${d.cultura2}`, `${r.alvo1} | ${r.alvo2}`].map(csvEsc).join(',')));
+    lines.push(['Comum', r.siagro, `${d.cultura1} | ${d.cultura2}`, `${r.alvo1} | ${r.alvo2}`].map(csvEsc).join(',')));
   downloadCSV('comparar.csv', lines);
 }
 
@@ -244,7 +244,7 @@ async function runRaw() {
     const rows = data.rows.slice(0, 500).map(r => `
       <tr>
         <td>${r.cultura}</td>
-        <td><span class="cod2-pill">${r.cod2}</span></td>
+        <td><span class="siagro-pill">${r.siagro}</span></td>
         <td>${r.alvo}</td>
         <td>${r.produtos.map(p => {
           const c = p.cor === 'red' ? 'var(--red)' : p.cor === 'green' ? 'var(--green)' : 'var(--dim)';
@@ -254,7 +254,7 @@ async function runRaw() {
     const el = document.getElementById('result-raw');
     el.hidden = false;
     el.innerHTML = data.rows.length
-      ? tableHTML(['Cultura', 'Cod2', 'Alvo', 'Produtos (cor)'], rows,
+      ? tableHTML(['Cultura', 'SIAGRO', 'Alvo', 'Produtos (cor)'], rows,
           `<span style="color:var(--dim);font-size:11px">primeiras 500 linhas · url: <a href="${data.url}" target="_blank" style="color:var(--accent-2)">abrir original ↗</a></span>`)
       : `<div class="empty-state">Nada retornado.</div>`;
     setStatus('raw', 'ok', 'sucesso —', data.total, took);

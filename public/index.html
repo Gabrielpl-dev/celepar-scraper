@@ -24,8 +24,8 @@
       <button class="op active" data-op="extrair">
         <span class="num">01</span> Extrair por cultura
       </button>
-      <button class="op" data-op="cod2">
-        <span class="num">02</span> Buscar por Cod2
+      <button class="op" data-op="siagro">
+        <span class="num">02</span> Buscar por SIAGRO
       </button>
       <button class="op" data-op="comparar">
         <span class="num">03</span> Comparar culturas
@@ -59,10 +59,10 @@
     <!-- =================== EXTRAIR =================== -->
     <section data-panel="extrair">
       <div class="op-header">
-        <h3>Extrair Cod2 por cultura</h3>
+        <h3>Extrair SIAGRO por cultura</h3>
         <span class="tag">script 01</span>
       </div>
-      <p class="op-desc">Pesquisa todas as linhas cuja coluna "Cultura" bate exatamente com o nome informado (case e acento insensitivos). Retorna Cod2 e Alvo de cada uma.</p>
+      <p class="op-desc">Pesquisa todas as linhas cuja coluna "Cultura" bate exatamente com o nome informado (case e acento insensitivos). Retorna SIAGRO e Alvo de cada uma.</p>
 
       <div class="form-row">
         <div class="field">
@@ -75,23 +75,23 @@
       <div id="result-extrair" class="results" hidden></div>
     </section>
 
-    <!-- =================== COD2 =================== -->
-    <section data-panel="cod2" hidden>
+    <!-- =================== SIAGRO =================== -->
+    <section data-panel="siagro" hidden>
       <div class="op-header">
-        <h3>Buscar por Cod2</h3>
+        <h3>Buscar por SIAGRO</h3>
         <span class="tag">script 02</span>
       </div>
-      <p class="op-desc">Dado um Cod2, descobre em quais culturas ele aparece (deduplicando por nome de cultura).</p>
+      <p class="op-desc">Dado um código SIAGRO, descobre em quais culturas ele aparece (deduplicando por nome de cultura).</p>
 
       <div class="form-row">
         <div class="field">
-          <label for="cod2Alvo">Cod2</label>
-          <input id="cod2Alvo" type="number" value="566" placeholder="ex: 566">
+          <label for="siagroAlvo">SIAGRO</label>
+          <input id="siagroAlvo" type="number" value="566" placeholder="ex: 566">
         </div>
-        <button class="run" onclick="runCod2()">executar</button>
+        <button class="run" onclick="runSiagro()">executar</button>
       </div>
-      <div id="status-cod2"></div>
-      <div id="result-cod2" class="results" hidden></div>
+      <div id="status-siagro"></div>
+      <div id="result-siagro" class="results" hidden></div>
     </section>
 
     <!-- =================== COMPARAR =================== -->
@@ -100,7 +100,7 @@
         <h3>Comparar duas culturas</h3>
         <span class="tag">script 03</span>
       </div>
-      <p class="op-desc">Compara o conjunto de Cod2 entre duas culturas. Mostra exclusivos de cada uma e os comuns às duas.</p>
+      <p class="op-desc">Compara o conjunto de SIAGRO entre duas culturas. Mostra exclusivos de cada uma e os comuns às duas.</p>
 
       <div class="form-row">
         <div class="field">

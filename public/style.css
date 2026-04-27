@@ -274,7 +274,7 @@ th {
   font-weight: 500;
 }
 tr:hover td { background: rgba(255,255,255,.02); }
-.cod2-pill {
+.siagro-pill {
   display: inline-block;
   padding: 1px 7px;
   background: rgba(56,189,248,.1);

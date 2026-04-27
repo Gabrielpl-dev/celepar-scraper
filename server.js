@@ -180,7 +180,7 @@ function parsePesquisaRows(html) {
 }
 
 // Replica o querySelectorAll('tr') + leitura dos tds dos scripts originais.
-// Retorna um array de { cultura, cod2, alvo, produtos: [{ nome, cor }] }
+// Retorna um array de { cultura, siagro, alvo, produtos: [{ nome, cor }] }
 function parseRows(html) {
   const $ = cheerio.load(html);
   const linhas = [];
@@ -208,7 +208,7 @@ function parseRows(html) {
 
     linhas.push({
       cultura: $a.text().trim(),
-      cod2:    m[1],
+      siagro:  m[1],
       alvo:    $tds.eq(2).text().trim(),
       rawText: $tr.text().replace(/\s+/g, ' ').trim(),
       produtos
@@ -232,28 +232,28 @@ app.get('/api/listar', async (req, res) => {
   }
 });
 
-// POST /api/buscar-cod2  { cod2, params }  → reproduz "Busca por Cod2.js"
-app.post('/api/buscar-cod2', async (req, res) => {
+// POST /api/buscar-siagro  { siagro, params }
+app.post('/api/buscar-siagro', async (req, res) => {
   try {
-    const { cod2, params = {} } = req.body;
-    if (!cod2) return res.status(400).json({ ok: false, error: 'cod2 é obrigatório' });
+    const { siagro, params = {} } = req.body;
+    if (!siagro) return res.status(400).json({ ok: false, error: 'siagro é obrigatório' });
 
     const html = await fetchPage(buildUrl(params));
     const rows = parseRows(html);
 
-    const alvo = String(cod2).trim();
-    const filtrados = rows.filter(r => r.cod2 === alvo);
+    const alvo = String(siagro).trim();
+    const filtrados = rows.filter(r => r.siagro === alvo);
 
     // Único por cultura
     const unicas = [...new Map(filtrados.map(r => [r.cultura, r])).values()];
 
-    res.json({ ok: true, cod2: alvo, total: unicas.length, rows: unicas });
+    res.json({ ok: true, siagro: alvo, total: unicas.length, rows: unicas });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
 });
 
-// POST /api/extrair-cultura  { cultura, params }  → "Extrator Cod2 por cultura.js"
+// POST /api/extrair-cultura  { cultura, params }
 app.post('/api/extrair-cultura', async (req, res) => {
   try {
     const { cultura, params = {} } = req.body;
@@ -270,7 +270,7 @@ app.post('/api/extrair-cultura', async (req, res) => {
   }
 });
 
-// POST /api/comparar  { cultura1, cultura2, params }  → "Comparador de Cod2.js"
+// POST /api/comparar  { cultura1, cultura2, params }
 app.post('/api/comparar', async (req, res) => {
   try {
     const { cultura1, cultura2, params = {} } = req.body;
@@ -284,27 +284,27 @@ app.post('/api/comparar', async (req, res) => {
     const a1 = norm(cultura1);
     const a2 = norm(cultura2);
 
-    const m1 = new Map(); // cod2 -> alvo
+    const m1 = new Map(); // siagro -> alvo
     const m2 = new Map();
 
     rows.forEach(r => {
-      if (norm(r.cultura) === a1) m1.set(r.cod2, r.alvo);
-      if (norm(r.cultura) === a2) m2.set(r.cod2, r.alvo);
+      if (norm(r.cultura) === a1) m1.set(r.siagro, r.alvo);
+      if (norm(r.cultura) === a2) m2.set(r.siagro, r.alvo);
     });
 
     const exclusivos1 = [];
     const exclusivos2 = [];
     const comuns      = [];
 
-    for (const [cod2, alvo] of m1) {
-      if (m2.has(cod2)) {
-        comuns.push({ cod2, alvo1: alvo, alvo2: m2.get(cod2) });
+    for (const [siagro, alvo] of m1) {
+      if (m2.has(siagro)) {
+        comuns.push({ siagro, alvo1: alvo, alvo2: m2.get(siagro) });
       } else {
-        exclusivos1.push({ cod2, alvo });
+        exclusivos1.push({ siagro, alvo });
       }
     }
-    for (const [cod2, alvo] of m2) {
-      if (!m1.has(cod2)) exclusivos2.push({ cod2, alvo });
+    for (const [siagro, alvo] of m2) {
+      if (!m1.has(siagro)) exclusivos2.push({ siagro, alvo });
     }
 
     res.json({
