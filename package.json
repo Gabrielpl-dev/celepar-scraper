@@ -1,5 +1,5 @@
 {
-  "name": "reag-celepar-scraper",
+  "name": "celepar-scraper",
   "version": "0.1.0",
   "description": "Interface standalone pros scripts JS de agrotóxicos do Celepar/PR",
   "main": "server.js",

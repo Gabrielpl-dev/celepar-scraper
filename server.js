@@ -1,5 +1,5 @@
 // ============================================================
-// Reag Celepar Scraper — backend
+// Celepar Scraper — backend
 // Faz o fetch da página de listagem do site celepar07web.pr.gov.br,
 // extrai as linhas da tabela e expõe endpoints que reproduzem a
 // lógica dos 4 scripts originais de DevTools.
@@ -340,6 +340,6 @@ app.post('/api/verificar', async (req, res) => {
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n  🌱 Reag Celepar Scraper rodando em http://0.0.0.0:${PORT}\n`);
+  console.log(`\n  🌱 Celepar Scraper rodando em http://0.0.0.0:${PORT}\n`);
   console.log(`  📡 Acessível na rede em http://<seu-ip>:${PORT}\n`);
 });
