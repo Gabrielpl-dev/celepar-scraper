@@ -2,6 +2,15 @@
   border-right: 1px solid var(--line);
   padding: 24px 22px;
   background: var(--panel);
+  overflow: hidden;
+}
+
+.content {
+  transition: opacity .15s ease;
+}
+.contentHidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .sectionTitle {

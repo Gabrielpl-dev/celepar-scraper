@@ -20,18 +20,22 @@ const VIEWS = {
 export default function App() {
   const [activeView, setActiveView] = useState('raw')
   const [params, setParams] = useState({ Cod: '' })
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const View = VIEWS[activeView]
 
   return (
     <div className={s.app}>
       <Header />
-      <div className={s.wrap}>
+      <div className={`${s.wrap} ${sidebarOpen ? '' : s.wrapCollapsed}`}>
         <Sidebar
           activeView={activeView}
           setActiveView={setActiveView}
           params={params}
           setParams={setParams}
+          open={sidebarOpen}
+          onHoverStart={() => setSidebarOpen(true)}
+          onHoverEnd={() => setSidebarOpen(false)}
         />
         <main className={s.main}>
           <View params={params} />

@@ -9,6 +9,11 @@
   grid-template-columns: 320px 1fr;
   flex: 1;
   min-height: calc(100vh - 60px);
+  transition: grid-template-columns .25s ease;
+}
+
+.wrapCollapsed {
+  grid-template-columns: 40px 1fr;
 }
 
 @media (max-width: 900px) {

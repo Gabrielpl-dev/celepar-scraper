@@ -10,7 +10,7 @@ const OPS = [
   { id: 'raw',       num: '--', label: 'Listagem bruta' },
 ]
 
-export function Sidebar({ activeView, setActiveView, params, setParams }) {
+export function Sidebar({ activeView, setActiveView, params, setParams, open, onHoverStart, onHoverEnd }) {
   const [searchTerm, setSearchTerm]       = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [searching, setSearching]         = useState(false)
@@ -40,7 +40,8 @@ export function Sidebar({ activeView, setActiveView, params, setParams }) {
   }
 
   return (
-    <aside className={s.aside}>
+    <aside className={s.aside} onMouseEnter={onHoverStart} onMouseLeave={onHoverEnd}>
+      <div className={`${s.content} ${open ? '' : s.contentHidden}`}>
       <h2 className={s.sectionTitle}>Operações</h2>
       <div className={s.ops}>
         {OPS.map(op => (
@@ -92,6 +93,7 @@ export function Sidebar({ activeView, setActiveView, params, setParams }) {
             onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
           />
         </div>
+      </div>
       </div>
     </aside>
   )

@@ -19,7 +19,9 @@
       "WebSearch",
       "PowerShell(pm2 delete all 2>&1)",
       "PowerShell(pm2 save 2>&1)",
-      "PowerShell(pm2 restart all 2>&1)"
+      "PowerShell(pm2 restart all 2>&1)",
+      "Bash(npx pm2 *)",
+      "PowerShell(New-NetFirewallRule -DisplayName \"Celepar Scraper :3000\" -Direction Inbound -Protocol TCP -LocalPort 3000 -Action Allow -Profile Any 2>&1)"
     ]
   }
 }
