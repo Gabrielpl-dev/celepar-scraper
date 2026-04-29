@@ -6,7 +6,7 @@ import { StatusBadge } from '../components/StatusBadge'
 import s from './ExtrairView.module.css'
 
 export function VerificarView({ params }) {
-  const [termo, setTermo]     = useState('BELURE')
+  const [termo, setTermo]     = useState('')
   const [status, setStatus]   = useState('idle')
   const [message, setMessage] = useState('')
   const [count, setCount]     = useState(null)

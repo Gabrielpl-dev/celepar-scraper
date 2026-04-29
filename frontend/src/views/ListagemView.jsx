@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { api } from '../api'
 import { StatusBar } from '../components/StatusBar'
 import { ResultTable, tableStyles } from '../components/ResultTable'
@@ -11,10 +11,8 @@ export function ListagemView({ params }) {
   const [count, setCount]     = useState(null)
   const [took, setTook]       = useState(null)
   const [result, setResult]   = useState(null)
-  const [error, setError]     = useState(null)
 
-  async function handleSubmit(e) {
-    e.preventDefault()
+  const fetchData = useCallback(async () => {
     setStatus('loading')
     setMessage('consultando celepar...')
     setResult(null)
@@ -31,9 +29,12 @@ export function ListagemView({ params }) {
     } catch (err) {
       setStatus('err')
       setMessage('erro: ' + err.message)
-      setError(err.message)
     }
-  }
+  }, [params.Cod])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   const tableRows = result?.rows.slice(0, 500).map(r => [
     r.cultura,
@@ -64,21 +65,14 @@ export function ListagemView({ params }) {
     <section className={s.section}>
       <div className={s.opHeader}>
         <h3>Listagem bruta</h3>
-        <span className={s.tag}>debug</span>
       </div>
       <p className={s.desc}>
-        Faz o GET na URL com os parâmetros do sidebar e devolve todas as linhas parseadas. Útil pra inspecionar.
+        Todas as culturas registradas para o produto selecionado.
       </p>
-
-      <form className={s.formRow} onSubmit={handleSubmit}>
-        <button type="submit" className={s.runBtn} disabled={status === 'loading'}>
-          executar
-        </button>
-      </form>
 
       <StatusBar status={status} message={message} count={count} took={took} />
 
-      {(result || error) && (
+      {result && (
         <ResultTable
           headers={['Cultura', 'SIAGRO', 'Alvo', 'Produtos (cor)']}
           rows={tableRows}

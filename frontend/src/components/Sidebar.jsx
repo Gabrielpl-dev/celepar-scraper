@@ -35,7 +35,7 @@ export function Sidebar({ activeView, setActiveView, params, setParams }) {
 
   function handleSelect(row) {
     setParams(p => ({ ...p, Cod: row.cod }))
-    setSearchTerm('')
+    setSearchTerm(row.nome)
     setSearchResults([])
   }
 
@@ -56,21 +56,10 @@ export function Sidebar({ activeView, setActiveView, params, setParams }) {
       </div>
 
       <div className={s.params}>
-        <h2 className={s.sectionTitle}>Parâmetros da URL</h2>
+        <h2 className={s.sectionTitle}>Parâmetros do Produto</h2>
 
         <div className={s.field}>
-          <label htmlFor="paramCod">Cod</label>
-          <input
-            id="paramCod"
-            type="text"
-            value={params.Cod}
-            placeholder="ex: 2968"
-            onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
-          />
-        </div>
-
-        <div className={s.field}>
-          <label htmlFor="paramSearch">Buscar produto por nome</label>
+          <label htmlFor="paramSearch">Produto</label>
           <div className={s.searchWrap}>
             <input
               id="paramSearch"
@@ -93,9 +82,16 @@ export function Sidebar({ activeView, setActiveView, params, setParams }) {
           </div>
         </div>
 
-        <p className={s.hint}>
-          Os demais campos vão como <code className={s.hintCode}>null</code>/vazio igual à URL original.
-        </p>
+        <div className={s.field}>
+          <label htmlFor="paramCod">Cod</label>
+          <input
+            id="paramCod"
+            type="text"
+            value={params.Cod}
+            placeholder="ex: 2968"
+            onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
+          />
+        </div>
       </div>
     </aside>
   )

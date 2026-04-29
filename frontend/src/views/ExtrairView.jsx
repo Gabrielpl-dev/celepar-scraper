@@ -6,7 +6,7 @@ import { SiagroPill } from '../components/SiagroPill'
 import s from './ExtrairView.module.css'
 
 export function ExtrairView({ params }) {
-  const [cultura, setCultura] = useState('Abacaxi')
+  const [cultura, setCultura] = useState('')
   const [status, setStatus]   = useState('idle')
   const [message, setMessage] = useState('')
   const [count, setCount]     = useState(null)

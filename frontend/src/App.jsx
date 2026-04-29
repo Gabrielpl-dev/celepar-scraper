@@ -18,8 +18,8 @@ const VIEWS = {
 }
 
 export default function App() {
-  const [activeView, setActiveView] = useState('extrair')
-  const [params, setParams] = useState({ Cod: '2968' })
+  const [activeView, setActiveView] = useState('raw')
+  const [params, setParams] = useState({ Cod: '' })
 
   const View = VIEWS[activeView]
 

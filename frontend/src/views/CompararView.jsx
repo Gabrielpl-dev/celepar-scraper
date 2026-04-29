@@ -7,8 +7,8 @@ import s from './CompararView.module.css'
 import formS from './ExtrairView.module.css'
 
 export function CompararView({ params }) {
-  const [c1, setC1]           = useState('Abacaxi')
-  const [c2, setC2]           = useState('Banana')
+  const [c1, setC1]           = useState('')
+  const [c2, setC2]           = useState('')
   const [status, setStatus]   = useState('idle')
   const [message, setMessage] = useState('')
   const [count, setCount]     = useState(null)
@@ -65,11 +65,11 @@ export function CompararView({ params }) {
       <form className={formS.formRow} onSubmit={handleSubmit}>
         <div className={formS.field}>
           <label htmlFor="cmpC1">Cultura 1</label>
-          <input id="cmpC1" type="text" value={c1} onChange={e => setC1(e.target.value)} />
+          <input id="cmpC1" type="text" value={c1} placeholder="ex: Abacaxi" onChange={e => setC1(e.target.value)} />
         </div>
         <div className={formS.field}>
           <label htmlFor="cmpC2">Cultura 2</label>
-          <input id="cmpC2" type="text" value={c2} onChange={e => setC2(e.target.value)} />
+          <input id="cmpC2" type="text" value={c2} placeholder="ex: Banana" onChange={e => setC2(e.target.value)} />
         </div>
         <button type="submit" className={formS.runBtn} disabled={status === 'loading'}>
           executar
