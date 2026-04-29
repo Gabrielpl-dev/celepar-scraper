@@ -6,7 +6,19 @@
       "Bash(iconv -f windows-1252 -t utf-8)",
       "Bash(curl -s -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\" --compressed \"https://celepar07web.pr.gov.br/agrotoxicos/facapesquisa.asp\")",
       "Bash(curl -s -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36' -X POST -d 'criterioAgrotoxico=&criterioIngredienteAtivo=&criterioRegistrante=&criterioClassificacaoToxicologica=&criterioPraga=&criterioSituacao=&criterioClasse=&criterioCulturaInfestada=&criterioExpurgo=&criterioAplicacaoAerea=&criterioTratamentoSementes=&select11=null&select1=&select5=null&select4=null&select9=null&select6=null&select3=null&select7=null&descIngrediente=&numeroRegistro=&ClassificacaoQuiBio=QUI&submit1=Pesquisar' https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp)",
-      "Bash(curl -s -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36' -X POST -d 'criterioAgrotoxico=BELURE&criterioIngredienteAtivo=&criterioRegistrante=&criterioClassificacaoToxicologica=&criterioPraga=&criterioSituacao=&criterioClasse=&criterioCulturaInfestada=&criterioExpurgo=&criterioAplicacaoAerea=&criterioTratamentoSementes=&select11=null&select1=&select5=null&select4=null&select9=null&select6=null&select3=null&select7=null&descIngrediente=&numeroRegistro=&ClassificacaoQuiBio=QUI&submit1=Pesquisar' https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp)"
+      "Bash(curl -s -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36' -X POST -d 'criterioAgrotoxico=BELURE&criterioIngredienteAtivo=&criterioRegistrante=&criterioClassificacaoToxicologica=&criterioPraga=&criterioSituacao=&criterioClasse=&criterioCulturaInfestada=&criterioExpurgo=&criterioAplicacaoAerea=&criterioTratamentoSementes=&select11=null&select1=&select5=null&select4=null&select9=null&select6=null&select3=null&select7=null&descIngrediente=&numeroRegistro=&ClassificacaoQuiBio=QUI&submit1=Pesquisar' https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp)",
+      "Bash(npm create *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(pm2-windows-startup install *)",
+      "PowerShell(pm2-windows-startup install 2>&1)",
+      "PowerShell($env:PATH = $env:PATH + \";\" + \\(npm root -g\\); npm exec -g -- pm2-windows-startup install 2>&1)",
+      "PowerShell(pm2 logs celepar-fe --lines 20 --nostream 2>&1)",
+      "PowerShell(pm2 stop celepar-fe)",
+      "PowerShell(pm2 delete celepar-fe 2>&1)",
+      "WebSearch",
+      "PowerShell(pm2 delete all 2>&1)",
+      "PowerShell(pm2 save 2>&1)"
     ]
   }
 }

@@ -2,14 +2,12 @@
   "name": "celepar-scraper",
   "version": "0.1.0",
   "description": "Interface standalone pros scripts JS de agrotóxicos do Celepar/PR",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node backend/server.js",
+    "dev": "concurrently -n be,fe -c cyan,lime \"node backend/server.js\" \"cd frontend && npm run dev\"",
+    "build:fe": "cd frontend && npm run build"
   },
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
-    "cors": "^2.8.5",
-    "express": "^4.19.2"
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

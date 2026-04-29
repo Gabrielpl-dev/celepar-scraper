@@ -1,0 +1,74 @@
+.aside {
+  border-right: 1px solid var(--line);
+  padding: 24px 22px;
+  background: var(--panel);
+}
+
+.sectionTitle {
+  font-family: var(--display);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--dim);
+  margin-bottom: 14px;
+}
+
+.ops {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+
+.op {
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text);
+  padding: 10px 12px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 13px;
+  border-radius: 4px;
+  transition: all .15s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.op:hover { background: var(--panel-2); }
+
+.opActive {
+  background: var(--panel-2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.num {
+  font-size: 10px;
+  color: var(--dim);
+  font-weight: 700;
+}
+
+.opActive .num { color: var(--accent); }
+
+.params {
+  border-top: 1px dashed var(--line);
+  padding-top: 20px;
+}
+
+.field { margin-bottom: 12px; }
+
+.hint {
+  color: var(--dim);
+  font-size: 10px;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.hintCode {
+  color: var(--accent);
+  background: var(--panel-2);
+  padding: 2px 4px;
+  border-radius: 2px;
+}

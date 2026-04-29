@@ -1,0 +1,89 @@
+.results {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background: var(--panel-2);
+  z-index: 1;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--dim);
+  font-weight: 500;
+}
+
+tr:hover td { background: rgba(255,255,255,.02); }
+
+.emptyState {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--dim);
+  font-size: 13px;
+}
+
+.emptyState code {
+  background: var(--panel-2);
+  padding: 2px 6px;
+  border-radius: 2px;
+  color: var(--accent);
+}
+
+.ghostBtn {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 6px 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all .15s;
+}
+
+.ghostBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.toolbarMeta {
+  color: var(--dim);
+  font-size: 11px;
+}
+
+.toolbarMeta b { color: var(--text); }
