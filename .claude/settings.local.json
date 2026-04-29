@@ -18,7 +18,8 @@
       "PowerShell(pm2 delete celepar-fe 2>&1)",
       "WebSearch",
       "PowerShell(pm2 delete all 2>&1)",
-      "PowerShell(pm2 save 2>&1)"
+      "PowerShell(pm2 save 2>&1)",
+      "PowerShell(pm2 restart all 2>&1)"
     ]
   }
 }

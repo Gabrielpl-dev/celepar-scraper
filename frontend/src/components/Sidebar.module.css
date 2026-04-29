@@ -72,3 +72,55 @@
   padding: 2px 4px;
   border-radius: 2px;
 }
+
+.searchWrap { position: relative; }
+
+.searchHint {
+  font-size: 10px;
+  color: var(--dim);
+  padding: 4px 0;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  z-index: 20;
+  max-height: 220px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.dropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--line);
+  gap: 8px;
+  font-size: 11px;
+  transition: background .1s;
+}
+.dropdownItem:last-child { border-bottom: 0; }
+.dropdownItem:hover { background: var(--panel); }
+
+.dropdownNome {
+  color: var(--text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdownCod {
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}

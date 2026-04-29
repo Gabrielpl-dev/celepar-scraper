@@ -1,3 +1,5 @@
+import { useState, useRef } from 'react'
+import { api } from '../api'
 import s from './Sidebar.module.css'
 
 const OPS = [
@@ -9,6 +11,34 @@ const OPS = [
 ]
 
 export function Sidebar({ activeView, setActiveView, params, setParams }) {
+  const [searchTerm, setSearchTerm]       = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [searching, setSearching]         = useState(false)
+  const debounceRef = useRef(null)
+
+  function handleSearchChange(e) {
+    const val = e.target.value
+    setSearchTerm(val)
+    setSearchResults([])
+    clearTimeout(debounceRef.current)
+    if (!val.trim()) return
+    debounceRef.current = setTimeout(async () => {
+      setSearching(true)
+      try {
+        const data = await api.verificar(val, {})
+        setSearchResults(data.ok ? data.rows.slice(0, 8) : [])
+      } finally {
+        setSearching(false)
+      }
+    }, 400)
+  }
+
+  function handleSelect(row) {
+    setParams(p => ({ ...p, Cod: row.cod }))
+    setSearchTerm('')
+    setSearchResults([])
+  }
+
   return (
     <aside className={s.aside}>
       <h2 className={s.sectionTitle}>Operações</h2>
@@ -27,6 +57,7 @@ export function Sidebar({ activeView, setActiveView, params, setParams }) {
 
       <div className={s.params}>
         <h2 className={s.sectionTitle}>Parâmetros da URL</h2>
+
         <div className={s.field}>
           <label htmlFor="paramCod">Cod</label>
           <input
@@ -37,16 +68,31 @@ export function Sidebar({ activeView, setActiveView, params, setParams }) {
             onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
           />
         </div>
+
         <div className={s.field}>
-          <label htmlFor="paramDesc">descIngrediente</label>
-          <input
-            id="paramDesc"
-            type="text"
-            value={params.descIngrediente}
-            placeholder="(opcional)"
-            onChange={e => setParams(p => ({ ...p, descIngrediente: e.target.value }))}
-          />
+          <label htmlFor="paramSearch">Buscar produto por nome</label>
+          <div className={s.searchWrap}>
+            <input
+              id="paramSearch"
+              type="text"
+              value={searchTerm}
+              placeholder="ex: BELURE"
+              onChange={handleSearchChange}
+            />
+            {searching && <div className={s.searchHint}>buscando...</div>}
+            {searchResults.length > 0 && (
+              <ul className={s.dropdown}>
+                {searchResults.map(r => (
+                  <li key={r.cod} className={s.dropdownItem} onClick={() => handleSelect(r)}>
+                    <span className={s.dropdownNome}>{r.nome}</span>
+                    <span className={s.dropdownCod}>{r.cod}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
+
         <p className={s.hint}>
           Os demais campos vão como <code className={s.hintCode}>null</code>/vazio igual à URL original.
         </p>
