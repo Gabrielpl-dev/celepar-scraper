@@ -1,0 +1,30 @@
+.flash {
+  background: #ffffb0;
+  border: 1px solid #dddd80;
+  font-family: Arial;
+  font-size: 12px;
+  margin: 1em 0 0 0;
+  padding: .5em;
+}
+.flash .senha {
+  background: #ffff00;
+  font-family: 'Courier New'; 
+  font-size: 125%;
+}
+.flash .erro {
+  color: #c00; 
+}
+.flash .aviso {
+  color: #00c; 
+}
+a.legivel {
+  display: block;
+  font-size: 10pt;
+  margin-top: .5em;
+  text-align: center;
+  text-decoration: underline;
+}
+input.big { 
+  overflow: visible;
+  padding: 0 1em;
+}

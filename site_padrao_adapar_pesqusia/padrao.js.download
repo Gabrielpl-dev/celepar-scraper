@@ -1,0 +1,1115 @@
+
+
+function ConfiguraCorCampo(p_objeto) {
+  eval(p_objeto).style.backgroundColor="#f0f0f0";
+}
+function ReConfiguraCorCampo(p_objeto){
+  eval(p_objeto).style.backgroundColor="#ffffff";
+}
+
+// Função que valida campos numéricos
+
+function Valida_Campo_Numero(p_objeto, p_label, p_inteiros, p_decimais, p_event){
+    v_cont_virgula = 0;
+    v_cont_inteiros = 0;
+    v_cont_decimais = 0;
+    if (p_objeto.rodablur !== 0) {
+      p_objeto.rodablur = 1;
+    };
+    if (p_event.type == "keypress"){
+      if (p_event.keyCode !== 13) {
+        v_valor_campo_numero = new String(p_objeto.value+String.fromCharCode(p_event.keyCode));
+      }
+      else{
+        v_valor_campo_numero = new String(p_objeto.value);
+      }
+    }
+    else{
+        v_valor_campo_numero = p_objeto.value;
+    }
+    for (i=0;i<v_valor_campo_numero.length;i++){
+        if (v_valor_campo_numero.charAt(i) == '0' ||
+                v_valor_campo_numero.charAt(i) == '1' ||
+                v_valor_campo_numero.charAt(i) == '2' ||
+                v_valor_campo_numero.charAt(i) == '3' ||
+                v_valor_campo_numero.charAt(i) == '4' ||
+                v_valor_campo_numero.charAt(i) == '5' ||
+                v_valor_campo_numero.charAt(i) == '6' ||
+                v_valor_campo_numero.charAt(i) == '7' ||
+                v_valor_campo_numero.charAt(i) == '8' ||
+                v_valor_campo_numero.charAt(i) == '9'){
+            if (v_cont_virgula == '0'){
+                v_cont_inteiros++;
+            }
+            else{
+                if (v_cont_virgula == '1'){
+                    v_cont_decimais++;
+                }
+            }
+        }
+        else{
+            if (v_valor_campo_numero.charAt(i) == ',' &&
+                    p_decimais > '0'){
+                v_cont_virgula++;
+                if (v_cont_virgula > 1){
+                    alert(p_label + " - Permitido apenas uma vírgula.");
+                    p_objeto.focus();
+                    return false;
+                    break;
+                }
+            }
+            else{
+              if (p_event.type == "keypress"){
+                p_objeto.rodablur = 0;
+                alert(p_label + " - Preenchimento inválido.");
+                p_objeto.focus();
+                return false;
+                break;
+              }
+              else
+              if (p_objeto.rodablur !== 0)
+              {
+                alert(p_label + " - Preenchimento inválido.");
+                p_objeto.rodablur = 1;
+                p_objeto.focus();
+                return false;
+                break;
+              }
+            }
+        }
+    }
+    if (v_cont_inteiros > p_inteiros){
+        alert(p_label + " - Permitidas apenas " + p_inteiros + " casas inteiras.");
+        p_objeto.focus();
+        return false;
+    }
+    else{
+        if (v_cont_decimais > p_decimais){
+            alert(p_label + " - Permitidas apenas " + p_decimais + " casas decimais.");
+            p_objeto.focus();
+            return false;
+        }
+        else{
+            p_objeto.rodablur = 1;
+            return true;
+        }
+    }
+}
+
+// Função que valida campos data
+
+  function ValidaCampoData(p_objeto, p_label,p_evento){
+        var tam, descricao, i, letra, valorcampodata
+        if (p_evento.type == "keypress"){
+            valorcampodata = new String(p_objeto.value+String.fromCharCode(p_evento.keyCode));
+        }
+        else{
+            p_objeto.value = padronizaData (p_objeto.value);
+            valorcampodata = p_objeto.value;
+        }		
+        tam = parseInt(valorcampodata.length,10);
+        if (p_evento.keyCode==13)
+          { return true;}         
+        for (i=0;i<tam;i++){
+            descricao = valorcampodata.charAt(i);
+            if (p_evento.keyCode!=8){
+                if (descricao >= '0' && descricao <= '9'){
+                    if ((i==1)&&(tam==2)){
+                        //critica dia
+                        if ((valorcampodata.substr(i-1,2) > 31) ||
+                                (valorcampodata.substr(i-1,2) == 0)){
+                            alert(p_label + " - Dia Inválido.");
+                            return false;
+                        }
+                        //inclusao das barras.
+                        else{
+                            p_evento.keyCode = null;
+                            p_objeto.value = valorcampodata.substring(0,i+1) + '/';
+                            i = i + 1;
+                            return false;
+                        }
+                    }
+                    if ((i==4)&&(tam==5)){
+                        //critica mes
+                        if ((valorcampodata.substr(i-1,2) > 12) ||
+                                (valorcampodata.substr(i-1,2) == 0)){
+                            alert(p_label + " - Mês Inválido.");
+                            return false;
+                        }
+                        //inclusao das barras.
+                        else{
+                            p_evento.keyCode = null;
+                            p_objeto.value = valorcampodata.substring(0,i+1) + '/';
+                            i = i + 1;
+                            return false;
+                        }
+                    }
+                }
+                else{
+                    if (!((descricao == '/') && (i==2 || i==5))){
+                        alert(p_label + " - Data Inválida.");
+                        p_objeto.focus();
+                        return false;
+                    }
+                }
+            }
+        }
+        if (tam==10){
+            if(!ValidaDataMesAno(p_objeto,p_label,p_evento)){
+                p_objeto.focus();
+                return false;
+            }
+            return true;
+        }
+    }
+    function ValidaDataMesAno(p_objeto,p_label,p_evento){
+        var dia,mes,ano,i;
+        var varauxbissexto;
+        var tam, valorcampodata;
+        if (p_evento.type == "keypress"){
+            valorcampodata = new String(p_objeto.value+String.fromCharCode(p_evento.keyCode));
+        }
+        else{
+            valorcampodata = p_objeto.value;
+        }
+        tam = parseInt(valorcampodata.length,10);
+        for(i=0;i<tam;i++){
+            if((tam==8)||(tam!=8)&&((i!=2) && (i!=5))){
+                if(!(valorcampodata.charAt(i) >= '0' && valorcampodata.charAt(i) <= '9')){
+                    alert(p_label + " - Preenchimento Inválido.");
+                    return false;
+                }
+            }
+        }
+        if(valorcampodata.length==8){
+            dia = parseInt(valorcampodata.substring(0,2),10);
+            mes = parseInt(valorcampodata.substring(2,4),10);
+            ano = parseInt(valorcampodata.substring(4,8),10);
+        }
+        else{
+            dia = parseInt(valorcampodata.substring(0,2),10);
+            mes = parseInt(valorcampodata.substring(3,5),10);
+            ano = parseInt(valorcampodata.substring(6,10),10);
+            if((valorcampodata.charAt(2)!='/')||(valorcampodata.charAt(5)!='/')){
+                if(p_objeto.value!=""){
+                    alert(p_label + " - Data Inválida.");
+                    return false;
+                }
+            }
+        }
+        //critica data
+        if((dia > 31) || (dia == 0)){
+            alert(p_label + " - Dia Inválido.");
+            return false;
+        }
+        if ((mes > 12) || (mes == 0)){
+            alert(p_label + " - Mês Inválido.");
+            return false;
+        }
+        //Valida Ano Bissexto
+        if(ano%4 == 0)
+            varauxbissexto = 1;
+        else
+            varauxbissexto = 0;
+        if(((mes == 2) && (dia > (28 + parseInt(varauxbissexto,10)))) || (mes == 4 || mes == 6 || mes == 9 || mes == 11) && (dia > 30)){
+            alert(p_label + " - Dia inválido.");
+            return false;
+        }
+        return true;
+}
+
+// Função que valida campos moeda (tamanho de decimais fixos) criada por compatibilidade
+
+function Valida_Campo_Moeda(p_objeto, p_label, p_inteiros, p_event){
+    v_cont_virgula = 0;
+    v_cont_inteiros = 0;
+    v_cont_decimais = 0;
+    if (p_event.type == "keypress"){
+        v_valor_campo_numero = new String(p_objeto.value+String.fromCharCode(p_event.keyCode));
+    }
+    else{
+        v_valor_campo_numero = p_objeto.value;
+    }
+    for (i=0;i<v_valor_campo_numero.length;i++){
+        if (v_valor_campo_numero.charAt(i) == "0" ||
+                v_valor_campo_numero.charAt(i) == "1" ||
+                v_valor_campo_numero.charAt(i) == "2" ||
+                v_valor_campo_numero.charAt(i) == "3" ||
+                v_valor_campo_numero.charAt(i) == "4" ||
+                v_valor_campo_numero.charAt(i) == "5" ||
+                v_valor_campo_numero.charAt(i) == "6" ||
+                v_valor_campo_numero.charAt(i) == "7" ||
+                v_valor_campo_numero.charAt(i) == "8" ||
+                v_valor_campo_numero.charAt(i) == "9"){
+            if (v_cont_virgula == "0"){
+                v_cont_inteiros++;
+            }
+            else{
+                if (v_cont_virgula == "1"){
+                    v_cont_decimais++;
+                }
+            }
+        }
+        else{
+            if (v_valor_campo_numero.charAt(i) == ","){
+                v_cont_virgula++;
+                if (v_cont_virgula > 1){
+                    alert(p_label + " - Permitido apenas uma vírgula.");
+                    p_objeto.focus();
+                    return false;
+                    break;
+                }
+            }
+            else{
+                alert(p_label + " - Preenchimento inválido.");
+                p_objeto.focus();
+                return false;
+                break;
+            }
+        }
+    }
+    if (v_cont_inteiros > p_inteiros){
+        alert(p_label + " - Permitidas apenas " + p_inteiros + " casas inteiras.");
+        p_objeto.focus();
+        return false;
+    }
+    else{
+        if (v_cont_decimais > 2){
+            alert(p_label + " - Permitidas apenas 2 casas decimais.");
+            p_objeto.focus();
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+}    
+
+function fn_submit_botao_barra (p_action){
+  document.frm_modulo.action = p_action;
+  document.frm_modulo.submit();
+}
+
+// Função que valida campos numéricos (Originada no Site do Banco do Brasil e adapdata para 
+// as nossas nescessidades
+
+function FormataValor(objeto, campo,tammax,teclapres) {
+	var tecla = teclapres.keyCode;
+	vr = objeto.value;
+	vr = vr.replace( "/", "" );
+	vr = vr.replace( "/", "" );
+	vr = vr.replace( ",", "" );
+	vr = vr.replace( ".", "" );
+	vr = vr.replace( ".", "" );
+	vr = vr.replace( ".", "" );
+	vr = vr.replace( ".", "" );
+	tam = vr.length;
+
+	if (tam < tammax && tecla != 8){ tam = vr.length + 1 ; }
+
+	if (tecla == 8 ){	tam = tam - 1 ; }
+		
+	if ( tecla == 8 || tecla >= 48 && tecla <= 57 || tecla >= 96 && tecla <= 105 ){
+		if ( tam <= 2 ){ 
+	 		objeto.value = vr ; }
+	 	if ( (tam > 2) && (tam <= 5) ){
+	 		objeto.value = vr.substr( 0, tam - 2 ) + ',' + vr.substr( tam - 2, tam ) ; }
+	 	if ( (tam >= 6) && (tam <= 8) ){
+	 		objeto.value = vr.substr( 0, tam - 5 ) + '.' + vr.substr( tam - 5, 3 ) + ',' + vr.substr( tam - 2, tam ) ; }
+	 	if ( (tam >= 9) && (tam <= 11) ){
+	 		objeto.value = vr.substr( 0, tam - 8 ) + '.' + vr.substr( tam - 8, 3 ) + '.' + vr.substr( tam - 5, 3 ) + ',' + vr.substr( tam - 2, tam ) ; }
+	 	if ( (tam >= 12) && (tam <= 14) ){
+	 		objeto.value = vr.substr( 0, tam - 11 ) + '.' + vr.substr( tam - 11, 3 ) + '.' + vr.substr( tam - 8, 3 ) + '.' + vr.substr( tam - 5, 3 ) + ',' + vr.substr( tam - 2, tam ) ; }
+	 	if ( (tam >= 15) && (tam <= 17) ){
+	 		objeto.value = vr.substr( 0, tam - 14 ) + '.' + vr.substr( tam - 14, 3 ) + '.' + vr.substr( tam - 11, 3 ) + '.' + vr.substr( tam - 8, 3 ) + '.' + vr.substr( tam - 5, 3 ) + ',' + vr.substr( tam - 2, tam ) ;}
+	}		
+	
+}
+/*
+nova versão abaixo
+// Adail Horst 07/05/2002-*-*-*-*-*-*-*-*--*--*-*-*-*-*-*-*-*--*-*-*
+// Função que valida automaticamente o formulário
+function valida_form_auto(p_msg_base, p_form_alvo){
+    var v_msg = "";
+    var v_resultado = true;
+    if (document.all||document.getElementById){
+      for (i=0;i<p_form_alvo.length;i++){
+        var tempobj=p_form_alvo.elements[i]
+        if (tempobj.obrigatorio=="true" && tempobj.value=="" ) {
+		  if (v_resultado == true) {
+        	var v_obj_foco = p_form_alvo.elements[i];
+		  }
+          v_msg = v_msg + '\n' + tempobj.mensagem;
+          v_resultado = false;
+        }
+      }
+    }
+    if (v_resultado == false) {
+      alert (p_msg_base + v_msg);
+	  v_obj_foco.focus();
+    }
+    return v_resultado; 
+}
+*/
+// Adail Horst 23/05/2002-*-*-*-*-*-*-*-*--*--*-*-*-*-*-*-*-*--*-*-*
+// Função que valida automaticamente o formulário de consulta / inclusão / alteração / exclusão, possibilitando
+// além da validação básica de, no mínimo, 1 campo com preenchimento obrigatório 
+// a adição de outros campos com preenchimento obrigatório
+function valida_form_auto (p_msg_base, p_form_alvo, p_consulta, p_sender){
+    var v_msg = "";
+    var v_resultado = true;
+    var v_preenchido = false;
+    if (document.all||document.getElementById){
+      for (i=0;i<p_form_alvo.length;i++){
+        var tempobj=p_form_alvo.elements[i]
+        if (tempobj.obrigatorio=="true" && tempobj.value=="" && tempobj.type != "hidden") {
+	  if (v_resultado == true) {
+            var v_obj_foco = p_form_alvo.elements[i];
+	  }
+          v_msg = v_msg + '\n' + tempobj.mensagem;
+          v_resultado = false;
+        } else if (tempobj.value !== "" && tempobj.type != "hidden" && tempobj.type != "button")  {
+	  v_preenchido = true;
+	}
+      }
+    }    
+      
+    if (p_consulta == false && v_resultado == false) {      
+      alert (p_msg_base + v_msg);
+      if (!v_obj_foco.disabled) {
+        v_obj_foco.focus();
+      }
+    } else if (p_consulta == true && v_preenchido == false) {
+      alert ("Por favor preencha, no mínimo, 1 (um) argumento para pesquisa!");
+      v_resultado = false;
+    } else {
+       if (p_sender != undefined) {
+         p_sender.disabled = true;
+       }
+       v_resultado = true;
+    }
+    return v_resultado; 
+}
+
+
+// Adail Horst 10/06/2002-*-*-*-*-*-*-*-*--*--*-*-*-*-*-*-*-*--*-*-*
+// Função que limpa todos os campos não hiddens existentes no formulário
+// para limpesa com o objetivo de submit do form de consulta
+// usar o p_desabilitar = true
+function limpa_inputs (p_form_alvo, p_desabilitar) {
+  if (document.all||document.getElementById){
+    for (i=0;i<p_form_alvo.length;i++){
+	  var tempobj=p_form_alvo.elements[i]
+      if (tempobj.type != "hidden" && tempobj.type != "button") {
+            if (p_desabilitar == true) {
+              tempobj.disabled = true;
+            }
+            else {
+  	      tempobj.value = "";
+  	    }
+	  }
+    }
+  }
+}
+
+// *-*-*--*-*-*-*--*-*--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+/*
+Crosshair routine
+Released into the public domain by John Kaster and Jeff Overcash, 2000
+Please submit any enhancements back to the CodeCentral repository
+*/
+
+function getobj( id )
+{
+  /* return document.all( id ); // only works with IE 4 and above */
+  return document.getElementById(id);
+  /* return self.document[ id ]; */
+}
+
+function crosshair(iRow,iCol,sColor)
+{
+  var r, c;
+  var obj;
+
+  if ( iRow && iCol ) // Crosshair
+  {
+    for ( r = 0; r <= iRow; r++ )
+    {
+      id = 'RC' + r + '_' + iCol;
+	  obj = getobj( id );
+      if (obj)
+        obj.bgColor = sColor;
+    }
+
+    for ( c = 0; c <= iCol; c++ )
+    {
+      id = 'RC' + iRow + '_' + c;
+      obj = getobj( id );
+      if (obj)
+        obj.bgColor = sColor;
+    }
+  }
+  else if ( iRow == 0 ) // Doing the whole column
+  {
+    r = 0;
+    id = 'RC' + r + '_' + iCol;
+    obj = getobj( id );
+    while (obj)
+    {
+      obj.bgColor = sColor;
+      r++;
+      id = 'RC' + r + '_' + iCol;
+      obj = getobj( id );
+  }
+  }
+  else if ( iCol == 0 ) // Doing the whole row
+  {
+    c = 0;
+    id = 'RC' + iRow + '_' + c;
+    obj = getobj( id );
+    while (obj)
+    {
+      obj.bgColor = sColor;
+      c++;
+      id = 'RC' + iRow + '_' + c;
+      obj = getobj( id );
+    }
+  }
+}
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo       : Função que valida se a tecla pressionada esta entre os caracteres permitidos
+  Autor          : Adail Horst
+  Data de Criação: 18/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+function valida_key_pess (p_event, p_caracteres_validos) {	  
+  if (p_caracteres_validos.indexOf (String.fromCharCode(p_event.keyCode)) == -1) {
+     p_event.keyCode = 0;
+     alert ('Preenchimento inválido!');
+  }
+}
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo       : Função que remove a máscara de um valor
+  Autor          : Adail Horst
+  Data de Criação: 18/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+function remove_mascara (p_valor, p_caracteres_validos) {	  
+  var v_tmp = '';
+  for (var v_pos=0; v_pos < p_valor.length;v_pos++) {
+    v_posicao = p_caracteres_validos.indexOf (p_valor.substr(v_pos,1)); 
+    if (v_posicao > -1) {
+      v_tmp = v_tmp + p_valor.substr(v_pos,1);
+    }
+  }
+  return v_tmp;
+}
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo       : Função que atribui uma máscara a um valor
+  Autor          : Adail Horst
+  Data de Criação: 18/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+function aplica_mascara (p_mascara, p_valor) {
+  var v_indice = 0;
+  var v_tmp = '';
+  for (var v_pos=0; v_pos < p_mascara.length;v_pos++) {
+    if (v_indice < p_valor.length+1 && p_valor.length > 0) {
+      if (p_mascara.substr(v_pos,1) == '¢') {
+        v_tmp = v_tmp + p_valor.substr(v_indice,1);
+	v_indice ++;
+      } else { 
+  	v_tmp = v_tmp + p_mascara.substr(v_pos,1);
+      }  
+    }
+  }
+  return v_tmp;
+}
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo       : Função que valida se a tecla pressionada é uma tecla de navegação
+  Autor          : Adail Horst
+  Data de Criação: 18/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+function tecla_navegacao (p_tecla) {
+  var v_num_teclas = '[37],[39]';
+  return v_num_teclas.indexOf ('['+p_tecla+']') > -1;
+}
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo       : Função que aplica uma máscara no evento keyUp e no evento onBlur
+  Autor          : Adail Horst
+  Data de Criação: 18/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+function valida_key_up_blur (p_objeto, p_event, p_caracteres_validos, p_mascara) {
+   if (!tecla_navegacao(p_event.keyCode) ) {
+     var v_tmp = remove_mascara (p_objeto.value, p_caracteres_validos);
+     v_tmp = aplica_mascara (p_mascara,v_tmp);
+     p_objeto.value = v_tmp;    
+   } 
+}   
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo       : Transformar uma data no padrão brasileiro para o padrão do 
+                 : JavaScript
+  Autor          : Adail Horst
+  Data de Criação: 31/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+  function FormataDataJS (p_data_brasil) {
+    return p_data_brasil.substr(3,2)+'/'+p_data_brasil.substr(0,2)+'/'+p_data_brasil.substr(6,4);
+  }
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo       : Função que retorna em anos o tempo passado entre duas datas
+  Autor          : Adail Horst
+  Data de Criação: 24/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+  function quantos_anos (p_data_inicio, p_data_fim) {
+    var v_data_inicio = new Date(p_data_inicio.substr(3,2)+'/'+p_data_inicio.substr(0,2)+'/'+p_data_inicio.substr(6,4));
+    var v_data_fim    = new Date(p_data_fim.substr(3,2)+'/'+p_data_fim.substr(0,2)+'/'+p_data_fim.substr(6,4));
+	v_anos = v_data_fim - v_data_inicio + (1000*60*60*24*30);
+	v_anos = parseInt(((((v_anos/1000)/60)/60)/24)/365.25,10); 
+	if (v_data_inicio.getMonth()+1 == v_data_fim.getMonth()+1) {
+	  if (v_data_inicio.getDate() > v_data_fim.getDate()) {
+	    v_anos = v_anos -1;
+	  }
+	}
+	return v_anos;	
+  }
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Função que exibe as janelas "LOV" em um local pré determinado
+  Autor             : Dynamic Drive  (www.dynamicdrive.com)
+  Alterada por      : Leandro Bosi / Adail Horst
+  Data de Adaptação : 30/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+   function CriaJanela (p_url, p_nome_janela, p_width, p_height, p_scroll, p_resizable){
+       var v_win = null;
+	   var v_resizable = '';
+	   var v_scroll = ',scrollbars=yes';
+	   if (p_resizable == true) {
+	     v_resizable = ',resizable';
+	   } 
+	   if (p_scroll == false) {
+	     v_scroll = '';
+	   } 
+       /* Calculando a posição ideal da tela */
+       var v_LeftPosition = (screen.width) ? (screen.width - p_width) / 2: 0;
+       var v_TopPosition  = (screen.height) ? (screen.height - p_height - 45) / 2: 0;
+       /* Montando a lista de propriedades da janela */
+       var v_settings = 'height=' + p_height + ',width=' + p_width + ',top=' + v_TopPosition 
+                  + ',left=' + v_LeftPosition + v_scroll + '' + v_resizable;
+       v_win = window.open ( p_url , p_nome_janela , v_settings);
+  }  
+  
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Evitar que o usuário saia de um campo data sem ter preenchido
+                    : o campo com uma data válida
+  Autor             : Adail Horst
+  Data de Criação   : 31/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+  function ValidaOnBlurData (p_objeto) {
+    p_objeto.value = padronizaData (p_objeto.value);
+    var v_msg_erro = '';
+    if (p_objeto.validar == true) {
+      if (p_objeto.value.length != 10 && p_objeto.value.length != 0) {
+        v_msg_erro = p_objeto.descricao + " - Data Inválida.";
+      }      
+      if (p_objeto.valor_maximo != "" && 
+          p_objeto.value.length != 0 && 
+          v_msg_erro == '') {                 
+		  
+        var v_dt_informada = new Date (FormataDataJS(p_objeto.value));
+        var v_dt_minima    = new Date (FormataDataJS(p_objeto.valor_minimo));
+        var v_dt_maxima    = new Date (FormataDataJS(p_objeto.valor_maximo));
+        if (v_dt_minima > v_dt_informada) {
+          v_msg_erro = p_objeto.descricao + " - O valor informado é menor do que o limite para o campo!";
+        } else
+        if (v_dt_maxima < v_dt_informada) {
+          v_msg_erro = p_objeto.descricao + " - O valor informado é maior do que o limite para o campo!";
+        }  
+      }       
+      if (v_msg_erro != '') {
+        p_objeto.validar=false; 
+        alert(v_msg_erro);
+        p_objeto.focus();
+        p_objeto.validar=true; 
+      }
+    }
+  }
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Validar se a data do campo p_dt_inicio é menor do que a data
+                    : informada no campo p_dt_fim
+  Autor             : Adail Horst
+  Data de Criação   : 31/07/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+  function ComparaDataPeriodo (p_objeto_atual, p_objeto_inicio, p_objeto_fim) {
+    var v_retorno = true;
+    if (p_objeto_inicio.value.length > 0 && p_objeto_fim.value.length > 0) {
+      var v_dt_inicio    = new Date (FormataDataJS(p_objeto_inicio.value));
+      var v_dt_fim       = new Date (FormataDataJS(p_objeto_fim.value));
+      if (v_dt_inicio > v_dt_fim && p_objeto_atual.validar == true) {
+        alert ("O valor informado em " + p_objeto_inicio.descricao + 
+               " deverá ser inferior ao valor informado em " + p_objeto_fim.descricao + "! ");
+        p_objeto_inicio.validar = false;
+        p_objeto_fim.validar = false;
+        p_objeto_atual.focus();
+        v_retorno = false;
+      } 
+    }
+    return v_retorno;
+  }  
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Validar o preenchimento de um campo com formatação para mês / ano
+  Autor             : Adail Horst
+  Data de Criação   : 08/08/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+  
+  function ValidaMesAno (p_objeto) {
+    var v_errado = false;
+    var v_conteudo = p_objeto.value;
+    var v_tamanho_texto = v_conteudo.length;
+    var v_msg = '';
+    if (p_objeto.validar == true) {
+      if (v_tamanho_texto == 7) { 
+        var v_mes = v_conteudo.substr(0,2); 
+        var v_ano = v_conteudo.substr(3,4);
+        v_errado = (v_mes < '01' || v_mes > '12');
+        if (v_errado) {
+          v_msg = 'Mês inválido!';
+        }
+        /* validando o range */
+        if (p_objeto.valor_minimo.length > 0 && p_objeto.valor_maximo.length > 0) {
+          var v_valor = v_ano + '' + v_mes;
+          var v_minimo = p_objeto.valor_minimo.substr(3,4) + '' + p_objeto.valor_minimo.substr(0,2);
+          var v_maximo = p_objeto.valor_maximo.substr(3,4) + '' + p_objeto.valor_maximo.substr(0,2);
+          if (v_valor < v_minimo && v_msg == '') {
+            v_msg = 'O valor informado para o campo: [' + p_objeto.descricao + '] é menor do que o permitido!';
+          } else if (v_valor > v_maximo && v_msg == '') {
+            v_msg = 'O valor informado para o campo: [' + p_objeto.descricao + '] é maior do que o permitido!';
+          }
+        }
+      } else if (v_tamanho_texto > 0) {
+        v_msg = 'Preenchimento inválido!';
+      }
+      if ( v_msg != '' ) {
+        alert (v_msg);
+        p_objeto.validar = false;
+        p_objeto.focus ();
+        return false;
+      }
+      return true;  
+    }
+    p_objeto.value = aplica_mascara ('¢¢/¢¢¢¢', remove_mascara (p_objeto.value, '0123456789'));  
+  }  
+
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Alterar o innerHTML de um objeto simples ou de um objeto
+                      que faz parte de um array de objetos com o mesmo nome
+  Autor             : Adail Horst
+  Data de Criação   : 22/08/2002
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+
+  function AlterainnerHTML 
+  (
+    // Ponteiro para o Documento owner do objeto 
+    p_documento,                                
+    // Nome (string) do objeto a ser alterado
+    p_nome_objeto, 
+    // Indice do objeto a ser alterado (caso o objeto seja um array de objetos)
+    p_indice, 
+    // Novo HTML do Objeto
+    p_innerHTML
+  ) {
+    // Crio um ponteiro para o Objeto
+    var v_obj = p_documento.getElementsByName(p_nome_objeto);
+    if (v_obj.length == undefined) {
+      v_obj.innerHTML = p_innerHTML;
+    } else {
+      v_obj[p_indice].innerHTML = p_innerHTML;
+    }
+  }
+
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Recuperar o valor da propriedade infoAdicional do option selecionado no select
+  Autor             : Adail Horst
+  Data de Criação   : 14/02/2003
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+   function infoSelectedOption (p_select) {
+     for (i=0; i< p_select.options.length; i++) {
+       if (p_select.options(i).selected) {
+        return p_select.options(i).infoAdicional;
+       }
+	 }
+   }
+
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Compara duas datas
+  Autor             : Adail Horst
+  Data de Criação   : 05/03/2003
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+  function comparaDatas (p_data_inicio, p_operador, p_data_fim) {
+    var v_dt_inicio    = new Date (FormataDataJS(p_data_inicio));
+    var v_dt_fim       = new Date (FormataDataJS(p_data_fim));
+    if (p_operador == '=') {
+	  return v_dt_inicio = v_dt_fim;
+	} else if (p_operador == '>') {
+	  return v_dt_inicio > v_dt_fim;
+	} else if (p_operador == '<') {
+	  return v_dt_inicio < v_dt_fim;
+	} else if (p_operador == "<>") {
+	  return v_dt_inicio != v_dt_fim;
+	} else if (p_operador == ">=") {
+	  return v_dt_inicio >= v_dt_fim;
+	} else if (p_operador == "<=") {
+	  return v_dt_inicio <= v_dt_fim;
+	}
+  }
+
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Transforma uma com ano no padrão de 2 digitos para o padrão de 4 digitos
+  Autor             : Adail Horst
+  Data de Criação   : 05/03/2003
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+
+  function padronizaData (p_data) {
+    if (p_data.length == 8) {
+	  var v_ano = new String (p_data.substr (6,2),10);
+	  if (v_ano > 50) {
+	    v_ano = "19" + v_ano;
+	  } else {
+	    v_ano = "20" + v_ano;
+	  }
+	  return p_data.substr(0,6) + v_ano;
+	} else {
+	  return p_data;
+	}
+  }
+  
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Setar o valor de um elemento qualquer no documento
+  					  idependente do mesmo ser um input, select, td, tr,
+					  ou ser um elemento simples ou array
+  Autor             : Adail Horst
+  Data de Criação   : 07/03/2003
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+  function setaValorElemento (p_objeto, p_indice, p_valor, p_oldValue) {
+    var v_objeto = null;
+    if (p_objeto.length == null) {
+      v_objeto = p_objeto;
+    } else {
+      v_objeto = p_objeto[p_indice];
+    }
+
+    if (v_objeto.type == undefined) {
+      v_objeto.innerHTML = p_valor;
+    }
+    if (p_objeto.length == null) {
+      p_objeto.value = p_valor;
+    } else {
+      p_objeto[p_indice].value = p_valor;
+    }
+//    v_objeto.value = p_valor;
+    if (p_oldValue != undefined) {
+      v_objeto.oldValue = p_oldValue;
+    }
+  }
+
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Adicionar uma célula dinamicamente a uma linha
+  Autor             : Adail Horst
+  Data de Criação   : 07/03/2003
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+
+	function adicionaCelula (p_linha, p_HTML, p_id, p_class, p_halign, p_bgColor, p_width, p_colSpan) {
+      p_linha.insertCell();
+	  var v_indice = p_linha.cells.length;
+      var v_celula_nova       = p_linha.cells[v_indice-1];
+      v_celula_nova.id        = v_celula_nova.uniqueID;
+      if (p_id != undefined && p_id != "") {
+        v_celula_nova.id        = p_id;
+      } else {
+        v_celula_nova.id        = v_celula_nova.uniqueID;
+	  }
+      if (p_class != undefined) {
+        v_celula_nova.className = p_class;
+      }
+      if (p_halign != undefined) {
+        v_celula_nova.align     = p_halign;
+      }
+	  if (p_halign != undefined) {
+        v_celula_nova.align     = p_halign;
+	  }
+	  if (p_bgColor != undefined) {
+        v_celula_nova.bgColor   = p_bgColor;
+	  }
+	  if (p_width != undefined) {
+        v_celula_nova.width   = p_width;
+	  }
+	  if (p_colSpan != undefined) {
+        v_celula_nova.colspan   = p_colSpan;
+	  }
+	  setaValorElemento (v_celula_nova, v_indice, p_HTML, p_HTML);
+	}
+	
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Excluir todas as linhas de um grid
+  Autor             : Adail Horst
+  Data de Criação   : 10/03/2003
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+  function excluirLinhasGrid(p_tabela,p_linha_inicio) {
+    if (p_linha_inicio == undefined) {
+      p_linha_inicio = 0;
+    }
+    for (i=p_tabela.rows.length-1;i>=p_linha_inicio;i--) {
+     p_tabela.deleteRow(i);
+    }
+  }
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Converter um string para float já efetuando as limpezas nescessárias
+  Autor             : Adail Horst
+  Data de Criação   : 10/03/2003
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+  function stringParaFloat (p_valor) {
+  	p_valor = p_valor.replace(/\./g,'').replace(/,/g,'.');
+    p_valor = parseFloat (p_valor);
+    return p_valor;
+  }
+
+/* 
+  COMPONENTE INTELI COMBO  By Adail Horst =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
+*/
+  function onKeyUpInteliCombo (p_object) {
+    if (event.keyCode == 13) { p_object.fireEvent('onchange'); return true;	}
+    if (p_object.tmpFind == "" ) { return true;	}
+    var v_texto_option    = "";
+	var v_texto_procurado = p_object.tmpFind.toUpperCase();
+	var v_indice_inicio = 0;
+    if (p_object.options[0].text == 'Selecione') {
+	  v_indice_inicio = 1;
+	}
+    for(i=v_indice_inicio;i<p_object.length;i++) {
+	  v_texto_option = p_object.options[i].text.substring(0, p_object.tmpFind.length).toUpperCase();
+      if ( v_texto_option == v_texto_procurado) {
+        p_object.selectedIndex=i;
+		return true;
+        break;
+      }
+    }
+  }
+  function onKeyDownInteliCombo (p_object) {
+    if (/\w/.test(String.fromCharCode(event.keyCode)) || event.keyCode == 32) {
+      p_object.tmpFind = p_object.tmpFind+String.fromCharCode(event.keyCode);
+    } else if(event.keyCode == 8) {
+      p_object.tmpFind = p_object.tmpFind.substring(0,p_object.tmpFind.length-1);
+      if (p_object.tmpFind == '') {
+	    p_object.selectedIndex = 0;
+	  }
+    } else if(event.keyCode > 35 || event.keyCode < 41) { 
+      p_object.fireEvent('onchange'); 
+	  return true;
+    } else { 
+	  return true;
+	}
+    return false;
+  }
+  function onChangeInteliCombo (p_object) {
+    this.lastValue = this.value;
+    if (p_object.value=='') {
+      p_object.tmpFind = '';
+    }
+  }
+  function onBlurInteliCombo (p_object) {
+    p_object.fireEvent('onchange'); 
+    return true;
+  }
+/* 
+  FIM COMPONENTE INTELI COMBO =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*==
+*/
+  
+/*
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+  Objetivo          : Validação de Datas passando os formatos
+  Autor             : Juliana Camboim
+  Data de Criação   : 03/03/2004
+  *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*/
+ // Valida o Mês
+function ValidaMes(p_mes)
+{
+	if(p_mes >= '01' && p_mes <= '12')
+		return true;
+	return false;
+}
+
+// Valida o dia do mês, ano
+function ValidaDia(p_dia, p_mes, p_ano)
+{
+	var vOk = false;
+	var vAnoBissexto;
+	
+	if(p_dia >= '01' && p_dia <= '31')
+		vOk = true;
+		
+   //Valida Ano Bissexto
+   if(p_ano%4 == 0)
+       vAnoBissexto = 1;
+   else
+       vAnoBissexto = 0;
+       
+   if( ( p_mes == 2 && p_dia > (28 + parseInt(vAnoBissexto,10)) ) ||
+       ( p_mes == 4 || p_mes == 6 || p_mes == 9 || p_mes == 11 ) && (p_dia > 30))
+       vOk =  false;	
+
+	return vOk;
+}
+
+// Valida as datas nos seguintes formatos: 
+// DD, DD/MM, MM, MM/YYYY, YYYY
+function ValidaDataFormat(p_objeto, p_formatacao) 
+{
+   var vOk = true;
+   var v_conteudo = p_objeto.value;
+   var v_tamanho_texto = v_conteudo.length;
+   var v_mascara = '';
+   var dia = "";
+   var v_mes = "";
+   var v_ano = "";
+   
+   if (p_objeto.validar == true) 
+   {
+		if(p_formatacao == "DD/MM/YYYY" && v_tamanho_texto == 10)
+		{
+			v_dia = v_conteudo.substr(0,2); 
+			v_mes = v_conteudo.substr(3,2);	
+			v_ano = v_conteudo.substr(6,4);	
+			
+			if(!ValidaMes(v_mes))
+			{
+				alert ('Mês inválido!');
+				vOk = false;
+			}
+
+			if(!ValidaDia(v_dia,v_mes,v_ano))
+			{
+				alert ('Dia inválido!');
+				vOk = false;
+			}
+			
+			v_mascara = '¢¢/¢¢/¢¢¢¢';
+		}	
+
+		else if(p_formatacao == "DD/MM" && v_tamanho_texto == 5)
+		{
+			v_dia = v_conteudo.substr(0,2); 
+			v_mes = v_conteudo.substr(3,2);		
+			
+			if(!ValidaMes(v_mes))
+			{
+				alert ('Mês inválido!');
+				vOk = false;
+			}
+
+			if(!ValidaDia(v_dia,v_mes,v_ano))
+			{
+				alert ('Dia inválido!');
+				vOk = false;
+			}
+			
+			v_mascara = '¢¢/¢¢';
+		}	
+
+
+		else if(p_formatacao == "DD" && v_tamanho_texto == 2)
+		{
+			v_dia = v_conteudo.substr(0,2); 
+
+			if(!ValidaDia(v_dia,v_mes,v_ano))
+			{
+				alert ('Dia inválido!');
+				vOk = false;
+			}
+
+			v_mascara = '¢¢';  
+		}	
+
+		else if( (p_formatacao == "MM/YYYY" && v_tamanho_texto == 7) ||
+		    (p_formatacao == "MM" && v_tamanho_texto == 2))
+		{
+			v_mes = v_conteudo.substr(0,2); 
+			v_ano = v_conteudo.substr(3,4);		
+			
+			if(!ValidaMes(v_mes))
+			{
+				alert ('Mês inválido!');
+				vOk = false;
+			}
+			
+			if(p_formatacao == "MM/YYYY")
+				v_mascara = '¢¢/¢¢¢¢'; 
+				
+			if(p_formatacao == "MM")	
+				v_mascara = '¢¢';
+		}	
+		
+		else if(v_tamanho_texto > 0)
+		{
+			alert ('Preenchimento inválido!');
+			vOk = false;
+		}
+		
+		if(!vOk)
+		{
+			p_objeto.validar = false;
+			p_objeto.value = "";
+			p_objeto.focus ();
+			return false;
+		}
+	}
+	else
+	{
+		if(p_formatacao == "DD/MM")
+			v_mascara = '¢¢/¢¢';
+		if(p_formatacao == "DD" || p_formatacao == "MM")
+			v_mascara = '¢¢';
+		if(p_formatacao == "MM/YYYY")
+			v_mascara = '¢¢/¢¢¢¢'; 
+		if(p_formatacao == "DD/MM/YYYY")
+			v_mascara = '¢¢/¢¢/¢¢¢¢'; 
+		
+	}
+	
+	p_objeto.value = aplica_mascara (v_mascara, remove_mascara (p_objeto.value, '0123456789'));  
+}
+
+-->

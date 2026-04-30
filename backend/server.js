@@ -247,10 +247,12 @@ function validatePesquisaStructure($, rows) {
 // GET /api/listar?Cod=2968  → devolve todas as linhas parseadas
 app.get('/api/listar', async (req, res) => {
   try {
-    const url  = buildUrl(req.query);
-    const html = await fetchPage(url);
-    const rows = parseRows(html);
-    res.json({ ok: true, total: rows.length, url, rows });
+    const url      = buildUrl(req.query);
+    const html     = await fetchPage(url);
+    const rows     = parseRows(html);
+    const warnings = validateListarStructure(cheerio.load(html), rows);
+    if (warnings.length) console.warn('[estrutura]', warnings);
+    res.json({ ok: true, total: rows.length, url, rows, warnings });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -262,8 +264,10 @@ app.post('/api/buscar-siagro', async (req, res) => {
     const { siagro, params = {} } = req.body;
     if (!siagro) return res.status(400).json({ ok: false, error: 'siagro é obrigatório' });
 
-    const html = await fetchPage(buildUrl(params));
-    const rows = parseRows(html);
+    const html     = await fetchPage(buildUrl(params));
+    const rows     = parseRows(html);
+    const warnings = validateListarStructure(cheerio.load(html), rows);
+    if (warnings.length) console.warn('[estrutura]', warnings);
 
     const alvo = String(siagro).trim();
     const filtrados = rows.filter(r => r.siagro === alvo);
@@ -271,7 +275,7 @@ app.post('/api/buscar-siagro', async (req, res) => {
     // Único por cultura
     const unicas = [...new Map(filtrados.map(r => [r.cultura, r])).values()];
 
-    res.json({ ok: true, siagro: alvo, total: unicas.length, rows: unicas });
+    res.json({ ok: true, siagro: alvo, total: unicas.length, rows: unicas, warnings });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -282,13 +286,15 @@ app.post('/api/extrair-cultura', async (req, res) => {
   try {
     const { cultura, params = {} } = req.body;
 
-    const html = await fetchPage(buildUrl(params));
-    const rows = parseRows(html);
+    const html     = await fetchPage(buildUrl(params));
+    const rows     = parseRows(html);
+    const warnings = validateListarStructure(cheerio.load(html), rows);
+    if (warnings.length) console.warn('[estrutura]', warnings);
 
     const alvo = norm(cultura);
     const filtrados = alvo ? rows.filter(r => norm(r.cultura) === alvo) : rows;
 
-    res.json({ ok: true, cultura, total: filtrados.length, rows: filtrados });
+    res.json({ ok: true, cultura, total: filtrados.length, rows: filtrados, warnings });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -302,8 +308,10 @@ app.post('/api/comparar', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'cultura1 e cultura2 são obrigatórias' });
     }
 
-    const html = await fetchPage(buildUrl(params));
-    const rows = parseRows(html);
+    const html     = await fetchPage(buildUrl(params));
+    const rows     = parseRows(html);
+    const warnings = validateListarStructure(cheerio.load(html), rows);
+    if (warnings.length) console.warn('[estrutura]', warnings);
 
     const a1 = norm(cultura1);
     const a2 = norm(cultura2);
@@ -335,7 +343,8 @@ app.post('/api/comparar', async (req, res) => {
       ok: true,
       cultura1, cultura2,
       total1: m1.size, total2: m2.size,
-      exclusivos1, exclusivos2, comuns
+      exclusivos1, exclusivos2, comuns,
+      warnings
     });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
@@ -348,13 +357,15 @@ app.post('/api/verificar', async (req, res) => {
     const { termo } = req.body;
     if (!termo) return res.status(400).json({ ok: false, error: 'termo é obrigatório' });
 
-    const html = await fetchPesquisa();
-    const rows = parsePesquisaRows(html);
+    const html     = await fetchPesquisa();
+    const rows     = parsePesquisaRows(html);
+    const warnings = validatePesquisaStructure(cheerio.load(html), rows);
+    if (warnings.length) console.warn('[estrutura]', warnings);
 
     const t = norm(termo);
     const filtered = rows.filter(r => norm(r.nome).includes(t));
 
-    res.json({ ok: true, termo, total: filtered.length, rows: filtered });
+    res.json({ ok: true, termo, total: filtered.length, rows: filtered, warnings });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
