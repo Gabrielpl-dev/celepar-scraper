@@ -64,7 +64,7 @@ export function ListagemView({ params }) {
   return (
     <section className={s.section}>
       <div className={s.opHeader}>
-        <h3>Listagem bruta</h3>
+        <h3>Culturas</h3>
       </div>
       <p className={s.desc}>
         Todas as culturas registradas para o produto selecionado.
@@ -77,6 +77,7 @@ export function ListagemView({ params }) {
           headers={['Cultura', 'SIAGRO', 'Alvo', 'Produtos (cor)']}
           rows={tableRows}
           toolbar={toolbar}
+          noScroll
           emptyNode={<div className={tableStyles.emptyState}>Nada retornado.</div>}
         />
       )}

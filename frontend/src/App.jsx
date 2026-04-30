@@ -10,17 +10,17 @@ import { ListagemView } from './views/ListagemView'
 import s from './App.module.css'
 
 const VIEWS = {
-  extrair:  ExtrairView,
-  siagro:   SiagroView,
-  comparar: CompararView,
+  culturas:  ListagemView,
+  extrair:   ExtrairView,
+  siagro:    SiagroView,
+  comparar:  CompararView,
   verificar: VerificarView,
-  raw:      ListagemView,
 }
 
 export default function App() {
-  const [activeView, setActiveView] = useState('raw')
+  const [activeView, setActiveView] = useState('culturas')
   const [params, setParams] = useState({ Cod: '' })
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   const View = VIEWS[activeView]
 
@@ -34,22 +34,12 @@ export default function App() {
           params={params}
           setParams={setParams}
           open={sidebarOpen}
-          onHoverStart={() => setSidebarOpen(true)}
-          onHoverEnd={() => setSidebarOpen(false)}
+          onToggle={() => setSidebarOpen(v => !v)}
         />
         <main className={s.main}>
           <View params={params} />
         </main>
       </div>
-      <footer className={s.footer}>
-        <span>backend node + cheerio · sem browser, sem CORS</span>
-        <span>
-          fonte:{' '}
-          <a href="https://celepar07web.pr.gov.br/agrotoxicos/" target="_blank" rel="noreferrer">
-            celepar07web.pr.gov.br
-          </a>
-        </span>
-      </footer>
     </div>
   )
 }

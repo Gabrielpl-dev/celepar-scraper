@@ -21,7 +21,16 @@
       "PowerShell(pm2 save 2>&1)",
       "PowerShell(pm2 restart all 2>&1)",
       "Bash(npx pm2 *)",
-      "PowerShell(New-NetFirewallRule -DisplayName \"Celepar Scraper :3000\" -Direction Inbound -Protocol TCP -LocalPort 3000 -Action Allow -Profile Any 2>&1)"
+      "PowerShell(New-NetFirewallRule -DisplayName \"Celepar Scraper :3000\" -Direction Inbound -Protocol TCP -LocalPort 3000 -Action Allow -Profile Any 2>&1)",
+      "WebFetch(domain:floating-ui.com)",
+      "WebFetch(domain:web.dev)",
+      "Bash(curl -s \"https://celepar07web.pr.gov.br/agrotoxicos/pesquisar.asp\")",
+      "Bash(python3 -c \"import sys; content=sys.stdin.read\\(\\); start=content.find\\('<form'\\); end=content.find\\('</form>'\\)+7; print\\(content[start:end]\\)\")",
+      "Bash(curl -s --compressed -A \"Mozilla/5.0\" \"https://celepar07web.pr.gov.br/agrotoxicos/pesquisar.asp\" -o /tmp/pesquisar.html)",
+      "Read(//tmp/**)",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://celepar07web.pr.gov.br/agrotoxicos/pesquisar.asp\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; [System.Text.Encoding]::GetEncoding\\(\"windows-1252\"\\).GetString\\($r.RawContentStream.ToArray\\(\\)\\) | Select-String -Pattern '<\\(input|select|form\\)[^>]+>' -AllMatches | ForEach-Object { $_.Matches } | ForEach-Object { $_.Value })",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://celepar07web.pr.gov.br/agrotoxicos/pesquisar.asp\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; Write-Host \"Status: $\\($r.StatusCode\\)\"; Write-Host \"Length: $\\($r.RawContent.Length\\)\"; $r.RawContent | Select-String \"action|input|name=\" | Select-Object -First 40)",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://celepar07web.pr.gov.br/agrotoxicos/facapesquisa.asp\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; $enc = [System.Text.Encoding]::GetEncoding\\(\"windows-1252\"\\); $html = $enc.GetString\\($r.RawContentStream.ToArray\\(\\)\\); Write-Host $html)"
     ]
   }
 }

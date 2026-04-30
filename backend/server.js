@@ -28,7 +28,7 @@ const PESQUISA_BODY = new URLSearchParams({
   criterioAplicacaoAerea: '', criterioTratamentoSementes: '',
   select11: 'null', select1: '', select5: 'null', select4: 'null',
   select9: 'null', select6: 'null', select3: 'null', select7: 'null',
-  descIngrediente: '', numeroRegistro: '', ClassificacaoQuiBio: 'QUI',
+  descIngrediente: '', numeroRegistro: '', ClassificacaoQuiBio: '',
   submit1: 'Pesquisar'
 }).toString();
 
@@ -216,6 +216,30 @@ function parseRows(html) {
   });
 
   return linhas;
+}
+
+// ---------- validação estrutural ----------
+
+function validateListarStructure($, rows) {
+  const warnings = []
+  const hasTrs = $('tr').filter((_, tr) => $(tr).children('td').length >= 4).length > 0
+  if (hasTrs && rows.length === 0) {
+    warnings.push('parseRows: encontrou <tr> com 4+ tds mas nenhum Cod2 extraído — padrão onclick pode ter mudado')
+  }
+  if (rows.length > 0 && rows.every(r => r.produtos.length === 0)) {
+    warnings.push('parseRows: nenhuma tag <font> encontrada — status dos produtos pode estar ausente')
+  }
+  return warnings
+}
+
+function validatePesquisaStructure($, rows) {
+  const warnings = []
+  if ($('table#tb1').length === 0) {
+    warnings.push('parsePesquisa: table#tb1 não encontrada — ID da tabela pode ter mudado')
+  } else if ($('table#tb1 tr').length > 1 && rows.length === 0) {
+    warnings.push('parsePesquisa: tabela encontrada mas nenhuma linha extraída — estrutura interna pode ter mudado')
+  }
+  return warnings
 }
 
 // ---------- API ----------

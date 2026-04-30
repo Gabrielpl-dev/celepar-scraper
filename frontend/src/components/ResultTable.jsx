@@ -1,6 +1,6 @@
 import s from './ResultTable.module.css'
 
-export function ResultTable({ headers, rows, toolbar, emptyNode }) {
+export function ResultTable({ headers, rows, toolbar, emptyNode, noScroll }) {
   if (!rows || rows.length === 0) {
     return (
       <div className={s.results}>
@@ -12,7 +12,7 @@ export function ResultTable({ headers, rows, toolbar, emptyNode }) {
   return (
     <div className={s.results}>
       {toolbar && <div className={s.toolbar}>{toolbar}</div>}
-      <div className={s.tableWrap}>
+      <div className={s.tableWrap} style={noScroll ? { maxHeight: 'none', overflowY: 'visible' } : {}}>
         <table>
           <thead>
             <tr>{headers.map(h => <th key={h}>{h}</th>)}</tr>
