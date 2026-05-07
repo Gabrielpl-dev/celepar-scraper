@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste Agrofit</title>
+  <style>
+    body { font-family: monospace; max-width: 700px; margin: 40px auto; padding: 0 20px; background: #111; color: #ccc; }
+    h1 { color: #fff; font-size: 18px; margin-bottom: 4px; }
+    .sub { font-size: 12px; color: #555; margin-bottom: 28px; }
+    label { display: block; margin-top: 14px; font-size: 12px; color: #888; }
+    input { width: 100%; box-sizing: border-box; background: #1e1e1e; border: 1px solid #333; color: #eee; padding: 8px 10px; font-family: monospace; font-size: 14px; border-radius: 4px; margin-top: 4px; }
+    input:focus { outline: none; border-color: #2a6; }
+    .row { display: flex; gap: 8px; margin-top: 16px; align-items: center; flex-wrap: wrap; }
+    button { padding: 9px 18px; border: none; color: #fff; font-family: monospace; font-size: 13px; border-radius: 4px; cursor: pointer; flex-shrink: 0; }
+    #btn-abrir  { background: #2a6; }
+    #btn-abrir:hover  { background: #3b7; }
+    #btn-buscar { background: #26a; }
+    #btn-buscar:hover { background: #37b; }
+    #btn-direto { background: #2a6; display: none; }
+    #btn-direto:hover { background: #3b7; }
+    button:disabled { background: #444 !important; cursor: default; }
+    .step { background: #161616; border: 1px solid #2a2a2a; border-radius: 6px; padding: 16px 18px; margin-top: 20px; }
+    .step-num { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; }
+    .step.oculto { display: none; }
+    .copiado { font-size: 11px; color: #2a6; display: none; }
+    .hint-id { font-size: 11px; margin-top: 8px; display: none; }
+    .hint-id.encontrado { color: #2a6; display: block; }
+    .hint-id.novo      { color: #888; display: block; }
+    #saida { margin-top: 20px; }
+    .status { font-size: 12px; color: #888; margin-bottom: 16px; }
+    .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 14px 18px; margin-bottom: 10px; }
+    .card-tipo { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+    .card-nome { font-size: 14px; color: #eee; margin-bottom: 4px; }
+    .card-data { font-size: 11px; color: #555; margin-bottom: 10px; }
+    .card a { display: inline-block; padding: 6px 14px; background: #1a3a2a; border: 1px solid #2a6; color: #4d9; text-decoration: none; font-size: 12px; border-radius: 3px; margin-right: 6px; }
+    .card a:hover { background: #2a6; color: #fff; }
+    .card-viewer { margin-top: 12px; display: none; }
+    .card-viewer iframe { width: 100%; height: 600px; border: 1px solid #333; border-radius: 4px; background: #fff; }
+    .prod-nome { font-size: 16px; color: #fff; font-weight: bold; margin-bottom: 4px; }
+    .salvo-badge { font-size: 11px; color: #2a6; margin-left: 8px; }
+    .erro { color: #f66; font-size: 13px; }
+    hr { border: none; border-top: 1px solid #222; margin: 16px 0; }
+
+    /* IDs Salvos */
+    #ids-salvos { margin-top: 32px; }
+    .ids-header { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+    .ids-header span { font-size: 12px; color: #555; }
+    .ids-header:hover span { color: #888; }
+    #ids-lista { margin-top: 12px; display: none; }
+    .ids-vazio { font-size: 12px; color: #444; }
+    table.ids-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    table.ids-table th { color: #555; text-align: left; padding: 4px 8px; border-bottom: 1px solid #222; }
+    table.ids-table td { padding: 6px 8px; border-bottom: 1px solid #1a1a1a; color: #ccc; }
+    table.ids-table tr:hover td { background: #161616; }
+    .btn-del { background: none; border: none; color: #555; cursor: pointer; font-size: 12px; padding: 0; }
+    .btn-del:hover { color: #f66; }
+    .btn-usar { background: none; border: 1px solid #2a6; color: #4d9; cursor: pointer; font-size: 11px; padding: 2px 8px; border-radius: 3px; font-family: monospace; }
+    .btn-usar:hover { background: #2a6; color: #fff; }
+  </style>
+</head>
+<body>
+
+<h1>Agrofit — Bulas</h1>
+<div class="sub">Busca e cache de IDs por produto</div>
+
+<!-- PASSO 1 -->
+<div class="step">
+  <div class="step-num">Produto</div>
+  <label>Nome do produto (marca comercial)</label>
+  <input id="nome" type="text" placeholder="ex: Invencis" oninput="checarIdSalvo()" />
+  <div class="hint-id" id="hint-id"></div>
+  <div class="row">
+    <button id="btn-direto" onclick="buscarDireto()">Buscar bula ↵</button>
+    <button id="btn-abrir"  onclick="abrirAgrofit()">Copiar e abrir Agrofit ↗</button>
+    <span class="copiado" id="copiado">✓ copiado</span>
+  </div>
+</div>
+
+<!-- PASSO 2 — oculto quando tem ID salvo -->
+<div class="step" id="passo2">
+  <div class="step-num">Passo 2 — Cole a URL do produto encontrado no Agrofit</div>
+  <label>URL do produto</label>
+  <input id="url" type="text" placeholder="ex: https://agrofit.agricultura.gov.br/agrofit_cons/!ap_produto_form_detalhe_cons?...&p_id_produto_formulado_tecnico=23827" />
+  <div class="row">
+    <button id="btn-buscar" onclick="buscarPorUrl()">Buscar bula</button>
+  </div>
+</div>
+
+<div id="saida"></div>
+
+<!-- IDs Salvos -->
+<div id="ids-salvos">
+  <div class="ids-header" onclick="toggleIdsSalvos()">
+    <span id="ids-titulo">▶ IDs salvos (0)</span>
+  </div>
+  <div id="ids-lista"></div>
+</div>
+
+<script>
+// ── cache de IDs (servidor) ────────────────────────────────────
+let _idsCache = null; // { [nome_normalizado]: { nome, id, atualizado } }
+
+function normKey(s) {
+  return String(s).trim().toLowerCase();
+}
+
+async function loadIds() {
+  try {
+    const res  = await fetch('http://localhost:3000/api/agrofit-ids');
+    const data = await res.json();
+    _idsCache = {};
+    for (const row of (data.ids || [])) _idsCache[row.nome] = row;
+  } catch {
+    _idsCache = {};
+  }
+  renderIdsSalvos();
+}
+
+async function removeId(nome) {
+  const chave = normKey(nome);
+  try {
+    await fetch(`http://localhost:3000/api/agrofit-ids/${encodeURIComponent(chave)}`, { method: 'DELETE' });
+    if (_idsCache) delete _idsCache[chave];
+    renderIdsSalvos();
+    checarIdSalvo();
+  } catch { /* silencioso */ }
+}
+
+function findId(nome) {
+  if (!_idsCache) return null;
+  return _idsCache[normKey(nome)]?.id || null;
+}
+
+// ── Hint + Passo 2 visibilidade ───────────────────────────────
+function checarIdSalvo() {
+  const nome  = document.getElementById('nome').value.trim();
+  const hint  = document.getElementById('hint-id');
+  const btn   = document.getElementById('btn-direto');
+  const p2    = document.getElementById('passo2');
+
+  const id = nome ? findId(nome) : null;
+  if (id) {
+    hint.textContent = `✓ ID salvo: ${id} — vai buscar direto`;
+    hint.className   = 'hint-id encontrado';
+    btn.style.display = 'inline-block';
+    p2.classList.add('oculto');
+  } else {
+    hint.textContent = nome ? 'Novo produto — cole a URL do Agrofit no passo 2' : '';
+    hint.className   = nome ? 'hint-id novo' : 'hint-id';
+    btn.style.display = 'none';
+    p2.classList.remove('oculto');
+  }
+}
+
+// ── Busca direta (ID já salvo) ────────────────────────────────
+function buscarDireto() {
+  const nome = document.getElementById('nome').value.trim();
+  const id   = findId(nome);
+  if (!id) return;
+  buscarPorId(nome, id);
+}
+
+// ── Busca via URL colada ──────────────────────────────────────
+function buscarPorUrl() {
+  const urlInput = document.getElementById('url').value.trim();
+  const saida    = document.getElementById('saida');
+
+  if (!urlInput) { saida.innerHTML = '<p class="erro">Cole a URL do produto.</p>'; return; }
+
+  let id, nome;
+  try {
+    const u = new URL(urlInput);
+    id   = u.searchParams.get('p_id_produto_formulado_tecnico');
+    nome = u.searchParams.get('p_nm_marca_comercial') || document.getElementById('nome').value.trim();
+  } catch {
+    saida.innerHTML = '<p class="erro">URL inválida.</p>';
+    return;
+  }
+
+  if (!id) {
+    saida.innerHTML = '<p class="erro">Não encontrei <code>p_id_produto_formulado_tecnico</code> na URL.</p>';
+    return;
+  }
+
+  buscarPorId(nome, id);
+}
+
+// ── Busca central ─────────────────────────────────────────────
+async function buscarPorId(nome, id) {
+  const saida   = document.getElementById('saida');
+  const btnDir  = document.getElementById('btn-direto');
+  const btnBusc = document.getElementById('btn-buscar');
+
+  btnDir.disabled  = true;
+  btnBusc.disabled = true;
+  saida.innerHTML  = '<p class="status">consultando agrofit...</p>';
+
+  try {
+    const res  = await fetch('http://localhost:3000/api/agrofit?' + new URLSearchParams({ nome, id }));
+    const data = await res.json();
+
+    if (!data.ok) {
+      saida.innerHTML = `<p class="erro">Erro: ${data.error}</p>`;
+      return;
+    }
+
+    // Atualiza cache local com o ID retornado (já foi auto-salvo no backend)
+    if (data.id && _idsCache !== null) {
+      const chave = normKey(nome || data.nome);
+      _idsCache[chave] = { nome: chave, id: data.id };
+    }
+    renderIdsSalvos();
+
+    let html = `<div class="prod-nome">${data.nome}</div>`;
+    html += `<div class="status">ID Agrofit: <strong>${data.id}</strong><span class="salvo-badge">✓ salvo</span></div>`;
+    html += '<hr>';
+
+    if (!data.documentos.length) {
+      html += '<p class="status">Nenhum documento encontrado.</p>';
+    } else {
+      const principais = data.documentos.filter(d => d.tipo === 'Bula' || d.tipo === 'Rótulo');
+      const outros     = data.documentos.filter(d => d.tipo !== 'Bula' && d.tipo !== 'Rótulo');
+      const mostrar    = principais.length > 0 ? principais : data.documentos;
+
+      html += `<div class="status">${mostrar.length} documento(s) principais`;
+      if (outros.length > 0 && principais.length > 0) {
+        html += ` · <a href="#" onclick="toggleOutros(event)" style="color:#2a6">+ ${outros.length} outros</a>`;
+      }
+      html += '</div>';
+
+      for (const doc of mostrar) html += cardHtml(doc);
+
+      if (outros.length > 0 && principais.length > 0) {
+        html += `<div id="outros" style="display:none">`;
+        for (const doc of outros) html += cardHtml(doc);
+        html += `</div>`;
+      }
+    }
+
+    saida.innerHTML = html;
+  } catch (err) {
+    saida.innerHTML = `<p class="erro">Erro de rede: ${err.message}<br>O backend está rodando?</p>`;
+  } finally {
+    btnDir.disabled  = false;
+    btnBusc.disabled = false;
+  }
+}
+
+// ── Cards ─────────────────────────────────────────────────────
+let _viewerSeq = 0;
+function cardHtml(doc) {
+  let ext = '';
+  try { ext = new URLSearchParams(new URL(doc.url).search).get('p_nm_file')?.split('.').pop().toLowerCase() || ''; } catch {}
+  const proxy = `http://localhost:3000/api/agrofit-pdf?url=${encodeURIComponent(doc.url)}`;
+  const vid   = 'v' + (++_viewerSeq);
+  const isPdf = ext === 'pdf';
+  return `
+    <div class="card">
+      <div class="card-tipo">${doc.tipo || '—'}</div>
+      <div class="card-nome">${doc.nomeArquivo || '—'}</div>
+      <div class="card-data">${doc.data || ''}</div>
+      ${isPdf ? `<a href="#" onclick="toggleViewer(event,'${vid}','${proxy}')">Ver PDF</a>` : ''}
+      <a href="${proxy}" target="_blank">${isPdf ? 'Baixar ↗' : `Abrir ${ext.toUpperCase()} ↗`}</a>
+      ${isPdf ? `<div class="card-viewer" id="${vid}"><iframe></iframe></div>` : ''}
+    </div>`;
+}
+
+function toggleViewer(e, id, url) {
+  e.preventDefault();
+  const div    = document.getElementById(id);
+  const iframe = div.querySelector('iframe');
+  const open   = div.style.display === 'block';
+  div.style.display = open ? 'none' : 'block';
+  if (!open && !iframe.src) iframe.src = url;
+  e.target.textContent = open ? 'Ver PDF' : 'Fechar PDF';
+}
+
+function toggleOutros(e) {
+  e.preventDefault();
+  const el = document.getElementById('outros');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// ── Copiar e abrir Agrofit ────────────────────────────────────
+function abrirAgrofit() {
+  const nome = document.getElementById('nome').value.trim();
+  if (!nome) { alert('Informe o nome do produto primeiro.'); return; }
+  navigator.clipboard.writeText(nome).then(() => {
+    const aviso = document.getElementById('copiado');
+    aviso.style.display = 'inline';
+    setTimeout(() => aviso.style.display = 'none', 2500);
+  });
+  window.open('https://agrofit.agricultura.gov.br/agrofit_cons/!ap_produto_form_consulta_cons', '_blank');
+}
+
+// ── IDs Salvos ────────────────────────────────────────────────
+function toggleIdsSalvos() {
+  const lista = document.getElementById('ids-lista');
+  const aberto = lista.style.display === 'block';
+  lista.style.display = aberto ? 'none' : 'block';
+  if (!aberto) renderIdsSalvos();
+  document.getElementById('ids-titulo').textContent =
+    (aberto ? '▶' : '▼') + document.getElementById('ids-titulo').textContent.slice(1);
+}
+
+function renderIdsSalvos() {
+  const chaves = _idsCache ? Object.keys(_idsCache).sort() : [];
+  const titulo = document.getElementById('ids-titulo');
+  titulo.textContent = titulo.textContent.replace(/\(\d+\)/, `(${chaves.length})`);
+
+  const lista = document.getElementById('ids-lista');
+  if (lista.style.display !== 'block') return;
+
+  if (!chaves.length) {
+    lista.innerHTML = '<p class="ids-vazio">Nenhum ID salvo ainda.</p>';
+    return;
+  }
+
+  let html = '<table class="ids-table"><thead><tr><th>Produto</th><th>ID Agrofit</th><th></th><th></th></tr></thead><tbody>';
+  for (const k of chaves) {
+    const row = _idsCache[k];
+    html += `<tr>
+      <td>${k}</td>
+      <td>${row.id}</td>
+      <td><button class="btn-usar" onclick="usarId('${k.replace(/'/g,"\\'")}')">usar</button></td>
+      <td><button class="btn-del" onclick="removeId('${k.replace(/'/g,"\\'")}')">✕</button></td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  lista.innerHTML = html;
+}
+
+function usarId(nome) {
+  document.getElementById('nome').value = nome;
+  checarIdSalvo();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Init ──────────────────────────────────────────────────────
+loadIds();
+</script>
+
+</body>
+</html>
