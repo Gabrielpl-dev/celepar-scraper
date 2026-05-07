@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './global.css'
 import { Header } from './components/Header'
 import { Sidebar } from './components/Sidebar'
@@ -18,15 +18,21 @@ const VIEWS = {
 }
 
 export default function App() {
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
   const [activeView, setActiveView] = useState('culturas')
   const [params, setParams] = useState({ Cod: '' })
   const [sidebarOpen, setSidebarOpen] = useState(true)
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem('theme', theme)
+  }, [theme])
 
   const View = VIEWS[activeView]
 
   return (
     <div className={s.app}>
-      <Header />
+      <Header theme={theme} onToggleTheme={() => setTheme(t => t === 'light' ? 'dark' : 'light')} />
       <div className={`${s.wrap} ${sidebarOpen ? '' : s.wrapCollapsed}`}>
         <Sidebar
           activeView={activeView}

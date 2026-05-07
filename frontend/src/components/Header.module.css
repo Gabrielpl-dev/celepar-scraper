@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(1,22,30,.88);
+  background: var(--header-bg);
   backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
@@ -21,9 +21,31 @@
 }
 
 
+.right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .meta {
   color: var(--dim);
   font-size: 11px;
   letter-spacing: .04em;
   text-transform: uppercase;
+}
+
+.themeBtn {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  transition: color .15s, border-color .15s;
+}
+.themeBtn:hover {
+  color: var(--text);
+  border-color: var(--accent);
 }
