@@ -1,0 +1,58 @@
+body { font-family: monospace; max-width: 700px; margin: 40px auto; padding: 0 20px; background: #111; color: #ccc; }
+h1 { color: #fff; font-size: 18px; margin-bottom: 4px; }
+.sub { font-size: 12px; color: #555; margin-bottom: 28px; }
+label { display: block; margin-top: 14px; font-size: 12px; color: #888; }
+input { width: 100%; box-sizing: border-box; background: #1e1e1e; border: 1px solid #333; color: #eee; padding: 8px 10px; font-family: monospace; font-size: 14px; border-radius: 4px; margin-top: 4px; }
+input:focus { outline: none; border-color: #2a6; }
+.row { display: flex; gap: 8px; margin-top: 16px; align-items: center; flex-wrap: wrap; }
+button { padding: 9px 18px; border: none; color: #fff; font-family: monospace; font-size: 13px; border-radius: 4px; cursor: pointer; flex-shrink: 0; }
+#btn-abrir  { background: #2a6; }
+#btn-abrir:hover  { background: #3b7; }
+#btn-buscar { background: #26a; }
+#btn-buscar:hover { background: #37b; }
+#btn-direto { background: #2a6; display: none; }
+#btn-direto:hover { background: #3b7; }
+button:disabled { background: #444 !important; cursor: default; }
+.step { background: #161616; border: 1px solid #2a2a2a; border-radius: 6px; padding: 16px 18px; margin-top: 20px; }
+.step-num { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px; }
+.step.oculto { display: none; }
+.copiado { font-size: 11px; color: #2a6; display: none; }
+.hint-id { font-size: 11px; margin-top: 8px; display: none; }
+.hint-id.encontrado { color: #2a6; display: block; }
+.hint-id.novo      { color: #888; display: block; }
+#saida { margin-top: 20px; }
+.status { font-size: 12px; color: #888; margin-bottom: 16px; }
+.card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 14px 18px; margin-bottom: 10px; }
+.card-tipo { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+.card-nome { font-size: 14px; color: #eee; margin-bottom: 4px; }
+.card-data { font-size: 11px; color: #555; margin-bottom: 10px; }
+.card a { display: inline-block; padding: 6px 14px; background: #1a3a2a; border: 1px solid #2a6; color: #4d9; text-decoration: none; font-size: 12px; border-radius: 3px; margin-right: 6px; }
+.card a:hover { background: #2a6; color: #fff; }
+.card-viewer { display: none; }
+#pdf-overlay { display: none; position: fixed; inset: 0; z-index: 9999; flex-direction: column; background: #111; }
+#pdf-overlay.aberto { display: flex; }
+#pdf-overlay-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #1a1a1a; border-bottom: 1px solid #333; flex-shrink: 0; }
+#pdf-overlay-titulo { font-size: 12px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#pdf-overlay-fechar { background: none; border: 1px solid #555; color: #aaa; font-size: 12px; padding: 4px 12px; cursor: pointer; border-radius: 3px; }
+#pdf-overlay-fechar:hover { border-color: #f66; color: #f66; }
+#pdf-overlay iframe { flex: 1; width: 100%; border: none; background: #fff; }
+.prod-nome { font-size: 16px; color: #fff; font-weight: bold; margin-bottom: 4px; }
+.salvo-badge { font-size: 11px; color: #2a6; margin-left: 8px; }
+.erro { color: #f66; font-size: 13px; }
+hr { border: none; border-top: 1px solid #222; margin: 16px 0; }
+
+/* IDs Salvos */
+#ids-salvos { margin-top: 32px; }
+.ids-header { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+.ids-header span { font-size: 12px; color: #555; }
+.ids-header:hover span { color: #888; }
+#ids-lista { margin-top: 12px; display: none; }
+.ids-vazio { font-size: 12px; color: #444; }
+table.ids-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.ids-table th { color: #555; text-align: left; padding: 4px 8px; border-bottom: 1px solid #222; }
+table.ids-table td { padding: 6px 8px; border-bottom: 1px solid #1a1a1a; color: #ccc; }
+table.ids-table tr:hover td { background: #161616; }
+.btn-del { background: none; border: none; color: #555; cursor: pointer; font-size: 12px; padding: 0; }
+.btn-del:hover { color: #f66; }
+.btn-usar { background: none; border: 1px solid #2a6; color: #4d9; cursor: pointer; font-size: 11px; padding: 2px 8px; border-radius: 3px; font-family: monospace; }
+.btn-usar:hover { background: #2a6; color: #fff; }

@@ -71,7 +71,20 @@
       "Bash(node -e \"require\\('./server'\\)\")",
       "Bash(Get-Content \"C:\\\\Users\\\\GABRIE~1.PIN\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-gabriel-pinheiro-Documents-celepar-scraper\\\\900fa7c7-1f60-476a-9fb5-f3dd861d9dda\\\\tasks\\\\be2l7wa7y.output\")",
       "Bash(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue)",
-      "Bash(Select-Object State)"
+      "Bash(Select-Object State)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }; Write-Host \"Porta 3000 liberada\")",
+      "PowerShell(pm2 list 2>$null)",
+      "Bash(Test-Path \"c:\\\\Users\\\\gabriel.pinheiro\\\\Documents\\\\celepar_scraper\\\\README.md\")",
+      "Bash(pm2 logs *)",
+      "Bash(pm2 show *)",
+      "Bash(findstr -i \"watch\\\\|script\\\\|status\\\\|restart\")",
+      "Bash(pm2 restart *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000\")",
+      "Bash(findstr \"LISTENING\")",
+      "Bash(taskkill /PID 91964 /F)",
+      "PowerShell(Stop-Process -Id 91964 -Force)",
+      "PowerShell(pm2 restart celepar-be)"
     ]
   }
 }
