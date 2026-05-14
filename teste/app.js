@@ -1,61 +1,56 @@
 // ── cache de IDs (servidor) ────────────────────────────────────
-let _idsCache = null; // { [nome_normalizado]: { nome, id, atualizado } }
-
-function normKey(s) {
-  return String(s).trim().toLowerCase();
-}
+let _idsCache = null; // { [ma]: { ma, id, nome, atualizado } }
 
 async function loadIds() {
   try {
     const res  = await fetch('http://localhost:3000/api/agrofit-ids');
     const data = await res.json();
     _idsCache = {};
-    for (const row of (data.ids || [])) _idsCache[row.nome] = row;
+    for (const row of (data.ids || [])) _idsCache[row.ma] = row;
   } catch {
     _idsCache = {};
   }
   renderIdsSalvos();
 }
 
-async function removeId(nome) {
-  const chave = normKey(nome);
+async function removeId(ma) {
   try {
-    await fetch(`http://localhost:3000/api/agrofit-ids/${encodeURIComponent(chave)}`, { method: 'DELETE' });
-    if (_idsCache) delete _idsCache[chave];
+    await fetch(`http://localhost:3000/api/agrofit-ids/${encodeURIComponent(ma)}`, { method: 'DELETE' });
+    if (_idsCache) delete _idsCache[ma];
     renderIdsSalvos();
     checarIdSalvo();
   } catch { /* silencioso */ }
 }
 
-function findId(nome) {
+function findId(ma) {
   if (!_idsCache) return null;
-  return _idsCache[normKey(nome)]?.id || null;
+  return _idsCache[ma.trim()]?.id || null;
 }
 
 // ── Hint + botão direto ───────────────────────────────────────
 function checarIdSalvo() {
-  const nome = document.getElementById('nome').value.trim();
+  const ma   = document.getElementById('ma').value.trim();
   const hint = document.getElementById('hint-id');
   const btn  = document.getElementById('btn-direto');
 
-  const id = nome ? findId(nome) : null;
+  const id = ma ? findId(ma) : null;
   if (id) {
-    hint.textContent  = `✓ ID salvo: ${id} — vai buscar direto`;
+    hint.textContent  = `✓ ID Agrofit salvo: ${id} — vai buscar direto`;
     hint.className    = 'hint-id encontrado';
     btn.style.display = 'inline-block';
   } else {
-    hint.textContent  = nome ? 'Novo produto — cole a URL do Agrofit no passo 2' : '';
-    hint.className    = nome ? 'hint-id novo' : 'hint-id';
+    hint.textContent  = ma ? 'ID Agrofit não cadastrado — cole a URL do Agrofit no passo 2' : '';
+    hint.className    = ma ? 'hint-id novo' : 'hint-id';
     btn.style.display = 'none';
   }
 }
 
 // ── Busca direta (ID já salvo) ────────────────────────────────
 function buscarDireto() {
-  const nome = document.getElementById('nome').value.trim();
-  const id   = findId(nome);
+  const ma = document.getElementById('ma').value.trim();
+  const id = findId(ma);
   if (!id) return;
-  buscarPorId(nome, id);
+  buscarPorId(ma, id);
 }
 
 // ── Busca via URL colada ──────────────────────────────────────
@@ -65,11 +60,11 @@ function buscarPorUrl() {
 
   if (!urlInput) { saida.innerHTML = '<p class="erro">Cole a URL do produto.</p>'; return; }
 
-  let id, nome;
+  let id, ma;
   try {
     const u = new URL(urlInput);
-    id   = u.searchParams.get('p_id_produto_formulado_tecnico');
-    nome = u.searchParams.get('p_nm_marca_comercial') || document.getElementById('nome').value.trim();
+    id = u.searchParams.get('p_id_produto_formulado_tecnico');
+    ma = u.searchParams.get('p_nr_registro') || document.getElementById('ma').value.trim();
   } catch {
     saida.innerHTML = '<p class="erro">URL inválida.</p>';
     return;
@@ -79,12 +74,16 @@ function buscarPorUrl() {
     saida.innerHTML = '<p class="erro">Não encontrei <code>p_id_produto_formulado_tecnico</code> na URL.</p>';
     return;
   }
+  if (!ma) {
+    saida.innerHTML = '<p class="erro">Não encontrei o registro MA na URL. Preencha o campo MA manualmente.</p>';
+    return;
+  }
 
-  buscarPorId(nome, id);
+  buscarPorId(ma, id);
 }
 
 // ── Busca central ─────────────────────────────────────────────
-async function buscarPorId(nome, id) {
+async function buscarPorId(ma, id) {
   const saida   = document.getElementById('saida');
   const btnDir  = document.getElementById('btn-direto');
   const btnBusc = document.getElementById('btn-buscar');
@@ -94,7 +93,7 @@ async function buscarPorId(nome, id) {
   if (!saida.innerHTML.trim()) saida.innerHTML = '<p class="status">consultando agrofit...</p>';
 
   try {
-    const res  = await fetch('http://localhost:3000/api/agrofit?' + new URLSearchParams({ nome, id }));
+    const res  = await fetch('http://localhost:3000/api/agrofit?' + new URLSearchParams({ ma, id }));
     const data = await res.json();
 
     if (!data.ok) {
@@ -103,14 +102,13 @@ async function buscarPorId(nome, id) {
     }
 
     if (data.id && _idsCache !== null) {
-      const chave = normKey(nome || data.nome);
-      _idsCache[chave] = { nome: chave, id: data.id };
+      _idsCache[ma] = { ma, id: data.id, nome: data.nome };
     }
     renderIdsSalvos();
     checarIdSalvo();
 
-    let html = `<div class="prod-nome">${data.nome}</div>`;
-    html += `<div class="status">ID Agrofit: <strong>${data.id}</strong><span class="salvo-badge">✓ salvo</span></div>`;
+    let html = `<div class="prod-nome">${data.nome || ma}</div>`;
+    html += `<div class="status">MA: <strong>${ma}</strong> · ID Agrofit: <strong>${data.id}</strong><span class="salvo-badge">✓ salvo</span></div>`;
     html += '<hr>';
 
     if (!data.documentos.length) {
@@ -181,9 +179,9 @@ function toggleOutros(e) {
 
 // ── Copiar e abrir Agrofit ────────────────────────────────────
 function abrirAgrofit() {
-  const nome = document.getElementById('nome').value.trim();
-  if (!nome) { alert('Informe o nome do produto primeiro.'); return; }
-  navigator.clipboard.writeText(nome).then(() => {
+  const ma = document.getElementById('ma').value.trim();
+  if (!ma) { alert('Informe o registro MA primeiro.'); return; }
+  navigator.clipboard.writeText(ma).then(() => {
     const aviso = document.getElementById('copiado');
     aviso.style.display = 'inline';
     setTimeout(() => aviso.style.display = 'none', 2500);
@@ -214,11 +212,12 @@ function renderIdsSalvos() {
     return;
   }
 
-  let html = '<table class="ids-table"><thead><tr><th>Produto</th><th>ID Agrofit</th><th></th><th></th></tr></thead><tbody>';
+  let html = '<table class="ids-table"><thead><tr><th>MA</th><th>Nome</th><th>ID Agrofit</th><th></th><th></th></tr></thead><tbody>';
   for (const k of chaves) {
     const row = _idsCache[k];
     html += `<tr>
       <td>${k}</td>
+      <td>${row.nome || '—'}</td>
       <td>${row.id}</td>
       <td><button class="btn-usar" onclick="usarId('${k.replace(/'/g,"\\'")}')">usar</button></td>
       <td><button class="btn-del" onclick="removeId('${k.replace(/'/g,"\\'")}')">✕</button></td>
@@ -228,11 +227,46 @@ function renderIdsSalvos() {
   lista.innerHTML = html;
 }
 
-function usarId(nome) {
-  document.getElementById('nome').value = nome;
+function usarId(ma) {
+  setModo('ma');
+  document.getElementById('ma').value = ma;
   checarIdSalvo();
   window.scrollTo({ top: 0, behavior: 'smooth' });
   buscarDireto();
+}
+
+// ── Modos de busca ────────────────────────────────────────────
+function setModo(modo) {
+  document.getElementById('secao-ma').style.display   = modo === 'ma'   ? '' : 'none';
+  document.getElementById('secao-nome').style.display = modo === 'nome' ? '' : 'none';
+  document.getElementById('modo-ma').classList.toggle('modo-ativo', modo === 'ma');
+  document.getElementById('modo-nome').classList.toggle('modo-ativo', modo === 'nome');
+}
+
+function filtrarNome() {
+  const termo      = document.getElementById('busca-nome').value.trim().toLowerCase();
+  const resultados = document.getElementById('nome-resultados');
+
+  if (!termo) { resultados.innerHTML = ''; return; }
+
+  const matches = Object.values(_idsCache || {}).filter(row =>
+    (row.nome || '').toLowerCase().includes(termo)
+  );
+
+  if (!matches.length) {
+    resultados.innerHTML = '<p class="hint-id novo">Nenhum produto encontrado no cache. Use o modo Por MA para cadastrar.</p>';
+    return;
+  }
+
+  let html = '<div class="nome-lista">';
+  for (const row of matches.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))) {
+    html += `<div class="nome-item" onclick="usarId('${row.ma.replace(/'/g, "\\'")}')">
+      <span class="nome-item-nome">${row.nome || '—'}</span>
+      <span class="nome-item-ma">MA: ${row.ma}</span>
+    </div>`;
+  }
+  html += '</div>';
+  resultados.innerHTML = html;
 }
 
 // ── Init ──────────────────────────────────────────────────────

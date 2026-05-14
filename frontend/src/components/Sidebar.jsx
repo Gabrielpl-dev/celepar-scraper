@@ -2,6 +2,11 @@ import { useState, useRef, useEffect } from 'react'
 import { api } from '../api'
 import s from './Sidebar.module.css'
 
+const SERVICOS = [
+  { id: 'cadastro', num: '01', label: 'Cadastro' },
+  { id: 'revisao',  num: '02', label: 'Revisão' },
+]
+
 const OPS = [
   { id: 'culturas',  num: '01', label: 'Culturas' },
   { id: 'extrair',   num: '02', label: 'Extrair por cultura' },
@@ -11,6 +16,7 @@ const OPS = [
 ]
 
 export function Sidebar({ activeView, setActiveView, params, setParams, open, onToggle }) {
+  const [activeTab, setActiveTab]          = useState('ops')
   const [searchTerm, setSearchTerm]        = useState('')
   const [searchResults, setSearchResults]  = useState([])
   const [searching, setSearching]          = useState(false)
@@ -93,50 +99,76 @@ export function Sidebar({ activeView, setActiveView, params, setParams, open, on
         </svg>
       </button>
       <div className={`${s.content} ${open ? '' : s.contentHidden}`}>
-        <h2 className={s.sectionTitle}>Operações</h2>
+        <h2 className={s.sectionTitle}>Serviços</h2>
         <div className={s.ops}>
-          {OPS.map(op => (
+          {SERVICOS.map(sv => (
             <button
-              key={op.id}
-              className={`${s.op} ${activeView === op.id ? s.opActive : ''}`}
-              onClick={() => setActiveView(op.id)}
+              key={sv.id}
+              className={`${s.op} ${activeView === sv.id ? s.opActive : ''}`}
+              onClick={() => setActiveView(sv.id)}
             >
-              <span className={s.num}>{op.num}</span>
-              {op.label}
+              <span className={s.num}>{sv.num}</span>
+              {sv.label}
             </button>
           ))}
         </div>
 
         <div className={s.params}>
-          <h2 className={s.sectionTitle}>Parâmetros do Produto</h2>
-
-          <div className={s.field}>
-            <label htmlFor="paramSearch">Produto</label>
-            <input
-              ref={searchRef}
-              id="paramSearch"
-              type="text"
-              value={searchTerm}
-              placeholder="ex: BELURE"
-              onChange={handleSearchChange}
-              onKeyDown={handleSearchKeyDown}
-              onBlur={() => setTimeout(closeDropdown, 150)}
-              autoComplete="off"
-            />
-            {searching && <div className={s.searchHint}>buscando...</div>}
+          <div className={s.tabsRow}>
+            <button
+              className={`${s.tab} ${activeTab === 'ops' ? s.tabActive : ''}`}
+              onClick={() => setActiveTab('ops')}
+            >Operações</button>
+            <button
+              className={`${s.tab} ${activeTab === 'params' ? s.tabActive : ''}`}
+              onClick={() => setActiveTab('params')}
+            >Parâmetros</button>
           </div>
 
-          <div className={s.field}>
-            <label htmlFor="paramCod">Cod</label>
-            <input
-              id="paramCod"
-              type="text"
-              value={params.Cod}
-              placeholder="ex: 2968"
-              onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
-              onKeyDown={e => { if (e.key === 'Enter' && params.Cod.trim()) setActiveView('culturas') }}
-            />
-          </div>
+          {activeTab === 'ops' ? (
+            <div className={s.ops}>
+              {OPS.map(op => (
+                <button
+                  key={op.id}
+                  className={`${s.op} ${activeView === op.id ? s.opActive : ''}`}
+                  onClick={() => setActiveView(op.id)}
+                >
+                  <span className={s.num}>{op.num}</span>
+                  {op.label}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <>
+              <div className={s.field}>
+                <label htmlFor="paramSearch">Produto</label>
+                <input
+                  ref={searchRef}
+                  id="paramSearch"
+                  type="text"
+                  value={searchTerm}
+                  placeholder="ex: BELURE"
+                  onChange={handleSearchChange}
+                  onKeyDown={handleSearchKeyDown}
+                  onBlur={() => setTimeout(closeDropdown, 150)}
+                  autoComplete="off"
+                />
+                {searching && <div className={s.searchHint}>buscando...</div>}
+              </div>
+
+              <div className={s.field}>
+                <label htmlFor="paramCod">Cod</label>
+                <input
+                  id="paramCod"
+                  type="text"
+                  value={params.Cod}
+                  placeholder="ex: 2968"
+                  onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
+                  onKeyDown={e => { if (e.key === 'Enter' && params.Cod.trim()) setActiveView('culturas') }}
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
 

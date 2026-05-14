@@ -5,21 +5,21 @@ const db      = require('../db');
 const router = express.Router();
 
 const UPSERT = db.prepare(`
-  INSERT INTO agrofit_ids (nome, id, atualizado)
-  VALUES (?, ?, datetime('now','localtime'))
-  ON CONFLICT(nome) DO NOTHING
+  INSERT INTO agrofit_ids (ma, id, nome, atualizado)
+  VALUES (?, ?, ?, datetime('now','localtime'))
+  ON CONFLICT(ma) DO NOTHING
 `);
 
 router.get('/agrofit', async (req, res) => {
   try {
-    const { nome, id } = req.query;
-    if (!nome) return res.status(400).json({ ok: false, error: 'nome é obrigatório' });
+    const { ma, id } = req.query;
+    if (!ma) return res.status(400).json({ ok: false, error: 'ma (registro) é obrigatório' });
 
     const qs = new URLSearchParams({
-      p_id_produto: '', p_nm_marca_comercial: nome,
+      p_id_produto: '', p_nm_marca_comercial: '',
       p_id_registrante_empresa: '', p_id_ingrediente_ativo: '',
       p_nm_comum_portugues: '', p_id_tecnica_aplicacao: '',
-      p_id_classe: '', p_nr_registro: '',
+      p_id_classe: '', p_nr_registro: ma,
       p_id_classificacao_tox: '', p_id_classificacao_amb: '',
       p_tipo_aplicacao: 'C', p_id_cultura: '',
       p_id_praga_inseto: '', p_id_cultura_planta: '',
@@ -41,7 +41,7 @@ router.get('/agrofit', async (req, res) => {
     catch { html = buf.toString('latin1'); }
 
     const $             = cheerio.load(html);
-    const nomeConfirmado = $('input[name="p_nm_marca_comercial"]').val() || nome;
+    const nomeConfirmado = $('input[name="p_nm_marca_comercial"]').val() || '';
 
     const docsMap = new Map();
     $('a[href*="p_id_file"]').each((_, a) => {
@@ -64,11 +64,12 @@ router.get('/agrofit', async (req, res) => {
       });
     }
 
-    if (id) UPSERT.run((nome || nomeConfirmado).trim().toLowerCase(), String(id));
+    if (id) UPSERT.run(ma.trim(), String(id), nomeConfirmado.trim() || null);
 
     res.json({
       ok: true,
       nome: nomeConfirmado,
+      ma,
       id: id || null,
       documentos,
       aviso: documentos.length === 0 && !id
@@ -81,19 +82,19 @@ router.get('/agrofit', async (req, res) => {
 });
 
 router.get('/agrofit-ids', (req, res) => {
-  const rows = db.prepare('SELECT nome, id, atualizado FROM agrofit_ids ORDER BY nome').all();
+  const rows = db.prepare('SELECT ma, id, nome, atualizado FROM agrofit_ids ORDER BY ma').all();
   res.json({ ok: true, ids: rows });
 });
 
 router.post('/agrofit-ids', (req, res) => {
-  const { nome, id } = req.body;
-  if (!nome || !id) return res.status(400).json({ ok: false, error: 'nome e id obrigatórios' });
-  UPSERT.run(nome.trim().toLowerCase(), String(id));
+  const { ma, id, nome } = req.body;
+  if (!ma || !id) return res.status(400).json({ ok: false, error: 'ma e id obrigatórios' });
+  UPSERT.run(ma.trim(), String(id), nome?.trim() || null);
   res.json({ ok: true });
 });
 
-router.delete('/agrofit-ids/:nome', (req, res) => {
-  db.prepare('DELETE FROM agrofit_ids WHERE nome = ?').run(req.params.nome.toLowerCase());
+router.delete('/agrofit-ids/:ma', (req, res) => {
+  db.prepare('DELETE FROM agrofit_ids WHERE ma = ?').run(req.params.ma.trim());
   res.json({ ok: true });
 });
 

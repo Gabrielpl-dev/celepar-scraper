@@ -28,7 +28,7 @@ export default function App() {
     localStorage.setItem('theme', theme)
   }, [theme])
 
-  const View = VIEWS[activeView]
+  const View = VIEWS[activeView] ?? null
 
   return (
     <div className={s.app}>
@@ -43,7 +43,7 @@ export default function App() {
           onToggle={() => setSidebarOpen(v => !v)}
         />
         <main className={s.main}>
-          <View params={params} />
+          {View && <View params={params} />}
         </main>
       </div>
     </div>
