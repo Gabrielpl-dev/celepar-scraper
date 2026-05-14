@@ -8,10 +8,11 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/teste', express.static(path.join(__dirname, '..', 'teste_agrofit')));
+app.use('/teste', express.static(path.join(__dirname, '..', 'teste')));
 
 app.use('/api', require('./routes/celepar'));
 app.use('/api', require('./routes/agrofit'));
+app.use('/api', require('./routes/sigen'));
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 

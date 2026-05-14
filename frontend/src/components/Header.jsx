@@ -3,9 +3,9 @@ import s from './Header.module.css'
 export function Header({ theme, onToggleTheme }) {
   return (
     <header className={s.header}>
-      <h1 className={s.title}>celepar scraper</h1>
+      <h1 className={s.title}></h1>
       <div className={s.right}>
-        <div className={s.meta}>v0.1 · agrotóxicos pr</div>
+        <div className={s.meta}></div>
         <button className={s.themeBtn} onClick={onToggleTheme} title={theme === 'dark' ? 'Modo claro' : 'Modo escuro'}>
           {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
         </button>

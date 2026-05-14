@@ -1,8 +1,11 @@
 .app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  width: 125vw;
+  height: 125vh;
   overflow: hidden;
+  zoom: 0.8;
+  transform-origin: top left;
 }
 
 .wrap {
