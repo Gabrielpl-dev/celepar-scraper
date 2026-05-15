@@ -10,42 +10,28 @@
 <h1>Teste</h1>
 <div class="sub">Busca e cache de IDs por produto</div>
 
-<div class="modos">
-  <button class="modo-btn modo-ativo" id="modo-ma" onclick="setModo('ma')">Por MA</button>
-  <button class="modo-btn" id="modo-nome" onclick="setModo('nome')">Por Nome</button>
-</div>
-
-<!-- MODO MA -->
-<div id="secao-ma">
-  <div class="step">
-    <div class="step-num">Produto</div>
-    <label>Registro MA</label>
-    <input id="ma" type="text" placeholder="ex: 00513" oninput="checarIdSalvo()" />
-    <div class="hint-id" id="hint-id"></div>
-    <div class="row">
-      <button id="btn-direto" onclick="buscarDireto()">Buscar bula ↵</button>
-      <button id="btn-abrir"  onclick="abrirAgrofit()">Abrir Agrofit ↗</button>
-      <span class="copiado" id="copiado">✓ copiado</span>
-    </div>
+<div class="step">
+  <div class="step-num">Produto</div>
+  <label>Registro MA</label>
+  <input id="ma" type="text" inputmode="numeric" placeholder="ex: 00513" oninput="this.value=this.value.replace(/\D/g,''); checarIdSalvo()" />
+  <div class="hint-id" id="hint-id"></div>
+  <div class="row">
+    <button id="btn-direto" onclick="buscarDireto()">Buscar bula ↵</button>
+    <button id="btn-abrir"  onclick="abrirAgrofit()">Abrir Agrofit ↗</button>
+    <span class="copiado" id="copiado">✓ copiado</span>
   </div>
 
-  <div class="step" id="passo2">
-    <div class="step-num">Passo 2 — Cole a URL do produto encontrado no Agrofit</div>
-    <label>URL do produto (deve conter p_nr_registro e p_id_produto_formulado_tecnico)</label>
-    <input id="url" type="text" placeholder="ex: https://agrofit.agricultura.gov.br/agrofit_cons/!ap_produto_form_detalhe_cons?...&p_nr_registro=00513&p_id_produto_formulado_tecnico=446" />
-    <div class="row">
-      <button id="btn-buscar" onclick="buscarPorUrl()">Buscar bula</button>
-    </div>
-  </div>
+  <label style="margin-top:16px">Nome do produto</label>
+  <input id="busca-nome" type="text" placeholder="ex: Roundup" oninput="filtrarNome()" />
+  <div id="nome-resultados"></div>
 </div>
 
-<!-- MODO NOME -->
-<div id="secao-nome" style="display:none">
-  <div class="step">
-    <div class="step-num">Busca por nome</div>
-    <label>Nome do produto</label>
-    <input id="busca-nome" type="text" placeholder="ex: Roundup" oninput="filtrarNome()" />
-    <div id="nome-resultados"></div>
+<div class="step" id="passo2">
+  <div class="step-num">Passo 2 — Cole a URL do produto encontrado no Agrofit</div>
+  <label>URL do produto (deve conter p_nr_registro e p_id_produto_formulado_tecnico)</label>
+  <input id="url" type="text" placeholder="ex: https://agrofit.agricultura.gov.br/agrofit_cons/!ap_produto_form_detalhe_cons?...&p_nr_registro=00513&p_id_produto_formulado_tecnico=446" />
+  <div class="row">
+    <button id="btn-buscar" onclick="buscarPorUrl()">Buscar bula</button>
   </div>
 </div>
 
