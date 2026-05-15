@@ -33,9 +33,10 @@ function checarIdSalvo() {
   const hint = document.getElementById('hint-id');
   const btn  = document.getElementById('btn-direto');
 
-  const id = ma ? findId(ma) : null;
+  const id   = ma ? findId(ma) : null;
+  const nome = ma ? (_idsCache?.[ma.trim()]?.nome || null) : null;
   if (id) {
-    hint.textContent  = `✓ ID Agrofit salvo: ${id} — vai buscar direto`;
+    hint.textContent  = nome ? `✓ ${nome}` : `✓ ID Agrofit salvo: ${id}`;
     hint.className    = 'hint-id encontrado';
     btn.style.display = 'inline-block';
   } else {
@@ -90,46 +91,60 @@ async function buscarPorId(ma, id) {
 
   btnDir.disabled  = true;
   btnBusc.disabled = true;
-  if (!saida.innerHTML.trim()) saida.innerHTML = '<p class="status">consultando agrofit...</p>';
+  saida.innerHTML  = '<p class="status">consultando agrofit e sigen...</p>';
 
   try {
-    const res  = await fetch('http://localhost:3000/api/agrofit?' + new URLSearchParams({ ma, id }));
-    const data = await res.json();
+    const [agrofit, sigen] = await Promise.all([
+      fetch('http://localhost:3000/api/agrofit?' + new URLSearchParams({ ma, id })).then(r => r.json()),
+      fetch('http://localhost:3000/api/sigen?'   + new URLSearchParams({ ma })).then(r => r.json()).catch(() => null),
+    ]);
 
-    if (!data.ok) {
-      saida.innerHTML = `<p class="erro">Erro: ${data.error}</p>`;
+    if (!agrofit.ok) {
+      saida.innerHTML = `<p class="erro">Erro Agrofit: ${agrofit.error}</p>`;
       return;
     }
 
-    if (data.id && _idsCache !== null) {
-      _idsCache[ma] = { ma, id: data.id, nome: data.nome };
+    if (agrofit.id && _idsCache !== null) {
+      _idsCache[ma] = { ma, id: agrofit.id, nome: agrofit.nome };
     }
     renderIdsSalvos();
     checarIdSalvo();
 
-    let html = `<div class="prod-nome">${data.nome || ma}</div>`;
-    html += `<div class="status">MA: <strong>${ma}</strong> · ID Agrofit: <strong>${data.id}</strong><span class="salvo-badge">✓ salvo</span></div>`;
+    const nome = agrofit.nome || (sigen?.ok && sigen.nome) || ma;
+    let html = `<div class="prod-nome">${nome}</div>`;
+    html += `<div class="status">MA: <strong>${ma}</strong> · ID Agrofit: <strong>${agrofit.id}</strong><span class="salvo-badge">✓ salvo</span></div>`;
     html += '<hr>';
 
-    if (!data.documentos.length) {
-      html += '<p class="status">Nenhum documento encontrado.</p>';
+    // ── Agrofit ──
+    html += '<div class="fonte-header">Agrofit — Bulas</div>';
+    const docs = agrofit.documentos || [];
+    if (!docs.length) {
+      html += '<p class="status">Nenhum documento encontrado no Agrofit.</p>';
     } else {
-      const principais = data.documentos.filter(d => d.tipo === 'Bula' || d.tipo === 'Rótulo');
-      const outros     = data.documentos.filter(d => d.tipo !== 'Bula' && d.tipo !== 'Rótulo');
-      const mostrar    = principais.length > 0 ? principais : data.documentos;
-
-      html += `<div class="status">${mostrar.length} documento(s) principais`;
-      if (outros.length > 0 && principais.length > 0) {
-        html += ` · <a href="#" onclick="toggleOutros(event)" style="color:#2a6">+ ${outros.length} outros</a>`;
-      }
-      html += '</div>';
-
+      const principais = docs.filter(d => d.tipo === 'Bula' || d.tipo === 'Rótulo');
+      const outros     = docs.filter(d => d.tipo !== 'Bula' && d.tipo !== 'Rótulo');
+      const mostrar    = principais.length > 0 ? principais : docs;
       for (const doc of mostrar) html += cardHtml(doc);
-
       if (outros.length > 0 && principais.length > 0) {
+        html += `<a href="#" onclick="toggleOutros(event)" style="color:#2a6;font-size:12px">+ ${outros.length} outros</a>`;
         html += `<div id="outros" style="display:none">`;
         for (const doc of outros) html += cardHtml(doc);
         html += `</div>`;
+      }
+    }
+
+    // ── SIGEN ──
+    html += '<div class="fonte-header" style="margin-top:20px">SIGEN — Fichas de Emergência</div>';
+    if (!sigen) {
+      html += '<p class="status">Erro ao consultar SIGEN.</p>';
+    } else if (!sigen.ok) {
+      html += `<p class="status">${sigen.error || 'Produto não encontrado no SIGEN.'}</p>`;
+    } else {
+      const sigenDocs = sigen.documentos || [];
+      if (!sigenDocs.length) {
+        html += '<p class="status">Nenhum documento encontrado no SIGEN.</p>';
+      } else {
+        for (const doc of sigenDocs) html += sigenCardHtml(doc);
       }
     }
 
@@ -156,6 +171,18 @@ function cardHtml(doc) {
       <div class="card-data">${doc.data || ''}</div>
       ${isPdf ? `<a href="#" onclick="toggleViewer(event,'${titulo}','${proxy}')">Ver PDF</a>` : ''}
       <a href="${proxy}" target="_blank">${isPdf ? 'Baixar ↗' : `Abrir ${ext.toUpperCase()} ↗`}</a>
+    </div>`;
+}
+
+function sigenCardHtml(doc) {
+  const titulo = (doc.nomeArquivo || doc.tipo || 'documento').replace(/'/g, "\\'");
+  return `
+    <div class="card">
+      <div class="card-tipo">${doc.tipo || '—'}</div>
+      <div class="card-nome">${doc.nomeArquivo || '—'}</div>
+      <div class="card-data">${doc.data || ''}</div>
+      <a href="#" onclick="toggleViewer(event,'${titulo}','${doc.url}')">Ver PDF</a>
+      <a href="${doc.url}" target="_blank">Baixar ↗</a>
     </div>`;
 }
 
@@ -228,19 +255,10 @@ function renderIdsSalvos() {
 }
 
 function usarId(ma) {
-  setModo('ma');
   document.getElementById('ma').value = ma;
   checarIdSalvo();
   window.scrollTo({ top: 0, behavior: 'smooth' });
   buscarDireto();
-}
-
-// ── Modos de busca ────────────────────────────────────────────
-function setModo(modo) {
-  document.getElementById('secao-ma').style.display   = modo === 'ma'   ? '' : 'none';
-  document.getElementById('secao-nome').style.display = modo === 'nome' ? '' : 'none';
-  document.getElementById('modo-ma').classList.toggle('modo-ativo', modo === 'ma');
-  document.getElementById('modo-nome').classList.toggle('modo-ativo', modo === 'nome');
 }
 
 function filtrarNome() {

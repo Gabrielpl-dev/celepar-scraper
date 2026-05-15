@@ -45,6 +45,7 @@ router.get('/sigen', async (req, res) => {
   try {
     const { ma } = req.query;
     if (!ma) return res.status(400).json({ ok: false, error: 'ma (registro) é obrigatório' });
+    if (!/^\d+$/.test(ma)) return res.status(400).json({ ok: false, error: 'MA deve conter apenas dígitos' });
 
     const searchData = await sigenPost(
       '/ConsultaAgrotoxicoCadastroPublico/CarregarConsultaAgrotoxico',

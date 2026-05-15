@@ -1,94 +1,27 @@
-import { useState, useRef, useEffect } from 'react'
-import { api } from '../api'
+import React from 'react'
 import s from './Sidebar.module.css'
 
 const SERVICOS = [
   { id: 'cadastro', num: '01', label: 'Cadastro' },
-  { id: 'revisao',  num: '02', label: 'Revisão' },
+  { id: 'revisao',  num: '02', label: 'Revisão'  },
 ]
 
-const OPS = [
-  { id: 'culturas',  num: '01', label: 'Culturas' },
-  { id: 'extrair',   num: '02', label: 'Extrair por cultura' },
-  { id: 'siagro',    num: '03', label: 'Buscar por SIAGRO' },
-  { id: 'comparar',  num: '04', label: 'Comparar culturas' },
-  { id: 'verificar', num: '05', label: 'Verificar produto' },
-]
+const OPS = {
+  cadastro: [
+    { id: 'bula', num: '01', label: 'Bula' },
+    { id: 'fe',   num: '02', label: 'FE'   },
+  ],
+  revisao: [
+    { id: 'culturas',  num: '01', label: 'Culturas' },
+    { id: 'extrair',   num: '02', label: 'Extrair por cultura' },
+    { id: 'siagro',    num: '03', label: 'Buscar por SIAGRO' },
+    { id: 'comparar',  num: '04', label: 'Comparar culturas' },
+    { id: 'verificar', num: '05', label: 'Verificar produto' },
+  ],
+}
 
-export function Sidebar({ activeView, setActiveView, params, setParams, open, onToggle }) {
-  const [activeTab, setActiveTab]          = useState('ops')
-  const [searchTerm, setSearchTerm]        = useState('')
-  const [searchResults, setSearchResults]  = useState([])
-  const [searching, setSearching]          = useState(false)
-  const [highlightedIndex, setHighlighted] = useState(-1)
-  const [dropdownPos, setDropdownPos]      = useState(null)
-  const debounceRef = useRef(null)
-  const searchRef   = useRef(null)
-
-  function calcDropdownPos() {
-    if (!searchRef.current) return null
-    const r          = searchRef.current.getBoundingClientRect()
-    const spaceBelow = window.innerHeight - r.bottom - 8
-    const showAbove  = spaceBelow < 120
-    return {
-      left:      r.left,
-      width:     r.width,
-      maxHeight: showAbove ? Math.min(220, r.top - 8) : Math.min(220, spaceBelow),
-      ...(showAbove ? { bottom: window.innerHeight - r.top + 4 } : { top: r.bottom + 4 }),
-    }
-  }
-
-  useEffect(() => {
-    if (searchResults.length > 0) setDropdownPos(calcDropdownPos())
-    else setDropdownPos(null)
-  }, [searchResults])
-
-  function closeDropdown() {
-    setSearchResults([])
-    setHighlighted(-1)
-    setDropdownPos(null)
-  }
-
-  function handleSearchChange(e) {
-    const val = e.target.value
-    setSearchTerm(val)
-    closeDropdown()
-    clearTimeout(debounceRef.current)
-    if (!val.trim()) return
-    debounceRef.current = setTimeout(async () => {
-      setSearching(true)
-      try {
-        const data = await api.verificar(val, {})
-        setSearchResults(data.ok ? data.rows.slice(0, 8) : [])
-        setHighlighted(-1)
-      } finally {
-        setSearching(false)
-      }
-    }, 400)
-  }
-
-  function handleSelect(row) {
-    setParams(p => ({ ...p, Cod: row.cod }))
-    setSearchTerm(row.nome)
-    closeDropdown()
-    setActiveView('culturas')
-  }
-
-  function handleSearchKeyDown(e) {
-    if (searchResults.length === 0) return
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      setHighlighted(i => Math.min(i + 1, searchResults.length - 1))
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      setHighlighted(i => Math.max(i - 1, 0))
-    } else if (e.key === 'Enter') {
-      e.preventDefault()
-      handleSelect(searchResults[highlightedIndex >= 0 ? highlightedIndex : 0])
-    } else if (e.key === 'Escape') {
-      closeDropdown()
-    }
-  }
+export function Sidebar({ activeView, setActiveView, activeService, setActiveService, open, onToggle }) {
+  const ops = OPS[activeService] ?? []
 
   return (
     <aside className={s.aside}>
@@ -99,13 +32,14 @@ export function Sidebar({ activeView, setActiveView, params, setParams, open, on
         </svg>
       </button>
       <div className={`${s.content} ${open ? '' : s.contentHidden}`}>
+
         <h2 className={s.sectionTitle}>Serviços</h2>
         <div className={s.ops}>
           {SERVICOS.map(sv => (
             <button
               key={sv.id}
-              className={`${s.op} ${activeView === sv.id ? s.opActive : ''}`}
-              onClick={() => setActiveView(sv.id)}
+              className={`${s.op} ${activeService === sv.id ? s.opActive : ''}`}
+              onClick={() => setActiveService(sv.id)}
             >
               <span className={s.num}>{sv.num}</span>
               {sv.label}
@@ -113,79 +47,21 @@ export function Sidebar({ activeView, setActiveView, params, setParams, open, on
           ))}
         </div>
 
-        <div className={s.params}>
-          <div className={s.tabsRow}>
+        <h2 className={s.sectionTitle}>Operações</h2>
+        <div className={s.ops}>
+          {ops.map(op => (
             <button
-              className={`${s.tab} ${activeTab === 'ops' ? s.tabActive : ''}`}
-              onClick={() => setActiveTab('ops')}
-            >Operações</button>
-            <button
-              className={`${s.tab} ${activeTab === 'params' ? s.tabActive : ''}`}
-              onClick={() => setActiveTab('params')}
-            >Parâmetros</button>
-          </div>
-
-          {activeTab === 'ops' ? (
-            <div className={s.ops}>
-              {OPS.map(op => (
-                <button
-                  key={op.id}
-                  className={`${s.op} ${activeView === op.id ? s.opActive : ''}`}
-                  onClick={() => setActiveView(op.id)}
-                >
-                  <span className={s.num}>{op.num}</span>
-                  {op.label}
-                </button>
-              ))}
-            </div>
-          ) : (
-            <>
-              <div className={s.field}>
-                <label htmlFor="paramSearch">Produto</label>
-                <input
-                  ref={searchRef}
-                  id="paramSearch"
-                  type="text"
-                  value={searchTerm}
-                  placeholder="ex: BELURE"
-                  onChange={handleSearchChange}
-                  onKeyDown={handleSearchKeyDown}
-                  onBlur={() => setTimeout(closeDropdown, 150)}
-                  autoComplete="off"
-                />
-                {searching && <div className={s.searchHint}>buscando...</div>}
-              </div>
-
-              <div className={s.field}>
-                <label htmlFor="paramCod">Cod</label>
-                <input
-                  id="paramCod"
-                  type="text"
-                  value={params.Cod}
-                  placeholder="ex: 2968"
-                  onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
-                  onKeyDown={e => { if (e.key === 'Enter' && params.Cod.trim()) setActiveView('culturas') }}
-                />
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-
-      {dropdownPos && (
-        <ul className={s.dropdown} style={{ position: 'fixed', zIndex: 200, ...dropdownPos }}>
-          {searchResults.map((r, i) => (
-            <li
-              key={r.cod}
-              className={`${s.dropdownItem} ${i === highlightedIndex ? s.dropdownItemHighlighted : ''}`}
-              onMouseDown={() => handleSelect(r)}
+              key={op.id}
+              className={`${s.op} ${activeView === op.id ? s.opActive : ''}`}
+              onClick={() => setActiveView(op.id)}
             >
-              <span className={s.dropdownNome}>{r.nome}</span>
-              <span className={s.dropdownCod}>{r.cod}</span>
-            </li>
+              <span className={s.num}>{op.num}</span>
+              {op.label}
+            </button>
           ))}
-        </ul>
-      )}
+        </div>
+
+      </div>
     </aside>
   )
 }

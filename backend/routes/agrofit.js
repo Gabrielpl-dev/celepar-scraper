@@ -14,6 +14,7 @@ router.get('/agrofit', async (req, res) => {
   try {
     const { ma, id } = req.query;
     if (!ma) return res.status(400).json({ ok: false, error: 'ma (registro) é obrigatório' });
+    if (!/^\d+$/.test(ma)) return res.status(400).json({ ok: false, error: 'MA deve conter apenas dígitos' });
 
     const qs = new URLSearchParams({
       p_id_produto: '', p_nm_marca_comercial: '',

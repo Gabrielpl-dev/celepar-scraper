@@ -34,6 +34,39 @@
   text-transform: uppercase;
 }
 
+.produtoLabel {
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.produtoLabel strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.paramsBtn {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  transition: color .15s, border-color .15s;
+}
+.paramsBtn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.paramsBtnActive {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 .themeBtn {
   background: none;
   border: 1px solid var(--line);
