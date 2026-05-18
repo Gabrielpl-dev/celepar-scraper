@@ -1,12 +1,13 @@
+require('dotenv').config()
 const oracledb = require('oracledb')
 
 async function main() {
   let conn
   try {
     conn = await oracledb.getConnection({
-      user: 'gpl_scraper',
-      password: 'Gabriel@0112!L',
-      connectString: 'reag.vms.com.br:1521/reag',
+      user:          process.env.ORACLE_USER,
+      password:      process.env.ORACLE_PASSWORD,
+      connectString: process.env.ORACLE_CONNECT_STRING,
     })
     console.log('Conectado!')
 
