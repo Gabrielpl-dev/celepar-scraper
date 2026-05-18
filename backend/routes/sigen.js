@@ -81,7 +81,7 @@ router.get('/sigen', async (req, res) => {
       documentos.push({
         tipo:        'Ficha de Emergência',
         nomeArquivo: `${nomeConfirmado} - Ficha de Emergência`,
-        url:         `http://localhost:3000/api/sigen-pdf?id=${d.cdRepositorioArquivoFichaEmergencia}`,
+        url:         `/api/sigen-pdf?id=${d.cdRepositorioArquivoFichaEmergencia}`,
         fonte:       'SIGEN',
       });
     }
@@ -89,7 +89,7 @@ router.get('/sigen', async (req, res) => {
       documentos.push({
         tipo:        'Bula',
         nomeArquivo: `${nomeConfirmado} - Bula`,
-        url:         `http://localhost:3000/api/sigen-pdf?id=${d.cdRepositorioArquivoBula}`,
+        url:         `/api/sigen-pdf?id=${d.cdRepositorioArquivoBula}`,
         fonte:       'SIGEN',
       });
     }
