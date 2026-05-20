@@ -1,12 +1,15 @@
+require('dotenv').config()
 const oracledb = require('oracledb')
+
+oracledb.initOracleClient({ libDir: 'C:\\oracle\\instantclient_21_15' })
 
 async function main() {
   let conn
   try {
     conn = await oracledb.getConnection({
-      user: '<ORACLE_USER>',
-      password: 'Gabriel@0112!L',
-      connectString: '<ORACLE_CONNECT_STRING>',
+      user:          process.env.ORACLE_USER,
+      password:      process.env.ORACLE_PASSWORD,
+      connectString: process.env.ORACLE_CONNECT_STRING,
     })
     console.log('Conectado!')
 
