@@ -1,6 +1,8 @@
 require('dotenv').config()
 const oracledb = require('oracledb')
 
+oracledb.initOracleClient({ libDir: 'C:\\oracle\\instantclient_21_15' })
+
 async function main() {
   let conn
   try {
