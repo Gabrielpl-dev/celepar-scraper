@@ -3,13 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <title>Banco — Oracle</title>
-  <style>
-    body { font-family: monospace; max-width: 600px; margin: 60px auto; background: #111; color: #888; }
-    h1 { color: #fff; font-size: 16px; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Banco Oracle</h1>
-  <p>Em construção.</p>
+
+<h1>Banco Oracle</h1>
+<div class="sub">Consulta direta ao banco da empresa — máx. 500 linhas</div>
+
+<div class="bloco">
+  <label>Exemplos</label>
+  <div class="exemplos">
+    <span class="q" onclick="usar(this)">SELECT username, account_status, created FROM dba_users ORDER BY username</span>
+    <span class="q" onclick="usar(this)">SELECT * FROM viasoft.cultura WHERE rownum &lt;= 20</span>
+    <span class="q" onclick="usar(this)">SELECT table_name FROM all_tables WHERE owner = 'VIASOFT' ORDER BY table_name</span>
+    <span class="q" onclick="usar(this)">SELECT COUNT(*) AS total FROM viasoft.receitapadrao</span>
+  </div>
+</div>
+
+<div class="bloco">
+  <label>SQL</label>
+  <textarea id="sql" spellcheck="false"></textarea>
+  <div class="row">
+    <button id="btn-run" onclick="rodar()">Executar ↵</button>
+    <span class="status" id="status"></span>
+  </div>
+</div>
+
+<div id="resultado"></div>
+
+<script src="app.js"></script>
 </body>
 </html>
