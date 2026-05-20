@@ -47,11 +47,35 @@
 
 <!-- ABA NAVEGAÇÃO -->
 <div id="aba-navegacao" class="aba hidden">
-  <div class="bloco">
-    <label>Tabelas — VIASOFT</label>
-    <div id="nav-status" class="nav-status">carregando...</div>
-    <div id="nav-tabelas"></div>
+
+  <div class="accordion" id="acc-conhecidas">
+    <button class="acc-header" onclick="toggleAcc('conhecidas')">
+      <span>Tabelas conhecidas</span>
+      <span class="acc-seta">▸</span>
+    </button>
+    <div class="acc-body hidden">
+      <div id="nav-conhecidas-status" class="nav-status"></div>
+      <div id="nav-conhecidas"></div>
+    </div>
   </div>
+
+  <div class="accordion" id="acc-todas">
+    <button class="acc-header" onclick="toggleAcc('todas')">
+      <span>Todas as tabelas</span>
+      <span class="acc-seta">▸</span>
+    </button>
+    <div class="acc-body hidden">
+      <div id="nav-todas-status" class="nav-status">carregando...</div>
+      <div id="nav-todas"></div>
+    </div>
+  </div>
+
+</div>
+
+<div id="menu-flutuante" class="menu-flutuante hidden">
+  <button onclick="acessarTabela()">Acessar</button>
+  <button id="menu-btn-salvar"  onclick="salvarTabela()">Salvar</button>
+  <button id="menu-btn-excluir" onclick="excluirTabela()">Excluir</button>
 </div>
 
 <script src="app.js"></script>

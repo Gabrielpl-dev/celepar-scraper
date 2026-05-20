@@ -1,5 +1,18 @@
 const express  = require('express')
 const oracledb = require('oracledb')
+const fs       = require('fs')
+const path     = require('path')
+
+const TABELAS_JSON = path.join(__dirname, '..', '..', 'banco', 'tabelas.json')
+
+function lerTabelas() {
+  try { return JSON.parse(fs.readFileSync(TABELAS_JSON, 'utf8')) }
+  catch (_) { return { tabelas: [] } }
+}
+
+function gravarTabelas(data) {
+  fs.writeFileSync(TABELAS_JSON, JSON.stringify(data, null, 2), 'utf8')
+}
 
 const router = express.Router()
 
@@ -45,6 +58,27 @@ router.post('/banco', async (req, res) => {
   } finally {
     if (conn) await conn.close().catch(() => {})
   }
+})
+
+router.post('/banco/tabelas/salvar', (req, res) => {
+  const { nome } = req.body
+  if (!nome) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
+  const data = lerTabelas()
+  if (!data.tabelas.includes(nome)) {
+    data.tabelas.push(nome)
+    data.tabelas.sort()
+    gravarTabelas(data)
+  }
+  res.json({ ok: true, tabelas: data.tabelas })
+})
+
+router.post('/banco/tabelas/excluir', (req, res) => {
+  const { nome } = req.body
+  if (!nome) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
+  const data = lerTabelas()
+  data.tabelas = data.tabelas.filter(t => t !== nome)
+  gravarTabelas(data)
+  res.json({ ok: true, tabelas: data.tabelas })
 })
 
 module.exports = router
