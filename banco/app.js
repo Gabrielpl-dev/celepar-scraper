@@ -3,11 +3,48 @@ const status = document.getElementById('status')
 const btnRun = document.getElementById('btn-run')
 const result = document.getElementById('resultado')
 
+let tabelasCarregadas = false
+
 function mudarAba(nome, btn) {
   document.querySelectorAll('.aba').forEach(el => el.classList.add('hidden'))
   document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'))
   document.getElementById('aba-' + nome).classList.remove('hidden')
   btn.classList.add('active')
+  if (nome === 'navegacao' && !tabelasCarregadas) carregarTabelas()
+}
+
+async function carregarTabelas() {
+  const navStatus  = document.getElementById('nav-status')
+  const navTabelas = document.getElementById('nav-tabelas')
+
+  try {
+    const res  = await fetch('/api/banco', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ sql: "SELECT table_name FROM all_tables WHERE owner = 'VIASOFT' ORDER BY table_name" }),
+    })
+    const data = await res.json()
+
+    if (!data.ok) {
+      navStatus.className   = 'nav-status erro'
+      navStatus.textContent = data.error
+      return
+    }
+
+    tabelasCarregadas = true
+    navStatus.textContent = `${data.rows.length} tabelas`
+
+    const html = ['<div class="nav-lista">']
+    for (const row of data.rows) {
+      html.push(`<span class="nav-tabela">${esc(row.TABLE_NAME)}</span>`)
+    }
+    html.push('</div>')
+    navTabelas.innerHTML = html.join('')
+
+  } catch (err) {
+    navStatus.className   = 'nav-status erro'
+    navStatus.textContent = 'Erro de rede: ' + err.message
+  }
 }
 
 function usar(el) {
