@@ -27,7 +27,10 @@ router.post('/banco', async (req, res) => {
       connectString: process.env.ORACLE_CONNECT_STRING,
     })
 
-    const result = await conn.execute(sql.trim(), [], {
+    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
+
+    const cleanSql = sql.trim().replace(/;+$/, '')
+    const result = await conn.execute(cleanSql, [], {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
       maxRows:   500,
     })
