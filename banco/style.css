@@ -1,8 +1,20 @@
 body { font-family: monospace; max-width: 960px; margin: 40px auto; padding: 0 20px; background: #111; color: #ccc; }
 h1 { color: #fff; font-size: 18px; margin-bottom: 4px; }
-.sub { font-size: 12px; color: #555; margin-bottom: 28px; }
+.sub { font-size: 12px; color: #555; margin-bottom: 20px; }
+
+.tabs { display: flex; gap: 0; border-bottom: 1px solid #2a2a2a; margin-bottom: 20px; }
+.tab {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: #555; font-family: monospace; font-size: 12px; text-transform: uppercase;
+  letter-spacing: .06em; padding: 8px 16px; cursor: pointer; margin-bottom: -1px;
+}
+.tab:hover { color: #ccc; }
+.tab.active { color: #fff; border-bottom-color: #2a7; }
+
+.aba.hidden { display: none; }
 
 .bloco { background: #161616; border: 1px solid #2a2a2a; border-radius: 6px; padding: 16px 18px; margin-top: 20px; }
+.bloco.vazio { color: #444; font-size: 12px; }
 label { display: block; font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
 
 textarea {

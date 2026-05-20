@@ -3,6 +3,13 @@ const status = document.getElementById('status')
 const btnRun = document.getElementById('btn-run')
 const result = document.getElementById('resultado')
 
+function mudarAba(nome, btn) {
+  document.querySelectorAll('.aba').forEach(el => el.classList.add('hidden'))
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'))
+  document.getElementById('aba-' + nome).classList.remove('hidden')
+  btn.classList.add('active')
+}
+
 function usar(el) {
   sqlEl.value = el.textContent.replace(/&lt;/g, '<').replace(/&gt;/g, '>')
   sqlEl.focus()

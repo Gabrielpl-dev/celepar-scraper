@@ -10,26 +10,45 @@
 <h1>Banco Oracle</h1>
 <div class="sub">Consulta direta ao banco da empresa — máx. 500 linhas</div>
 
-<div class="bloco">
-  <label>Exemplos</label>
-  <div class="exemplos">
-    <span class="q" onclick="usar(this)">SELECT username, account_status, created FROM dba_users ORDER BY username</span>
-    <span class="q" onclick="usar(this)">SELECT * FROM viasoft.cultura WHERE rownum &lt;= 20</span>
-    <span class="q" onclick="usar(this)">SELECT table_name FROM all_tables WHERE owner = 'VIASOFT' ORDER BY table_name</span>
-    <span class="q" onclick="usar(this)">SELECT COUNT(*) AS total FROM viasoft.receitapadrao</span>
-  </div>
+<div class="tabs">
+  <button class="tab active" onclick="mudarAba('sql', this)">SQL</button>
+  <button class="tab" onclick="mudarAba('parametros', this)">Parâmetros</button>
+  <button class="tab" onclick="mudarAba('navegacao', this)">Navegação</button>
 </div>
 
-<div class="bloco">
-  <label>SQL</label>
-  <textarea id="sql" spellcheck="false"></textarea>
-  <div class="row">
-    <button id="btn-run" onclick="rodar()">Executar ↵</button>
-    <span class="status" id="status"></span>
+<!-- ABA SQL -->
+<div id="aba-sql" class="aba">
+  <div class="bloco">
+    <label>Exemplos</label>
+    <div class="exemplos">
+      <span class="q" onclick="usar(this)">SELECT username, account_status, created FROM dba_users ORDER BY username</span>
+      <span class="q" onclick="usar(this)">SELECT * FROM cultura WHERE rownum &lt;= 20</span>
+      <span class="q" onclick="usar(this)">SELECT table_name FROM all_tables WHERE owner = 'VIASOFT' ORDER BY table_name</span>
+      <span class="q" onclick="usar(this)">SELECT COUNT(*) AS total FROM receitapadrao</span>
+    </div>
   </div>
+
+  <div class="bloco">
+    <label>SQL</label>
+    <textarea id="sql" spellcheck="false"></textarea>
+    <div class="row">
+      <button id="btn-run" onclick="rodar()">Executar ↵</button>
+      <span class="status" id="status"></span>
+    </div>
+  </div>
+
+  <div id="resultado"></div>
 </div>
 
-<div id="resultado"></div>
+<!-- ABA PARÂMETROS -->
+<div id="aba-parametros" class="aba hidden">
+  <div class="bloco vazio">Em construção.</div>
+</div>
+
+<!-- ABA NAVEGAÇÃO -->
+<div id="aba-navegacao" class="aba hidden">
+  <div class="bloco vazio">Em construção.</div>
+</div>
 
 <script src="app.js"></script>
 </body>
