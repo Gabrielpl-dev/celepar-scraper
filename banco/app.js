@@ -3,19 +3,65 @@ const status = document.getElementById('status')
 const btnRun = document.getElementById('btn-run')
 const result = document.getElementById('resultado')
 
-let tabelasCarregadas = false
+// ── Abas ────────────────────────────────────────────────────────────────────
+
+let navInicializado = false
 
 function mudarAba(nome, btn) {
   document.querySelectorAll('.aba').forEach(el => el.classList.add('hidden'))
   document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'))
   document.getElementById('aba-' + nome).classList.remove('hidden')
   btn.classList.add('active')
-  if (nome === 'navegacao' && !tabelasCarregadas) carregarTabelas()
+  if (nome === 'navegacao' && !navInicializado) {
+    navInicializado = true
+    carregarConhecidas()
+  }
 }
 
-async function carregarTabelas() {
-  const navStatus  = document.getElementById('nav-status')
-  const navTabelas = document.getElementById('nav-tabelas')
+// ── Acordeões ────────────────────────────────────────────────────────────────
+
+const todasCarregadas = { feito: false }
+
+function toggleAcc(nome) {
+  const body  = document.querySelector(`#acc-${nome} .acc-body`)
+  const seta  = document.querySelector(`#acc-${nome} .acc-seta`)
+  const aberto = !body.classList.contains('hidden')
+
+  body.classList.toggle('hidden', aberto)
+  seta.classList.toggle('aberto', !aberto)
+
+  if (!aberto && nome === 'todas' && !todasCarregadas.feito) carregarTodas()
+}
+
+// ── Tabelas conhecidas (tabelas.json) ────────────────────────────────────────
+
+async function carregarConhecidas() {
+  const statusEl = document.getElementById('nav-conhecidas-status')
+  const listaEl  = document.getElementById('nav-conhecidas')
+
+  try {
+    const res  = await fetch('/banco/tabelas.json')
+    const data = await res.json()
+    const tabelas = data.tabelas ?? []
+
+    if (!tabelas.length) {
+      statusEl.textContent = 'Nenhuma tabela cadastrada ainda.'
+      return
+    }
+
+    statusEl.textContent = `${tabelas.length} tabela${tabelas.length !== 1 ? 's' : ''}`
+    listaEl.innerHTML = renderLista(tabelas.map(t => t.nome ?? t))
+  } catch (err) {
+    statusEl.className   = 'nav-status erro'
+    statusEl.textContent = 'Erro ao carregar tabelas.json: ' + err.message
+  }
+}
+
+// ── Todas as tabelas (Oracle) ─────────────────────────────────────────────────
+
+async function carregarTodas() {
+  const statusEl = document.getElementById('nav-todas-status')
+  const listaEl  = document.getElementById('nav-todas')
 
   try {
     const res  = await fetch('/api/banco', {
@@ -26,26 +72,27 @@ async function carregarTabelas() {
     const data = await res.json()
 
     if (!data.ok) {
-      navStatus.className   = 'nav-status erro'
-      navStatus.textContent = data.error
+      statusEl.className   = 'nav-status erro'
+      statusEl.textContent = data.error
       return
     }
 
-    tabelasCarregadas = true
-    navStatus.textContent = `${data.rows.length} tabelas`
-
-    const html = ['<div class="nav-lista">']
-    for (const row of data.rows) {
-      html.push(`<span class="nav-tabela">${esc(row.TABLE_NAME)}</span>`)
-    }
-    html.push('</div>')
-    navTabelas.innerHTML = html.join('')
-
+    todasCarregadas.feito = true
+    statusEl.textContent  = `${data.rows.length} tabelas`
+    listaEl.innerHTML     = renderLista(data.rows.map(r => r.TABLE_NAME))
   } catch (err) {
-    navStatus.className   = 'nav-status erro'
-    navStatus.textContent = 'Erro de rede: ' + err.message
+    statusEl.className   = 'nav-status erro'
+    statusEl.textContent = 'Erro de rede: ' + err.message
   }
 }
+
+function renderLista(nomes) {
+  return '<div class="nav-lista">' +
+    nomes.map(n => `<span class="nav-tabela">${esc(n)}</span>`).join('') +
+    '</div>'
+}
+
+// ── Aba SQL ──────────────────────────────────────────────────────────────────
 
 function usar(el) {
   sqlEl.value = el.textContent.replace(/&lt;/g, '<').replace(/&gt;/g, '>')
@@ -111,6 +158,8 @@ async function rodar() {
     btnRun.disabled = false
   }
 }
+
+// ── Util ──────────────────────────────────────────────────────────────────────
 
 function esc(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
