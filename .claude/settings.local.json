@@ -114,7 +114,12 @@
       "Bash(curl -s \"http://localhost:3000/api/sigen?ma=00513\")",
       "Bash(curl -s \"http://localhost:3000/api/agrofit-ids\")",
       "Bash(curl -s -o /tmp/ficha.pdf \"http://localhost:3000/api/sigen-pdf?id=162190\" -w \"%{http_code} %{content_type} %{size_download} bytes\")",
-      "PowerShell(Rename-Item -Path \"c:\\\\Users\\\\gabriel.pinheiro\\\\Documents\\\\celepar_scraper\\\\teste_agrofit\" -NewName \"teste\")"
+      "PowerShell(Rename-Item -Path \"c:\\\\Users\\\\gabriel.pinheiro\\\\Documents\\\\celepar_scraper\\\\teste_agrofit\" -NewName \"teste\")",
+      "Bash(node backend/teste_oracle.js)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "PowerShell(winget --version)"
     ]
   }
 }

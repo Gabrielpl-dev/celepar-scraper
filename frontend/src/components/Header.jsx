@@ -3,14 +3,16 @@ import s from './Header.module.css'
 export function Header({ theme, onToggleTheme, onParams, paramsActive, produtoNome }) {
   return (
     <header className={s.header}>
-      <h1 className={s.title}></h1>
-      <div className={s.right}>
-        {produtoNome && (
-          <span className={s.produtoLabel}>produto: <strong>{produtoNome}</strong></span>
-        )}
+      <div className={s.left}>
         <button className={`${s.paramsBtn} ${paramsActive ? s.paramsBtnActive : ''}`} onClick={onParams}>
           Parâmetros
         </button>
+        {produtoNome && (
+          <span className={s.produtoLabel}>produto: <strong>{produtoNome}</strong></span>
+        )}
+      </div>
+      <h1 className={s.title}></h1>
+      <div className={s.right}>
         <button className={s.themeBtn} onClick={onToggleTheme} title={theme === 'dark' ? 'Modo claro' : 'Modo escuro'}>
           {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
         </button>
