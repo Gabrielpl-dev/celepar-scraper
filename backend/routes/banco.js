@@ -32,7 +32,7 @@ router.post('/banco', async (req, res) => {
     const cleanSql = sql.trim().replace(/;+$/, '')
     const result = await conn.execute(cleanSql, [], {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
-      maxRows:   500,
+      maxRows:   0,
     })
 
     res.json({
