@@ -10,10 +10,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/teste', express.static(path.join(__dirname, '..', 'teste')));
+app.use('/banco', express.static(path.join(__dirname, '..', 'banco')));
 
 app.use('/api', require('./routes/celepar'));
 app.use('/api', require('./routes/agrofit'));
 app.use('/api', require('./routes/sigen'));
+app.use('/api', require('./routes/banco'));
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 
