@@ -1,1 +1,46 @@
-/* placeholder */
+body { font-family: monospace; max-width: 960px; margin: 40px auto; padding: 0 20px; background: #111; color: #ccc; }
+h1 { color: #fff; font-size: 18px; margin-bottom: 4px; }
+.sub { font-size: 12px; color: #555; margin-bottom: 28px; }
+
+.bloco { background: #161616; border: 1px solid #2a2a2a; border-radius: 6px; padding: 16px 18px; margin-top: 20px; }
+label { display: block; font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+
+textarea {
+  width: 100%; box-sizing: border-box;
+  background: #1a1a1a; border: 1px solid #333; color: #eee;
+  padding: 10px 12px; font-family: monospace; font-size: 13px;
+  border-radius: 4px; resize: vertical; min-height: 90px;
+}
+textarea:focus { outline: none; border-color: #2a7; }
+
+.row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+button {
+  padding: 7px 18px; border: none; color: #fff;
+  font-family: monospace; font-size: 12px; border-radius: 4px;
+  cursor: pointer; text-transform: uppercase; letter-spacing: .05em;
+}
+#btn-run { background: #1a5c35; border: 1px solid #2a7; }
+#btn-run:hover { background: #2a7; }
+#btn-run:disabled { background: #333; border-color: #444; color: #666; cursor: default; }
+
+.status { font-size: 12px; color: #555; }
+.status.erro { color: #f66; }
+.status.ok   { color: #2a7; }
+
+.exemplos { display: flex; flex-wrap: wrap; gap: 6px; }
+.q {
+  font-size: 11px; padding: 4px 10px;
+  background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 4px;
+  cursor: pointer; color: #777;
+}
+.q:hover { border-color: #2a7; color: #ccc; }
+
+#resultado { margin-top: 20px; overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+thead tr { border-bottom: 1px solid #2a2a2a; }
+th { color: #555; text-align: left; padding: 6px 10px; white-space: nowrap; font-weight: normal; }
+td { padding: 6px 10px; border-bottom: 1px solid #1c1c1c; color: #ccc; white-space: nowrap; max-width: 300px; overflow: hidden; text-overflow: ellipsis; }
+tr:hover td { background: #161616; }
+td.null { color: #333; font-style: italic; }
+.row-count { font-size: 11px; color: #555; margin-bottom: 10px; }
