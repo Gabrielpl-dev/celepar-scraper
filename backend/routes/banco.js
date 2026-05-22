@@ -2,6 +2,7 @@ const express  = require('express')
 const oracledb = require('oracledb')
 const fs       = require('fs')
 const path     = require('path')
+const { fetchPage, parseRows, buildUrl, norm } = require('../lib/scraper')
 
 const TABELAS_JSON = path.join(__dirname, '..', '..', 'banco', 'tabelas.json')
 
@@ -82,6 +83,57 @@ router.get('/banco/buscar', async (req, res) => {
       { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
     )
     res.json({ ok: true, rows: result.rows.map(r => r[coluna.toUpperCase()]) })
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message })
+  } finally {
+    if (conn) await conn.close().catch(() => {})
+  }
+})
+
+router.post('/cccb', async (req, res) => {
+  if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
+  const { cultura, params = {} } = req.body
+  if (!cultura?.trim()) return res.status(400).json({ ok: false, error: 'cultura é obrigatória' })
+
+  let conn
+  try {
+    conn = await oracledb.getConnection({
+      user:          process.env.ORACLE_USER,
+      password:      process.env.ORACLE_PASSWORD,
+      connectString: process.env.ORACLE_CONNECT_STRING,
+    })
+    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
+
+    const oracleResult = await conn.execute(
+      `SELECT DISTINCT d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO
+       FROM RECEITPADRAO r
+       JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
+       JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
+       WHERE UPPER(c.NOME) = UPPER(:cultura)
+         AND r.ATIVO = 'Sim'
+       ORDER BY d.SIAGROALV`,
+      { cultura: cultura.trim() },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+    )
+    await conn.close()
+    conn = null
+
+    const html = await fetchPage(buildUrl(params))
+    const cultNorm = norm(cultura.trim())
+    const celeparSet = new Set(
+      parseRows(html).filter(r => norm(r.cultura) === cultNorm).map(r => String(r.siagro))
+    )
+
+    const corretos = oracleResult.rows
+      .filter(r => celeparSet.has(String(r.SIAGROALV)))
+      .map(r => ({
+        cultura:     cultura.trim(),
+        alvo_sb:     r.SIAGROALV,
+        alvo_siagro: r.SIAGROALV,
+        diagnostico: r.DIAGNOSTICO,
+      }))
+
+    res.json({ ok: true, corretos, errados: [] })
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message })
   } finally {

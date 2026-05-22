@@ -7,6 +7,7 @@ async function call(endpoint, body, method = 'POST') {
 
 export const api = {
   extrairCultura: (cultura, params) => call('extrair-cultura', { cultura, params }),
+  cccb:           (cultura, params) => call('cccb', { cultura, params }),
   buscarSiagro:   (siagro, params)  => call('buscar-siagro', { siagro, params }),
   comparar:       (c1, c2, params)  => call('comparar', { cultura1: c1, cultura2: c2, params }),
   verificar:      (termo, params)   => call('verificar', { termo, params }),
