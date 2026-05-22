@@ -12,64 +12,64 @@ export function ExtrairView({ params }) {
   const [count, setCount]     = useState(null)
   const [took, setTook]       = useState(null)
   const [result, setResult]   = useState(null)
-  const [error, setError]     = useState(null)
 
   async function handleSubmit(e) {
     e.preventDefault()
     setStatus('loading')
-    setMessage('consultando celepar...')
+    setMessage('consultando celepar e banco...')
     setResult(null)
     const t0 = performance.now()
     try {
-      const data = await api.extrairCultura(cultura, params)
+      const data = await api.cccb(cultura, params)
       const ms = Math.round(performance.now() - t0)
       if (!data.ok) throw new Error(data.error)
       setResult(data)
       setStatus('ok')
       setMessage('sucesso —')
-      setCount(data.total)
+      setCount(data.corretos.length)
       setTook(ms)
     } catch (err) {
       setStatus('err')
       setMessage('erro: ' + err.message)
-      setError(err.message)
     }
   }
 
   function handleExport() {
-    const rows = result.rows
-    const csv = ['Cultura,SIAGRO,Alvo', ...rows.map(r => [r.cultura, r.siagro, r.alvo].map(csvEsc).join(','))]
-    downloadCSV('extrair_cultura.csv', csv)
+    const csv = [
+      'Cultura,Alvo SB,Alvo Siagro,Diagnóstico',
+      ...result.corretos.map(r => [r.cultura, r.alvo_sb, r.alvo_siagro, r.diagnostico].map(csvEsc).join(',')),
+    ]
+    downloadCSV('cccb_corretos.csv', csv)
   }
 
-  const tableRows = result?.rows.map(r => [
+  const corretoRows = result?.corretos.map(r => [
     r.cultura,
-    <SiagroPill key={r.siagro} code={r.siagro} />,
-    r.alvo,
-    <input type="checkbox" key="cb" />,
+    <SiagroPill key="sb"  code={r.alvo_sb} />,
+    <SiagroPill key="cel" code={r.alvo_siagro} />,
+    r.diagnostico,
   ]) ?? []
 
   const toolbar = result && (
     <>
       <button className={tableStyles.ghostBtn} onClick={handleExport}>↓ exportar csv</button>
-      <span className={tableStyles.toolbarMeta}>cultura: <b>{result.cultura}</b></span>
+      <span className={tableStyles.toolbarMeta}>cultura: <b>{cultura}</b></span>
     </>
   )
 
   const emptyNode = result && (
     <div className={tableStyles.emptyState}>
-      Nenhum registro para <code>{cultura}</code>.
+      Nenhum registro correto para <code>{cultura}</code>.
     </div>
   )
 
   return (
     <section className={s.section}>
       <div className={s.opHeader}>
-        <h3>Extrair SIAGRO por cultura</h3>
-        <span className={s.tag}>script 01</span>
+        <h3>Comparar Cultura Celepar com o Banco</h3>
+        <span className={s.tag}>CCCB</span>
       </div>
       <p className={s.desc}>
-        Pesquisa todas as linhas cuja coluna "Cultura" bate exatamente com o nome informado (case e acento insensitivos). Retorna SIAGRO e Alvo de cada uma.
+        Cruza os diagnósticos cadastrados no banco (ATIVO = Sim) com os registros do Celepar para a cultura informada. Exibe os que têm código SIAGRO coincidente.
       </p>
 
       <form className={s.formRow} onSubmit={handleSubmit}>
@@ -90,10 +90,10 @@ export function ExtrairView({ params }) {
 
       <StatusBar status={status} message={message} count={count} took={took} />
 
-      {(result || error) && (
+      {result && (
         <ResultTable
-          headers={['Cultura', 'SIAGRO', 'Alvo', '✓']}
-          rows={tableRows}
+          headers={['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico']}
+          rows={corretoRows}
           toolbar={toolbar}
           emptyNode={emptyNode}
         />
