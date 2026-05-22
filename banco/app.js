@@ -234,7 +234,11 @@ const debounceTimers = {}
   input.addEventListener('input', () => {
     clearTimeout(debounceTimers[campo])
     const q = input.value.trim()
-    if (!q) { dropdown.classList.add('hidden'); return }
+    if (!q) {
+      dropdown.classList.add('hidden')
+      if (campo === 'produto') carregarReceitas('')
+      return
+    }
     debounceTimers[campo] = setTimeout(() => buscarParam(campo, q, input, dropdown), 300)
   })
 
@@ -268,6 +272,60 @@ async function buscarParam(campo, q, input, dropdown) {
 function selecionarParam(id, valor) {
   document.getElementById(id).value = valor
   document.querySelectorAll('.param-dropdown').forEach(d => d.classList.add('hidden'))
+  if (id === 'param-produto') carregarReceitas(valor)
+}
+
+async function carregarReceitas(produto) {
+  const el = document.getElementById('resultado-params')
+  if (!produto) { el.innerHTML = ''; return }
+
+  el.innerHTML = '<p class="row-count">carregando...</p>'
+
+  const sql =
+    `SELECT r.DESCRICAO AS PRODUTO, c.NOME AS CULTURA, d.DESCRICAO AS DIAGNOSTICO ` +
+    `FROM RECEITPADRAO r ` +
+    `JOIN CULTURA c ON r.CULTURAID = c.CULTURAID ` +
+    `JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID ` +
+    `WHERE r.DESCRICAO = '${produto.replace(/'/g, "''")}' ` +
+    `ORDER BY c.NOME, d.DESCRICAO`
+
+  try {
+    const res  = await fetch('/api/banco', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ sql }),
+    })
+    const data = await res.json()
+
+    if (!data.ok) {
+      el.innerHTML = `<p class="status erro">${esc(data.error)}</p>`
+      return
+    }
+
+    const { rows } = data
+    if (!rows.length) {
+      el.innerHTML = '<p class="row-count">Sem receitas cadastradas.</p>'
+      return
+    }
+
+    const html = [
+      `<div class="row-count">${rows.length} linha${rows.length !== 1 ? 's' : ''}</div>`,
+      '<table><thead><tr><th>Produto</th><th>Cultura</th><th>Diagnóstico</th></tr></thead><tbody>',
+    ]
+    for (const r of rows) {
+      html.push(
+        `<tr>` +
+        `<td title="${esc(String(r.PRODUTO ?? ''))}">${esc(String(r.PRODUTO ?? ''))}</td>` +
+        `<td title="${esc(String(r.CULTURA ?? ''))}">${esc(String(r.CULTURA ?? ''))}</td>` +
+        `<td title="${esc(String(r.DIAGNOSTICO ?? ''))}">${esc(String(r.DIAGNOSTICO ?? ''))}</td>` +
+        `</tr>`
+      )
+    }
+    html.push('</tbody></table>')
+    el.innerHTML = html.join('')
+  } catch (err) {
+    el.innerHTML = `<p class="status erro">Erro de rede: ${esc(err.message)}</p>`
+  }
 }
 
 // ── Parâmetros — resize de colunas ───────────────────────────────────────────
