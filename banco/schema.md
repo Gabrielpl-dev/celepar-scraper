@@ -28,6 +28,7 @@ Diagnósticos, pragas e doenças.
 | Coluna          | Tipo | Descrição              |
 |-----------------|------|------------------------|
 | DIAGNOSTICOID   | PK   | Identificador          |
+| SIAGROALV       |      | Código SIAGRO do alvo  |
 | DESCRICAO       |      | Nome do diagnóstico    |
 
 ---

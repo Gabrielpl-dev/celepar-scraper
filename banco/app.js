@@ -282,7 +282,7 @@ async function carregarReceitas(produto) {
   el.innerHTML = '<p class="row-count">carregando...</p>'
 
   const sql =
-    `SELECT r.DESCRICAO AS PRODUTO, c.NOME AS CULTURA, d.DESCRICAO AS DIAGNOSTICO ` +
+    `SELECT r.DESCRICAO AS PRODUTO, c.NOME AS CULTURA, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO ` +
     `FROM RECEITPADRAO r ` +
     `JOIN CULTURA c ON r.CULTURAID = c.CULTURAID ` +
     `JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID ` +
@@ -310,13 +310,14 @@ async function carregarReceitas(produto) {
 
     const html = [
       `<div class="row-count">${rows.length} linha${rows.length !== 1 ? 's' : ''}</div>`,
-      '<table><thead><tr><th>Produto</th><th>Cultura</th><th>Diagnóstico</th></tr></thead><tbody>',
+      '<table><thead><tr><th>Produto</th><th>Cultura</th><th>SIAGROALV</th><th>Diagnóstico</th></tr></thead><tbody>',
     ]
     for (const r of rows) {
       html.push(
         `<tr>` +
         `<td title="${esc(String(r.PRODUTO ?? ''))}">${esc(String(r.PRODUTO ?? ''))}</td>` +
         `<td title="${esc(String(r.CULTURA ?? ''))}">${esc(String(r.CULTURA ?? ''))}</td>` +
+        `<td title="${esc(String(r.SIAGROALV ?? ''))}">${esc(String(r.SIAGROALV ?? ''))}</td>` +
         `<td title="${esc(String(r.DIAGNOSTICO ?? ''))}">${esc(String(r.DIAGNOSTICO ?? ''))}</td>` +
         `</tr>`
       )
