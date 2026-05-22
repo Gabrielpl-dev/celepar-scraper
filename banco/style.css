@@ -59,7 +59,7 @@ button {
 
 .params-table {
   display: flex; border: 1px solid #2a2a2a; border-radius: 6px;
-  overflow: hidden; height: 90px; margin-top: 20px;
+  overflow: hidden; margin-top: 20px;
 }
 .param-col { display: flex; flex-direction: column; min-width: 60px; overflow: hidden; }
 .col-header {
@@ -68,9 +68,10 @@ button {
   white-space: nowrap; user-select: none;
 }
 .param-input {
-  flex: 1; background: #111; border: none; color: #ccc;
-  font-family: monospace; font-size: 12px; padding: 6px 10px;
-  resize: none; outline: none;
+  background: #111; border: none; color: #ccc;
+  font-family: monospace; font-size: 12px; padding: 2px 10px;
+  resize: none; outline: none; line-height: 1;
+  height: calc(12px + 4px);
 }
 .param-input:focus { background: #141414; }
 .col-resizer {
