@@ -11,6 +11,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/teste', express.static(path.join(__dirname, '..', 'teste')));
 app.use('/banco', express.static(path.join(__dirname, '..', 'banco')));
+app.get('/banco/:tabela', (_req, res) =>
+  res.sendFile(path.join(__dirname, '..', 'banco', 'tabela.html'))
+);
 
 app.use('/api', require('./routes/celepar'));
 app.use('/api', require('./routes/agrofit'));
