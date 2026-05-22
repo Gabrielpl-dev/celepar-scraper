@@ -1,3 +1,7 @@
 {
-  "tabelas": []
+  "tabelas": [
+    "CULTURA",
+    "DIAGNOSTICO",
+    "RECEITPADRAO"
+  ]
 }
