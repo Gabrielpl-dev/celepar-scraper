@@ -203,10 +203,26 @@ async function rodar() {
 
 // ── Parâmetros — busca no Oracle ─────────────────────────────────────────────
 
+// Schema relevante (schema VIASOFT):
+//
+//   RECEITPADRAO          — receita padrão (produto agrotóxico)
+//     RECPADRAOID           PK
+//     DESCRICAO             nome do produto  ← campo Produto
+//     CULTURAID             FK → CULTURA.CULTURAID
+//     DIAGNOSTICOID         FK → DIAGNOSTICO.DIAGNOSTICOID
+//
+//   CULTURA               — culturas agrícolas
+//     CULTURAID             PK
+//     NOME                  nome da cultura  ← campo Cultura
+//
+//   DIAGNOSTICO           — diagnósticos / pragas / doenças
+//     DIAGNOSTICOID         PK
+//     DESCRICAO             nome do diagnóstico  ← campo Diagnóstico
+
 const PARAMS_CONFIG = {
   produto:     { tabela: 'RECEITPADRAO', coluna: 'DESCRICAO' },
-  cultura:     { tabela: 'CULTURA',     coluna: 'NOME' },
-  diagnostico: { tabela: 'DIAGNOSTICO', coluna: 'NOME' },
+  cultura:     { tabela: 'CULTURA',      coluna: 'NOME'      },
+  diagnostico: { tabela: 'DIAGNOSTICO',  coluna: 'DESCRICAO' },
 }
 
 const debounceTimers = {}
