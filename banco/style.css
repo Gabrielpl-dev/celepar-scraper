@@ -113,6 +113,18 @@ button {
 .menu-flutuante button:hover { background: #2a2a2a; color: #fff; }
 .menu-flutuante button.perigo:hover { background: #3a1a1a; color: #f66; }
 
+.param-dropdown {
+  position: fixed; z-index: 50;
+  background: #1e1e1e; border: 1px solid #2a2a2a; border-top: none;
+  max-height: 200px; overflow-y: auto;
+}
+.param-dropdown.hidden { display: none; }
+.param-dropdown-item {
+  padding: 4px 10px; font-size: 12px; color: #ccc;
+  cursor: pointer; font-family: monospace;
+}
+.param-dropdown-item:hover { background: #2a2a2a; }
+
 #resultado { margin-top: 20px; overflow-x: auto; }
 
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
