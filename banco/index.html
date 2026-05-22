@@ -42,20 +42,20 @@
 
 <!-- ABA PARÂMETROS -->
 <div id="aba-parametros" class="aba hidden">
-  <div class="bloco">
-    <div class="params-grid">
-      <div class="param-col">
-        <label>Produto</label>
-        <textarea class="param-input" id="param-produto" spellcheck="false"></textarea>
-      </div>
-      <div class="param-col">
-        <label>Cultura</label>
-        <textarea class="param-input" id="param-cultura" spellcheck="false"></textarea>
-      </div>
-      <div class="param-col">
-        <label>Diagnóstico</label>
-        <textarea class="param-input" id="param-diagnostico" spellcheck="false"></textarea>
-      </div>
+  <div class="params-table">
+    <div class="param-col" id="col-produto">
+      <div class="col-header">Produto</div>
+      <textarea class="param-input" id="param-produto" spellcheck="false"></textarea>
+    </div>
+    <div class="col-resizer" data-l="col-produto" data-r="col-cultura"></div>
+    <div class="param-col" id="col-cultura">
+      <div class="col-header">Cultura</div>
+      <textarea class="param-input" id="param-cultura" spellcheck="false"></textarea>
+    </div>
+    <div class="col-resizer" data-l="col-cultura" data-r="col-diagnostico"></div>
+    <div class="param-col" id="col-diagnostico">
+      <div class="col-header">Diagnóstico</div>
+      <textarea class="param-input" id="param-diagnostico" spellcheck="false"></textarea>
     </div>
   </div>
 </div>
