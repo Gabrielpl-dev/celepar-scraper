@@ -56,7 +56,7 @@ document.addEventListener('click', () => menu.classList.add('hidden'))
 
 function acessarTabela() {
   menu.classList.add('hidden')
-  // futuro
+  window.open('/banco/' + menuContexto.nome, '_blank')
 }
 
 async function salvarTabela() {
