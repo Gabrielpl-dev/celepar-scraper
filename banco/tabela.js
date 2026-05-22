@@ -47,7 +47,7 @@ async function carregarDados() {
   const statusEl = document.getElementById('dados-status')
   const tabelaEl = document.getElementById('dados-tabela')
 
-  const data = await query(`SELECT * FROM ${nome} WHERE rownum <= 100`)
+  const data = await query(`SELECT * FROM ${nome}`)
 
   if (!data.ok) {
     statusEl.className   = 'nav-status erro'
