@@ -204,7 +204,7 @@ async function rodar() {
 // ── Parâmetros — busca no Oracle ─────────────────────────────────────────────
 
 const PARAMS_CONFIG = {
-  produto:     { tabela: 'PRODUTO',     coluna: 'NOME' },
+  produto:     { tabela: 'RECEITPADRAO', coluna: 'DESCRICAO' },
   cultura:     { tabela: 'CULTURA',     coluna: 'NOME' },
   diagnostico: { tabela: 'DIAGNOSTICO', coluna: 'NOME' },
 }
