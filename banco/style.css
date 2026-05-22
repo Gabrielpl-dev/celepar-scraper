@@ -61,7 +61,7 @@ button {
   display: flex; border: 1px solid #2a2a2a; border-radius: 6px;
   overflow: hidden; margin-top: 20px;
 }
-.param-col { display: flex; flex-direction: column; min-width: 60px; overflow: hidden; }
+.param-col { display: flex; flex-direction: column; min-width: 60px; overflow: hidden; flex: 1; }
 .col-header {
   font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: .06em;
   padding: 5px 10px; border-bottom: 1px solid #2a2a2a; background: #161616;
