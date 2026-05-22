@@ -201,6 +201,59 @@ async function rodar() {
   }
 }
 
+// ── Parâmetros — busca no Oracle ─────────────────────────────────────────────
+
+const PARAMS_CONFIG = {
+  produto:     { tabela: 'PRODUTO',     coluna: 'NOME' },
+  cultura:     { tabela: 'CULTURA',     coluna: 'NOME' },
+  diagnostico: { tabela: 'DIAGNOSTICO', coluna: 'NOME' },
+}
+
+const debounceTimers = {}
+
+;['produto', 'cultura', 'diagnostico'].forEach(campo => {
+  const input    = document.getElementById('param-' + campo)
+  const dropdown = document.getElementById('dropdown-' + campo)
+
+  input.addEventListener('input', () => {
+    clearTimeout(debounceTimers[campo])
+    const q = input.value.trim()
+    if (!q) { dropdown.classList.add('hidden'); return }
+    debounceTimers[campo] = setTimeout(() => buscarParam(campo, q, input, dropdown), 300)
+  })
+
+  input.addEventListener('blur', () => {
+    setTimeout(() => dropdown.classList.add('hidden'), 150)
+  })
+})
+
+async function buscarParam(campo, q, input, dropdown) {
+  const { tabela, coluna } = PARAMS_CONFIG[campo]
+  const url = `/api/banco/buscar?tabela=${tabela}&coluna=${coluna}&q=${encodeURIComponent(q)}`
+  try {
+    const res  = await fetch(url)
+    const data = await res.json()
+    if (!data.ok || !data.rows.length) { dropdown.classList.add('hidden'); return }
+
+    const rect = input.getBoundingClientRect()
+    dropdown.style.left  = rect.left  + 'px'
+    dropdown.style.top   = rect.bottom + 'px'
+    dropdown.style.width = rect.width  + 'px'
+
+    dropdown.innerHTML = data.rows.map(v =>
+      `<div class="param-dropdown-item" onmousedown="selecionarParam('param-${campo}','${esc(String(v ?? ''))}')">${esc(String(v ?? ''))}</div>`
+    ).join('')
+    dropdown.classList.remove('hidden')
+  } catch (_) {
+    dropdown.classList.add('hidden')
+  }
+}
+
+function selecionarParam(id, valor) {
+  document.getElementById(id).value = valor
+  document.querySelectorAll('.param-dropdown').forEach(d => d.classList.add('hidden'))
+}
+
 // ── Parâmetros — resize de colunas ───────────────────────────────────────────
 
 document.querySelectorAll('.col-resizer').forEach(resizer => {

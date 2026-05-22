@@ -60,6 +60,35 @@ router.post('/banco', async (req, res) => {
   }
 })
 
+router.get('/banco/buscar', async (req, res) => {
+  if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
+  const { tabela, coluna, q } = req.query
+  if (!tabela || !coluna || !q?.trim())
+    return res.status(400).json({ ok: false, error: 'tabela, coluna e q são obrigatórios' })
+  if (!/^\w+$/.test(tabela) || !/^\w+$/.test(coluna))
+    return res.status(400).json({ ok: false, error: 'Nome de tabela/coluna inválido' })
+
+  let conn
+  try {
+    conn = await oracledb.getConnection({
+      user:          process.env.ORACLE_USER,
+      password:      process.env.ORACLE_PASSWORD,
+      connectString: process.env.ORACLE_CONNECT_STRING,
+    })
+    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
+    const result = await conn.execute(
+      `SELECT DISTINCT ${coluna} FROM ${tabela} WHERE UPPER(${coluna}) LIKE UPPER(:q) ORDER BY ${coluna} FETCH FIRST 50 ROWS ONLY`,
+      { q: q.trim() + '%' },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+    )
+    res.json({ ok: true, rows: result.rows.map(r => r[coluna.toUpperCase()]) })
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message })
+  } finally {
+    if (conn) await conn.close().catch(() => {})
+  }
+})
+
 router.post('/banco/tabelas/salvar', (req, res) => {
   const { nome } = req.body
   if (!nome) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
