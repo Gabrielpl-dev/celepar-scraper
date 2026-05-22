@@ -201,6 +201,40 @@ async function rodar() {
   }
 }
 
+// ── Parâmetros — resize de colunas ───────────────────────────────────────────
+
+document.querySelectorAll('.col-resizer').forEach(resizer => {
+  resizer.addEventListener('mousedown', e => {
+    const colL = document.getElementById(resizer.dataset.l)
+    const colR = document.getElementById(resizer.dataset.r)
+    const startX  = e.clientX
+    const startWL = colL.getBoundingClientRect().width
+    const startWR = colR.getBoundingClientRect().width
+
+    resizer.classList.add('dragging')
+
+    function onMove(e) {
+      const delta = e.clientX - startX
+      const newL  = Math.max(60, startWL + delta)
+      const newR  = Math.max(60, startWR - delta)
+      colL.style.width = newL + 'px'
+      colL.style.flex  = 'none'
+      colR.style.width = newR + 'px'
+      colR.style.flex  = 'none'
+    }
+
+    function onUp() {
+      resizer.classList.remove('dragging')
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup',   onUp)
+    }
+
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup',   onUp)
+    e.preventDefault()
+  })
+})
+
 // ── Util ──────────────────────────────────────────────────────────────────────
 
 function esc(s) {
