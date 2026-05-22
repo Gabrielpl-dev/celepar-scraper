@@ -70,8 +70,7 @@ button {
 .param-input {
   background: #111; border: none; color: #ccc;
   font-family: monospace; font-size: 12px; padding: 2px 10px;
-  resize: none; outline: none; line-height: 1;
-  height: calc(12px + 4px);
+  outline: none; width: 100%; box-sizing: border-box;
 }
 .param-input:focus { background: #141414; }
 .col-resizer {
