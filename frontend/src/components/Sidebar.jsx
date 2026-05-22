@@ -13,7 +13,7 @@ const OPS = {
   ],
   revisao: [
     { id: 'culturas',  num: '01', label: 'Culturas' },
-    { id: 'extrair',   num: '02', label: 'Extrair por cultura' },
+    { id: 'extrair',   num: '02', label: 'CCCB', title: 'Comparar Cultura Celepar com o Banco' },
     { id: 'siagro',    num: '03', label: 'Buscar por SIAGRO' },
     { id: 'comparar',  num: '04', label: 'Comparar culturas' },
     { id: 'verificar', num: '05', label: 'Verificar produto' },
@@ -54,6 +54,7 @@ export function Sidebar({ activeView, setActiveView, activeService, setActiveSer
               key={op.id}
               className={`${s.op} ${activeView === op.id ? s.opActive : ''}`}
               onClick={() => setActiveView(op.id)}
+              title={op.title}
             >
               <span className={s.num}>{op.num}</span>
               {op.label}
