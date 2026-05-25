@@ -96,6 +96,7 @@ export function ExtrairView({ params }) {
   const erradoRows = result?.errados.map(r => [
     r.cultura,
     <SiagroPill key="sb" code={r.alvo_sb} />,
+    r.diagnosticoid,
     r.diagnostico,
     <input type="checkbox" key="cb" />,
   ]) ?? []
@@ -176,7 +177,7 @@ export function ExtrairView({ params }) {
 
       {result && erradoRows.length > 0 && (
         <ResultTable
-          headers={['Cultura', 'Alvo SB', 'Diagnóstico', '✓']}
+          headers={['Cultura', 'Alvo SB', 'DIAGNOSTICOID', 'Diagnóstico', '✓']}
           rows={erradoRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Errados — {erradoRows.length} registro(s)</span>}
         />

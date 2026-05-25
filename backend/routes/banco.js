@@ -186,7 +186,7 @@ router.post('/cccb', async (req, res) => {
     let oracleResult
     if (!isAll) {
       oracleResult = await conn.execute(
-        `SELECT DISTINCT c.NOME AS CULTURA, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO
+        `SELECT DISTINCT c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
@@ -199,7 +199,7 @@ router.post('/cccb', async (req, res) => {
       )
     } else {
       oracleResult = await conn.execute(
-        `SELECT DISTINCT r.CULTURAID, c.NOME AS CULTURA, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO
+        `SELECT DISTINCT r.CULTURAID, c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
@@ -231,7 +231,7 @@ router.post('/cccb', async (req, res) => {
       const cn   = celeparNormFor(oracleNome, Number(culturaid))
       const cSet = celeparSets[cn] ?? new Set()
       for (const r of oracleResult.rows) {
-        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnostico: r.DIAGNOSTICO }
+        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO }
         if (cSet.has(String(r.SIAGROALV)))
           corretos.push({ ...item, alvo_siagro: r.SIAGROALV })
         else
@@ -241,7 +241,7 @@ router.post('/cccb', async (req, res) => {
       for (const r of oracleResult.rows) {
         const cn   = celeparNormFor(r.CULTURA, r.CULTURAID)
         const cSet = celeparSets[cn] ?? new Set()
-        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnostico: r.DIAGNOSTICO }
+        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO }
         if (cSet.has(String(r.SIAGROALV)))
           corretos.push({ ...item, alvo_siagro: r.SIAGROALV })
         else
