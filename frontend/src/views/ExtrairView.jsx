@@ -39,7 +39,7 @@ export function ExtrairView({ params }) {
       if (!data.ok) throw new Error(data.error)
       setResult(data)
       setStatus('ok')
-      setMessage(`banco: ${data.oracle.length} | celepar: ${data.celepar.length} | corretos: ${data.corretos.length} —`)
+      setMessage(`banco: ${data.oracle.length} | celepar: ${data.celepar.length} | corretos: ${data.corretos.length} | errados: ${data.errados.length} —`)
       setTook(ms)
     } catch (err) {
       setStatus('err')
