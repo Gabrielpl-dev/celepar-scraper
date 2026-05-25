@@ -6,10 +6,11 @@ async function call(endpoint, body, method = 'POST') {
 }
 
 export const api = {
-  extrairCultura:   (cultura, params)    => call('extrair-cultura', { cultura, params }),
-  cccbCulturas:     ()                   => call('cccb/culturas', null, 'GET'),
-  cccbBuildMapping: (params)             => call('cccb/build-mapping', { params }),
-  cccb:             (culturaid, params)  => call('cccb', { culturaid, params }),
+  extrairCultura:      (cultura, params)   => call('extrair-cultura', { cultura, params }),
+  sincronizarCulturas: ()                  => call('culturas/sincronizar', {}),
+  cccbCulturas:        ()                  => call('cccb/culturas', null, 'GET'),
+  cccbBuildMapping:    (params)            => call('cccb/build-mapping', { params }),
+  cccb:                (culturaid, params) => call('cccb', { culturaid, params }),
   buscarSiagro:   (siagro, params)  => call('buscar-siagro', { siagro, params }),
   comparar:       (c1, c2, params)  => call('comparar', { cultura1: c1, cultura2: c2, params }),
   verificar:      (termo, params)   => call('verificar', { termo, params }),
