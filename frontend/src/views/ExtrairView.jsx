@@ -83,6 +83,7 @@ export function ExtrairView({ params }) {
     <SiagroPill key="sb"  code={r.alvo_sb} />,
     <SiagroPill key="cel" code={r.alvo_siagro} />,
     r.diagnostico,
+    <input type="checkbox" key="cb" />,
   ]) ?? []
 
   const exportToolbar = result && (
@@ -149,7 +150,7 @@ export function ExtrairView({ params }) {
 
       {result && (
         <ResultTable
-          headers={['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico']}
+          headers={['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico', '✓']}
           rows={corretoRows}
           toolbar={exportToolbar}
           emptyNode={
