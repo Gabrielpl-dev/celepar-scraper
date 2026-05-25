@@ -93,6 +93,13 @@ export function ExtrairView({ params }) {
     <input type="checkbox" key="cb" />,
   ]) ?? []
 
+  const erradoRows = result?.errados.map(r => [
+    r.cultura,
+    <SiagroPill key="sb" code={r.alvo_sb} />,
+    r.diagnostico,
+    <input type="checkbox" key="cb" />,
+  ]) ?? []
+
   const corretoRows = result?.corretos.map(r => [
     r.cultura,
     <SiagroPill key="sb"  code={r.alvo_sb} />,
@@ -164,6 +171,14 @@ export function ExtrairView({ params }) {
           headers={['Cultura', 'Alvo Siagro', 'Alvo', '✓']}
           rows={celeparRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Celepar — {celeparRows.length} registro(s)</span>}
+        />
+      )}
+
+      {result && erradoRows.length > 0 && (
+        <ResultTable
+          headers={['Cultura', 'Alvo SB', 'Diagnóstico', '✓']}
+          rows={erradoRows}
+          toolbar={<span className={tableStyles.toolbarMeta}>Errados — {erradoRows.length} registro(s)</span>}
         />
       )}
 

@@ -225,20 +225,27 @@ router.post('/cccb', async (req, res) => {
     }
 
     const corretos = []
+    const errados  = []
     if (!isAll) {
       const oracleNome = oracleResult.rows[0]?.CULTURA ?? ''
       const cn   = celeparNormFor(oracleNome, Number(culturaid))
       const cSet = celeparSets[cn] ?? new Set()
       for (const r of oracleResult.rows) {
+        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnostico: r.DIAGNOSTICO }
         if (cSet.has(String(r.SIAGROALV)))
-          corretos.push({ cultura: r.CULTURA, alvo_sb: r.SIAGROALV, alvo_siagro: r.SIAGROALV, diagnostico: r.DIAGNOSTICO })
+          corretos.push({ ...item, alvo_siagro: r.SIAGROALV })
+        else
+          errados.push(item)
       }
     } else {
       for (const r of oracleResult.rows) {
         const cn   = celeparNormFor(r.CULTURA, r.CULTURAID)
         const cSet = celeparSets[cn] ?? new Set()
+        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnostico: r.DIAGNOSTICO }
         if (cSet.has(String(r.SIAGROALV)))
-          corretos.push({ cultura: r.CULTURA, alvo_sb: r.SIAGROALV, alvo_siagro: r.SIAGROALV, diagnostico: r.DIAGNOSTICO })
+          corretos.push({ ...item, alvo_siagro: r.SIAGROALV })
+        else
+          errados.push(item)
       }
     }
 
@@ -252,7 +259,7 @@ router.post('/cccb', async (req, res) => {
       oracle:  oracleResult.rows.map(r => ({ cultura: r.CULTURA, siagroalv: r.SIAGROALV, diagnostico: r.DIAGNOSTICO })),
       celepar: celeparForResponse,
       corretos,
-      errados: [],
+      errados,
     })
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message })
