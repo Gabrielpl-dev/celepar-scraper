@@ -120,9 +120,8 @@ router.post('/cccb', async (req, res) => {
 
     const html = await fetchPage(buildUrl(params))
     const cultNorm = norm(cultura.trim())
-    const celeparSet = new Set(
-      parseRows(html).filter(r => norm(r.cultura) === cultNorm).map(r => String(r.siagro))
-    )
+    const celeparRows = parseRows(html).filter(r => norm(r.cultura) === cultNorm)
+    const celeparSet  = new Set(celeparRows.map(r => String(r.siagro)))
 
     const corretos = oracleResult.rows
       .filter(r => celeparSet.has(String(r.SIAGROALV)))
@@ -133,7 +132,13 @@ router.post('/cccb', async (req, res) => {
         diagnostico: r.DIAGNOSTICO,
       }))
 
-    res.json({ ok: true, corretos, errados: [] })
+    res.json({
+      ok: true,
+      oracle:   oracleResult.rows.map(r => ({ siagroalv: r.SIAGROALV, diagnostico: r.DIAGNOSTICO })),
+      celepar:  celeparRows.map(r => ({ siagro: r.siagro, alvo: r.alvo })),
+      corretos,
+      errados:  [],
+    })
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message })
   } finally {
