@@ -192,7 +192,7 @@ router.post('/cccb', async (req, res) => {
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
          WHERE r.DESCRICAO = :produto
            AND r.CULTURAID = :culturaid
-           AND r.ATIVO = 'Sim'
+           AND r.ATIVO = 'S'
          ORDER BY d.SIAGROALV`,
         { produto, culturaid: Number(culturaid) },
         { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
@@ -204,7 +204,7 @@ router.post('/cccb', async (req, res) => {
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
          WHERE r.DESCRICAO = :produto
-           AND r.ATIVO = 'Sim'
+           AND r.ATIVO = 'S'
          ORDER BY c.NOME, d.SIAGROALV`,
         { produto },
         { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
