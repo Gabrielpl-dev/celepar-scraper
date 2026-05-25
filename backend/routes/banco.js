@@ -170,7 +170,9 @@ router.post('/cccb/build-mapping', async (req, res) => {
 router.post('/cccb', async (req, res) => {
   if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
   const { culturaid, params = {} } = req.body
-  const isAll = culturaid == null
+  const isAll  = culturaid == null
+  const produto = params.nome ?? null
+  if (!produto) return res.status(400).json({ ok: false, error: 'params.nome (produto) é obrigatório' })
 
   function celeparNormFor(cultura, cid) {
     const row = db.prepare('SELECT celepar_nome FROM culturas WHERE culturaid = ?').get(cid)
@@ -188,10 +190,10 @@ router.post('/cccb', async (req, res) => {
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
-         WHERE r.CULTURAID = :culturaid
-           AND r.ATIVO = 'Sim'
+         WHERE r.DESCRICAO = :produto
+           AND r.CULTURAID = :culturaid
          ORDER BY d.SIAGROALV`,
-        { culturaid: Number(culturaid) },
+        { produto, culturaid: Number(culturaid) },
         { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
       )
     } else {
@@ -200,9 +202,9 @@ router.post('/cccb', async (req, res) => {
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
-         WHERE r.ATIVO = 'Sim'
+         WHERE r.DESCRICAO = :produto
          ORDER BY c.NOME, d.SIAGROALV`,
-        [],
+        { produto },
         { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
       )
     }
