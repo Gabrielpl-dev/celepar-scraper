@@ -9,7 +9,6 @@ export function ExtrairView({ params }) {
   const [cultura, setCultura] = useState('')
   const [status, setStatus]   = useState('idle')
   const [message, setMessage] = useState('')
-  const [count, setCount]     = useState(null)
   const [took, setTook]       = useState(null)
   const [result, setResult]   = useState(null)
 
@@ -25,8 +24,7 @@ export function ExtrairView({ params }) {
       if (!data.ok) throw new Error(data.error)
       setResult(data)
       setStatus('ok')
-      setMessage('sucesso —')
-      setCount(data.corretos.length)
+      setMessage(`banco: ${data.oracle.length} | celepar: ${data.celepar.length} | corretos: ${data.corretos.length} —`)
       setTook(ms)
     } catch (err) {
       setStatus('err')
@@ -42,7 +40,17 @@ export function ExtrairView({ params }) {
     downloadCSV('cccb_corretos.csv', csv)
   }
 
-  const corretoRows = result?.corretos.map(r => [
+  const oracleRows   = result?.oracle.map(r => [
+    <SiagroPill key="alv" code={r.siagroalv} />,
+    r.diagnostico,
+  ]) ?? []
+
+  const celeparRows  = result?.celepar.map(r => [
+    <SiagroPill key="alv" code={r.siagro} />,
+    r.alvo,
+  ]) ?? []
+
+  const corretoRows  = result?.corretos.map(r => [
     r.cultura,
     <SiagroPill key="sb"  code={r.alvo_sb} />,
     <SiagroPill key="cel" code={r.alvo_siagro} />,
@@ -56,12 +64,6 @@ export function ExtrairView({ params }) {
     </>
   )
 
-  const emptyNode = result && (
-    <div className={tableStyles.emptyState}>
-      Nenhum registro correto para <code>{cultura}</code>.
-    </div>
-  )
-
   return (
     <section className={s.section}>
       <div className={s.opHeader}>
@@ -69,7 +71,7 @@ export function ExtrairView({ params }) {
         <span className={s.tag}>CCCB</span>
       </div>
       <p className={s.desc}>
-        Cruza os diagnósticos cadastrados no banco (ATIVO = Sim) com os registros do Celepar para a cultura informada. Exibe os que têm código SIAGRO coincidente.
+        Cruza os diagnósticos cadastrados no banco (ATIVO = Sim) com os registros do Celepar para a cultura informada.
       </p>
 
       <form className={s.formRow} onSubmit={handleSubmit}>
@@ -88,14 +90,34 @@ export function ExtrairView({ params }) {
         </button>
       </form>
 
-      <StatusBar status={status} message={message} count={count} took={took} />
+      <StatusBar status={status} message={message} count={null} took={took} />
+
+      {result && oracleRows.length > 0 && (
+        <ResultTable
+          headers={['Alvo SB', 'Diagnóstico']}
+          rows={oracleRows}
+          toolbar={<span className={tableStyles.toolbarMeta}>Banco — {oracleRows.length} registro(s)</span>}
+        />
+      )}
+
+      {result && celeparRows.length > 0 && (
+        <ResultTable
+          headers={['Alvo Siagro', 'Alvo']}
+          rows={celeparRows}
+          toolbar={<span className={tableStyles.toolbarMeta}>Celepar — {celeparRows.length} registro(s)</span>}
+        />
+      )}
 
       {result && (
         <ResultTable
           headers={['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico']}
           rows={corretoRows}
           toolbar={toolbar}
-          emptyNode={emptyNode}
+          emptyNode={
+            <div className={tableStyles.emptyState}>
+              Nenhum cruzamento encontrado para <code>{cultura}</code>.
+            </div>
+          }
         />
       )}
     </section>
