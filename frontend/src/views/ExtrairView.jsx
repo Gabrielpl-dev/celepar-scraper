@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { api, downloadCSV, csvEsc } from '../api'
 import { StatusBar } from '../components/StatusBar'
 import { ResultTable, tableStyles } from '../components/ResultTable'
@@ -6,11 +6,25 @@ import { SiagroPill } from '../components/SiagroPill'
 import s from './ExtrairView.module.css'
 
 export function ExtrairView({ params }) {
-  const [cultura, setCultura] = useState('')
-  const [status, setStatus]   = useState('idle')
-  const [message, setMessage] = useState('')
-  const [took, setTook]       = useState(null)
-  const [result, setResult]   = useState(null)
+  const [culturas, setCulturas]     = useState([])
+  const [inputNome, setInputNome]   = useState('')
+  const [culturaid, setCultureid]   = useState(null)
+  const [status, setStatus]         = useState('idle')
+  const [message, setMessage]       = useState('')
+  const [took, setTook]             = useState(null)
+  const [result, setResult]         = useState(null)
+  const [buildMsg, setBuildMsg]     = useState('')
+
+  useEffect(() => {
+    api.cccbCulturas().then(data => { if (data.ok) setCulturas(data.culturas) })
+  }, [])
+
+  function handleInputChange(e) {
+    const v = e.target.value
+    setInputNome(v)
+    const found = culturas.find(c => c.nome === v)
+    setCultureid(found?.culturaid ?? null)
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -19,8 +33,8 @@ export function ExtrairView({ params }) {
     setResult(null)
     const t0 = performance.now()
     try {
-      const data = await api.cccb(cultura, params)
-      const ms = Math.round(performance.now() - t0)
+      const data = await api.cccb(culturaid, params)
+      const ms   = Math.round(performance.now() - t0)
       if (!data.ok) throw new Error(data.error)
       setResult(data)
       setStatus('ok')
@@ -32,6 +46,18 @@ export function ExtrairView({ params }) {
     }
   }
 
+  async function handleBuildMapping() {
+    setBuildMsg('gerando...')
+    try {
+      const data = await api.cccbBuildMapping(params)
+      if (!data.ok) { setBuildMsg('erro: ' + data.error); return }
+      const semMatch = data.unmatched.length ? data.unmatched.join(', ') : 'nenhuma'
+      setBuildMsg(`${data.matched}/${data.total} culturas mapeadas. Sem match: ${semMatch}`)
+    } catch (err) {
+      setBuildMsg('erro: ' + err.message)
+    }
+  }
+
   function handleExport() {
     const csv = [
       'Cultura,Alvo SB,Alvo Siagro,Diagnóstico',
@@ -40,27 +66,29 @@ export function ExtrairView({ params }) {
     downloadCSV('cccb_corretos.csv', csv)
   }
 
-  const oracleRows   = result?.oracle.map(r => [
+  const oracleRows  = result?.oracle.map(r => [
+    r.cultura,
     <SiagroPill key="alv" code={r.siagroalv} />,
     r.diagnostico,
   ]) ?? []
 
-  const celeparRows  = result?.celepar.map(r => [
+  const celeparRows = result?.celepar.map(r => [
+    r.cultura,
     <SiagroPill key="alv" code={r.siagro} />,
     r.alvo,
   ]) ?? []
 
-  const corretoRows  = result?.corretos.map(r => [
+  const corretoRows = result?.corretos.map(r => [
     r.cultura,
     <SiagroPill key="sb"  code={r.alvo_sb} />,
     <SiagroPill key="cel" code={r.alvo_siagro} />,
     r.diagnostico,
   ]) ?? []
 
-  const toolbar = result && (
+  const exportToolbar = result && (
     <>
       <button className={tableStyles.ghostBtn} onClick={handleExport}>↓ exportar csv</button>
-      <span className={tableStyles.toolbarMeta}>cultura: <b>{cultura}</b></span>
+      <span className={tableStyles.toolbarMeta}>{inputNome || 'todas as culturas'}</span>
     </>
   )
 
@@ -71,7 +99,7 @@ export function ExtrairView({ params }) {
         <span className={s.tag}>CCCB</span>
       </div>
       <p className={s.desc}>
-        Cruza os diagnósticos cadastrados no banco (ATIVO = Sim) com os registros do Celepar para a cultura informada.
+        Cruza os diagnósticos do banco (ATIVO = Sim) com o Celepar. Deixe o campo vazio para todas as culturas.
       </p>
 
       <form className={s.formRow} onSubmit={handleSubmit}>
@@ -80,21 +108,32 @@ export function ExtrairView({ params }) {
           <input
             id="extCultura"
             type="text"
-            value={cultura}
-            placeholder="ex: Abacaxi"
-            onChange={e => setCultura(e.target.value)}
+            list="culturas-list"
+            value={inputNome}
+            placeholder="todas as culturas"
+            onChange={handleInputChange}
           />
+          <datalist id="culturas-list">
+            {culturas.map(c => <option key={c.culturaid} value={c.nome} />)}
+          </datalist>
         </div>
         <button type="submit" className={s.runBtn} disabled={status === 'loading'}>
           executar
         </button>
       </form>
 
+      <div style={{ marginBottom: '8px' }}>
+        <button type="button" className={tableStyles.ghostBtn} onClick={handleBuildMapping}>
+          ⚙ gerar mapeamento
+        </button>
+        {buildMsg && <span className={tableStyles.toolbarMeta}> {buildMsg}</span>}
+      </div>
+
       <StatusBar status={status} message={message} count={null} took={took} />
 
       {result && oracleRows.length > 0 && (
         <ResultTable
-          headers={['Alvo SB', 'Diagnóstico']}
+          headers={['Cultura', 'Alvo SB', 'Diagnóstico']}
           rows={oracleRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Banco — {oracleRows.length} registro(s)</span>}
         />
@@ -102,7 +141,7 @@ export function ExtrairView({ params }) {
 
       {result && celeparRows.length > 0 && (
         <ResultTable
-          headers={['Alvo Siagro', 'Alvo']}
+          headers={['Cultura', 'Alvo Siagro', 'Alvo']}
           rows={celeparRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Celepar — {celeparRows.length} registro(s)</span>}
         />
@@ -112,10 +151,10 @@ export function ExtrairView({ params }) {
         <ResultTable
           headers={['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico']}
           rows={corretoRows}
-          toolbar={toolbar}
+          toolbar={exportToolbar}
           emptyNode={
             <div className={tableStyles.emptyState}>
-              Nenhum cruzamento encontrado para <code>{cultura}</code>.
+              Nenhum cruzamento encontrado para <code>{inputNome || 'todas as culturas'}</code>.
             </div>
           }
         />
