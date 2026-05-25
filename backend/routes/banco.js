@@ -1,11 +1,19 @@
 const express  = require('express')
 const oracledb = require('oracledb')
+const Database = require('better-sqlite3')
 const fs       = require('fs')
 const path     = require('path')
 const { fetchPage, parseRows, buildUrl, norm } = require('../lib/scraper')
 
 const TABELAS_JSON = path.join(__dirname, '..', '..', 'banco', 'tabelas.json')
-const CULTURAS_MAP = path.join(__dirname, '..', 'culturas_map.json')
+const DB_PATH      = path.join(__dirname, '..', '..', 'banco', 'local.db')
+
+const db = new Database(DB_PATH)
+db.exec(`CREATE TABLE IF NOT EXISTS culturas (
+  culturaid   INTEGER PRIMARY KEY,
+  nome        TEXT NOT NULL,
+  celepar_nome TEXT
+)`)
 
 function lerTabelas() {
   try { return JSON.parse(fs.readFileSync(TABELAS_JSON, 'utf8')) }
@@ -14,15 +22,6 @@ function lerTabelas() {
 
 function gravarTabelas(data) {
   fs.writeFileSync(TABELAS_JSON, JSON.stringify(data, null, 2), 'utf8')
-}
-
-function lerCulturasMap() {
-  try { return JSON.parse(fs.readFileSync(CULTURAS_MAP, 'utf8')) }
-  catch (_) { return [] }
-}
-
-function gravarCulturasMap(data) {
-  fs.writeFileSync(CULTURAS_MAP, JSON.stringify(data, null, 2), 'utf8')
 }
 
 const router = express.Router()
@@ -35,6 +34,16 @@ try {
   // Instant Client não instalado — modo Thin não suporta esse servidor Oracle
 }
 
+async function oracleConn() {
+  const conn = await oracledb.getConnection({
+    user:          process.env.ORACLE_USER,
+    password:      process.env.ORACLE_PASSWORD,
+    connectString: process.env.ORACLE_CONNECT_STRING,
+  })
+  await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
+  return conn
+}
+
 router.post('/banco', async (req, res) => {
   if (!oracleReady) {
     return res.status(503).json({ ok: false, error: 'Oracle Instant Client não encontrado em C:\\oracle\\instantclient_21_15' })
@@ -45,20 +54,12 @@ router.post('/banco', async (req, res) => {
 
   let conn
   try {
-    conn = await oracledb.getConnection({
-      user:          process.env.ORACLE_USER,
-      password:      process.env.ORACLE_PASSWORD,
-      connectString: process.env.ORACLE_CONNECT_STRING,
-    })
-
-    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
-
+    conn = await oracleConn()
     const cleanSql = sql.trim().replace(/;+$/, '')
     const result = await conn.execute(cleanSql, [], {
       outFormat: oracledb.OUT_FORMAT_OBJECT,
       maxRows:   0,
     })
-
     res.json({
       ok:   true,
       cols: result.metaData?.map(m => m.name) ?? [],
@@ -81,12 +82,7 @@ router.get('/banco/buscar', async (req, res) => {
 
   let conn
   try {
-    conn = await oracledb.getConnection({
-      user:          process.env.ORACLE_USER,
-      password:      process.env.ORACLE_PASSWORD,
-      connectString: process.env.ORACLE_CONNECT_STRING,
-    })
-    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
+    conn = await oracleConn()
     const result = await conn.execute(
       `SELECT DISTINCT ${coluna} FROM ${tabela} WHERE UPPER(${coluna}) LIKE UPPER(:q) ORDER BY ${coluna} FETCH FIRST 50 ROWS ONLY`,
       { q: q.trim() + '%' },
@@ -100,23 +96,27 @@ router.get('/banco/buscar', async (req, res) => {
   }
 })
 
-// ── CCCB ─────────────────────────────────────────────────────────────────────
+// ── Culturas local ────────────────────────────────────────────────────────────
 
-router.get('/cccb/culturas', async (req, res) => {
+router.post('/culturas/sincronizar', async (req, res) => {
   if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
   let conn
   try {
-    conn = await oracledb.getConnection({
-      user:          process.env.ORACLE_USER,
-      password:      process.env.ORACLE_PASSWORD,
-      connectString: process.env.ORACLE_CONNECT_STRING,
-    })
-    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
+    conn = await oracleConn()
     const result = await conn.execute(
       `SELECT CULTURAID, NOME FROM CULTURA ORDER BY NOME`,
       [], { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
     )
-    res.json({ ok: true, culturas: result.rows.map(r => ({ culturaid: r.CULTURAID, nome: r.NOME })) })
+    await conn.close(); conn = null
+
+    const upsert = db.prepare(`
+      INSERT INTO culturas (culturaid, nome)
+      VALUES (?, ?)
+      ON CONFLICT(culturaid) DO UPDATE SET nome = excluded.nome
+    `)
+    db.transaction(rows => { for (const r of rows) upsert.run(r.CULTURAID, r.NOME) })(result.rows)
+
+    res.json({ ok: true, total: result.rows.length })
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message })
   } finally {
@@ -124,48 +124,46 @@ router.get('/cccb/culturas', async (req, res) => {
   }
 })
 
-router.post('/cccb/build-mapping', async (req, res) => {
-  if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
-  const { params = {} } = req.body
-  let conn
-  try {
-    conn = await oracledb.getConnection({
-      user:          process.env.ORACLE_USER,
-      password:      process.env.ORACLE_PASSWORD,
-      connectString: process.env.ORACLE_CONNECT_STRING,
-    })
-    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
-    const result = await conn.execute(
-      `SELECT CULTURAID, NOME FROM CULTURA ORDER BY NOME`,
-      [], { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
-    )
-    await conn.close()
-    conn = null
+// ── CCCB ─────────────────────────────────────────────────────────────────────
 
+router.get('/cccb/culturas', (req, res) => {
+  try {
+    const culturas = db.prepare('SELECT culturaid, nome FROM culturas ORDER BY nome').all()
+    res.json({ ok: true, culturas })
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message })
+  }
+})
+
+router.post('/cccb/build-mapping', async (req, res) => {
+  const { params = {} } = req.body
+  try {
     const html = await fetchPage(buildUrl(params))
     const celeparRows = parseRows(html)
 
-    // norm(cultura) → primeira string original encontrada no Celepar
     const celeparByNorm = {}
     for (const r of celeparRows) {
       const n = norm(r.cultura)
       if (!celeparByNorm[n]) celeparByNorm[n] = r.cultura
     }
 
-    const mapping   = []
-    const unmatched = []
-    for (const r of result.rows) {
-      const celeparNome = celeparByNorm[norm(r.NOME)] ?? null
-      mapping.push({ culturaid: r.CULTURAID, oracle_nome: r.NOME, celepar_nome: celeparNome })
-      if (!celeparNome) unmatched.push(r.NOME)
-    }
+    const todas = db.prepare('SELECT culturaid, nome FROM culturas').all()
+    if (todas.length === 0)
+      return res.status(400).json({ ok: false, error: 'Tabela local vazia — sincronize as culturas primeiro' })
 
-    gravarCulturasMap(mapping)
-    res.json({ ok: true, total: mapping.length, matched: mapping.length - unmatched.length, unmatched })
+    const update    = db.prepare('UPDATE culturas SET celepar_nome = ? WHERE culturaid = ?')
+    const unmatched = []
+    db.transaction(rows => {
+      for (const r of rows) {
+        const celeparNome = celeparByNorm[norm(r.nome)] ?? null
+        update.run(celeparNome, r.culturaid)
+        if (!celeparNome) unmatched.push(r.nome)
+      }
+    })(todas)
+
+    res.json({ ok: true, total: todas.length, matched: todas.length - unmatched.length, unmatched })
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message })
-  } finally {
-    if (conn) await conn.close().catch(() => {})
   }
 })
 
@@ -174,14 +172,14 @@ router.post('/cccb', async (req, res) => {
   const { culturaid, params = {} } = req.body
   const isAll = culturaid == null
 
+  function celeparNormFor(cultura, cid) {
+    const row = db.prepare('SELECT celepar_nome FROM culturas WHERE culturaid = ?').get(cid)
+    return row?.celepar_nome ? norm(row.celepar_nome) : norm(cultura)
+  }
+
   let conn
   try {
-    conn = await oracledb.getConnection({
-      user:          process.env.ORACLE_USER,
-      password:      process.env.ORACLE_PASSWORD,
-      connectString: process.env.ORACLE_CONNECT_STRING,
-    })
-    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
+    conn = await oracleConn()
 
     let oracleResult
     if (!isAll) {
@@ -208,14 +206,11 @@ router.post('/cccb', async (req, res) => {
         { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
       )
     }
-    await conn.close()
-    conn = null
+    await conn.close(); conn = null
 
     const html       = await fetchPage(buildUrl(params))
     const allCelepar = parseRows(html)
-    const culturaMap = lerCulturasMap()
 
-    // norm(cultura) → Set<siagro> e norm(cultura) → rows[]
     const celeparSets = {}
     const celeparRows = {}
     for (const r of allCelepar) {
@@ -225,15 +220,10 @@ router.post('/cccb', async (req, res) => {
       celeparRows[n].push(r)
     }
 
-    function celeparNormFor(cultura, cid) {
-      const mapped = culturaMap.find(m => m.culturaid === cid)
-      return mapped?.celepar_nome ? norm(mapped.celepar_nome) : norm(cultura)
-    }
-
     const corretos = []
     if (!isAll) {
       const oracleNome = oracleResult.rows[0]?.CULTURA ?? ''
-      const cn = celeparNormFor(oracleNome, Number(culturaid))
+      const cn   = celeparNormFor(oracleNome, Number(culturaid))
       const cSet = celeparSets[cn] ?? new Set()
       for (const r of oracleResult.rows) {
         if (cSet.has(String(r.SIAGROALV)))
@@ -241,7 +231,7 @@ router.post('/cccb', async (req, res) => {
       }
     } else {
       for (const r of oracleResult.rows) {
-        const cn  = celeparNormFor(r.CULTURA, r.CULTURAID)
+        const cn   = celeparNormFor(r.CULTURA, r.CULTURAID)
         const cSet = celeparSets[cn] ?? new Set()
         if (cSet.has(String(r.SIAGROALV)))
           corretos.push({ cultura: r.CULTURA, alvo_sb: r.SIAGROALV, alvo_siagro: r.SIAGROALV, diagnostico: r.DIAGNOSTICO })

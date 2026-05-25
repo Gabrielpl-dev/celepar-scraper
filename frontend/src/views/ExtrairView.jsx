@@ -14,6 +14,7 @@ export function ExtrairView({ params }) {
   const [took, setTook]             = useState(null)
   const [result, setResult]         = useState(null)
   const [buildMsg, setBuildMsg]     = useState('')
+  const [syncMsg, setSyncMsg]       = useState('')
 
   useEffect(() => {
     api.cccbCulturas().then(data => { if (data.ok) setCulturas(data.culturas) })
@@ -43,6 +44,18 @@ export function ExtrairView({ params }) {
     } catch (err) {
       setStatus('err')
       setMessage('erro: ' + err.message)
+    }
+  }
+
+  async function handleSyncCulturas() {
+    setSyncMsg('sincronizando...')
+    try {
+      const data = await api.sincronizarCulturas()
+      if (!data.ok) { setSyncMsg('erro: ' + data.error); return }
+      setSyncMsg(`${data.total} culturas sincronizadas`)
+      api.cccbCulturas().then(d => { if (d.ok) setCulturas(d.culturas) })
+    } catch (err) {
+      setSyncMsg('erro: ' + err.message)
     }
   }
 
@@ -125,11 +138,15 @@ export function ExtrairView({ params }) {
         </button>
       </form>
 
-      <div style={{ marginBottom: '8px' }}>
+      <div style={{ marginBottom: '8px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <button type="button" className={tableStyles.ghostBtn} onClick={handleSyncCulturas}>
+          ↻ sincronizar culturas
+        </button>
+        {syncMsg && <span className={tableStyles.toolbarMeta}>{syncMsg}</span>}
         <button type="button" className={tableStyles.ghostBtn} onClick={handleBuildMapping}>
           ⚙ gerar mapeamento
         </button>
-        {buildMsg && <span className={tableStyles.toolbarMeta}> {buildMsg}</span>}
+        {buildMsg && <span className={tableStyles.toolbarMeta}>{buildMsg}</span>}
       </div>
 
       <StatusBar status={status} message={message} count={null} took={took} />
