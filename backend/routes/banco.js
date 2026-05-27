@@ -99,7 +99,7 @@ router.get('/banco/buscar', async (req, res) => {
 // ── Verificar produto nas fontes ──────────────────────────────────────────────
 
 router.get('/verificar-produto', async (req, res) => {
-  const { nome } = req.query
+  const { nome, cod } = req.query
   if (!nome?.trim()) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
 
   let banco = false
@@ -120,7 +120,17 @@ router.get('/verificar-produto', async (req, res) => {
     }
   }
 
-  res.json({ ok: true, banco, adapar: null, agrofit: null, sigen: null })
+  let adapar = false
+  if (cod?.trim()) {
+    try {
+      const html = await fetchPage(buildUrl({ Cod: cod.trim() }))
+      adapar = parseRows(html).length > 0
+    } catch (_) {
+      adapar = false
+    }
+  }
+
+  res.json({ ok: true, banco, adapar, agrofit: null, sigen: null })
 })
 
 // ── Culturas local ────────────────────────────────────────────────────────────

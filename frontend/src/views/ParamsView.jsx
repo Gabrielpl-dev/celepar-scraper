@@ -41,11 +41,11 @@ export function ParamsView({ params, setParams }) {
     }, 400)
   }
 
-  async function checkSources(nome) {
+  async function checkSources(nome, cod) {
     setChecking(true)
     setSources(null)
     try {
-      const data = await api.verificarProduto(nome)
+      const data = await api.verificarProduto(nome, cod)
       if (data.ok) setSources(data)
     } finally {
       setChecking(false)
@@ -56,7 +56,7 @@ export function ParamsView({ params, setParams }) {
     setParams(p => ({ ...p, Cod: row.cod, nome: row.nome }))
     setSearchTerm(row.nome)
     setSearchResults([])
-    checkSources(row.nome)
+    checkSources(row.nome, row.cod)
   }
 
   function handleKeyDown(e) {
