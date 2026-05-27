@@ -162,6 +162,7 @@ export function ExtrairView({ params }) {
       {result && oracleRows.length > 0 && (
         <ResultTable
           collapsible
+          defaultOpen={false}
           headers={['Cultura', 'Alvo SB', 'Diagnóstico', '✓']}
           rows={oracleRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Banco — {oracleRows.length} registro(s)</span>}
@@ -171,6 +172,7 @@ export function ExtrairView({ params }) {
       {result && celeparRows.length > 0 && (
         <ResultTable
           collapsible
+          defaultOpen={false}
           headers={['Cultura', 'Alvo Siagro', 'Alvo', '✓']}
           rows={celeparRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Celepar — {celeparRows.length} registro(s)</span>}
@@ -180,6 +182,7 @@ export function ExtrairView({ params }) {
       {result && erradoRows.length > 0 && (
         <ResultTable
           collapsible
+          defaultOpen={false}
           headers={['Cultura', 'Alvo SB', 'DIAGNOSTICOID', 'Diagnóstico', '✓']}
           rows={erradoRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Errados — {erradoRows.length} registro(s)</span>}
@@ -189,6 +192,7 @@ export function ExtrairView({ params }) {
       {result && (
         <ResultTable
           collapsible
+          defaultOpen={false}
           headers={['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico', '✓']}
           rows={corretoRows}
           toolbar={exportToolbar}
