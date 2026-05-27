@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import s from './ResultTable.module.css'
 
-export function ResultTable({ headers, rows, toolbar, emptyNode, noScroll, collapsible }) {
-  const [open, setOpen] = useState(true)
+export function ResultTable({ headers, rows, toolbar, emptyNode, noScroll, collapsible, defaultOpen = true }) {
+  const [open, setOpen] = useState(defaultOpen)
 
   if (!rows || rows.length === 0) {
     return (
