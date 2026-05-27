@@ -1,0 +1,84 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+
+.card {
+  width: 360px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 36px;
+}
+
+.logo {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+  text-align: center;
+  letter-spacing: .03em;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--dim);
+  font-size: 11px;
+  margin-bottom: 28px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn {
+  width: 100%;
+  padding: 9px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s;
+  margin-top: 2px;
+}
+.btn:hover:not(:disabled) { background: var(--accent-2); }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+
+.error {
+  color: var(--red);
+  font-size: 11px;
+  min-height: 16px;
+}
+
+.switch {
+  text-align: center;
+  color: var(--dim);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}

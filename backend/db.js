@@ -30,4 +30,12 @@ if (nomePK) {
   `);
 }
 
+db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    username      TEXT PRIMARY KEY,
+    password_hash TEXT NOT NULL,
+    created_at    TEXT DEFAULT (datetime('now','localtime'))
+  )
+`);
+
 module.exports = db;

@@ -88,3 +88,29 @@
   color: var(--text);
   border-color: var(--accent);
 }
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.logoutBtn {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  transition: color .15s, border-color .15s;
+}
+.logoutBtn:hover {
+  color: var(--red);
+  border-color: var(--red);
+}

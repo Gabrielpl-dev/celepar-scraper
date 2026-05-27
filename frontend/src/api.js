@@ -1,7 +1,20 @@
+function authHeaders() {
+  const token = localStorage.getItem('token')
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
+
 async function call(endpoint, body, method = 'POST') {
-  const opts = { method, headers: { 'Content-Type': 'application/json' } }
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+  }
   if (body) opts.body = JSON.stringify(body)
   const r = await fetch('/api/' + endpoint, opts)
+  if (r.status === 401) {
+    localStorage.removeItem('token')
+    window.location.reload()
+    return
+  }
   return r.json()
 }
 
@@ -15,7 +28,10 @@ export const api = {
   buscarSiagro:   (siagro, params)  => call('buscar-siagro', { siagro, params }),
   comparar:       (c1, c2, params)  => call('comparar', { cultura1: c1, cultura2: c2, params }),
   verificar:      (termo, params)   => call('verificar', { termo, params }),
-  listar:         (params)          => fetch('/api/listar?' + new URLSearchParams(params)).then(r => r.json()),
+  listar:         (params)          => fetch('/api/listar?' + new URLSearchParams(params), { headers: authHeaders() }).then(r => {
+    if (r.status === 401) { localStorage.removeItem('token'); window.location.reload(); return }
+    return r.json()
+  }),
 }
 
 export function downloadCSV(filename, rows) {
