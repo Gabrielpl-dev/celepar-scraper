@@ -1,5 +1,5 @@
 .section {
-  max-width: 480px;
+  max-width: 600px;
 }
 
 .header {
@@ -19,10 +19,62 @@
   font-size: 12px;
 }
 
+.body {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
 .form {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex: 1;
+}
+
+.sourcesPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 4px;
+  min-width: 110px;
+}
+
+.sourcesTitle {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--dim);
+  margin-bottom: 2px;
+}
+
+.sourceRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sourceLabel {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background .2s;
+}
+
+.dotIdle     { background: var(--line); }
+.dotOn       { background: var(--green); }
+.dotOff      { background: var(--panel-2); border: 1px solid var(--line); }
+.dotChecking { background: var(--dim); animation: pulse .8s ease-in-out infinite alternate; }
+
+@keyframes pulse {
+  from { opacity: .4; }
+  to   { opacity: 1;  }
 }
 
 .field { position: relative; }

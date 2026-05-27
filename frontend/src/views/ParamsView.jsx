@@ -2,11 +2,20 @@ import { useState, useRef, useEffect } from 'react'
 import { api } from '../api'
 import s from './ParamsView.module.css'
 
+const SOURCES = [
+  { id: 'banco',   label: 'Banco'   },
+  { id: 'adapar',  label: 'Adapar'  },
+  { id: 'agrofit', label: 'Agrofit' },
+  { id: 'sigen',   label: 'Sigen'   },
+]
+
 export function ParamsView({ params, setParams }) {
   const [searchTerm, setSearchTerm]        = useState('')
   const [searchResults, setSearchResults]  = useState([])
   const [searching, setSearching]          = useState(false)
   const [highlightedIndex, setHighlighted] = useState(-1)
+  const [sources, setSources]             = useState(null)
+  const [checking, setChecking]           = useState(false)
   const debounceRef = useRef(null)
   const inputRef    = useRef(null)
 
@@ -32,10 +41,22 @@ export function ParamsView({ params, setParams }) {
     }, 400)
   }
 
+  async function checkSources(nome) {
+    setChecking(true)
+    setSources(null)
+    try {
+      const data = await api.verificarProduto(nome)
+      if (data.ok) setSources(data)
+    } finally {
+      setChecking(false)
+    }
+  }
+
   function handleSelect(row) {
     setParams(p => ({ ...p, Cod: row.cod, nome: row.nome }))
     setSearchTerm(row.nome)
     setSearchResults([])
+    checkSources(row.nome)
   }
 
   function handleKeyDown(e) {
@@ -51,6 +72,12 @@ export function ParamsView({ params, setParams }) {
     }
   }
 
+  function dotClass(val) {
+    if (val === true)  return s.dotOn
+    if (val === false) return s.dotOff
+    return s.dotIdle
+  }
+
   return (
     <section className={s.section}>
       <div className={s.header}>
@@ -58,7 +85,7 @@ export function ParamsView({ params, setParams }) {
         <p className={s.desc}>Defina o produto e código base usados pelas operações.</p>
       </div>
 
-      <div className={s.form}>
+      <div className={s.body}>
         <div className={s.field}>
           <label htmlFor="paramProduto">Produto</label>
           <div className={s.searchWrap}>
@@ -113,6 +140,16 @@ export function ParamsView({ params, setParams }) {
             onChange={e => setParams(p => ({ ...p, ma: e.target.value.replace(/\D/g, '') }))}
           />
         </div>
+      </div>
+
+      <div className={s.sourcesPanel}>
+        <div className={s.sourcesTitle}>Fontes</div>
+        {SOURCES.map(src => (
+          <div key={src.id} className={s.sourceRow}>
+            <span className={`${s.dot} ${checking ? s.dotChecking : dotClass(sources?.[src.id])}`} />
+            <span className={s.sourceLabel}>{src.label}</span>
+          </div>
+        ))}
       </div>
     </section>
   )

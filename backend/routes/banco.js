@@ -96,6 +96,33 @@ router.get('/banco/buscar', async (req, res) => {
   }
 })
 
+// ── Verificar produto nas fontes ──────────────────────────────────────────────
+
+router.get('/verificar-produto', async (req, res) => {
+  const { nome } = req.query
+  if (!nome?.trim()) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
+
+  let banco = false
+  if (oracleReady) {
+    let conn
+    try {
+      conn = await oracleConn()
+      const r = await conn.execute(
+        `SELECT COUNT(*) AS QTD FROM RECEITPADRAO WHERE DESCRICAO = :nome`,
+        { nome: nome.trim() },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+      )
+      banco = (r.rows[0]?.QTD ?? 0) > 0
+    } catch (_) {
+      banco = false
+    } finally {
+      if (conn) await conn.close().catch(() => {})
+    }
+  }
+
+  res.json({ ok: true, banco, adapar: null, agrofit: null, sigen: null })
+})
+
 // ── Culturas local ────────────────────────────────────────────────────────────
 
 router.post('/culturas/sincronizar', async (req, res) => {
