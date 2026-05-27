@@ -15,6 +15,11 @@ app.get('/banco/:tabela', (_req, res) =>
   res.sendFile(path.join(__dirname, '..', 'banco', 'tabela.html'))
 );
 
+const requireAuth = require('./middleware/requireAuth');
+
+app.use('/api', require('./routes/auth'));
+
+app.use('/api', requireAuth);
 app.use('/api', require('./routes/celepar'));
 app.use('/api', require('./routes/agrofit'));
 app.use('/api', require('./routes/sigen'));
