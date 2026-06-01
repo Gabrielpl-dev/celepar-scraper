@@ -1,3 +1,16 @@
+function authHeader() {
+  const token = localStorage.getItem('token')
+  return token ? { Authorization: 'Bearer ' + token } : {}
+}
+
+function authFetch(url, opts = {}) {
+  opts.headers = { ...opts.headers, ...authHeader() }
+  return fetch(url, opts).then(r => {
+    if (r.status === 401) { alert('Sessão expirada. Faça login novamente.'); location.href = '/'; return Promise.reject(new Error('não autenticado')) }
+    return r
+  })
+}
+
 const sqlEl  = document.getElementById('sql')
 const status = document.getElementById('status')
 const btnRun = document.getElementById('btn-run')
@@ -62,7 +75,7 @@ function acessarTabela() {
 async function salvarTabela() {
   menu.classList.add('hidden')
   const { nome } = menuContexto
-  const res  = await fetch('/api/banco/tabelas/salvar', {
+  const res  = await authFetch('/api/banco/tabelas/salvar', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ nome }),
@@ -74,7 +87,7 @@ async function salvarTabela() {
 async function excluirTabela() {
   menu.classList.add('hidden')
   const { nome } = menuContexto
-  const res  = await fetch('/api/banco/tabelas/excluir', {
+  const res  = await authFetch('/api/banco/tabelas/excluir', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ nome }),
@@ -116,7 +129,7 @@ async function carregarTodas() {
   const statusEl = document.getElementById('nav-todas-status')
   const listaEl  = document.getElementById('nav-todas')
   try {
-    const res  = await fetch('/api/banco', {
+    const res  = await authFetch('/api/banco', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ sql: "SELECT table_name FROM all_tables WHERE owner = 'VIASOFT' ORDER BY table_name" }),
@@ -163,7 +176,7 @@ async function rodar() {
   status.textContent = 'executando...'
   result.innerHTML   = ''
   try {
-    const res  = await fetch('/api/banco', {
+    const res  = await authFetch('/api/banco', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ sql }),
@@ -251,7 +264,7 @@ async function buscarParam(campo, q, input, dropdown) {
   const { tabela, coluna } = PARAMS_CONFIG[campo]
   const url = `/api/banco/buscar?tabela=${tabela}&coluna=${coluna}&q=${encodeURIComponent(q)}`
   try {
-    const res  = await fetch(url)
+    const res  = await authFetch(url)
     const data = await res.json()
     if (!data.ok || !data.rows.length) { dropdown.classList.add('hidden'); return }
 
@@ -290,7 +303,7 @@ async function carregarReceitas(produto) {
     `ORDER BY c.NOME, d.DESCRICAO`
 
   try {
-    const res  = await fetch('/api/banco', {
+    const res  = await authFetch('/api/banco', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ sql }),
