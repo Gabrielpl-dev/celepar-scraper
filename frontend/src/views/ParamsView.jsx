@@ -14,14 +14,13 @@ export function ParamsView({ params, setParams }) {
   const [searchResults, setSearchResults]  = useState([])
   const [searching, setSearching]          = useState(false)
   const [highlightedIndex, setHighlighted] = useState(-1)
-  const [sources, setSources]             = useState(null)
-  const [checking, setChecking]           = useState(false)
+  const [sources, setSources]              = useState(null)
+  const [checking, setChecking]            = useState(false)
   const debounceRef = useRef(null)
   const inputRef    = useRef(null)
 
   useEffect(() => { inputRef.current?.focus() }, [])
   useEffect(() => { if (params.nome) setSearchTerm(params.nome) }, [])
-
 
   function handleSearchChange(e) {
     const val = e.target.value
@@ -32,8 +31,8 @@ export function ParamsView({ params, setParams }) {
     debounceRef.current = setTimeout(async () => {
       setSearching(true)
       try {
-        const data = await api.verificar(val, {})
-        setSearchResults(data.ok ? data.rows.slice(0, 8) : [])
+        const data = await api.buscarProduto(val)
+        setSearchResults(data.ok ? data.rows.slice(0, 10) : [])
         setHighlighted(-1)
       } finally {
         setSearching(false)
@@ -41,22 +40,32 @@ export function ParamsView({ params, setParams }) {
     }, 400)
   }
 
-  async function checkSources(nome, cod) {
+  async function checkSources(nome, cod, ma) {
     setChecking(true)
     setSources(null)
     try {
-      const data = await api.verificarProduto(nome, cod)
-      if (data.ok) setSources(data)
+      const data = await api.verificarProduto(nome, cod, ma)
+      if (data.ok) {
+        setSources(data)
+        if (data.agrofitInfo?.ma && !ma) {
+          setParams(p => ({ ...p, ma: p.ma || data.agrofitInfo.ma }))
+        }
+      }
     } finally {
       setChecking(false)
     }
   }
 
   function handleSelect(row) {
-    setParams(p => ({ ...p, Cod: row.cod, nome: row.nome }))
+    setParams(p => ({
+      ...p,
+      Cod:  row.cod || '',
+      nome: row.nome,
+      ma:   row.ma  || p.ma || '',
+    }))
     setSearchTerm(row.nome)
     setSearchResults([])
-    checkSources(row.nome, row.cod)
+    checkSources(row.nome, row.cod, row.ma)
   }
 
   function handleKeyDown(e) {
@@ -86,70 +95,77 @@ export function ParamsView({ params, setParams }) {
       </div>
 
       <div className={s.body}>
-        <div className={s.field}>
-          <label htmlFor="paramProduto">Produto</label>
-          <div className={s.searchWrap}>
+        <div className={s.form}>
+          <div className={s.field}>
+            <label htmlFor="paramProduto">Produto</label>
+            <div className={s.searchWrap}>
+              <input
+                ref={inputRef}
+                id="paramProduto"
+                type="text"
+                value={searchTerm}
+                placeholder="ex: BELURE"
+                onChange={handleSearchChange}
+                onKeyDown={handleKeyDown}
+                onBlur={() => setTimeout(() => setSearchResults([]), 150)}
+                autoComplete="off"
+              />
+              {searching && <span className={s.hint}>buscando...</span>}
+              {searchResults.length > 0 && (
+                <ul className={s.dropdown}>
+                  {searchResults.map((r, i) => (
+                    <li
+                      key={r.cod || r.ma || i}
+                      className={`${s.dropdownItem} ${i === highlightedIndex ? s.dropdownItemHL : ''}`}
+                      onMouseDown={() => handleSelect(r)}
+                    >
+                      <span className={s.dropNome}>{r.nome}</span>
+                      <span className={r.fonte === 'agrofit' ? s.dropMa : s.dropCod}>
+                        {r.ma ? `MA ${r.ma}` : r.cod}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          <div className={s.field}>
+            <label htmlFor="paramCod">Cod</label>
             <input
-              ref={inputRef}
-              id="paramProduto"
+              id="paramCod"
               type="text"
-              value={searchTerm}
-              placeholder="ex: BELURE"
-              onChange={handleSearchChange}
-              onKeyDown={handleKeyDown}
-              onBlur={() => setTimeout(() => setSearchResults([]), 150)}
-              autoComplete="off"
+              value={params.Cod}
+              placeholder="ex: 2968"
+              onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
             />
-            {searching && <span className={s.hint}>buscando...</span>}
-            {searchResults.length > 0 && (
-              <ul className={s.dropdown}>
-                {searchResults.map((r, i) => (
-                  <li
-                    key={r.cod}
-                    className={`${s.dropdownItem} ${i === highlightedIndex ? s.dropdownItemHL : ''}`}
-                    onMouseDown={() => handleSelect(r)}
-                  >
-                    <span className={s.dropNome}>{r.nome}</span>
-                    <span className={s.dropCod}>{r.cod}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+          </div>
+
+          <div className={s.field}>
+            <label htmlFor="paramMa">Registro MA</label>
+            <input
+              id="paramMa"
+              type="text"
+              inputMode="numeric"
+              value={params.ma ?? ''}
+              placeholder="ex: 00513"
+              onChange={e => setParams(p => ({ ...p, ma: e.target.value.replace(/\D/g, '') }))}
+            />
           </div>
         </div>
 
-        <div className={s.field}>
-          <label htmlFor="paramCod">Cod</label>
-          <input
-            id="paramCod"
-            type="text"
-            value={params.Cod}
-            placeholder="ex: 2968"
-            onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
-          />
+        <div className={s.sourcesPanel}>
+          <div className={s.sourcesTitle}>Fontes</div>
+          {SOURCES.map(src => (
+            <div key={src.id} className={s.sourceRow}>
+              <span className={`${s.dot} ${checking ? s.dotChecking : dotClass(sources?.[src.id])}`} />
+              <span className={s.sourceLabel}>{src.label}</span>
+              {src.id === 'agrofit' && sources?.agrofitInfo?.ma && (
+                <span className={s.sourceMa}>MA {sources.agrofitInfo.ma}</span>
+              )}
+            </div>
+          ))}
         </div>
-
-        <div className={s.field}>
-          <label htmlFor="paramMa">Registro MA</label>
-          <input
-            id="paramMa"
-            type="text"
-            inputMode="numeric"
-            value={params.ma ?? ''}
-            placeholder="ex: 00513"
-            onChange={e => setParams(p => ({ ...p, ma: e.target.value.replace(/\D/g, '') }))}
-          />
-        </div>
-      </div>
-
-      <div className={s.sourcesPanel}>
-        <div className={s.sourcesTitle}>Fontes</div>
-        {SOURCES.map(src => (
-          <div key={src.id} className={s.sourceRow}>
-            <span className={`${s.dot} ${checking ? s.dotChecking : dotClass(sources?.[src.id])}`} />
-            <span className={s.sourceLabel}>{src.label}</span>
-          </div>
-        ))}
       </div>
     </section>
   )
