@@ -1,84 +1,171 @@
+/* ── Layout ──────────────────────────────────────────────────────────────────── */
+
 .page {
-  min-height: 100vh;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.formPanel {
+  width: 44%;
+  min-width: 420px;
+  background: #080c08;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
+  padding: 48px 56px;
 }
 
-.card {
-  width: 360px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 36px;
+.imagePanel {
+  flex: 1;
+  background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1400&auto=format&fit=crop');
+  background-color: #1a2e0a;
+  background-size: cover;
+  background-position: center;
+  position: relative;
 }
 
-.logo {
+.imagePanel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(8,12,8,.65) 0%, rgba(8,12,8,0) 45%);
+}
+
+/* ── Form wrapper ────────────────────────────────────────────────────────────── */
+
+.formWrapper {
+  width: 100%;
+  max-width: 360px;
+}
+
+.brand {
   font-family: var(--display);
-  font-size: 18px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--accent);
-  margin-bottom: 4px;
-  text-align: center;
-  letter-spacing: .03em;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
 }
 
-.subtitle {
-  text-align: center;
-  color: var(--dim);
-  font-size: 11px;
-  margin-bottom: 28px;
+.heading {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 3.2vw, 2.9rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 40px;
 }
+
+/* ── Form elements ───────────────────────────────────────────────────────────── */
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 20px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
+  gap: 7px;
+}
+
+.field label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: #567056;
+  margin: 0;
+}
+
+.field input {
+  background: #0d140d;
+  border: 1px solid #1c2c1c;
+  color: #e2e8e2;
+  padding: 12px 14px;
+  font-family: var(--mono);
+  font-size: 14px;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  width: 100%;
+}
+
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(140,198,63,.12);
+}
+
+.field input::placeholder {
+  color: #2e3e2e;
 }
 
 .btn {
   width: 100%;
-  padding: 9px;
-  background: var(--accent);
+  padding: 13px;
+  background: linear-gradient(135deg, #8CC63F 0%, #5c8c20 100%);
   color: #fff;
   border: none;
-  border-radius: 3px;
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
+  border-radius: 4px;
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background .15s;
-  margin-top: 2px;
+  letter-spacing: .02em;
+  transition: opacity .15s, transform .1s;
+  margin-top: 4px;
 }
-.btn:hover:not(:disabled) { background: var(--accent-2); }
-.btn:disabled { opacity: .55; cursor: not-allowed; }
+
+.btn:hover:not(:disabled) {
+  opacity: .88;
+  transform: translateY(-1px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
 
 .error {
-  color: var(--red);
-  font-size: 11px;
+  color: #f87171;
+  font-size: 12px;
   min-height: 16px;
+  margin-top: -8px;
 }
 
 .switch {
   text-align: center;
-  color: var(--dim);
-  font-size: 11px;
+  color: #3d4e3d;
+  font-size: 12px;
   margin-top: 4px;
 }
 
 .link {
   background: none;
   border: none;
-  color: var(--accent);
+  color: #7aaa3a;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
   padding: 0;
   text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:hover {
+  color: var(--accent);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .imagePanel  { display: none; }
+  .formPanel   { width: 100%; min-width: unset; padding: 40px 28px; }
 }

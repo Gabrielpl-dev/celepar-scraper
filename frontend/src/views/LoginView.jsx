@@ -32,36 +32,40 @@ export function LoginView({ onAuth, onSwitchToRegister }) {
   }
 
   return (
-    <form className={s.form} onSubmit={handleSubmit}>
-      <div className={s.field}>
-        <label htmlFor="au-username">Usuário</label>
-        <input
-          id="au-username"
-          type="text"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-          autoFocus
-          autoComplete="username"
-        />
-      </div>
-      <div className={s.field}>
-        <label htmlFor="au-password">Senha</label>
-        <input
-          id="au-password"
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          autoComplete="current-password"
-        />
-      </div>
-      <p className={s.error}>{error}</p>
-      <button className={s.btn} type="submit" disabled={loading || !username || !password}>
-        {loading ? 'Entrando...' : 'Entrar'}
-      </button>
-      <p className={s.switch}>
-        Não tem conta?{' '}
-        <button type="button" className={s.link} onClick={onSwitchToRegister}>Cadastrar</button>
-      </p>
-    </form>
+    <div className={s.formWrapper}>
+      <div className={s.brand}>AgroCheck</div>
+      <h1 className={s.heading}>Faça seu<br />login.</h1>
+      <form className={s.form} onSubmit={handleSubmit}>
+        <div className={s.field}>
+          <label htmlFor="au-username">Usuário</label>
+          <input
+            id="au-username"
+            type="text"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            autoFocus
+            autoComplete="username"
+          />
+        </div>
+        <div className={s.field}>
+          <label htmlFor="au-password">Senha</label>
+          <input
+            id="au-password"
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            autoComplete="current-password"
+          />
+        </div>
+        <p className={s.error}>{error}</p>
+        <button className={s.btn} type="submit" disabled={loading || !username || !password}>
+          {loading ? 'Entrando...' : 'Entrar'}
+        </button>
+        <p className={s.switch}>
+          Ainda não tem conta?{' '}
+          <button type="button" className={s.link} onClick={onSwitchToRegister}>Cadastrar</button>
+        </p>
+      </form>
+    </div>
   )
 }
