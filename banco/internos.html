@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Bancos Internos — AgroCheck</title>
+  <link rel="stylesheet" href="/banco/style.css">
+  <style>
+    .db-section { margin-top: 32px; }
+    .db-title {
+      font-size: 13px; color: #fff; font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .db-path { font-size: 11px; color: #444; margin-bottom: 14px; }
+    .tbl-accordion { border: 1px solid #2a2a2a; border-radius: 6px; margin-bottom: 10px; overflow: hidden; }
+    .tbl-header {
+      width: 100%; background: #161616; border: none; color: #ccc;
+      font-family: monospace; font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+      padding: 11px 16px; text-align: left; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .tbl-header:hover { background: #1c1c1c; }
+    .tbl-seta { color: #555; transition: transform .15s; }
+    .tbl-seta.open { transform: rotate(90deg); }
+    .tbl-body { padding: 0; background: #141414; display: none; overflow-x: auto; }
+    .tbl-body.open { display: block; }
+    .tbl-count { font-size: 11px; color: #555; padding: 10px 16px 0; }
+    .empty { font-size: 12px; color: #444; padding: 14px 16px; }
+  </style>
+</head>
+<body>
+
+<a class="voltar" href="/banco/" style="font-size:12px;color:#555;text-decoration:none;display:inline-block;margin-bottom:16px">← Voltar</a>
+<h1>Bancos Internos</h1>
+<div class="sub">Bases SQLite criadas pelo AgroCheck</div>
+
+<div id="conteudo"><div class="nav-status">carregando...</div></div>
+
+<script src="/banco/internos.js"></script>
+</body>
+</html>

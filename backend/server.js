@@ -11,6 +11,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/teste', express.static(path.join(__dirname, '..', 'teste')));
 app.use('/banco', express.static(path.join(__dirname, '..', 'banco')));
+app.get('/banco/internos', (_req, res) =>
+  res.sendFile(path.join(__dirname, '..', 'banco', 'internos.html'))
+);
 app.get('/banco/:tabela', (_req, res) =>
   res.sendFile(path.join(__dirname, '..', 'banco', 'tabela.html'))
 );
@@ -24,6 +27,7 @@ app.use('/api', require('./routes/celepar'));
 app.use('/api', require('./routes/agrofit'));
 app.use('/api', require('./routes/sigen'));
 app.use('/api', require('./routes/banco'));
+app.use('/api', require('./routes/internos'));
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 
