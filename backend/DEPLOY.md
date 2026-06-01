@@ -47,7 +47,11 @@ PORT=3000
 ORACLE_USER=...
 ORACLE_PASSWORD=...
 ORACLE_CONNECT_STRING=reag.vms.com.br:1521/reag
+
+JWT_SECRET=<gerar com: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))">
 ```
+
+> **JWT_SECRET** é obrigatório para autenticação. Sem ele o login retorna 401.
 
 ## Acesso
 
