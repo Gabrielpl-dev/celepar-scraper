@@ -29,7 +29,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(8,12,8,.65) 0%, rgba(8,12,8,0) 45%);
+  background: linear-gradient(to right, #080c08 0%, rgba(8,12,8,.7) 20%, rgba(8,12,8,.15) 55%, rgba(8,12,8,0) 100%);
 }
 
 /* ── Form wrapper ────────────────────────────────────────────────────────────── */
@@ -87,7 +87,7 @@
   padding: 12px 14px;
   font-family: var(--mono);
   font-size: 14px;
-  border-radius: 4px;
+  border-radius: 8px;
   outline: none;
   transition: border-color .15s, box-shadow .15s;
   width: 100%;
@@ -108,7 +108,7 @@
   background: linear-gradient(135deg, #8CC63F 0%, #5c8c20 100%);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-family: var(--display);
   font-size: 15px;
   font-weight: 600;
