@@ -28,6 +28,6 @@ app.use('/api', require('./routes/banco'));
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n  🌱 Celepar Scraper rodando em http://0.0.0.0:${PORT}\n`);
+  console.log(`\n  🌱 AgroCheck rodando em http://0.0.0.0:${PORT}\n`);
   console.log(`  📡 Acessível na rede em http://<seu-ip>:${PORT}\n`);
 });

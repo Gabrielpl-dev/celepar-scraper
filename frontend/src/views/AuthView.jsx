@@ -9,7 +9,7 @@ export function AuthView({ onAuth }) {
   return (
     <div className={s.page}>
       <div className={s.card}>
-        <div className={s.logo}>Celepar Scraper</div>
+        <div className={s.logo}>AgroCheck</div>
         <p className={s.subtitle}>{mode === 'login' ? 'Entrar na conta' : 'Criar conta'}</p>
         {mode === 'login'
           ? <LoginView onAuth={onAuth} onSwitchToRegister={() => setMode('register')} />
