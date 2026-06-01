@@ -24,7 +24,13 @@ export const api = {
   cccbCulturas:        ()                  => call('cccb/culturas', null, 'GET'),
   cccbBuildMapping:    (params)            => call('cccb/build-mapping', { params }),
   cccb:                (culturaid, params) => call('cccb', { culturaid, params }),
-  verificarProduto: (nome, cod)      => call('verificar-produto?nome=' + encodeURIComponent(nome) + (cod ? '&cod=' + encodeURIComponent(cod) : ''), null, 'GET'),
+  buscarProduto:    (nome)           => call('buscar-produto?nome=' + encodeURIComponent(nome), null, 'GET'),
+  verificarProduto: (nome, cod, ma)  => call(
+    'verificar-produto?nome=' + encodeURIComponent(nome) +
+    (cod ? '&cod=' + encodeURIComponent(cod) : '') +
+    (ma  ? '&ma='  + encodeURIComponent(ma)  : ''),
+    null, 'GET'
+  ),
   buscarSiagro:   (siagro, params)  => call('buscar-siagro', { siagro, params }),
   comparar:       (c1, c2, params)  => call('comparar', { cultura1: c1, cultura2: c2, params }),
   verificar:      (termo, params)   => call('verificar', { termo, params }),

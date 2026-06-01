@@ -1,10 +1,13 @@
-const express  = require('express')
-const oracledb = require('oracledb')
-const Database = require('better-sqlite3')
-const fs       = require('fs')
-const path     = require('path')
-const { fetchPage, parseRows, buildUrl, norm } = require('../lib/scraper')
+const express      = require('express')
+const oracledb     = require('oracledb')
+const Database     = require('better-sqlite3')
+const fs           = require('fs')
+const path         = require('path')
+const { fetchPage, fetchPesquisa, parseRows, parsePesquisaRows, buildUrl, norm } = require('../lib/scraper')
 const requireAdmin = require('../middleware/requireAdmin')
+const agrofitCsv   = require('../lib/agrofitCsv')
+const agrofitApi   = require('../lib/agrofitApi')
+const sigenClient  = require('../lib/sigenClient')
 
 const TABELAS_JSON = path.join(__dirname, '..', '..', 'banco', 'tabelas.json')
 const DB_PATH      = path.join(__dirname, '..', '..', 'banco', 'local.db')
@@ -97,41 +100,107 @@ router.get('/banco/buscar', requireAdmin, async (req, res) => {
   }
 })
 
+// ── Busca unificada (Celepar + Agrofit CSV + API) ────────────────────────────
+
+router.get('/buscar-produto', async (req, res) => {
+  const { nome } = req.query
+  if (!nome?.trim()) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
+
+  const [celeparRows, csvRows, apiRows] = await Promise.all([
+    fetchPesquisa()
+      .then(html => parsePesquisaRows(html).filter(r => norm(r.nome).includes(norm(nome.trim()))).slice(0, 10))
+      .catch(() => []),
+    agrofitCsv.buscarPorNome(nome.trim()),
+    agrofitApi.buscarPorNome(nome.trim()),
+  ])
+
+  const rows = []
+  for (const r of celeparRows)
+    rows.push({ nome: r.nome, cod: r.cod, ma: null, ingrediente: null, fonte: 'adapar' })
+
+  const agrofitSeen = new Map()
+  for (const r of [...csvRows, ...apiRows]) {
+    const key = r.ma || r.nome
+    if (!agrofitSeen.has(key)) {
+      agrofitSeen.set(key, r)
+      rows.push({ nome: r.nome, cod: null, ma: r.ma || null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
+    }
+  }
+
+  res.json({ ok: true, rows: rows.slice(0, 25) })
+})
+
 // ── Verificar produto nas fontes ──────────────────────────────────────────────
 
 router.get('/verificar-produto', async (req, res) => {
-  const { nome, cod } = req.query
+  const { nome, cod, ma: maParam } = req.query
   if (!nome?.trim()) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
 
-  let banco = false
-  if (oracleReady) {
-    let conn
+  const [banco, adapar, agrofitRows] = await Promise.all([
+    // Oracle
+    (async () => {
+      if (!oracleReady) return false
+      let conn
+      try {
+        conn = await oracleConn()
+        const r = await conn.execute(
+          `SELECT COUNT(*) AS QTD FROM RECEITPADRAO WHERE DESCRICAO = :nome`,
+          { nome: nome.trim() },
+          { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+        )
+        return (r.rows[0]?.QTD ?? 0) > 0
+      } catch (_) { return false }
+      finally { if (conn) await conn.close().catch(() => {}) }
+    })(),
+
+    // Adapar/Celepar por cod
+    (async () => {
+      if (!cod?.trim()) return false
+      try {
+        const html = await fetchPage(buildUrl({ Cod: cod.trim() }))
+        return parseRows(html).length > 0
+      } catch (_) { return false }
+    })(),
+
+    // Agrofit: CSV + API em paralelo, deduplica por MA
+    (async () => {
+      const [csv, api] = await Promise.all([
+        agrofitCsv.buscarPorNome(nome.trim()),
+        agrofitApi.buscarPorNome(nome.trim()),
+      ])
+      const seen = new Map()
+      for (const r of [...csv, ...api]) {
+        const key = r.ma || r.nome
+        if (!seen.has(key)) seen.set(key, r)
+      }
+      return [...seen.values()]
+    })(),
+  ])
+
+  const agrofitEncontrado = agrofitRows.length > 0
+  const ma = maParam?.trim() || (agrofitEncontrado ? agrofitRows[0].ma : null)
+
+  // Sigen: só se temos um MA numérico
+  let sigen = null
+  if (ma && /^\d+$/.test(ma)) {
     try {
-      conn = await oracleConn()
-      const r = await conn.execute(
-        `SELECT COUNT(*) AS QTD FROM RECEITPADRAO WHERE DESCRICAO = :nome`,
-        { nome: nome.trim() },
-        { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
-      )
-      banco = (r.rows[0]?.QTD ?? 0) > 0
+      const r = await sigenClient.verificarMA(ma)
+      sigen = r.encontrado
     } catch (_) {
-      banco = false
-    } finally {
-      if (conn) await conn.close().catch(() => {})
+      sigen = false
     }
   }
 
-  let adapar = false
-  if (cod?.trim()) {
-    try {
-      const html = await fetchPage(buildUrl({ Cod: cod.trim() }))
-      adapar = parseRows(html).length > 0
-    } catch (_) {
-      adapar = false
-    }
-  }
-
-  res.json({ ok: true, banco, adapar, agrofit: null, sigen: null })
+  res.json({
+    ok:    true,
+    banco,
+    adapar,
+    agrofit: agrofitEncontrado,
+    agrofitInfo: agrofitEncontrado
+      ? { ma: agrofitRows[0].ma, nome: agrofitRows[0].nome, ingrediente: agrofitRows[0].ingrediente }
+      : null,
+    sigen,
+  })
 })
 
 // ── Culturas local ────────────────────────────────────────────────────────────

@@ -130,3 +130,17 @@
   font-weight: 700;
   flex-shrink: 0;
 }
+
+.dropMa {
+  color: var(--dim);
+  font-size: 10px;
+  flex-shrink: 0;
+  font-style: italic;
+}
+
+.sourceMa {
+  font-size: 10px;
+  color: var(--accent);
+  font-family: var(--mono);
+  margin-left: auto;
+}
