@@ -4,6 +4,7 @@ const Database = require('better-sqlite3')
 const fs       = require('fs')
 const path     = require('path')
 const { fetchPage, parseRows, buildUrl, norm } = require('../lib/scraper')
+const requireAdmin = require('../middleware/requireAdmin')
 
 const TABELAS_JSON = path.join(__dirname, '..', '..', 'banco', 'tabelas.json')
 const DB_PATH      = path.join(__dirname, '..', '..', 'banco', 'local.db')
@@ -44,7 +45,7 @@ async function oracleConn() {
   return conn
 }
 
-router.post('/banco', async (req, res) => {
+router.post('/banco', requireAdmin, async (req, res) => {
   if (!oracleReady) {
     return res.status(503).json({ ok: false, error: 'Oracle Instant Client não encontrado em C:\\oracle\\instantclient_21_15' })
   }
@@ -72,7 +73,7 @@ router.post('/banco', async (req, res) => {
   }
 })
 
-router.get('/banco/buscar', async (req, res) => {
+router.get('/banco/buscar', requireAdmin, async (req, res) => {
   if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
   const { tabela, coluna, q } = req.query
   if (!tabela || !coluna || !q?.trim())
@@ -135,7 +136,7 @@ router.get('/verificar-produto', async (req, res) => {
 
 // ── Culturas local ────────────────────────────────────────────────────────────
 
-router.post('/culturas/sincronizar', async (req, res) => {
+router.post('/culturas/sincronizar', requireAdmin, async (req, res) => {
   if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
   let conn
   try {
@@ -172,7 +173,7 @@ router.get('/cccb/culturas', (req, res) => {
   }
 })
 
-router.post('/cccb/build-mapping', async (req, res) => {
+router.post('/cccb/build-mapping', requireAdmin, async (req, res) => {
   const { params = {} } = req.body
   try {
     const html = await fetchPage(buildUrl(params))
@@ -307,7 +308,7 @@ router.post('/cccb', async (req, res) => {
 
 // ── Tabelas conhecidas ────────────────────────────────────────────────────────
 
-router.post('/banco/tabelas/salvar', (req, res) => {
+router.post('/banco/tabelas/salvar', requireAdmin, (req, res) => {
   const { nome } = req.body
   if (!nome) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
   const data = lerTabelas()
@@ -319,7 +320,7 @@ router.post('/banco/tabelas/salvar', (req, res) => {
   res.json({ ok: true, tabelas: data.tabelas })
 })
 
-router.post('/banco/tabelas/excluir', (req, res) => {
+router.post('/banco/tabelas/excluir', requireAdmin, (req, res) => {
   const { nome } = req.body
   if (!nome) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
   const data = lerTabelas()

@@ -1,3 +1,12 @@
+;(function() {
+  try {
+    const tok = localStorage.getItem('token')
+    if (!tok) { location.href = '/'; return }
+    const payload = JSON.parse(atob(tok.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+    if (payload.role !== 'admin') location.href = '/'
+  } catch { location.href = '/' }
+})()
+
 const nome = decodeURIComponent(location.pathname.split('/').filter(Boolean).pop())
 
 document.getElementById('titulo').textContent = nome

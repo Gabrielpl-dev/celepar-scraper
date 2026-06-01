@@ -1,3 +1,12 @@
+;(function() {
+  try {
+    const tok = localStorage.getItem('token')
+    if (!tok) { location.href = '/'; return }
+    const payload = JSON.parse(atob(tok.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+    if (payload.role !== 'admin') location.href = '/'
+  } catch { location.href = '/' }
+})()
+
 function authHeader() {
   const token = localStorage.getItem('token')
   return token ? { Authorization: 'Bearer ' + token } : {}
