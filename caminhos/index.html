@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Caminhos — AgroCheck</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      background: #0e0e0e;
+      color: #ccc;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 13px;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: #090909;
+      border-right: 1px solid #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 22px 18px 14px;
+      border-bottom: 1px solid #161616;
+    }
+
+    .sidebar-brand {
+      font-size: 9px;
+      color: #8cc63f;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-title {
+      font-size: 16px;
+      color: #e2e2e2;
+      font-weight: bold;
+      letter-spacing: -.01em;
+    }
+
+    .sidebar-sub {
+      font-size: 11px;
+      color: #2e2e2e;
+      margin-top: 3px;
+    }
+
+    /* ── Groups ── */
+    .group { padding-top: 18px; }
+    .group:last-child { padding-bottom: 16px; }
+
+    .group-label {
+      font-size: 9px;
+      color: #2a2a2a;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      padding: 0 18px 8px;
+    }
+
+    /* ── Route items ── */
+    .route-item {
+      display: flex;
+      flex-direction: column;
+      padding: 9px 18px 9px 16px;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: background .1s, border-color .1s;
+      gap: 3px;
+      text-decoration: none;
+    }
+
+    .route-item:hover { background: #111; }
+
+    .route-item.active {
+      background: #0f1a0a;
+      border-left-color: #8cc63f;
+    }
+
+    .route-path {
+      font-size: 12px;
+      color: #6a9640;
+      font-family: monospace;
+      word-break: break-all;
+    }
+
+    .route-item.active .route-path { color: #a8d96a; }
+    .route-item:hover:not(.active) .route-path { color: #7aaa50; }
+
+    .route-desc {
+      font-size: 10px;
+      color: #2e2e2e;
+    }
+
+    /* ── Preview panel ── */
+    .preview {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .preview-bar {
+      height: 38px;
+      background: #0a0a0a;
+      border-bottom: 1px solid #181818;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #222;
+      flex-shrink: 0;
+      transition: background .2s;
+    }
+
+    .preview-url {
+      flex: 1;
+      font-size: 11px;
+      color: #333;
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .preview-url .hl { color: #7aaa50; }
+
+    .btn-open {
+      font-size: 10px;
+      color: #383838;
+      background: none;
+      border: 1px solid #1e1e1e;
+      border-radius: 4px;
+      padding: 3px 9px;
+      font-family: monospace;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color .1s, border-color .1s;
+      display: none;
+    }
+
+    .btn-open:hover { color: #8cc63f; border-color: #2e2e2e; }
+
+    .frame {
+      flex: 1;
+      border: none;
+      width: 100%;
+      background: #111;
+    }
+
+    .empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #1e1e1e;
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .empty-arrow {
+      font-size: 24px;
+      color: #1a1a1a;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-brand">AgroCheck</div>
+    <div class="sidebar-title">Caminhos</div>
+    <div class="sidebar-sub">todas as páginas do sistema</div>
+  </div>
+  <div id="nav"></div>
+</nav>
+
+<div class="preview">
+  <div class="preview-bar">
+    <div class="status-dot" id="dot"></div>
+    <div class="preview-url" id="url">selecione um caminho à esquerda</div>
+    <a class="btn-open" id="btn-open" target="_blank" rel="noopener">abrir ↗</a>
+  </div>
+  <div class="empty" id="empty">
+    <div class="empty-arrow">←</div>
+    <div>clique em um caminho para visualizar</div>
+  </div>
+  <iframe class="frame" id="frame" src="about:blank" style="display:none"></iframe>
+</div>
+
+<script>
+;(function () {
+  try {
+    const tok = localStorage.getItem('token')
+    if (!tok) { location.href = '/'; return }
+    const p = JSON.parse(atob(tok.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+    if (p.role !== 'admin') { location.href = '/'; return }
+  } catch { location.href = '/'; return }
+})()
+
+const ROUTES = [
+  {
+    group: 'App',
+    items: [
+      { path: '/',          desc: 'Aplicação principal (React SPA)' },
+    ],
+  },
+  {
+    group: 'Banco',
+    items: [
+      { path: '/banco/',         desc: 'Oracle — SQL, parâmetros, navegação' },
+      { path: '/banco/internos', desc: 'SQLite — agrofit_ids, culturas, users' },
+    ],
+  },
+  {
+    group: 'Dev',
+    items: [
+      { path: '/teste/',     desc: 'Sandbox de desenvolvimento' },
+      { path: '/caminhos/',  desc: 'Esta página' },
+    ],
+  },
+]
+
+let active = null
+
+function navegar(path, el) {
+  if (active) active.classList.remove('active')
+  el.classList.add('active')
+  active = el
+
+  const frame   = document.getElementById('frame')
+  const urlEl   = document.getElementById('url')
+  const dot     = document.getElementById('dot')
+  const btnOpen = document.getElementById('btn-open')
+  const empty   = document.getElementById('empty')
+
+  urlEl.innerHTML = '<span style="color:#2a2a2a">http://&lt;servidor&gt;:3000</span><span class="hl">' + esc(path) + '</span>'
+  dot.style.background = '#8cc63f'
+  btnOpen.href = path
+  btnOpen.style.display = ''
+
+  empty.style.display = 'none'
+  frame.style.display = ''
+  frame.src = path
+}
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+const nav = document.getElementById('nav')
+ROUTES.forEach(({ group, items }) => {
+  const groupEl = document.createElement('div')
+  groupEl.className = 'group'
+
+  const label = document.createElement('div')
+  label.className = 'group-label'
+  label.textContent = group
+  groupEl.appendChild(label)
+
+  items.forEach(({ path, desc }) => {
+    const item = document.createElement('div')
+    item.className = 'route-item'
+    item.innerHTML =
+      '<div class="route-path">' + esc(path) + '</div>' +
+      '<div class="route-desc">' + esc(desc) + '</div>'
+    item.addEventListener('click', () => navegar(path, item))
+    groupEl.appendChild(item)
+  })
+
+  nav.appendChild(groupEl)
+})
+</script>
+</body>
+</html>
