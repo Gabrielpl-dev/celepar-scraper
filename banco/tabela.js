@@ -3,12 +3,18 @@ const nome = decodeURIComponent(location.pathname.split('/').filter(Boolean).pop
 document.getElementById('titulo').textContent = nome
 document.title = nome + ' — Oracle'
 
+function authHeader() {
+  const token = localStorage.getItem('token')
+  return token ? { Authorization: 'Bearer ' + token } : {}
+}
+
 async function query(sql) {
   const res  = await fetch('/api/banco', {
     method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
     body:    JSON.stringify({ sql }),
   })
+  if (res.status === 401) { alert('Sessão expirada. Faça login novamente.'); location.href = '/'; return { ok: false, error: 'não autenticado' } }
   return res.json()
 }
 
