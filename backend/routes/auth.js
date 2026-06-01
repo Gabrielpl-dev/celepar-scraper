@@ -2,6 +2,8 @@ const router  = require('express').Router()
 const bcrypt  = require('bcrypt')
 const jwt     = require('jsonwebtoken')
 const db      = require('../db')
+const requireAuth  = require('../middleware/requireAuth')
+const requireAdmin = require('../middleware/requireAdmin')
 
 const GPL_USER = 'GPL_SCRAPER'
 
@@ -19,8 +21,8 @@ router.post('/auth/login', async (req, res) => {
     if (username.toUpperCase() === GPL_USER) {
       if (password !== process.env.ORACLE_PASSWORD)
         return res.status(401).json({ ok: false, error: 'credenciais inválidas' })
-      const token = signToken({ username: GPL_USER, role: 'oracle' })
-      return res.json({ ok: true, token, username: GPL_USER, role: 'oracle' })
+      const token = signToken({ username: GPL_USER, role: 'admin' })
+      return res.json({ ok: true, token, username: GPL_USER, role: 'admin' })
     }
 
     const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username)
@@ -29,8 +31,9 @@ router.post('/auth/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password_hash)
     if (!match) return res.status(401).json({ ok: false, error: 'credenciais inválidas' })
 
-    const token = signToken({ username, role: user.role ?? 'local' })
-    res.json({ ok: true, token, username, role: user.role ?? 'local' })
+    const role  = user.role ?? 'viewer'
+    const token = signToken({ username, role })
+    res.json({ ok: true, token, username, role })
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message })
   }
@@ -50,10 +53,26 @@ router.post('/auth/register', async (req, res) => {
       return res.status(409).json({ ok: false, error: 'usuário já existe' })
 
     const hash = await bcrypt.hash(password, 12)
-    db.prepare('INSERT INTO users (username, password_hash) VALUES (?, ?)').run(username, hash)
+    db.prepare('INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)').run(username, hash, 'viewer')
 
-    const token = signToken({ username, role: 'local' })
-    res.json({ ok: true, token, username, role: 'local' })
+    const token = signToken({ username, role: 'viewer' })
+    res.json({ ok: true, token, username, role: 'viewer' })
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message })
+  }
+})
+
+// Promover usuário para admin — apenas admins podem fazer isso
+router.post('/auth/promote', requireAuth, requireAdmin, (req, res) => {
+  try {
+    const { username } = req.body
+    if (!username) return res.status(400).json({ ok: false, error: 'username obrigatório' })
+    if (username.toUpperCase() === GPL_USER)
+      return res.status(400).json({ ok: false, error: 'usuário reservado' })
+    const user = db.prepare('SELECT username FROM users WHERE username = ?').get(username)
+    if (!user) return res.status(404).json({ ok: false, error: 'usuário não encontrado' })
+    db.prepare("UPDATE users SET role = 'admin' WHERE username = ?").run(username)
+    res.json({ ok: true, message: `${username} promovido a admin` })
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message })
   }
