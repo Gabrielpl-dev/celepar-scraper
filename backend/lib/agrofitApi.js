@@ -77,7 +77,8 @@ async function buscarDocumentos(ma) {
       if (res.status === 401) { _token = null; _expiresAt = 0 }
       return null
     }
-    const item = await res.json()
+    const data = await res.json()
+    const item = Array.isArray(data) ? data[0] : data
     if (!item || !item.numero_registro) return null
     return {
       ma:          item.numero_registro || ma,
