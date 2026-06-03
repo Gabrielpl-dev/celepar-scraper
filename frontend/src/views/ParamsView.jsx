@@ -134,9 +134,16 @@ export function ParamsView({ params, setParams }) {
                       onMouseDown={() => handleSelect(r)}
                     >
                       <span className={s.dropNome}>{r.nome}</span>
-                      <span className={r.fonte === 'agrofit' ? s.dropMa : s.dropCod}>
-                        {r.ma ? `MA ${r.ma}` : r.cod}
-                      </span>
+                      {r.fonte === 'ambos' ? (
+                        <span className={s.dropAmbos}>
+                          <span className={s.dropCod}>{r.cod}</span>
+                          <span className={s.dropMa}>MA {r.ma}</span>
+                        </span>
+                      ) : (
+                        <span className={r.fonte === 'agrofit' ? s.dropMa : s.dropCod}>
+                          {r.ma ? `MA ${r.ma}` : r.cod}
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>

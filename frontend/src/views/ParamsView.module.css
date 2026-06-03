@@ -131,6 +131,13 @@
   flex-shrink: 0;
 }
 
+.dropAmbos {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .dropMa {
   color: var(--dim);
   font-size: 10px;
