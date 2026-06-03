@@ -1,3 +1,5 @@
 node_modules/
 .env
 *.db
+.claude/OTIMIZACAO.md
+backend/cache/
