@@ -22,6 +22,7 @@ app.get('/banco/:tabela', (_req, res) =>
 const requireAuth = require('./middleware/requireAuth');
 
 app.use('/api', require('./routes/auth'));
+app.use('/api', require('./routes/agrofit-public'));
 
 app.use('/api', requireAuth);
 app.use('/api', require('./routes/celepar'));
