@@ -1,291 +1,155 @@
-// ── cache de IDs (servidor) ────────────────────────────────────
-let _idsCache = null; // { [ma]: { ma, id, nome, atualizado } }
+let _buscandoNome = null
 
-async function loadIds() {
-  try {
-    const res  = await fetch('http://localhost:3000/api/agrofit-ids');
-    const data = await res.json();
-    _idsCache = {};
-    for (const row of (data.ids || [])) _idsCache[row.ma] = row;
-  } catch {
-    _idsCache = {};
-  }
-  renderIdsSalvos();
-}
+// ── Busca por MA via API Agrofit ──────────────────────────────
+async function buscarPorApi(maOverride) {
+  const ma   = (maOverride || document.getElementById('ma').value).trim()
+  const saida = document.getElementById('saida')
+  const btn   = document.getElementById('btn-buscar')
 
-async function removeId(ma) {
-  try {
-    await fetch(`http://localhost:3000/api/agrofit-ids/${encodeURIComponent(ma)}`, { method: 'DELETE' });
-    if (_idsCache) delete _idsCache[ma];
-    renderIdsSalvos();
-    checarIdSalvo();
-  } catch { /* silencioso */ }
-}
+  if (!ma) { saida.innerHTML = '<p class="erro">Informe o registro MA.</p>'; return }
 
-function findId(ma) {
-  if (!_idsCache) return null;
-  return _idsCache[ma.trim()]?.id || null;
-}
-
-// ── Hint + botão direto ───────────────────────────────────────
-function checarIdSalvo() {
-  const ma   = document.getElementById('ma').value.trim();
-  const hint = document.getElementById('hint-id');
-  const btn  = document.getElementById('btn-direto');
-
-  const id   = ma ? findId(ma) : null;
-  const nome = ma ? (_idsCache?.[ma.trim()]?.nome || null) : null;
-  if (id) {
-    hint.textContent  = nome ? `✓ ${nome}` : `✓ ID Agrofit salvo: ${id}`;
-    hint.className    = 'hint-id encontrado';
-    btn.style.display = 'inline-block';
-  } else {
-    hint.textContent  = ma ? 'ID Agrofit não cadastrado — cole a URL do Agrofit no passo 2' : '';
-    hint.className    = ma ? 'hint-id novo' : 'hint-id';
-    btn.style.display = 'none';
-  }
-}
-
-// ── Busca direta (ID já salvo) ────────────────────────────────
-function buscarDireto() {
-  const ma = document.getElementById('ma').value.trim();
-  const id = findId(ma);
-  if (!id) return;
-  buscarPorId(ma, id);
-}
-
-// ── Busca via URL colada ──────────────────────────────────────
-function buscarPorUrl() {
-  const urlInput = document.getElementById('url').value.trim();
-  const saida    = document.getElementById('saida');
-
-  if (!urlInput) { saida.innerHTML = '<p class="erro">Cole a URL do produto.</p>'; return; }
-
-  let id, ma;
-  try {
-    const u = new URL(urlInput);
-    id = u.searchParams.get('p_id_produto_formulado_tecnico');
-    ma = u.searchParams.get('p_nr_registro') || document.getElementById('ma').value.trim();
-  } catch {
-    saida.innerHTML = '<p class="erro">URL inválida.</p>';
-    return;
-  }
-
-  if (!id) {
-    saida.innerHTML = '<p class="erro">Não encontrei <code>p_id_produto_formulado_tecnico</code> na URL.</p>';
-    return;
-  }
-  if (!ma) {
-    saida.innerHTML = '<p class="erro">Não encontrei o registro MA na URL. Preencha o campo MA manualmente.</p>';
-    return;
-  }
-
-  buscarPorId(ma, id);
-}
-
-// ── Busca central ─────────────────────────────────────────────
-async function buscarPorId(ma, id) {
-  const saida   = document.getElementById('saida');
-  const btnDir  = document.getElementById('btn-direto');
-  const btnBusc = document.getElementById('btn-buscar');
-
-  btnDir.disabled  = true;
-  btnBusc.disabled = true;
-  saida.innerHTML  = '<p class="status">consultando agrofit e sigen...</p>';
+  if (btn) btn.disabled = true
+  saida.innerHTML = '<p class="status">consultando API Agrofit e SIGEN...</p>'
 
   try {
+    const token = localStorage.getItem('token')
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+
     const [agrofit, sigen] = await Promise.all([
-      fetch('http://localhost:3000/api/agrofit?' + new URLSearchParams({ ma, id })).then(r => r.json()),
-      fetch('http://localhost:3000/api/sigen?'   + new URLSearchParams({ ma })).then(r => r.json()).catch(() => null),
-    ]);
+      fetch('/api/agrofit-docs?ma=' + encodeURIComponent(ma), { headers }).then(r => r.json()),
+      fetch('/api/sigen?ma='        + encodeURIComponent(ma), { headers }).then(r => r.json()).catch(() => null),
+    ])
 
-    if (!agrofit.ok) {
-      saida.innerHTML = `<p class="erro">Erro Agrofit: ${agrofit.error}</p>`;
-      return;
-    }
+    if (!agrofit.ok) { saida.innerHTML = `<p class="erro">Erro: ${agrofit.error}</p>`; return }
 
-    if (agrofit.id && _idsCache !== null) {
-      _idsCache[ma] = { ma, id: agrofit.id, nome: agrofit.nome };
-    }
-    renderIdsSalvos();
-    checarIdSalvo();
-
-    const nome = agrofit.nome || (sigen?.ok && sigen.nome) || ma;
-    let html = `<div class="prod-nome">${nome}</div>`;
-    html += `<div class="status">MA: <strong>${ma}</strong> · ID Agrofit: <strong>${agrofit.id}</strong><span class="salvo-badge">✓ salvo</span></div>`;
-    html += '<hr>';
+    const nome = agrofit.nome || ma
+    let html = `<div class="prod-nome">${nome}</div>`
+    if (agrofit.titular) html += `<div class="status">${agrofit.titular}</div>`
+    if (agrofit.ingrediente) html += `<div class="status" style="color:#8b8">${agrofit.ingrediente}</div>`
+    html += `<div class="status">MA: <strong>${agrofit.ma}</strong></div>`
+    html += '<hr>'
 
     // ── Agrofit ──
-    html += '<div class="fonte-header">Agrofit — Bulas</div>';
-    const docs = agrofit.documentos || [];
-    if (!docs.length) {
-      html += '<p class="status">Nenhum documento encontrado no Agrofit.</p>';
+    html += '<div class="fonte-header">Agrofit — Documentos</div>'
+    const docs = agrofit.documentos || []
+    if (agrofit.aviso) {
+      html += `<p class="status">${agrofit.aviso}</p>`
+    } else if (!docs.length) {
+      html += '<p class="status">Nenhum documento encontrado.</p>'
     } else {
-      const principais = docs.filter(d => d.tipo === 'Bula' || d.tipo === 'Rótulo');
-      const outros     = docs.filter(d => d.tipo !== 'Bula' && d.tipo !== 'Rótulo');
-      const mostrar    = principais.length > 0 ? principais : docs;
-      for (const doc of mostrar) html += cardHtml(doc);
-      if (outros.length > 0 && principais.length > 0) {
-        html += `<a href="#" onclick="toggleOutros(event)" style="color:#2a6;font-size:12px">+ ${outros.length} outros</a>`;
-        html += `<div id="outros" style="display:none">`;
-        for (const doc of outros) html += cardHtml(doc);
-        html += `</div>`;
+      const bulas   = docs.filter(d => d.tipo === 'Bula' || d.tipo === 'Rótulo')
+      const outros  = docs.filter(d => d.tipo !== 'Bula' && d.tipo !== 'Rótulo')
+      for (const doc of (bulas.length ? bulas : docs)) html += cardHtml(doc)
+      if (bulas.length && outros.length) {
+        html += `<a href="#" onclick="toggleOutros(event)" style="color:#2a6;font-size:12px">+ ${outros.length} outros (certificados, etc.)</a>`
+        html += `<div id="outros" style="display:none">`
+        for (const doc of outros) html += cardHtml(doc)
+        html += `</div>`
       }
     }
 
     // ── SIGEN ──
-    html += '<div class="fonte-header" style="margin-top:20px">SIGEN — Fichas de Emergência</div>';
+    html += '<div class="fonte-header" style="margin-top:20px">SIGEN — Fichas de Emergência</div>'
     if (!sigen) {
-      html += '<p class="status">Erro ao consultar SIGEN.</p>';
-    } else if (!sigen.ok) {
-      html += `<p class="status">${sigen.error || 'Produto não encontrado no SIGEN.'}</p>`;
+      html += '<p class="status">Erro ao consultar SIGEN.</p>'
+    } else if (!sigen.ok || !sigen.documentos?.length) {
+      html += `<p class="status">${sigen?.error || 'Produto não encontrado no SIGEN.'}</p>`
     } else {
-      const sigenDocs = sigen.documentos || [];
-      if (!sigenDocs.length) {
-        html += '<p class="status">Nenhum documento encontrado no SIGEN.</p>';
-      } else {
-        for (const doc of sigenDocs) html += sigenCardHtml(doc);
-      }
+      for (const doc of sigen.documentos) html += sigenCardHtml(doc)
     }
 
-    saida.innerHTML = html;
+    saida.innerHTML = html
   } catch (err) {
-    saida.innerHTML = `<p class="erro">Erro de rede: ${err.message}<br>O backend está rodando?</p>`;
+    saida.innerHTML = `<p class="erro">Erro de rede: ${err.message}</p>`
   } finally {
-    btnDir.disabled  = false;
-    btnBusc.disabled = false;
+    if (btn) btn.disabled = false
   }
 }
 
 // ── Cards ─────────────────────────────────────────────────────
 function cardHtml(doc) {
-  let ext = '';
-  try { ext = new URLSearchParams(new URL(doc.url).search).get('p_nm_file')?.split('.').pop().toLowerCase() || ''; } catch {}
-  const proxy  = `http://localhost:3000/api/agrofit-pdf?url=${encodeURIComponent(doc.url)}`;
-  const titulo = (doc.nomeArquivo || doc.tipo || 'documento').replace(/'/g, "\\'");
-  const isPdf  = ext === 'pdf';
+  const isPdf  = doc.url?.toLowerCase().includes('.pdf') || doc.url?.includes('p_id_file')
+  const titulo = (doc.descricao || doc.tipo || 'documento').replace(/'/g, "\\'")
+  const proxy  = doc.url ? `/api/agrofit-pdf?url=${encodeURIComponent(doc.url)}` : ''
   return `
     <div class="card">
       <div class="card-tipo">${doc.tipo || '—'}</div>
-      <div class="card-nome">${doc.nomeArquivo || '—'}</div>
-      <div class="card-data">${doc.data || ''}</div>
-      ${isPdf ? `<a href="#" onclick="toggleViewer(event,'${titulo}','${proxy}')">Ver PDF</a>` : ''}
-      <a href="${proxy}" target="_blank">${isPdf ? 'Baixar ↗' : `Abrir ${ext.toUpperCase()} ↗`}</a>
-    </div>`;
+      <div class="card-nome">${doc.descricao || '—'}</div>
+      <div class="card-data">${doc.origem ? `${doc.origem} · ` : ''}${doc.data || ''}</div>
+      ${isPdf && proxy ? `<a href="#" onclick="toggleViewer(event,'${titulo}','${proxy}')">Ver PDF</a>` : ''}
+      ${proxy ? `<a href="${proxy}" target="_blank">Baixar ↗</a>` : ''}
+    </div>`
 }
 
 function sigenCardHtml(doc) {
-  const titulo = (doc.nomeArquivo || doc.tipo || 'documento').replace(/'/g, "\\'");
+  const titulo = (doc.nomeArquivo || doc.tipo || 'documento').replace(/'/g, "\\'")
   return `
     <div class="card">
       <div class="card-tipo">${doc.tipo || '—'}</div>
       <div class="card-nome">${doc.nomeArquivo || '—'}</div>
-      <div class="card-data">${doc.data || ''}</div>
       <a href="#" onclick="toggleViewer(event,'${titulo}','${doc.url}')">Ver PDF</a>
       <a href="${doc.url}" target="_blank">Baixar ↗</a>
-    </div>`;
+    </div>`
 }
 
+// ── PDF overlay ───────────────────────────────────────────────
 function toggleViewer(e, titulo, url) {
-  e.preventDefault();
-  document.getElementById('pdf-overlay-titulo').textContent = titulo;
-  const frame = document.getElementById('pdf-overlay-frame');
-  if (frame.src !== url) frame.src = url;
-  document.getElementById('pdf-overlay').classList.add('aberto');
+  e.preventDefault()
+  document.getElementById('pdf-overlay-titulo').textContent = titulo
+  const frame = document.getElementById('pdf-overlay-frame')
+  if (frame.src !== url) frame.src = url
+  document.getElementById('pdf-overlay').classList.add('aberto')
 }
 
 function fecharPdf() {
-  document.getElementById('pdf-overlay').classList.remove('aberto');
+  document.getElementById('pdf-overlay').classList.remove('aberto')
 }
 
 function toggleOutros(e) {
-  e.preventDefault();
-  const el = document.getElementById('outros');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  e.preventDefault()
+  const el = document.getElementById('outros')
+  el.style.display = el.style.display === 'none' ? 'block' : 'none'
 }
 
-// ── Copiar e abrir Agrofit ────────────────────────────────────
-function abrirAgrofit() {
-  const ma = document.getElementById('ma').value.trim();
-  if (!ma) { alert('Informe o registro MA primeiro.'); return; }
-  navigator.clipboard.writeText(ma).then(() => {
-    const aviso = document.getElementById('copiado');
-    aviso.style.display = 'inline';
-    setTimeout(() => aviso.style.display = 'none', 2500);
-  });
-  window.open('https://agrofit.agricultura.gov.br/agrofit_cons/!ap_produto_form_consulta_cons', '_blank');
+// ── Busca por nome ────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('busca-nome')
+  if (!input) return
+  let debounce = null
+  input.addEventListener('input', () => {
+    clearTimeout(debounce)
+    const v = input.value.trim()
+    if (!v) { document.getElementById('nome-resultados').innerHTML = ''; return }
+    debounce = setTimeout(() => buscarNome(v), 400)
+  })
+})
+
+async function buscarNome(nome) {
+  const el      = document.getElementById('nome-resultados')
+  const token   = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  el.innerHTML  = '<p class="status">buscando...</p>'
+  try {
+    const data = await fetch('/api/buscar-produto?nome=' + encodeURIComponent(nome), { headers }).then(r => r.json())
+    if (!data.ok || !data.rows?.length) { el.innerHTML = '<p class="hint-id novo">Nenhum resultado.</p>'; return }
+    let html = '<div class="nome-lista">'
+    for (const r of data.rows) {
+      const label = r.ma ? `MA ${r.ma}` : (r.cod || '')
+      html += `<div class="nome-item" onclick="selecionarNome('${(r.nome||'').replace(/'/g,"\\'")}','${(r.ma||'').replace(/'/g,"\\'")}')">
+        <span class="nome-item-nome">${r.nome || '—'}</span>
+        <span class="nome-item-ma">${label}</span>
+      </div>`
+    }
+    html += '</div>'
+    el.innerHTML = html
+  } catch { el.innerHTML = '<p class="erro">Erro na busca.</p>' }
 }
 
-// ── IDs Salvos ────────────────────────────────────────────────
-function toggleIdsSalvos() {
-  const lista  = document.getElementById('ids-lista');
-  const aberto = lista.style.display === 'block';
-  lista.style.display = aberto ? 'none' : 'block';
-  if (!aberto) renderIdsSalvos();
-  document.getElementById('ids-titulo').textContent =
-    (aberto ? '▶' : '▼') + document.getElementById('ids-titulo').textContent.slice(1);
-}
-
-function renderIdsSalvos() {
-  const chaves = _idsCache ? Object.keys(_idsCache).sort() : [];
-  const titulo = document.getElementById('ids-titulo');
-  titulo.textContent = titulo.textContent.replace(/\(\d+\)/, `(${chaves.length})`);
-
-  const lista = document.getElementById('ids-lista');
-  if (lista.style.display !== 'block') return;
-
-  if (!chaves.length) {
-    lista.innerHTML = '<p class="ids-vazio">Nenhum ID salvo ainda.</p>';
-    return;
+function selecionarNome(nome, ma) {
+  document.getElementById('nome-resultados').innerHTML = ''
+  document.getElementById('busca-nome').value = ''
+  if (ma) {
+    document.getElementById('ma').value = ma
+    buscarPorApi(ma)
   }
-
-  let html = '<table class="ids-table"><thead><tr><th>MA</th><th>Nome</th><th>ID Agrofit</th><th></th><th></th></tr></thead><tbody>';
-  for (const k of chaves) {
-    const row = _idsCache[k];
-    html += `<tr>
-      <td>${k}</td>
-      <td>${row.nome || '—'}</td>
-      <td>${row.id}</td>
-      <td><button class="btn-usar" onclick="usarId('${k.replace(/'/g,"\\'")}')">usar</button></td>
-      <td><button class="btn-del" onclick="removeId('${k.replace(/'/g,"\\'")}')">✕</button></td>
-    </tr>`;
-  }
-  html += '</tbody></table>';
-  lista.innerHTML = html;
 }
-
-function usarId(ma) {
-  document.getElementById('ma').value = ma;
-  checarIdSalvo();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  buscarDireto();
-}
-
-function filtrarNome() {
-  const termo      = document.getElementById('busca-nome').value.trim().toLowerCase();
-  const resultados = document.getElementById('nome-resultados');
-
-  if (!termo) { resultados.innerHTML = ''; return; }
-
-  const matches = Object.values(_idsCache || {}).filter(row =>
-    (row.nome || '').toLowerCase().includes(termo)
-  );
-
-  if (!matches.length) {
-    resultados.innerHTML = '<p class="hint-id novo">Nenhum produto encontrado no cache. Use o modo Por MA para cadastrar.</p>';
-    return;
-  }
-
-  let html = '<div class="nome-lista">';
-  for (const row of matches.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))) {
-    html += `<div class="nome-item" onclick="usarId('${row.ma.replace(/'/g, "\\'")}')">
-      <span class="nome-item-nome">${row.nome || '—'}</span>
-      <span class="nome-item-ma">MA: ${row.ma}</span>
-    </div>`;
-  }
-  html += '</div>';
-  resultados.innerHTML = html;
-}
-
-// ── Init ──────────────────────────────────────────────────────
-loadIds();

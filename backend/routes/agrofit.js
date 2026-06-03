@@ -1,6 +1,7 @@
-const express = require('express');
-const cheerio = require('cheerio');
-const db      = require('../db');
+const express    = require('express');
+const cheerio    = require('cheerio');
+const db         = require('../db');
+const agrofitApi = require('../lib/agrofitApi');
 
 const router = express.Router();
 
@@ -81,6 +82,20 @@ router.get('/agrofit', async (req, res) => {
     res.status(500).json({ ok: false, error: err.message });
   }
 });
+
+router.get('/agrofit-docs', async (req, res) => {
+  const { ma } = req.query
+  if (!ma || !/^\d+$/.test(ma.trim()))
+    return res.status(400).json({ ok: false, error: 'ma deve conter apenas dígitos' })
+  try {
+    const result = await agrofitApi.buscarDocumentos(ma.trim())
+    if (!result)
+      return res.json({ ok: true, ma, nome: null, documentos: [], aviso: 'Produto não encontrado na API Agrofit' })
+    res.json({ ok: true, ...result })
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message })
+  }
+})
 
 router.get('/agrofit-ids', (req, res) => {
   const rows = db.prepare('SELECT ma, id, nome, atualizado FROM agrofit_ids ORDER BY ma').all();
