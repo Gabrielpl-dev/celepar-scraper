@@ -1,83 +1,100 @@
-let _buscandoNome = null
-
 // ── Busca por MA via API Agrofit ──────────────────────────────
 async function buscarPorApi(maOverride) {
-  const ma   = (maOverride || document.getElementById('ma').value).trim()
+  const ma    = (maOverride || document.getElementById('ma').value).trim()
   const saida = document.getElementById('saida')
   const btn   = document.getElementById('btn-buscar')
 
   if (!ma) { saida.innerHTML = '<p class="erro">Informe o registro MA.</p>'; return }
 
   if (btn) btn.disabled = true
-  saida.innerHTML = '<p class="status">consultando API Agrofit e SIGEN...</p>'
+  saida.innerHTML = '<p class="status">buscando...</p>'
 
-  try {
-    const token = localStorage.getItem('token')
-    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  const token   = localStorage.getItem('token')
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
 
-    const [agrofit, sigen] = await Promise.all([
-      fetch('/api/agrofit-docs?ma=' + encodeURIComponent(ma), { headers }).then(r => r.json()),
-      fetch('/api/sigen?ma='        + encodeURIComponent(ma), { headers }).then(r => r.json()).catch(() => null),
-    ])
+  // Renderiza seção placeholder e preenche conforme cada fonte resolve
+  saida.innerHTML = `
+    <div id="sec-header"></div>
+    <hr id="sec-hr" style="display:none">
+    <div class="fonte-header">Agrofit — Documentos</div>
+    <div id="sec-agrofit"><p class="status">carregando...</p></div>
+    <div class="fonte-header" style="margin-top:20px">SIGEN — Fichas de Emergência</div>
+    <div id="sec-sigen"><p class="status">carregando...</p></div>
+  `
 
-    if (!agrofit.ok) { saida.innerHTML = `<p class="erro">Erro: ${agrofit.error}</p>`; return }
+  // ── Agrofit ──
+  fetch('/api/agrofit-docs?ma=' + encodeURIComponent(ma), { headers })
+    .then(r => r.json())
+    .then(data => {
+      const secHeader  = document.getElementById('sec-header')
+      const secAgrofit = document.getElementById('sec-agrofit')
+      const hr         = document.getElementById('sec-hr')
+      if (!secHeader) return
 
-    const nome = agrofit.nome || ma
-    let html = `<div class="prod-nome">${nome}</div>`
-    if (agrofit.titular) html += `<div class="status">${agrofit.titular}</div>`
-    if (agrofit.ingrediente) html += `<div class="status" style="color:#8b8">${agrofit.ingrediente}</div>`
-    html += `<div class="status">MA: <strong>${agrofit.ma}</strong></div>`
-    html += '<hr>'
+      if (!data.ok) { secAgrofit.innerHTML = `<p class="erro">${data.error}</p>`; return }
 
-    // ── Agrofit ──
-    html += '<div class="fonte-header">Agrofit — Documentos</div>'
-    const docs = agrofit.documentos || []
-    if (agrofit.aviso) {
-      html += `<p class="status">${agrofit.aviso}</p>`
-    } else if (!docs.length) {
-      html += '<p class="status">Nenhum documento encontrado.</p>'
-    } else {
-      const bulas   = docs.filter(d => d.tipo === 'Bula' || d.tipo === 'Rótulo')
-      const outros  = docs.filter(d => d.tipo !== 'Bula' && d.tipo !== 'Rótulo')
+      // Header do produto
+      let h = `<div class="prod-nome">${data.nome || ma}</div>`
+      if (data.titular)    h += `<div class="status">${data.titular}</div>`
+      if (data.ingrediente) h += `<div class="status" style="color:#8b8">${data.ingrediente}</div>`
+      h += `<div class="status">MA: <strong>${data.ma}</strong></div>`
+      secHeader.innerHTML = h
+      hr.style.display = ''
+
+      // Documentos
+      const docs  = data.documentos || []
+      if (data.aviso || !docs.length) {
+        secAgrofit.innerHTML = `<p class="status">${data.aviso || 'Nenhum documento encontrado.'}</p>`
+        return
+      }
+      const bulas  = docs.filter(d => d.tipo === 'Bula' || d.tipo === 'Rótulo')
+      const outros = docs.filter(d => d.tipo !== 'Bula' && d.tipo !== 'Rótulo')
+      let html = ''
       for (const doc of (bulas.length ? bulas : docs)) html += cardHtml(doc)
       if (bulas.length && outros.length) {
-        html += `<a href="#" onclick="toggleOutros(event)" style="color:#2a6;font-size:12px">+ ${outros.length} outros (certificados, etc.)</a>`
+        html += `<a href="#" onclick="toggleOutros(event)" style="color:#2a6;font-size:12px">+ ${outros.length} outros</a>`
         html += `<div id="outros" style="display:none">`
         for (const doc of outros) html += cardHtml(doc)
         html += `</div>`
       }
-    }
+      secAgrofit.innerHTML = html
+    })
+    .catch(err => {
+      const el = document.getElementById('sec-agrofit')
+      if (el) el.innerHTML = `<p class="erro">Erro: ${err.message}</p>`
+    })
+    .finally(() => { if (btn) btn.disabled = false })
 
-    // ── SIGEN ──
-    html += '<div class="fonte-header" style="margin-top:20px">SIGEN — Fichas de Emergência</div>'
-    if (!sigen) {
-      html += '<p class="status">Erro ao consultar SIGEN.</p>'
-    } else if (!sigen.ok || !sigen.documentos?.length) {
-      html += `<p class="status">${sigen?.error || 'Produto não encontrado no SIGEN.'}</p>`
-    } else {
-      for (const doc of sigen.documentos) html += sigenCardHtml(doc)
-    }
-
-    saida.innerHTML = html
-  } catch (err) {
-    saida.innerHTML = `<p class="erro">Erro de rede: ${err.message}</p>`
-  } finally {
-    if (btn) btn.disabled = false
-  }
+  // ── SIGEN ──
+  fetch('/api/sigen?ma=' + encodeURIComponent(ma), { headers })
+    .then(r => r.json())
+    .then(data => {
+      const el = document.getElementById('sec-sigen')
+      if (!el) return
+      if (!data.ok || !data.documentos?.length) {
+        el.innerHTML = `<p class="status">${data?.error || data?.aviso || 'Produto não encontrado no SIGEN.'}</p>`
+        return
+      }
+      el.innerHTML = data.documentos.map(sigenCardHtml).join('')
+    })
+    .catch(err => {
+      const el = document.getElementById('sec-sigen')
+      if (el) el.innerHTML = `<p class="erro">Erro SIGEN: ${err.message}</p>`
+    })
 }
 
 // ── Cards ─────────────────────────────────────────────────────
 function cardHtml(doc) {
   const isPdf  = doc.url?.toLowerCase().includes('.pdf') || doc.url?.includes('p_id_file')
   const titulo = (doc.descricao || doc.tipo || 'documento').replace(/'/g, "\\'")
-  const url    = doc.url || ''
+  const proxy  = doc.url ? `/api/agrofit-pdf?url=${encodeURIComponent(doc.url)}` : ''
   return `
     <div class="card">
       <div class="card-tipo">${doc.tipo || '—'}</div>
       <div class="card-nome">${doc.descricao || '—'}</div>
       <div class="card-data">${doc.origem ? `${doc.origem} · ` : ''}${doc.data || ''}</div>
-      ${isPdf && url ? `<a href="#" onclick="toggleViewer(event,'${titulo}','${url}')">Ver PDF</a>` : ''}
-      ${url ? `<a href="${url}" target="_blank">Baixar ↗</a>` : ''}
+      ${isPdf && proxy ? `<a href="#" onclick="toggleViewer(event,'${titulo}','${proxy}')">Ver PDF</a>` : ''}
+      ${doc.url ? `<a href="${doc.url}" target="_blank">Baixar ↗</a>` : ''}
     </div>`
 }
 
