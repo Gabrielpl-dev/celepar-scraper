@@ -70,14 +70,14 @@ async function buscarPorApi(maOverride) {
 function cardHtml(doc) {
   const isPdf  = doc.url?.toLowerCase().includes('.pdf') || doc.url?.includes('p_id_file')
   const titulo = (doc.descricao || doc.tipo || 'documento').replace(/'/g, "\\'")
-  const proxy  = doc.url ? `/api/agrofit-pdf?url=${encodeURIComponent(doc.url)}` : ''
+  const url    = doc.url || ''
   return `
     <div class="card">
       <div class="card-tipo">${doc.tipo || '—'}</div>
       <div class="card-nome">${doc.descricao || '—'}</div>
       <div class="card-data">${doc.origem ? `${doc.origem} · ` : ''}${doc.data || ''}</div>
-      ${isPdf && proxy ? `<a href="#" onclick="toggleViewer(event,'${titulo}','${proxy}')">Ver PDF</a>` : ''}
-      ${proxy ? `<a href="${proxy}" target="_blank">Baixar ↗</a>` : ''}
+      ${isPdf && url ? `<a href="#" onclick="toggleViewer(event,'${titulo}','${url}')">Ver PDF</a>` : ''}
+      ${url ? `<a href="${url}" target="_blank">Baixar ↗</a>` : ''}
     </div>`
 }
 
