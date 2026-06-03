@@ -114,20 +114,33 @@ router.get('/buscar-produto', async (req, res) => {
     agrofitApi.buscarPorNome(nome.trim()),
   ])
 
-  const rows = []
-  for (const r of celeparRows)
-    rows.push({ nome: r.nome, cod: r.cod, ma: null, ingrediente: null, fonte: 'adapar' })
+  // Mapa por nome normalizado para mesclar entradas de fontes diferentes
+  const byNome = new Map()
 
-  const agrofitSeen = new Map()
+  for (const r of celeparRows) {
+    const key = norm(r.nome)
+    byNome.set(key, { nome: r.nome, cod: r.cod, ma: null, ingrediente: null, fonte: 'adapar' })
+  }
+
+  const agrofitSeen = new Set()
   for (const r of [...csvRows, ...apiRows]) {
-    const key = r.ma || r.nome
-    if (!agrofitSeen.has(key)) {
-      agrofitSeen.set(key, r)
-      rows.push({ nome: r.nome, cod: null, ma: r.ma || null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
+    const maKey = r.ma || r.nome
+    if (agrofitSeen.has(maKey)) continue
+    agrofitSeen.add(maKey)
+
+    const key = norm(r.nome)
+    if (byNome.has(key)) {
+      // Mescla: mesmo produto nas duas fontes
+      const existing = byNome.get(key)
+      existing.ma         = r.ma || null
+      existing.ingrediente = r.ingrediente || null
+      existing.fonte      = 'ambos'
+    } else {
+      byNome.set(key, { nome: r.nome, cod: null, ma: r.ma || null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
     }
   }
 
-  res.json({ ok: true, rows: rows.slice(0, 25) })
+  res.json({ ok: true, rows: [...byNome.values()].slice(0, 25) })
 })
 
 // ── Verificar produto nas fontes ──────────────────────────────────────────────
