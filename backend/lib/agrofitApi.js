@@ -65,4 +65,40 @@ async function buscarPorNome(nome) {
   }
 }
 
-module.exports = { buscarPorNome }
+async function buscarDocumentos(ma) {
+  const token = await getToken()
+  if (!token) return null
+  try {
+    const qs  = new URLSearchParams({ numero_registro: ma })
+    const res = await fetch(`${BASE}/agrofit/v1/search/produtos-formulados?${qs}`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+      signal:  AbortSignal.timeout(10_000),
+    })
+    if (!res.ok) {
+      if (res.status === 401) { _token = null; _expiresAt = 0 }
+      return null
+    }
+    const data  = await res.json()
+    const items = Array.isArray(data) ? data : (data.items ?? data.data ?? [])
+    if (!items.length) return null
+    const item = items[0]
+    return {
+      ma:          item.numero_registro || ma,
+      nome:        Array.isArray(item.marca_comercial) ? (item.marca_comercial[0] || '') : (item.marca_comercial || ''),
+      ingrediente: Array.isArray(item.ingrediente_ativo) ? item.ingrediente_ativo.join(', ') : (item.ingrediente_ativo || ''),
+      titular:     item.titular_registro || '',
+      documentos:  (item.documento_cadastrado || []).map(d => ({
+        tipo:     d.tipo_documento || '',
+        descricao: d.descricao || '',
+        url:      d.url || '',
+        origem:   d.origem || '',
+        data:     d.data_inclusao || '',
+      })),
+    }
+  } catch (err) {
+    console.error('[agrofitApi] buscarDocumentos:', err.message)
+    return null
+  }
+}
+
+module.exports = { buscarPorNome, buscarDocumentos }

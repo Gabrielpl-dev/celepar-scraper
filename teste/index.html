@@ -8,31 +8,19 @@
 <body>
 
 <h1>Teste</h1>
-<div class="sub">Busca e cache de IDs por produto</div>
+<div class="sub">Busca de bulas via API Agrofit (Embrapa)</div>
 
 <div class="step">
   <div class="step-num">Produto</div>
   <label>Registro MA</label>
-  <input id="ma" type="text" inputmode="numeric" placeholder="ex: 00513" oninput="this.value=this.value.replace(/\D/g,''); checarIdSalvo()" />
-  <div class="hint-id" id="hint-id"></div>
-  <div class="row">
-    <button id="btn-direto" onclick="buscarDireto()">Buscar bula ↵</button>
-    <button id="btn-abrir"  onclick="abrirAgrofit()">Abrir Agrofit ↗</button>
-    <span class="copiado" id="copiado">✓ copiado</span>
+  <input id="ma" type="text" inputmode="numeric" placeholder="ex: 32823" oninput="this.value=this.value.replace(/\D/g,'')" />
+  <div class="row" style="margin-top:10px">
+    <button id="btn-buscar" onclick="buscarPorApi()">Buscar bulas</button>
   </div>
 
-  <label style="margin-top:16px">Nome do produto</label>
-  <input id="busca-nome" type="text" placeholder="ex: Roundup" oninput="filtrarNome()" />
+  <label style="margin-top:16px">Ou buscar por nome</label>
+  <input id="busca-nome" type="text" placeholder="ex: GLIFORCE SL" />
   <div id="nome-resultados"></div>
-</div>
-
-<div class="step" id="passo2">
-  <div class="step-num">Passo 2 — Cole a URL do produto encontrado no Agrofit</div>
-  <label>URL do produto (deve conter p_nr_registro e p_id_produto_formulado_tecnico)</label>
-  <input id="url" type="text" placeholder="ex: https://agrofit.agricultura.gov.br/agrofit_cons/!ap_produto_form_detalhe_cons?...&p_nr_registro=00513&p_id_produto_formulado_tecnico=446" />
-  <div class="row">
-    <button id="btn-buscar" onclick="buscarPorUrl()">Buscar bula</button>
-  </div>
 </div>
 
 <div id="saida"></div>
@@ -43,14 +31,6 @@
     <button id="pdf-overlay-fechar" onclick="fecharPdf()">✕ Fechar</button>
   </div>
   <iframe id="pdf-overlay-frame"></iframe>
-</div>
-
-<!-- IDs Salvos -->
-<div id="ids-salvos">
-  <div class="ids-header" onclick="toggleIdsSalvos()">
-    <span id="ids-titulo">▶ IDs salvos (0)</span>
-  </div>
-  <div id="ids-lista"></div>
 </div>
 
 <script src="app.js"></script>
