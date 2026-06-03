@@ -96,13 +96,13 @@ router.get('/agrofit-status', async (req, res) => {
   }
 
   let tokenStatus = null, tokenBody = null, tokenOk = false, tokenErr = null
-  if (user && pass && key && secret) {
+  if (key && secret) {
     try {
       const basic = Buffer.from(`${key}:${secret}`).toString('base64')
       const r = await fetch('https://api.cnptia.embrapa.br/token', {
         method: 'POST',
         headers: { Authorization: `Basic ${basic}`, 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `grant_type=password&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`,
+        body: 'grant_type=client_credentials',
         signal: AbortSignal.timeout(10_000),
       })
       tokenStatus = r.status
