@@ -69,8 +69,7 @@ async function buscarDocumentos(ma) {
   const token = await getToken()
   if (!token) return null
   try {
-    const qs  = new URLSearchParams({ numero_registro: ma })
-    const res = await fetch(`${BASE}/agrofit/v1/search/produtos-formulados?${qs}`, {
+    const res = await fetch(`${BASE}/agrofit/v1/produtos-formulados/${encodeURIComponent(ma)}`, {
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
       signal:  AbortSignal.timeout(10_000),
     })
@@ -78,10 +77,8 @@ async function buscarDocumentos(ma) {
       if (res.status === 401) { _token = null; _expiresAt = 0 }
       return null
     }
-    const data  = await res.json()
-    const items = Array.isArray(data) ? data : (data.items ?? data.data ?? [])
-    if (!items.length) return null
-    const item = items[0]
+    const item = await res.json()
+    if (!item || !item.numero_registro) return null
     return {
       ma:          item.numero_registro || ma,
       nome:        Array.isArray(item.marca_comercial) ? (item.marca_comercial[0] || '') : (item.marca_comercial || ''),
