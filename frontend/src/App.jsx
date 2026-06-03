@@ -9,10 +9,12 @@ import { CompararView } from './views/CompararView'
 import { VerificarView } from './views/VerificarView'
 import { ListagemView } from './views/ListagemView'
 import { ParamsView } from './views/ParamsView'
+import { BulaView } from './views/BulaView'
 import { AuthView } from './views/AuthView'
 import s from './App.module.css'
 
 const VIEWS = {
+  bula:      BulaView,
   culturas:  ListagemView,
   extrair:   ExtrairView,
   siagro:    SiagroView,
