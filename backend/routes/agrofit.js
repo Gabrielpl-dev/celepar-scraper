@@ -84,21 +84,36 @@ router.get('/agrofit', async (req, res) => {
 });
 
 router.get('/agrofit-status', async (req, res) => {
+  const user   = process.env.AGROFIT_USER
+  const pass   = process.env.AGROFIT_PASSWORD
+  const key    = process.env.AGROFIT_KEY
+  const secret = process.env.AGROFIT_SECRET
   const vars = {
-    AGROFIT_USER:     !!process.env.AGROFIT_USER,
-    AGROFIT_PASSWORD: !!process.env.AGROFIT_PASSWORD,
-    AGROFIT_KEY:      !!process.env.AGROFIT_KEY,
-    AGROFIT_SECRET:   !!process.env.AGROFIT_SECRET,
+    AGROFIT_USER:     !!user,
+    AGROFIT_PASSWORD: !!pass,
+    AGROFIT_KEY:      !!key,
+    AGROFIT_SECRET:   !!secret,
   }
-  let tokenOk = false, tokenErr = null
-  try {
-    const result = await agrofitApi.buscarDocumentos('32823')
-    tokenOk = result !== null
-    if (!tokenOk) tokenErr = 'buscarDocumentos retornou null (token falhou ou produto não encontrado)'
-  } catch (e) {
-    tokenErr = e.message
+
+  let tokenStatus = null, tokenBody = null, tokenOk = false, tokenErr = null
+  if (user && pass && key && secret) {
+    try {
+      const basic = Buffer.from(`${key}:${secret}`).toString('base64')
+      const r = await fetch('https://api.cnptia.embrapa.br/token', {
+        method: 'POST',
+        headers: { Authorization: `Basic ${basic}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `grant_type=password&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`,
+        signal: AbortSignal.timeout(10_000),
+      })
+      tokenStatus = r.status
+      tokenBody   = await r.json().catch(() => null)
+      tokenOk     = r.ok && !!tokenBody?.access_token
+    } catch (e) {
+      tokenErr = e.message
+    }
   }
-  res.json({ ok: true, vars, tokenOk, tokenErr })
+
+  res.json({ ok: true, vars, tokenStatus, tokenBody, tokenOk, tokenErr })
 })
 
 router.get('/agrofit-docs', async (req, res) => {
