@@ -68,6 +68,20 @@ export function ParamsView({ params, setParams }) {
     checkSources(row.nome, row.cod, row.ma)
   }
 
+  async function handleMaBlur() {
+    const ma = params.ma?.trim()
+    if (!ma || !/^\d+$/.test(ma)) return
+    if (params.nome) { checkSources(params.nome, params.Cod, ma); return }
+    try {
+      const data = await api.agrofitDocs(ma)
+      if (data?.ok && data.nome) {
+        setParams(p => ({ ...p, nome: data.nome }))
+        setSearchTerm(data.nome)
+        checkSources(data.nome, '', ma)
+      }
+    } catch (_) {}
+  }
+
   function handleKeyDown(e) {
     if (!searchResults.length) return
     if (e.key === 'ArrowDown') {
@@ -150,6 +164,7 @@ export function ParamsView({ params, setParams }) {
               value={params.ma ?? ''}
               placeholder="ex: 00513"
               onChange={e => setParams(p => ({ ...p, ma: e.target.value.replace(/\D/g, '') }))}
+              onBlur={handleMaBlur}
             />
           </div>
         </div>
