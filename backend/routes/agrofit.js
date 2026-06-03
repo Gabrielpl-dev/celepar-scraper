@@ -83,6 +83,24 @@ router.get('/agrofit', async (req, res) => {
   }
 });
 
+router.get('/agrofit-status', async (req, res) => {
+  const vars = {
+    AGROFIT_USER:     !!process.env.AGROFIT_USER,
+    AGROFIT_PASSWORD: !!process.env.AGROFIT_PASSWORD,
+    AGROFIT_KEY:      !!process.env.AGROFIT_KEY,
+    AGROFIT_SECRET:   !!process.env.AGROFIT_SECRET,
+  }
+  let tokenOk = false, tokenErr = null
+  try {
+    const result = await agrofitApi.buscarDocumentos('32823')
+    tokenOk = result !== null
+    if (!tokenOk) tokenErr = 'buscarDocumentos retornou null (token falhou ou produto não encontrado)'
+  } catch (e) {
+    tokenErr = e.message
+  }
+  res.json({ ok: true, vars, tokenOk, tokenErr })
+})
+
 router.get('/agrofit-docs', async (req, res) => {
   const { ma } = req.query
   if (!ma || !/^\d+$/.test(ma.trim()))
