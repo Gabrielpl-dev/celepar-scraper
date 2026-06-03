@@ -9,7 +9,7 @@ async function fetchToken() {
   const pass   = process.env.AGROFIT_PASSWORD
   const key    = process.env.AGROFIT_KEY
   const secret = process.env.AGROFIT_SECRET
-  if (!user || !pass || !key || !secret) return null
+  if (!key || !secret) return null
 
   const basic = Buffer.from(`${key}:${secret}`).toString('base64')
   try {
@@ -19,7 +19,7 @@ async function fetchToken() {
         Authorization:  `Basic ${basic}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body:   `grant_type=password&username=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`,
+      body:   'grant_type=client_credentials',
       signal: AbortSignal.timeout(10_000),
     })
     if (!res.ok) { console.warn('[agrofitApi] token HTTP', res.status); return null }
