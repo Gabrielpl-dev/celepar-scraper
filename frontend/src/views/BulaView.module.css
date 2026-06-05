@@ -1,12 +1,18 @@
 .section {
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .header {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   flex-shrink: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
 }
 
 .title {
@@ -14,7 +20,22 @@
   font-weight: 700;
   font-size: 24px;
   letter-spacing: -.01em;
-  margin-bottom: 6px;
+}
+
+.select {
+  font-size: 13px;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+  max-width: 340px;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 .desc {
@@ -32,69 +53,11 @@
   font-size: 13px;
 }
 
-.body {
-  display: flex;
-  gap: 16px;
-  flex: 1;
-  min-height: 0;
-}
-
 .iframe {
-  flex: 1;
-  height: calc(100vh * 0.8 - 160px);
+  width: 100%;
+  height: calc(100vh - 180px);
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--panel);
-}
-
-.sidebar {
-  width: 200px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.sideTitle {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  color: var(--dim);
-  margin-bottom: 4px;
-}
-
-.docItem {
-  padding: 8px 10px;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  transition: background .1s;
-}
-
-.docItem:hover {
-  background: var(--panel);
-}
-
-.docItemActive {
-  border-color: var(--accent);
-  background: var(--panel);
-}
-
-.docTipo {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .04em;
-}
-
-.docDesc {
-  font-size: 11px;
-  color: var(--dim);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: block;
 }
