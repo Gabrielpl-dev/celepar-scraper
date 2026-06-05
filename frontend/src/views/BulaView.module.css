@@ -60,7 +60,7 @@
 
 .iframe {
   width: 100%;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 7px);
   border: none;
   border-top: 1px solid var(--line);
   display: block;
