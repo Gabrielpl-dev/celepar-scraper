@@ -7,25 +7,38 @@ export function BulaView({ params }) {
   const [loading, setLoading] = useState(false)
   const [erro, setErro]       = useState(null)
   const [pdfUrl, setPdfUrl]   = useState(null)
+  const [selected, setSelected] = useState('')
 
   const ma = params?.ma
 
   useEffect(() => {
-    if (!ma) { setDocs(null); setErro(null); return }
+    if (!ma) { setDocs(null); setErro(null); setPdfUrl(null); setSelected(''); return }
     setLoading(true)
     setDocs(null)
     setErro(null)
     setPdfUrl(null)
+    setSelected('')
     api.agrofitDocs(ma)
       .then(data => {
         if (!data.ok) { setErro(data.error || 'Erro ao buscar documentos'); return }
         setDocs(data)
         const bula = data.documentos?.find(d => d.tipo === 'Bula')
-        if (bula?.url) setPdfUrl('/api/agrofit-pdf?url=' + encodeURIComponent(bula.url))
+        const first = bula || data.documentos?.[0]
+        if (first?.url) {
+          const proxy = '/api/agrofit-pdf?url=' + encodeURIComponent(first.url)
+          setPdfUrl(proxy)
+          setSelected(first.url)
+        }
       })
       .catch(e => setErro(e.message))
       .finally(() => setLoading(false))
   }, [ma])
+
+  function handleSelect(e) {
+    const url = e.target.value
+    setSelected(url)
+    setPdfUrl('/api/agrofit-pdf?url=' + encodeURIComponent(url))
+  }
 
   if (!ma) return (
     <section className={s.section}>
@@ -39,7 +52,18 @@ export function BulaView({ params }) {
   return (
     <section className={s.section}>
       <div className={s.header}>
-        <h3 className={s.title}>Bula</h3>
+        <div className={s.titleRow}>
+          <h3 className={s.title}>Bula</h3>
+          {docs?.documentos?.length > 0 && (
+            <select className={s.select} value={selected} onChange={handleSelect}>
+              {docs.documentos.map((doc, i) => (
+                <option key={i} value={doc.url}>
+                  {doc.tipo}{doc.descricao ? ` — ${doc.descricao}` : ''}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
         {docs?.nome && <p className={s.desc}>{docs.nome} · MA {docs.ma}</p>}
       </div>
 
@@ -47,32 +71,9 @@ export function BulaView({ params }) {
       {erro    && <p className={s.erro}>{erro}</p>}
 
       {docs && !loading && (
-        <div className={s.body}>
-          {pdfUrl ? (
-            <iframe className={s.iframe} src={pdfUrl} title="Bula" />
-          ) : (
-            <p className={s.status}>Bula não encontrada para este produto.</p>
-          )}
-
-          {docs.documentos?.length > 0 && (
-            <div className={s.sidebar}>
-              <div className={s.sideTitle}>Documentos</div>
-              {docs.documentos.map((doc, i) => {
-                const proxy = '/api/agrofit-pdf?url=' + encodeURIComponent(doc.url)
-                return (
-                  <div
-                    key={i}
-                    className={`${s.docItem} ${pdfUrl === proxy ? s.docItemActive : ''}`}
-                    onClick={() => setPdfUrl(proxy)}
-                  >
-                    <span className={s.docTipo}>{doc.tipo}</span>
-                    <span className={s.docDesc}>{doc.descricao}</span>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-        </div>
+        pdfUrl
+          ? <iframe className={s.iframe} src={pdfUrl} title="Bula" />
+          : <p className={s.status}>Bula não encontrada para este produto.</p>
       )}
     </section>
   )
