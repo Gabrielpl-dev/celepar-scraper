@@ -368,29 +368,35 @@ router.post('/cccb', async (req, res) => {
       const oracleNome = oracleResult.rows[0]?.CULTURA ?? ''
       const cn   = resolveKey(celeparNormFor(oracleNome, Number(culturaid)))
       const cSet = celeparSets[cn] ?? new Set()
+      const cRows = celeparRows[cn] ?? []
       for (const r of oracleResult.rows) {
         const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO }
-        if (cSet.has(String(r.SIAGROALV)))
-          corretos.push({ ...item, alvo_siagro: r.SIAGROALV })
-        else
+        if (cSet.has(String(r.SIAGROALV))) {
+          const celRow = cRows.find(cr => String(cr.siagro) === String(r.SIAGROALV))
+          corretos.push({ ...item, alvo_siagro: r.SIAGROALV, nomeComumAlvo: celRow?.nomeComumAlvo ?? null })
+        } else {
           errados.push(item)
+        }
       }
     } else {
       for (const r of oracleResult.rows) {
         const cn   = resolveKey(celeparNormFor(r.CULTURA, r.CULTURAID))
         const cSet = celeparSets[cn] ?? new Set()
+        const cRows = celeparRows[cn] ?? []
         const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO }
-        if (cSet.has(String(r.SIAGROALV)))
-          corretos.push({ ...item, alvo_siagro: r.SIAGROALV })
-        else
+        if (cSet.has(String(r.SIAGROALV))) {
+          const celRow = cRows.find(cr => String(cr.siagro) === String(r.SIAGROALV))
+          corretos.push({ ...item, alvo_siagro: r.SIAGROALV, nomeComumAlvo: celRow?.nomeComumAlvo ?? null })
+        } else {
           errados.push(item)
+        }
       }
     }
 
     const celeparForResponse = isAll
-      ? allCelepar.map(r => ({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo }))
+      ? allCelepar.map(r => ({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null }))
       : (celeparRows[resolveKey(celeparNormFor(oracleResult.rows[0]?.CULTURA ?? '', Number(culturaid)))] ?? [])
-          .map(r => ({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo }))
+          .map(r => ({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null }))
 
     res.json({
       ok:      true,
