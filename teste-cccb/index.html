@@ -53,15 +53,15 @@
       <input id="cultura-input" type="text" list="culturas-list" placeholder="todas as culturas">
       <datalist id="culturas-list"></datalist>
     </label>
-    <button id="btn-run" onclick="rodarCCCB()">Executar ↵</button>
-    <button class="ghost" onclick="sincronizar()">↻ sincronizar culturas</button>
-    <button class="ghost" onclick="buildMapping()">⚙ gerar mapeamento</button>
+    <button id="btn-run">Executar ↵</button>
+    <button id="btn-sincronizar" class="ghost">↻ sincronizar culturas</button>
+    <button id="btn-mapping" class="ghost">⚙ gerar mapeamento</button>
   </div>
   <div id="status" class="status"></div>
 </section>
 
 <div id="resultado"></div>
 
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
