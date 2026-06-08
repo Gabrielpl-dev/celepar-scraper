@@ -173,9 +173,9 @@ async function rodarCCCB() {
     const data = await api.cccb(culturaid, state, true)
     const ms   = Date.now() - t0
     if (!data.ok) { setStatus('erro: ' + data.error); return }
-    const { oracle, celepar, corretos, errados } = data
-    setStatus(`banco: ${oracle.length} | celepar: ${celepar.length} | corretos: ${corretos.length} | errados: ${errados.length} — ${ms}ms`)
-    renderResultado({ oracle, celepar, corretos, errados })
+    const { oracle, celepar, corretos, errados, faltando } = data
+    setStatus(`banco: ${oracle.length} | celepar: ${celepar.length} | corretos: ${corretos.length} | errados: ${errados.length} | faltando: ${faltando.length} — ${ms}ms`)
+    renderResultado({ oracle, celepar, corretos, errados, faltando })
   } catch (err) {
     setStatus('erro: ' + err.message)
   } finally {
@@ -188,13 +188,14 @@ document.getElementById('cultura-input').addEventListener('keydown', e => { if (
 
 // ── Render ────────────────────────────────────────────────────────────────────
 
-function renderResultado({ oracle, celepar, corretos, errados }) {
+function renderResultado({ oracle, celepar, corretos, errados, faltando }) {
   const el = document.getElementById('resultado')
   el.innerHTML = ''
-  if (oracle.length)  el.appendChild(renderTabela('Banco',   ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico'],               oracle.map(r  => [r.cultura, pill(r.siagroalv),      r.diagnostico,            r.nomecientifico])))
-  if (celepar.length) el.appendChild(renderTabela('Celepar', ['Cultura', 'Alvo Siagro', 'Alvo', 'Nome Comum'],                         celepar.map(r => [r.cultura, pill(r.siagro),         r.alvo,                   r.nomeComumAlvo])))
-  if (errados.length) el.appendChild(renderTabela('Errados', ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico', 'Nome Comum'],    errados.map(r => [r.cultura, pill(r.alvo_sb, 'err'), r.diagnostico,            r.nomecientifico, r.nomeComumAlvo])))
-  el.appendChild(renderTabela('Corretos', ['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico', 'Nome Científico', 'Nome Comum'],         corretos.map(r => [r.cultura, pill(r.alvo_sb, 'ok'), pill(r.alvo_siagro, 'ok'), r.diagnostico, r.nomecientifico, r.nomeComumAlvo])))
+  if (oracle.length)   el.appendChild(renderTabela('Banco',    ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico'],                                oracle.map(r  => [r.cultura, pill(r.siagroalv),      r.diagnostico,            r.nomecientifico])))
+  if (celepar.length)  el.appendChild(renderTabela('Celepar',  ['Cultura', 'Alvo Siagro', 'Alvo', 'Nome Comum'],                                        celepar.map(r => [r.cultura, pill(r.siagro),         r.alvo,                   r.nomeComumAlvo])))
+  if (errados.length)  el.appendChild(renderTabela('Errados',  ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico', 'Nome Comum'],                   errados.map(r => [r.cultura, pill(r.alvo_sb, 'err'), r.diagnostico,            r.nomecientifico, r.nomeComumAlvo])))
+  if (faltando.length) el.appendChild(renderTabela('Faltando', ['Cultura', 'Alvo Siagro', 'Alvo', 'Nome Comum'],                                        faltando.map(r => [r.cultura, pill(r.siagro, 'err'), r.alvo,                   r.nomeComumAlvo])))
+  el.appendChild(renderTabela('Corretos', ['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico', 'Nome Científico', 'Nome Comum'],  corretos.map(r => [r.cultura, pill(r.alvo_sb, 'ok'), pill(r.alvo_siagro, 'ok'), r.diagnostico, r.nomecientifico, r.nomeComumAlvo])))
 }
 
 function pill(code, tipo) {
