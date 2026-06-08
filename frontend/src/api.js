@@ -23,7 +23,7 @@ export const api = {
   sincronizarCulturas: ()                  => call('culturas/sincronizar', {}),
   cccbCulturas:        ()                  => call('cccb/culturas', null, 'GET'),
   cccbBuildMapping:    (params)            => call('cccb/build-mapping', { params }),
-  cccb:                (culturaid, params) => call('cccb', { culturaid, params }),
+  cccb:                (culturaid, params, enrichLinkea = false) => call('cccb', { culturaid, params, enrichLinkea }),
   agrofitDocs:      (ma)             => call('agrofit-docs?ma=' + encodeURIComponent(ma), null, 'GET'),
   buscarProduto:    (nome)           => call('buscar-produto?nome=' + encodeURIComponent(nome), null, 'GET'),
   verificarProduto: (nome, cod, ma)  => call(
