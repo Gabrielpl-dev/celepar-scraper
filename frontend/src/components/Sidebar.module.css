@@ -80,3 +80,21 @@
 }
 
 .opActive .num { color: var(--accent); }
+
+.opLabel {
+  flex: 1;
+}
+
+.newTabBtn {
+  font-size: 11px;
+  color: var(--dim);
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: color .15s, background .15s;
+  line-height: 1;
+}
+
+.newTabBtn:hover {
+  color: var(--accent);
+  background: var(--panel);
+}

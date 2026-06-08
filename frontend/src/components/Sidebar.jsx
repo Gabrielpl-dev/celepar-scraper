@@ -1,5 +1,6 @@
 import React from 'react'
 import s from './Sidebar.module.css'
+import { api } from '../api'
 
 const SERVICOS = [
   { id: 'cadastro', num: '01', label: 'Cadastro' },
@@ -20,7 +21,14 @@ const OPS = {
   ],
 }
 
-export function Sidebar({ activeView, setActiveView, activeService, setActiveService, open, onToggle }) {
+async function openBulaTab(ma) {
+  if (!ma) return
+  const data = await api.agrofitDocs(ma)
+  const doc = data.documentos?.find(d => d.tipo === 'Bula') ?? data.documentos?.[0]
+  if (doc?.url) window.open('/api/agrofit-pdf?url=' + encodeURIComponent(doc.url), '_blank')
+}
+
+export function Sidebar({ activeView, setActiveView, activeService, setActiveService, open, onToggle, params }) {
   const ops = OPS[activeService] ?? []
 
   return (
@@ -57,7 +65,17 @@ export function Sidebar({ activeView, setActiveView, activeService, setActiveSer
               title={op.title}
             >
               <span className={s.num}>{op.num}</span>
-              {op.label}
+              <span className={s.opLabel}>{op.label}</span>
+              {op.id === 'bula' && (
+                <span
+                  className={s.newTabBtn}
+                  role="button"
+                  title="Abrir em nova aba"
+                  onClick={e => { e.stopPropagation(); openBulaTab(params?.ma) }}
+                >
+                  ↗
+                </span>
+              )}
             </button>
           ))}
         </div>
