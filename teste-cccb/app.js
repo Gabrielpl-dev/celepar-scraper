@@ -174,7 +174,12 @@ async function rodarCCCB() {
     const ms   = Date.now() - t0
     if (!data.ok) { setStatus('erro: ' + data.error); return }
     const { oracle, celepar, corretos, errados, faltando } = data
-    setStatus(`banco: ${oracle.length} | celepar: ${celepar.length} | corretos: ${corretos.length} | errados: ${errados.length} | faltando: ${faltando.length} — ${ms}ms`)
+    const matchCelepar = celepar.length - faltando.length
+    setStatus(
+      `banco: ${oracle.length} = ✓${corretos.length} + ✗${errados.length}` +
+      `  |  celepar: ${celepar.length} = ✓${matchCelepar} + ?${faltando.length}` +
+      `  —  ${ms}ms`
+    )
     renderResultado({ oracle, celepar, corretos, errados, faltando })
   } catch (err) {
     setStatus('erro: ' + err.message)
