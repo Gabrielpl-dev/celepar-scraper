@@ -393,6 +393,26 @@ router.post('/cccb', async (req, res) => {
       }
     }
 
+    const oracleByKey = {}
+    for (const r of oracleResult.rows) {
+      const cn = isAll
+        ? resolveKey(celeparNormFor(r.CULTURA, r.CULTURAID))
+        : resolveKey(celeparNormFor(r.CULTURA, Number(culturaid)))
+      if (!oracleByKey[cn]) oracleByKey[cn] = new Set()
+      oracleByKey[cn].add(String(r.SIAGROALV))
+    }
+
+    const celeparToCheck = isAll
+      ? allCelepar
+      : (celeparRows[resolveKey(celeparNormFor(oracleResult.rows[0]?.CULTURA ?? '', Number(culturaid)))] ?? [])
+
+    const faltando = []
+    for (const r of celeparToCheck) {
+      const oSet = oracleByKey[norm(r.cultura)] ?? new Set()
+      if (!oSet.has(String(r.siagro)))
+        faltando.push({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null })
+    }
+
     const celeparForResponse = isAll
       ? allCelepar.map(r => ({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null }))
       : (celeparRows[resolveKey(celeparNormFor(oracleResult.rows[0]?.CULTURA ?? '', Number(culturaid)))] ?? [])
@@ -404,6 +424,7 @@ router.post('/cccb', async (req, res) => {
       celepar: celeparForResponse,
       corretos,
       errados,
+      faltando,
     })
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message })
