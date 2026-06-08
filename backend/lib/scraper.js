@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
 
 const BASE_URL     = 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp';
+const LINKEA_BASE  = 'https://celepar07web.pr.gov.br/agrotoxicos/';
 const PESQUISA_URL = 'https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp';
 const PESQUISA_KEY = '__pesquisa__';
 const PESQUISA_BODY = new URLSearchParams({
@@ -99,10 +100,16 @@ function parseRows(html) {
       const cor = $f.attr('color') || null;
       if (txt) produtos.push({ nome: txt, cor });
     });
+    const $linkeaA  = $tr.find('a[href="javascript:void(0);"]').first()
+    const linkeaOnclick = $linkeaA.attr('onclick') || ''
+    const linkeaMatch   = linkeaOnclick.match(/window\.open\(['"]([^'"]+)['"]/)
+    const linkeaUrl     = linkeaMatch ? LINKEA_BASE + linkeaMatch[1] : null
+
     linhas.push({
       cultura: $a.text().trim(),
       siagro:  m[1],
       alvo:    $tds.eq(2).text().trim(),
+      linkeaUrl,
       rawText: $tr.text().replace(/\s+/g, ' ').trim(),
       produtos
     });
@@ -153,9 +160,38 @@ function validatePesquisaStructure($, rows) {
   return warnings;
 }
 
+function parseLinkeaPage(html) {
+  const $ = cheerio.load(html)
+  const result = {}
+  $('td').each((_, td) => {
+    const $font = $(td).find('font').first()
+    if (!$font.length) return
+    const label = $font.find('b').text().trim()
+    const value = $font.contents().filter((_, n) => n.nodeType === 3).text().trim()
+    if (label === 'Nome Comum do Alvo Biológico:')     result.nomeComumAlvo     = value
+    if (label === 'Nome Científico do Alvo Biológico:') result.nomeCientificoAlvo = value
+  })
+  return result
+}
+
+async function enrichLinkeaRows(rows) {
+  const uniqueUrls = [...new Set(rows.map(r => r.linkeaUrl).filter(Boolean))]
+  const detailsMap = {}
+  await Promise.all(uniqueUrls.map(async url => {
+    try {
+      const html = await fetchPage(url)
+      detailsMap[url] = parseLinkeaPage(html)
+    } catch {
+      detailsMap[url] = {}
+    }
+  }))
+  return rows.map(r => ({ ...r, ...(r.linkeaUrl ? detailsMap[r.linkeaUrl] : {}) }))
+}
+
 module.exports = {
   norm, buildUrl,
   fetchPage, fetchPesquisa,
   parseRows, parsePesquisaRows,
+  parseLinkeaPage, enrichLinkeaRows,
   validateListarStructure, validatePesquisaStructure,
 };

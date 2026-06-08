@@ -30,6 +30,18 @@ Diagnósticos, pragas e doenças.
 | DIAGNOSTICOID   | PK   | Identificador          |
 | SIAGROALV       |      | Código SIAGRO do alvo  |
 | DESCRICAO       |      | Nome do diagnóstico    |
+| NOMECIENTIFICO  |      | Nome científico        |
+
+---
+
+## AGROTOXICO
+Produtos agrotóxicos registrados.
+
+| Coluna      | Tipo | Descrição               |
+|-------------|------|-------------------------|
+| NOME        |      | Nome do produto         |
+| REGISTROMA  |      | Número de registro MA   |
+| ITEM        |      | Item do produto         |
 
 ---
 

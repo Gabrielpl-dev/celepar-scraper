@@ -170,7 +170,7 @@ async function rodarCCCB() {
 
   try {
     const t0   = Date.now()
-    const data = await api.cccb(culturaid, state)
+    const data = await api.cccb(culturaid, state, true)
     const ms   = Date.now() - t0
     if (!data.ok) { setStatus('erro: ' + data.error); return }
     const { oracle, celepar, corretos, errados } = data
@@ -191,10 +191,10 @@ document.getElementById('cultura-input').addEventListener('keydown', e => { if (
 function renderResultado({ oracle, celepar, corretos, errados }) {
   const el = document.getElementById('resultado')
   el.innerHTML = ''
-  if (oracle.length)  el.appendChild(renderTabela('Banco',   ['Cultura', 'Alvo SB', 'Diagnóstico'],                  oracle.map(r  => [r.cultura, pill(r.siagroalv),          r.diagnostico])))
-  if (celepar.length) el.appendChild(renderTabela('Celepar', ['Cultura', 'Alvo Siagro', 'Alvo'],                     celepar.map(r => [r.cultura, pill(r.siagro),             r.alvo])))
-  if (errados.length) el.appendChild(renderTabela('Errados', ['Cultura', 'Alvo SB', 'DIAGNOSTICOID', 'Diagnóstico'], errados.map(r => [r.cultura, pill(r.alvo_sb, 'err'),     r.diagnosticoid, r.diagnostico])))
-  el.appendChild(renderTabela('Corretos', ['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico'],                      corretos.map(r => [r.cultura, pill(r.alvo_sb, 'ok'),     pill(r.alvo_siagro, 'ok'), r.diagnostico])))
+  if (oracle.length)  el.appendChild(renderTabela('Banco',   ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico (banco)'],                           oracle.map(r  => [r.cultura, pill(r.siagroalv),      r.diagnostico,            r.nomecientifico])))
+  if (celepar.length) el.appendChild(renderTabela('Celepar', ['Cultura', 'Alvo Siagro', 'Alvo', 'Nome Comum (Celepar)', 'Nome Científico (Celepar)'],      celepar.map(r => [r.cultura, pill(r.siagro),         r.alvo,                   r.nomeComumAlvo, r.nomeCientificoAlvo])))
+  if (errados.length) el.appendChild(renderTabela('Errados', ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico (banco)', 'Nome Comum (Celepar)'],     errados.map(r => [r.cultura, pill(r.alvo_sb, 'err'), r.diagnostico,            r.nomecientifico, r.nomeComumAlvo])))
+  el.appendChild(renderTabela('Corretos', ['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico', 'Nome Científico (banco)', 'Nome Comum (Celepar)'],          corretos.map(r => [r.cultura, pill(r.alvo_sb, 'ok'), pill(r.alvo_siagro, 'ok'), r.diagnostico, r.nomecientifico, r.nomeComumAlvo])))
 }
 
 function pill(code, tipo) {

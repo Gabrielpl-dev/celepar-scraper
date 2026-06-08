@@ -3,7 +3,7 @@ const oracledb     = require('oracledb')
 const Database     = require('better-sqlite3')
 const fs           = require('fs')
 const path         = require('path')
-const { fetchPage, fetchPesquisa, parseRows, parsePesquisaRows, buildUrl, norm } = require('../lib/scraper')
+const { fetchPage, fetchPesquisa, parseRows, parsePesquisaRows, buildUrl, norm, enrichLinkeaRows } = require('../lib/scraper')
 const requireAdmin = require('../middleware/requireAdmin')
 const agrofitCsv   = require('../lib/agrofitCsv')
 const agrofitApi   = require('../lib/agrofitApi')
@@ -289,7 +289,7 @@ router.post('/cccb/build-mapping', requireAdmin, async (req, res) => {
 
 router.post('/cccb', async (req, res) => {
   if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
-  const { culturaid, params = {} } = req.body
+  const { culturaid, params = {}, enrichLinkea = false } = req.body
   const isAll  = culturaid == null
   const produto = params.nome ?? null
   if (!produto) return res.status(400).json({ ok: false, error: 'params.nome (produto) é obrigatório' })
@@ -306,7 +306,7 @@ router.post('/cccb', async (req, res) => {
     let oracleResult
     if (!isAll) {
       oracleResult = await conn.execute(
-        `SELECT DISTINCT c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO
+        `SELECT DISTINCT c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
@@ -319,7 +319,7 @@ router.post('/cccb', async (req, res) => {
       )
     } else {
       oracleResult = await conn.execute(
-        `SELECT DISTINCT r.CULTURAID, c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO
+        `SELECT DISTINCT r.CULTURAID, c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
@@ -332,8 +332,9 @@ router.post('/cccb', async (req, res) => {
     }
     await conn.close(); conn = null
 
-    const html       = await fetchPage(buildUrl(params))
-    const allCelepar = parseRows(html)
+    const html           = await fetchPage(buildUrl(params))
+    let   allCelepar     = parseRows(html)
+    if (enrichLinkea) allCelepar = await enrichLinkeaRows(allCelepar)
 
     const celeparSets = {}
     const celeparRows = {}
@@ -368,7 +369,7 @@ router.post('/cccb', async (req, res) => {
       const cn   = resolveKey(celeparNormFor(oracleNome, Number(culturaid)))
       const cSet = celeparSets[cn] ?? new Set()
       for (const r of oracleResult.rows) {
-        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO }
+        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO }
         if (cSet.has(String(r.SIAGROALV)))
           corretos.push({ ...item, alvo_siagro: r.SIAGROALV })
         else
@@ -378,7 +379,7 @@ router.post('/cccb', async (req, res) => {
       for (const r of oracleResult.rows) {
         const cn   = resolveKey(celeparNormFor(r.CULTURA, r.CULTURAID))
         const cSet = celeparSets[cn] ?? new Set()
-        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO }
+        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO }
         if (cSet.has(String(r.SIAGROALV)))
           corretos.push({ ...item, alvo_siagro: r.SIAGROALV })
         else
@@ -393,7 +394,7 @@ router.post('/cccb', async (req, res) => {
 
     res.json({
       ok:      true,
-      oracle:  oracleResult.rows.map(r => ({ cultura: r.CULTURA, siagroalv: r.SIAGROALV, diagnostico: r.DIAGNOSTICO })),
+      oracle:  oracleResult.rows.map(r => ({ cultura: r.CULTURA, siagroalv: r.SIAGROALV, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO })),
       celepar: celeparForResponse,
       corretos,
       errados,
