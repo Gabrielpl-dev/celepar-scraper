@@ -43,14 +43,15 @@ function buildUrl(params) {
   return `${BASE_URL}?${qs}`;
 }
 
-async function fetchPage(url) {
+async function fetchPage(url, extraHeaders = {}) {
   const cached = cache.get(url);
   if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.html;
   const res = await fetch(url, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml',
-      'Accept-Language': 'pt-BR,pt;q=0.9'
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+      ...extraHeaders
     }
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} ao buscar ${url}`);
@@ -179,7 +180,13 @@ async function enrichLinkeaRows(rows) {
   const detailsMap = {}
   await Promise.all(uniqueUrls.map(async url => {
     try {
-      const html = await fetchPage(url)
+      const html = await fetchPage(url, {
+        'Referer': 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Dest': 'document'
+      })
       detailsMap[url] = parseLinkeaPage(html)
     } catch {
       detailsMap[url] = {}
