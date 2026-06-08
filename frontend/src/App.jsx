@@ -83,6 +83,7 @@ export default function App() {
           setActiveService={setActiveService}
           open={sidebarOpen}
           onToggle={() => setSidebarOpen(v => !v)}
+          params={params}
         />
         <main className={s.main}>
           {View && <View params={params} setParams={setParams} />}
