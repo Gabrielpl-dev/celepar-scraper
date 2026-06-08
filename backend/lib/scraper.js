@@ -100,7 +100,7 @@ function parseRows(html) {
       const cor = $f.attr('color') || null;
       if (txt) produtos.push({ nome: txt, cor });
     });
-    const $linkeaA  = $tr.find('a[href="javascript:void(0);"]').first()
+    const $linkeaA  = $tr.find('a').filter((_, a) => ($(a).attr('onclick') || '').includes('linkea.asp')).first()
     const linkeaOnclick = $linkeaA.attr('onclick') || ''
     const linkeaMatch   = linkeaOnclick.match(/window\.open\(['"]([^'"]+)['"]/)
     const linkeaUrl     = linkeaMatch ? LINKEA_BASE + linkeaMatch[1] : null
