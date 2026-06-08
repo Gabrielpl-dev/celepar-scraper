@@ -1,3 +1,5 @@
+import { api } from '/shared/api.js'
+
 ;(function() {
   try {
     const tok = localStorage.getItem('token')
@@ -6,25 +8,13 @@
   } catch { location.href = '/' }
 })()
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
-
-function authFetch(url, opts = {}) {
-  const token = localStorage.getItem('token')
-  opts.headers = { 'Content-Type': 'application/json', ...opts.headers }
-  if (token) opts.headers['Authorization'] = 'Bearer ' + token
-  return fetch(url, opts).then(r => {
-    if (r.status === 401) { alert('Sessão expirada. Faça login novamente.'); location.href = '/'; return Promise.reject() }
-    return r.json()
-  })
-}
-
 // ── Estado ────────────────────────────────────────────────────────────────────
 
 const state = { Cod: '', ma: '', nome: '' }
 
-function setNome(v)  { state.nome = v; document.getElementById('p-nome').value = v }
-function setCod(v)   { state.Cod  = v; document.getElementById('p-cod').value  = v }
-function setMa(v)    { state.ma   = v; document.getElementById('p-ma').value   = v }
+function setNome(v) { state.nome = v; document.getElementById('p-nome').value = v }
+function setCod(v)  { state.Cod  = v; document.getElementById('p-cod').value  = v }
+function setMa(v)   { state.ma   = v; document.getElementById('p-ma').value   = v }
 
 // ── Params: busca de produto ──────────────────────────────────────────────────
 
@@ -40,14 +30,13 @@ nomeInput.addEventListener('input', () => {
   state.nome = nomeInput.value
   clearTimeout(debounceTimer)
   dropdown.style.display = 'none'
-  searchResults = []
-  hlIndex = -1
+  searchResults = []; hlIndex = -1
   const val = nomeInput.value.trim()
   if (!val) return
   debounceTimer = setTimeout(async () => {
     searchHint.style.display = ''
     try {
-      const data = await authFetch('/api/buscar-produto?nome=' + encodeURIComponent(val))
+      const data = await api.buscarProduto(val)
       searchResults = data.ok ? data.rows.slice(0, 10) : []
       hlIndex = -1
       renderDropdown()
@@ -59,15 +48,10 @@ nomeInput.addEventListener('input', () => {
 
 nomeInput.addEventListener('keydown', e => {
   if (!searchResults.length) return
-  if (e.key === 'ArrowDown') {
-    e.preventDefault(); hlIndex = Math.min(hlIndex + 1, searchResults.length - 1); renderDropdown()
-  } else if (e.key === 'ArrowUp') {
-    e.preventDefault(); hlIndex = Math.max(hlIndex - 1, 0); renderDropdown()
-  } else if (e.key === 'Enter') {
-    e.preventDefault(); selectResult(searchResults[hlIndex >= 0 ? hlIndex : 0])
-  } else if (e.key === 'Escape') {
-    dropdown.style.display = 'none'; searchResults = []
-  }
+  if (e.key === 'ArrowDown')  { e.preventDefault(); hlIndex = Math.min(hlIndex + 1, searchResults.length - 1); renderDropdown() }
+  else if (e.key === 'ArrowUp')   { e.preventDefault(); hlIndex = Math.max(hlIndex - 1, 0); renderDropdown() }
+  else if (e.key === 'Enter')     { e.preventDefault(); selectResult(searchResults[hlIndex >= 0 ? hlIndex : 0]) }
+  else if (e.key === 'Escape')    { dropdown.style.display = 'none'; searchResults = [] }
 })
 
 nomeInput.addEventListener('blur', () => setTimeout(() => {
@@ -85,9 +69,7 @@ function renderDropdown() {
     if (r.fonte === 'ambos') {
       metaSpan = `<span class="drop-ambos"><span class="drop-cod">${r.cod}</span><span class="drop-ma">MA ${r.ma}</span></span>`
     } else {
-      metaSpan = r.ma
-        ? `<span class="drop-ma">MA ${r.ma}</span>`
-        : `<span class="drop-cod">${r.cod}</span>`
+      metaSpan = r.ma ? `<span class="drop-ma">MA ${r.ma}</span>` : `<span class="drop-cod">${r.cod}</span>`
     }
     li.innerHTML = nomeSpan + metaSpan
     li.addEventListener('mousedown', () => selectResult(r))
@@ -101,8 +83,7 @@ function selectResult(r) {
   setNome(r.nome)
   setCod(r.cod || '')
   if (r.ma) setMa(r.ma)
-  dropdown.style.display = 'none'
-  searchResults = []
+  dropdown.style.display = 'none'; searchResults = []
   checkSources()
 }
 
@@ -120,7 +101,7 @@ document.getElementById('p-ma').addEventListener('blur', async () => {
   if (!ma || !/^\d+$/.test(ma)) return
   if (state.nome) { checkSources(); return }
   try {
-    const data = await authFetch('/api/agrofit-docs?ma=' + encodeURIComponent(ma))
+    const data = await api.agrofitDocs(ma)
     if (data?.ok && data.nome) { setNome(data.nome); checkSources() }
   } catch (_) {}
 })
@@ -129,18 +110,14 @@ document.getElementById('p-ma').addEventListener('blur', async () => {
 
 const DOTS = ['banco', 'adapar', 'agrofit', 'sigen']
 
-function setDots(state) {
-  DOTS.forEach(id => {
-    const el = document.getElementById('dot-' + id)
-    el.className = 'dot ' + (state === 'checking' ? 'checking' : '')
-  })
+function setDots(cls) {
+  DOTS.forEach(id => { document.getElementById('dot-' + id).className = 'dot ' + cls })
 }
 
 function applySourceResult(data) {
   DOTS.forEach(id => {
-    const el = document.getElementById('dot-' + id)
     const val = data[id]
-    el.className = 'dot ' + (val === true ? 'on' : val === false ? 'off' : '')
+    document.getElementById('dot-' + id).className = 'dot ' + (val === true ? 'on' : val === false ? 'off' : '')
   })
   const maInfo = document.getElementById('ma-info')
   maInfo.textContent = data.agrofitInfo?.ma ? 'MA ' + data.agrofitInfo.ma : ''
@@ -151,10 +128,7 @@ async function checkSources() {
   if (!state.nome) return
   setDots('checking')
   try {
-    const url = '/api/verificar-produto?nome=' + encodeURIComponent(state.nome) +
-      (state.Cod ? '&cod=' + encodeURIComponent(state.Cod) : '') +
-      (state.ma  ? '&ma='  + encodeURIComponent(state.ma)  : '')
-    const data = await authFetch(url)
+    const data = await api.verificarProduto(state.nome, state.Cod, state.ma)
     if (data.ok) applySourceResult(data)
     else setDots('')
   } catch (_) { setDots('') }
@@ -164,18 +138,17 @@ async function checkSources() {
 
 let culturas = []
 
-function carregarCulturas() {
-  authFetch('/api/banco/cccb/culturas').then(data => {
-    if (!data.ok) return
-    culturas = data.culturas
-    const dl = document.getElementById('culturas-list')
-    dl.innerHTML = ''
-    for (const c of culturas) {
-      const opt = document.createElement('option')
-      opt.value = c.nome
-      dl.appendChild(opt)
-    }
-  })
+async function carregarCulturas() {
+  const data = await api.cccbCulturas()
+  if (!data.ok) return
+  culturas = data.culturas
+  const dl = document.getElementById('culturas-list')
+  dl.innerHTML = ''
+  for (const c of culturas) {
+    const opt = document.createElement('option')
+    opt.value = c.nome
+    dl.appendChild(opt)
+  }
 }
 
 carregarCulturas()
@@ -184,7 +157,7 @@ carregarCulturas()
 
 function setStatus(msg) { document.getElementById('status').textContent = msg }
 
-function rodarCCCB() {
+async function rodarCCCB() {
   if (!state.nome) { setStatus('Preencha o nome do produto nos parâmetros.'); return }
 
   const input      = document.getElementById('cultura-input').value.trim()
@@ -195,34 +168,33 @@ function rodarCCCB() {
   document.getElementById('btn-run').disabled = true
   document.getElementById('resultado').innerHTML = ''
 
-  const t0 = Date.now()
-  authFetch('/api/banco/cccb', {
-    method: 'POST',
-    body: JSON.stringify({ culturaid, params: state }),
-  }).then(data => {
-    const ms = Date.now() - t0
+  try {
+    const t0   = Date.now()
+    const data = await api.cccb(culturaid, state)
+    const ms   = Date.now() - t0
     if (!data.ok) { setStatus('erro: ' + data.error); return }
     const { oracle, celepar, corretos, errados } = data
     setStatus(`banco: ${oracle.length} | celepar: ${celepar.length} | corretos: ${corretos.length} | errados: ${errados.length} — ${ms}ms`)
     renderResultado({ oracle, celepar, corretos, errados })
-  }).finally(() => {
+  } catch (err) {
+    setStatus('erro: ' + err.message)
+  } finally {
     document.getElementById('btn-run').disabled = false
-  })
+  }
 }
 
-document.getElementById('cultura-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') rodarCCCB()
-})
+document.getElementById('btn-run').onclick = rodarCCCB
+document.getElementById('cultura-input').addEventListener('keydown', e => { if (e.key === 'Enter') rodarCCCB() })
 
 // ── Render ────────────────────────────────────────────────────────────────────
 
 function renderResultado({ oracle, celepar, corretos, errados }) {
   const el = document.getElementById('resultado')
   el.innerHTML = ''
-  if (oracle.length)  el.appendChild(renderTabela('Banco',    ['Cultura', 'Alvo SB', 'Diagnóstico'],                  oracle.map(r  => [r.cultura,  pill(r.siagroalv),               r.diagnostico])))
-  if (celepar.length) el.appendChild(renderTabela('Celepar',  ['Cultura', 'Alvo Siagro', 'Alvo'],                     celepar.map(r => [r.cultura,  pill(r.siagro),                  r.alvo])))
-  if (errados.length) el.appendChild(renderTabela('Errados',  ['Cultura', 'Alvo SB', 'DIAGNOSTICOID', 'Diagnóstico'], errados.map(r => [r.cultura,  pill(r.alvo_sb, 'err'),          r.diagnosticoid, r.diagnostico])))
-  el.appendChild(renderTabela('Corretos', ['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico'], corretos.map(r => [r.cultura, pill(r.alvo_sb, 'ok'), pill(r.alvo_siagro, 'ok'), r.diagnostico])))
+  if (oracle.length)  el.appendChild(renderTabela('Banco',   ['Cultura', 'Alvo SB', 'Diagnóstico'],                  oracle.map(r  => [r.cultura, pill(r.siagroalv),          r.diagnostico])))
+  if (celepar.length) el.appendChild(renderTabela('Celepar', ['Cultura', 'Alvo Siagro', 'Alvo'],                     celepar.map(r => [r.cultura, pill(r.siagro),             r.alvo])))
+  if (errados.length) el.appendChild(renderTabela('Errados', ['Cultura', 'Alvo SB', 'DIAGNOSTICOID', 'Diagnóstico'], errados.map(r => [r.cultura, pill(r.alvo_sb, 'err'),     r.diagnosticoid, r.diagnostico])))
+  el.appendChild(renderTabela('Corretos', ['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico'],                      corretos.map(r => [r.cultura, pill(r.alvo_sb, 'ok'),     pill(r.alvo_siagro, 'ok'), r.diagnostico])))
 }
 
 function pill(code, tipo) {
@@ -271,24 +243,26 @@ function renderTabela(titulo, headers, rows) {
 
 // ── Utilitários ───────────────────────────────────────────────────────────────
 
-function sincronizar() {
+async function sincronizar() {
   setStatus('sincronizando culturas...')
-  authFetch('/api/banco/culturas/sincronizar', { method: 'POST' }).then(data => {
+  try {
+    const data = await api.sincronizarCulturas()
     if (!data.ok) { setStatus('erro: ' + data.error); return }
     setStatus(`${data.total} culturas sincronizadas`)
     carregarCulturas()
-  })
+  } catch (err) { setStatus('erro: ' + err.message) }
 }
 
-function buildMapping() {
+async function buildMapping() {
   if (!state.nome) { setStatus('Preencha o nome do produto para gerar mapeamento.'); return }
   setStatus('gerando mapeamento...')
-  authFetch('/api/banco/cccb/build-mapping', {
-    method: 'POST',
-    body: JSON.stringify({ params: state }),
-  }).then(data => {
+  try {
+    const data = await api.cccbBuildMapping(state)
     if (!data.ok) { setStatus('erro: ' + data.error); return }
     const sem = data.unmatched.length ? data.unmatched.join(', ') : 'nenhuma'
     setStatus(`${data.matched}/${data.total} culturas mapeadas. Sem match: ${sem}`)
-  })
+  } catch (err) { setStatus('erro: ' + err.message) }
 }
+
+document.getElementById('btn-sincronizar').onclick  = sincronizar
+document.getElementById('btn-mapping').onclick      = buildMapping

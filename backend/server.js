@@ -13,6 +13,7 @@ app.use('/teste',      express.static(path.join(__dirname, '..', 'teste')));
 app.use('/banco',      express.static(path.join(__dirname, '..', 'banco')));
 app.use('/caminhos',   express.static(path.join(__dirname, '..', 'caminhos')));
 app.use('/teste-cccb', express.static(path.join(__dirname, '..', 'teste-cccb')));
+app.get('/shared/api.js', (_req, res) => res.sendFile(path.join(__dirname, '..', 'frontend', 'src', 'api.js')));
 app.get('/banco/internos', (_req, res) =>
   res.sendFile(path.join(__dirname, '..', 'banco', 'internos.html'))
 );
