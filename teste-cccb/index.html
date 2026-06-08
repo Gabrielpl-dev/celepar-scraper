@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste CCCB</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Teste CCCB</h1>
+<div class="sub">Comparar Cultura Celepar com o Banco — sandbox de desenvolvimento</div>
+
+<section class="bloco">
+  <div class="bloco-titulo">Parâmetros do produto</div>
+  <div class="params-row">
+    <label>Cod <input id="p-cod"  type="text" placeholder="ex: 12345"></label>
+    <label>MA  <input id="p-ma"   type="text" placeholder="ex: 000001"></label>
+    <label>Nome <input id="p-nome" type="text" placeholder="ex: ROUNDUP"></label>
+  </div>
+</section>
+
+<section class="bloco">
+  <div class="bloco-titulo">CCCB</div>
+  <div class="cccb-row">
+    <label>Cultura
+      <input id="cultura-input" type="text" list="culturas-list" placeholder="todas as culturas">
+      <datalist id="culturas-list"></datalist>
+    </label>
+    <button id="btn-run" onclick="rodarCCCB()">Executar ↵</button>
+    <button class="ghost" onclick="sincronizar()">↻ sincronizar culturas</button>
+    <button class="ghost" onclick="buildMapping()">⚙ gerar mapeamento</button>
+  </div>
+  <div id="status" class="status"></div>
+</section>
+
+<div id="resultado"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
