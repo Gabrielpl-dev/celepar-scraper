@@ -12,10 +12,37 @@
 
 <section class="bloco">
   <div class="bloco-titulo">Parâmetros do produto</div>
-  <div class="params-row">
-    <label>Cod <input id="p-cod"  type="text" placeholder="ex: 12345"></label>
-    <label>MA  <input id="p-ma"   type="text" placeholder="ex: 000001"></label>
-    <label>Nome <input id="p-nome" type="text" placeholder="ex: ROUNDUP"></label>
+  <div class="params-body">
+    <div class="params-form">
+
+      <div class="field">
+        <label for="p-nome">Produto</label>
+        <div class="search-wrap">
+          <input id="p-nome" type="text" placeholder="ex: BELURE" autocomplete="off">
+          <span id="search-hint" class="hint" style="display:none">buscando...</span>
+          <ul id="dropdown" class="dropdown" style="display:none"></ul>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="p-cod">Cod</label>
+        <input id="p-cod" type="text" placeholder="ex: 2968">
+      </div>
+
+      <div class="field">
+        <label for="p-ma">Registro MA</label>
+        <input id="p-ma" type="text" inputmode="numeric" placeholder="ex: 00513">
+      </div>
+
+    </div>
+
+    <div class="sources-panel">
+      <div class="sources-titulo">Fontes</div>
+      <div class="source-row"><span class="dot" id="dot-banco"></span> Banco</div>
+      <div class="source-row"><span class="dot" id="dot-adapar"></span> Adapar</div>
+      <div class="source-row"><span class="dot" id="dot-agrofit"></span> Agrofit <span id="ma-info" class="ma-info"></span></div>
+      <div class="source-row"><span class="dot" id="dot-sigen"></span> Sigen</div>
+    </div>
   </div>
 </section>
 
