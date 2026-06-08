@@ -102,7 +102,7 @@ function parseRows(html) {
     });
     const $linkeaA  = $tr.find('a').filter((_, a) => ($(a).attr('onclick') || '').includes('linkea.asp')).first()
     const linkeaOnclick = $linkeaA.attr('onclick') || ''
-    const linkeaMatch   = linkeaOnclick.match(/window\.open\(['"]([^'"]+)['"]/)
+    const linkeaMatch   = linkeaOnclick.match(/['"]([^'"]*linkea\.asp[^'"]*)['"]/)
     const linkeaUrl     = linkeaMatch ? LINKEA_BASE + linkeaMatch[1] : null
 
     linhas.push({
