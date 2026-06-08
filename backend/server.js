@@ -9,9 +9,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/teste',    express.static(path.join(__dirname, '..', 'teste')));
-app.use('/banco',    express.static(path.join(__dirname, '..', 'banco')));
-app.use('/caminhos', express.static(path.join(__dirname, '..', 'caminhos')));
+app.use('/teste',      express.static(path.join(__dirname, '..', 'teste')));
+app.use('/banco',      express.static(path.join(__dirname, '..', 'banco')));
+app.use('/caminhos',   express.static(path.join(__dirname, '..', 'caminhos')));
+app.use('/teste-cccb', express.static(path.join(__dirname, '..', 'teste-cccb')));
 app.get('/banco/internos', (_req, res) =>
   res.sendFile(path.join(__dirname, '..', 'banco', 'internos.html'))
 );
