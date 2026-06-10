@@ -111,13 +111,27 @@ router.get('/buscar-produto', async (req, res) => {
     agrofitApi.buscarPorNome(nome.trim()),
   ])
 
+  // Deduplica por MA (Agrofit é fonte de verdade para nome)
   const byMa = new Map()
   for (const r of [...csvRows, ...apiRows]) {
     const key = r.ma || r.nome
     if (!byMa.has(key)) byMa.set(key, { nome: r.nome, ma: r.ma || null, ingrediente: r.ingrediente || null })
   }
+  const agrofitRows = [...byMa.values()].slice(0, 25)
 
-  res.json({ ok: true, rows: [...byMa.values()].slice(0, 25) })
+  // Verifica existência na Celepar por NumeroRegistro=ma (em paralelo, sem rate limit problema — poucos itens)
+  const rows = await Promise.all(agrofitRows.map(async r => {
+    if (!r.ma) return { ...r, fonte: 'agrofit' }
+    try {
+      const html = await fetchPage(buildUrl({ ma: r.ma }))
+      const fonte = parseRows(html).length > 0 ? 'ambos' : 'agrofit'
+      return { ...r, fonte }
+    } catch (_) {
+      return { ...r, fonte: 'agrofit' }
+    }
+  }))
+
+  res.json({ ok: true, rows })
 })
 
 // ── Verificar produto nas fontes ──────────────────────────────────────────────

@@ -124,7 +124,9 @@ export function ParamsView({ params, setParams }) {
                       onMouseDown={() => handleSelect(r)}
                     >
                       <span className={s.dropNome}>{r.nome}</span>
-                      {r.ma && <span className={s.dropMa}>MA {r.ma}</span>}
+                      <span className={r.fonte === 'ambos' ? s.dropAmbos : s.dropMa}>
+                        {r.fonte === 'ambos' ? `MA ${r.ma} · adapar` : r.ma ? `MA ${r.ma}` : ''}
+                      </span>
                     </li>
                   ))}
                 </ul>
