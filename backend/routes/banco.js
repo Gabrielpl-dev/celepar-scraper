@@ -106,56 +106,43 @@ router.get('/buscar-produto', async (req, res) => {
   const { nome } = req.query
   if (!nome?.trim()) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
 
-  const [celeparRows, csvRows, apiRows] = await Promise.all([
-    fetchPesquisa()
-      .then(html => parsePesquisaRows(html).filter(r => norm(r.nome).includes(norm(nome.trim()))).slice(0, 10))
-      .catch(() => []),
+  const [csvRows, apiRows] = await Promise.all([
     agrofitCsv.buscarPorNome(nome.trim()),
     agrofitApi.buscarPorNome(nome.trim()),
   ])
 
-  // Mapa por nome normalizado para mesclar entradas de fontes diferentes
-  const byNome = new Map()
-
-  for (const r of celeparRows) {
-    const key = norm(r.nome)
-    byNome.set(key, { nome: r.nome, cod: r.cod, ma: null, ingrediente: null, fonte: 'adapar' })
-  }
-
-  const agrofitSeen = new Set()
+  const byMa = new Map()
   for (const r of [...csvRows, ...apiRows]) {
-    const maKey = r.ma || r.nome
-    if (agrofitSeen.has(maKey)) continue
-    agrofitSeen.add(maKey)
-
-    const key = norm(r.nome)
-    if (byNome.has(key)) {
-      // Mescla: mesmo produto nas duas fontes
-      const existing = byNome.get(key)
-      existing.ma         = r.ma || null
-      existing.ingrediente = r.ingrediente || null
-      existing.fonte      = 'ambos'
-    } else {
-      byNome.set(key, { nome: r.nome, cod: null, ma: r.ma || null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
-    }
+    const key = r.ma || r.nome
+    if (!byMa.has(key)) byMa.set(key, { nome: r.nome, ma: r.ma || null, ingrediente: r.ingrediente || null })
   }
 
-  res.json({ ok: true, rows: [...byNome.values()].slice(0, 25) })
+  res.json({ ok: true, rows: [...byMa.values()].slice(0, 25) })
 })
 
 // ── Verificar produto nas fontes ──────────────────────────────────────────────
 
 router.get('/verificar-produto', async (req, res) => {
-  const { nome, cod, ma: maParam } = req.query
+  const { nome, ma: maParam } = req.query
   if (!nome?.trim()) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
 
+  const ma = maParam?.trim() || null
+
   const [banco, adapar, agrofitRows] = await Promise.all([
-    // Oracle
+    // Oracle — por MA se disponível, senão por nome
     (async () => {
       if (!oracleReady) return false
       let conn
       try {
         conn = await oracleConn()
+        if (ma) {
+          const r = await conn.execute(
+            `SELECT COUNT(*) AS QTD FROM RECEITPADRAO r JOIN AGROTOXICO a ON r.DESCRICAO = a.NOME WHERE a.REGISTROMA = :ma`,
+            { ma },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+          )
+          return (r.rows[0]?.QTD ?? 0) > 0
+        }
         const r = await conn.execute(
           `SELECT COUNT(*) AS QTD FROM RECEITPADRAO WHERE DESCRICAO = :nome`,
           { nome: nome.trim() },
@@ -166,11 +153,11 @@ router.get('/verificar-produto', async (req, res) => {
       finally { if (conn) await conn.close().catch(() => {}) }
     })(),
 
-    // Adapar/Celepar por cod
+    // Adapar/Celepar por MA
     (async () => {
-      if (!cod?.trim()) return false
+      if (!ma) return false
       try {
-        const html = await fetchPage(buildUrl({ Cod: cod.trim() }))
+        const html = await fetchPage(buildUrl({ ma }))
         return parseRows(html).length > 0
       } catch (_) { return false }
     })(),
@@ -191,17 +178,14 @@ router.get('/verificar-produto', async (req, res) => {
   ])
 
   const agrofitEncontrado = agrofitRows.length > 0
-  const ma = maParam?.trim() || (agrofitEncontrado ? agrofitRows[0].ma : null)
+  const resolvedMa = ma || (agrofitEncontrado ? agrofitRows[0].ma : null)
 
-  // Sigen: só se temos um MA numérico
   let sigen = null
-  if (ma && /^\d+$/.test(ma)) {
+  if (resolvedMa && /^\d+$/.test(resolvedMa)) {
     try {
-      const r = await sigenClient.verificarMA(ma)
+      const r = await sigenClient.verificarMA(resolvedMa)
       sigen = r.encontrado
-    } catch (_) {
-      sigen = false
-    }
+    } catch (_) { sigen = false }
   }
 
   res.json({
@@ -290,9 +274,9 @@ router.post('/cccb/build-mapping', requireAdmin, async (req, res) => {
 router.post('/cccb', async (req, res) => {
   if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
   const { culturaid, params = {}, enrichLinkea = false } = req.body
-  const isAll  = culturaid == null
-  const produto = params.nome ?? null
-  if (!produto) return res.status(400).json({ ok: false, error: 'params.nome (produto) é obrigatório' })
+  const isAll = culturaid == null
+  const ma    = params.ma ?? null
+  if (!ma) return res.status(400).json({ ok: false, error: 'params.ma (registro MA) é obrigatório' })
 
   function celeparNormFor(cultura, cid) {
     const row = db.prepare('SELECT celepar_nome FROM culturas WHERE culturaid = ?').get(cid)
@@ -310,11 +294,12 @@ router.post('/cccb', async (req, res) => {
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
-         WHERE r.DESCRICAO = :produto
+         JOIN AGROTOXICO a ON r.DESCRICAO = a.NOME
+         WHERE a.REGISTROMA = :ma
            AND r.CULTURAID = :culturaid
            AND r.ATIVO = 'S'
          ORDER BY d.SIAGROALV`,
-        { produto, culturaid: Number(culturaid) },
+        { ma, culturaid: Number(culturaid) },
         { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
       )
     } else {
@@ -323,10 +308,11 @@ router.post('/cccb', async (req, res) => {
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
-         WHERE r.DESCRICAO = :produto
+         JOIN AGROTOXICO a ON r.DESCRICAO = a.NOME
+         WHERE a.REGISTROMA = :ma
            AND r.ATIVO = 'S'
          ORDER BY c.NOME, d.SIAGROALV`,
-        { produto },
+        { ma },
         { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
       )
     }

@@ -40,44 +40,34 @@ export function ParamsView({ params, setParams }) {
     }, 400)
   }
 
-  async function checkSources(nome, cod, ma) {
+  async function checkSources(nome, ma) {
     setChecking(true)
     setSources(null)
     try {
-      const data = await api.verificarProduto(nome, cod, ma)
-      if (data.ok) {
-        setSources(data)
-        if (data.agrofitInfo?.ma && !ma) {
-          setParams(p => ({ ...p, ma: p.ma || data.agrofitInfo.ma }))
-        }
-      }
+      const data = await api.verificarProduto(nome, ma)
+      if (data.ok) setSources(data)
     } finally {
       setChecking(false)
     }
   }
 
   function handleSelect(row) {
-    setParams(p => ({
-      ...p,
-      Cod:  row.cod || '',
-      nome: row.nome,
-      ma:   row.ma  || p.ma || '',
-    }))
+    setParams(p => ({ ...p, nome: row.nome, ma: row.ma || '' }))
     setSearchTerm(row.nome)
     setSearchResults([])
-    checkSources(row.nome, row.cod, row.ma)
+    checkSources(row.nome, row.ma)
   }
 
   async function handleMaBlur() {
     const ma = params.ma?.trim()
     if (!ma || !/^\d+$/.test(ma)) return
-    if (params.nome) { checkSources(params.nome, params.Cod, ma); return }
+    if (params.nome) { checkSources(params.nome, ma); return }
     try {
       const data = await api.agrofitDocs(ma)
       if (data?.ok && data.nome) {
         setParams(p => ({ ...p, nome: data.nome }))
         setSearchTerm(data.nome)
-        checkSources(data.nome, '', ma)
+        checkSources(data.nome, ma)
       }
     } catch (_) {}
   }
@@ -129,37 +119,17 @@ export function ParamsView({ params, setParams }) {
                 <ul className={s.dropdown}>
                   {searchResults.map((r, i) => (
                     <li
-                      key={r.cod || r.ma || i}
+                      key={r.ma || i}
                       className={`${s.dropdownItem} ${i === highlightedIndex ? s.dropdownItemHL : ''}`}
                       onMouseDown={() => handleSelect(r)}
                     >
                       <span className={s.dropNome}>{r.nome}</span>
-                      {r.fonte === 'ambos' ? (
-                        <span className={s.dropAmbos}>
-                          <span className={s.dropCod}>{r.cod}</span>
-                          <span className={s.dropMa}>MA {r.ma}</span>
-                        </span>
-                      ) : (
-                        <span className={r.fonte === 'agrofit' ? s.dropMa : s.dropCod}>
-                          {r.ma ? `MA ${r.ma}` : r.cod}
-                        </span>
-                      )}
+                      {r.ma && <span className={s.dropMa}>MA {r.ma}</span>}
                     </li>
                   ))}
                 </ul>
               )}
             </div>
-          </div>
-
-          <div className={s.field}>
-            <label htmlFor="paramCod">Cod</label>
-            <input
-              id="paramCod"
-              type="text"
-              value={params.Cod}
-              placeholder="ex: 2968"
-              onChange={e => setParams(p => ({ ...p, Cod: e.target.value }))}
-            />
           </div>
 
           <div className={s.field}>
