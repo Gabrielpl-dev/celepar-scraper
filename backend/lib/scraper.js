@@ -199,11 +199,8 @@ async function enrichLinkeaRows(rows) {
           'Sec-Fetch-Mode': 'navigate',
           'Sec-Fetch-Dest': 'document'
         })
-        const parsed = parseLinkeaPage(html)
-        if (!parsed.nomeComumAlvo) console.warn('[linkea] sem nomeComumAlvo:', url, '| html snippet:', html.slice(0, 300))
-        detailsMap[url] = parsed
+        detailsMap[url] = parseLinkeaPage(html)
       } catch (e) {
-        console.error('[linkea] fetch error:', url, e.message)
         detailsMap[url] = {}
       }
     }
