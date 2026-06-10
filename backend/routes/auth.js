@@ -9,7 +9,7 @@ const GPL_USER = 'GPL_SCRAPER'
 
 function signToken(payload) {
   if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET não configurado no .env')
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' })
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' })
 }
 
 router.post('/auth/login', async (req, res) => {
