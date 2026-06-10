@@ -161,16 +161,23 @@ function validatePesquisaStructure($, rows) {
   return warnings;
 }
 
+const NORM_NOME_COMUM      = norm('Nome Comum do Alvo Biológico:')
+const NORM_NOME_CIENTIFICO = norm('Nome Científico do Alvo Biológico:')
+
 function parseLinkeaPage(html) {
   const $ = cheerio.load(html)
   const result = {}
   $('td').each((_, td) => {
     const $font = $(td).find('font').first()
     if (!$font.length) return
-    const label = $font.find('b').text().trim()
-    const value = $font.contents().filter((_, n) => n.nodeType === 3).text().trim()
-    if (label === 'Nome Comum do Alvo Biológico:')     result.nomeComumAlvo     = value
-    if (label === 'Nome Científico do Alvo Biológico:') result.nomeCientificoAlvo = value
+    const $b = $font.find('b').first()
+    if (!$b.length) return
+    const label = $b.text().trim()
+    const value = $font.text().replace(label, '').trim()
+    if (!value) return
+    const ln = norm(label)
+    if (ln === NORM_NOME_COMUM)      result.nomeComumAlvo      = value
+    if (ln === NORM_NOME_CIENTIFICO) result.nomeCientificoAlvo = value
   })
   return result
 }
