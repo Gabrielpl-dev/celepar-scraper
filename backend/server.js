@@ -26,25 +26,6 @@ const requireAuth = require('./middleware/requireAuth');
 app.use('/api', require('./routes/auth'));
 app.use('/api', require('./routes/agrofit-public'));
 
-app.get('/api/probe/linkea', async (req, res) => {
-  const url = req.query.url
-  if (!url) return res.json({ error: 'url param required' })
-  try {
-    const { fetchPage, parseLinkeaPage } = require('./lib/scraper')
-    const html = await fetchPage(url, {
-      'Referer': 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp',
-      'Upgrade-Insecure-Requests': '1',
-      'Sec-Fetch-Site': 'same-origin',
-      'Sec-Fetch-Mode': 'navigate',
-      'Sec-Fetch-Dest': 'document'
-    })
-    const parsed = parseLinkeaPage(html)
-    res.json({ htmlLen: html.length, htmlSnippet: html.slice(0, 800), parsed })
-  } catch (e) {
-    res.json({ error: e.message })
-  }
-})
-
 app.use('/api', requireAuth);
 app.use('/api', require('./routes/celepar'));
 app.use('/api', require('./routes/agrofit'));
