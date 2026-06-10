@@ -27,7 +27,7 @@ export default function App() {
   const [theme, setTheme]             = useState(() => localStorage.getItem('theme') || 'light')
   const [activeView, setActiveView]   = useState('culturas')
   const [activeService, setActiveService] = useState('revisao')
-  const [params, setParams]           = useState({ Cod: '', ma: '', nome: '' })
+  const [params, setParams]           = useState({ ma: '', nome: '' })
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [token, setToken]             = useState(() => {
     const tok = localStorage.getItem('token')

@@ -30,7 +30,7 @@ export function ListagemView({ params }) {
       setStatus('err')
       setMessage('erro: ' + err.message)
     }
-  }, [params.Cod])
+  }, [params.ma])
 
   useEffect(() => {
     fetchData()

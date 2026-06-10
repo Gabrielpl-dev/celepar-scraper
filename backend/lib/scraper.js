@@ -25,6 +25,7 @@ const norm = s => String(s || '')
   .toLowerCase();
 
 function buildUrl(params) {
+  const { ma, nome, ...celeparParams } = params  // strip non-Celepar fields
   const defaults = {
     Cod: '', descIngrediente: '',
     CodIngredienteAtivo: 'null', CodFormulacao: 'null', IdRegistrante: 'null',
@@ -37,7 +38,9 @@ function buildUrl(params) {
     criterioClasse: '', criterioCulturaInfestada: '', criterioExpurgo: '',
     criterioAplicacaoAerea: '', criterioTratamentoSementes: ''
   };
-  const qs = Object.entries({ ...defaults, ...params })
+  const merged = { ...defaults, ...celeparParams }
+  if (ma) { merged.NumeroRegistro = ma; merged.Cod = '' }
+  const qs = Object.entries(merged)
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v ?? '')}`)
     .join('&');
   return `${BASE_URL}?${qs}`;
