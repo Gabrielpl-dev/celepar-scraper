@@ -185,23 +185,31 @@ function parseLinkeaPage(html) {
 async function enrichLinkeaRows(rows) {
   const uniqueUrls = [...new Set(rows.map(r => r.linkeaUrl).filter(Boolean))]
   const detailsMap = {}
-  await Promise.all(uniqueUrls.map(async url => {
-    try {
-      const html = await fetchPage(url, {
-        'Referer': 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp',
-        'Upgrade-Insecure-Requests': '1',
-        'Sec-Fetch-Site': 'same-origin',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Dest': 'document'
-      })
-      const parsed = parseLinkeaPage(html)
-      if (!parsed.nomeComumAlvo) console.warn('[linkea] sem nomeComumAlvo:', url, '| html snippet:', html.slice(0, 300))
-      detailsMap[url] = parsed
-    } catch (e) {
-      console.error('[linkea] fetch error:', url, e.message)
-      detailsMap[url] = {}
+  const CONCURRENCY = 3
+
+  let idx = 0
+  async function worker() {
+    while (idx < uniqueUrls.length) {
+      const url = uniqueUrls[idx++]
+      try {
+        const html = await fetchPage(url, {
+          'Referer': 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp',
+          'Upgrade-Insecure-Requests': '1',
+          'Sec-Fetch-Site': 'same-origin',
+          'Sec-Fetch-Mode': 'navigate',
+          'Sec-Fetch-Dest': 'document'
+        })
+        const parsed = parseLinkeaPage(html)
+        if (!parsed.nomeComumAlvo) console.warn('[linkea] sem nomeComumAlvo:', url, '| html snippet:', html.slice(0, 300))
+        detailsMap[url] = parsed
+      } catch (e) {
+        console.error('[linkea] fetch error:', url, e.message)
+        detailsMap[url] = {}
+      }
     }
-  }))
+  }
+
+  await Promise.all(Array.from({ length: CONCURRENCY }, worker))
   return rows.map(r => ({ ...r, ...(r.linkeaUrl ? detailsMap[r.linkeaUrl] : {}) }))
 }
 
