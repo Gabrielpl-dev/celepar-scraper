@@ -1,9 +1,12 @@
 import s from './Header.module.css'
 
-export function Header({ theme, onToggleTheme, onParams, paramsActive, produtoNome, username, onLogout }) {
+export function Header({ theme, onToggleTheme, onParams, paramsActive, onLinks, linksActive, produtoNome, username, onLogout }) {
   return (
     <header className={s.header}>
       <div className={s.left}>
+        <button className={`${s.paramsBtn} ${linksActive ? s.paramsBtnActive : ''}`} onClick={onLinks}>
+          Links
+        </button>
         <button className={`${s.paramsBtn} ${paramsActive ? s.paramsBtnActive : ''}`} onClick={onParams}>
           Parâmetros
         </button>
