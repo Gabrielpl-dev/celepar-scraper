@@ -10,7 +10,7 @@
 
 .wrap {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 260px 1fr;
   flex: 1;
   overflow: hidden;
   transition: grid-template-columns .25s ease;
