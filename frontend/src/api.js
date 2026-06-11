@@ -31,6 +31,7 @@ export const api = {
     (ma ? '&ma=' + encodeURIComponent(ma) : ''),
     null, 'GET'
   ),
+  linkCod: (ma, cod) => call('agrofit-ids/link-cod', { ma, cod }),
   buscarSiagro:   (siagro, params)  => call('buscar-siagro', { siagro, params }),
   comparar:       (c1, c2, params)  => call('comparar', { cultura1: c1, cultura2: c2, params }),
   verificar:      (termo, params)   => call('verificar', { termo, params }),
