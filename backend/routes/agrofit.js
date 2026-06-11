@@ -142,6 +142,13 @@ router.post('/agrofit-ids', (req, res) => {
   res.json({ ok: true });
 });
 
+router.post('/agrofit-ids/link-cod', (req, res) => {
+  const { ma, cod } = req.body;
+  if (!ma || !cod) return res.status(400).json({ ok: false, error: 'ma e cod obrigatorios' });
+  db.prepare('UPDATE agrofit_ids SET cod = ? WHERE ma = ?').run(String(cod).trim(), ma.trim());
+  res.json({ ok: true });
+});
+
 router.delete('/agrofit-ids/:ma', (req, res) => {
   db.prepare('DELETE FROM agrofit_ids WHERE ma = ?').run(req.params.ma.trim());
   res.json({ ok: true });
