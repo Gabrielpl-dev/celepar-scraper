@@ -45,4 +45,10 @@ if (!userCols.find(c => c.name === 'role')) {
   db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'viewer'");
 }
 
+// Migração: adiciona coluna cod (Celepar Cod interno) se ainda não existir
+const agrofitCols = db.prepare('PRAGMA table_info(agrofit_ids)').all();
+if (!agrofitCols.find(c => c.name === 'cod')) {
+  db.exec('ALTER TABLE agrofit_ids ADD COLUMN cod TEXT');
+}
+
 module.exports = db;
