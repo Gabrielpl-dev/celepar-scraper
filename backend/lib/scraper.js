@@ -39,7 +39,6 @@ function buildUrl(params) {
     criterioAplicacaoAerea: '', criterioTratamentoSementes: ''
   };
   const merged = { ...defaults, ...celeparParams }
-  if (ma) { merged.NumeroRegistro = ma; merged.Cod = '' }
   const qs = Object.entries(merged)
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v ?? '')}`)
     .join('&');
