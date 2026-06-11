@@ -27,7 +27,7 @@ const VIEWS = {
 
 export default function App() {
   const [theme, setTheme]             = useState(() => localStorage.getItem('theme') || 'light')
-  const [activeView, setActiveView]   = useState('culturas')
+  const [activeView, setActiveView]   = useState('params')
   const [activeService, setActiveService] = useState('revisao')
   const [params, setParams]           = useState({ Cod: '', ma: '', nome: '' })
   const [sidebarOpen, setSidebarOpen] = useState(true)
