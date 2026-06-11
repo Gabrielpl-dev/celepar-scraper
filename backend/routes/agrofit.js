@@ -145,7 +145,8 @@ router.post('/agrofit-ids', (req, res) => {
 router.post('/agrofit-ids/link-cod', (req, res) => {
   const { ma, cod } = req.body;
   if (!ma || !cod) return res.status(400).json({ ok: false, error: 'ma e cod obrigatorios' });
-  db.prepare('UPDATE agrofit_ids SET cod = ? WHERE ma = ?').run(String(cod).trim(), ma.trim());
+  db.prepare(`INSERT INTO agrofit_ids (ma, id, cod) VALUES (?, '', ?)
+    ON CONFLICT(ma) DO UPDATE SET cod = excluded.cod`).run(ma.trim(), String(cod).trim());
   res.json({ ok: true });
 });
 

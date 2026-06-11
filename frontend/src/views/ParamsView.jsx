@@ -40,11 +40,11 @@ export function ParamsView({ params, setParams }) {
     }, 400)
   }
 
-  async function checkSources(nome, ma) {
+  async function checkSources(nome, ma, cod) {
     setChecking(true)
     setSources(null)
     try {
-      const data = await api.verificarProduto(nome, ma)
+      const data = await api.verificarProduto(nome, ma, cod)
       if (data.ok) setSources(data)
     } finally {
       setChecking(false)
@@ -55,7 +55,7 @@ export function ParamsView({ params, setParams }) {
     setParams(p => ({ ...p, nome: row.nome, ma: row.ma || '', Cod: row.cod || '' }))
     setSearchTerm(row.nome)
     setSearchResults([])
-    checkSources(row.nome, row.ma)
+    checkSources(row.nome, row.ma, row.cod)
     if (row.ma && row.cod) api.linkCod(row.ma, row.cod).catch(() => {})
   }
 
@@ -145,6 +145,17 @@ export function ParamsView({ params, setParams }) {
               placeholder="ex: 00513"
               onChange={e => setParams(p => ({ ...p, ma: e.target.value.replace(/\D/g, '') }))}
               onBlur={handleMaBlur}
+            />
+          </div>
+
+          <div className={s.field}>
+            <label htmlFor="paramCod">Cód. Celepar</label>
+            <input
+              id="paramCod"
+              type="text"
+              value={params.Cod ?? ''}
+              readOnly
+              placeholder="preenchido ao selecionar"
             />
           </div>
         </div>
