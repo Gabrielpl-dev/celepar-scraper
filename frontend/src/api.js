@@ -26,9 +26,10 @@ export const api = {
   cccb:                (culturaid, params, enrichLinkea = false) => call('cccb', { culturaid, params, enrichLinkea }),
   agrofitDocs:      (ma)             => call('agrofit-docs?ma=' + encodeURIComponent(ma), null, 'GET'),
   buscarProduto:    (nome)           => call('buscar-produto?nome=' + encodeURIComponent(nome), null, 'GET'),
-  verificarProduto: (nome, ma)  => call(
+  verificarProduto: (nome, ma, cod) => call(
     'verificar-produto?nome=' + encodeURIComponent(nome) +
-    (ma ? '&ma=' + encodeURIComponent(ma) : ''),
+    (ma  ? '&ma='  + encodeURIComponent(ma)  : '') +
+    (cod ? '&cod=' + encodeURIComponent(cod) : ''),
     null, 'GET'
   ),
   linkCod: (ma, cod) => call('agrofit-ids/link-cod', { ma, cod }),

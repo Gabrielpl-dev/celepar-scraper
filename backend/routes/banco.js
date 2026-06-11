@@ -151,10 +151,11 @@ router.get('/buscar-produto', async (req, res) => {
 // ── Verificar produto nas fontes ──────────────────────────────────────────────
 
 router.get('/verificar-produto', async (req, res) => {
-  const { nome, ma: maParam } = req.query
+  const { nome, ma: maParam, cod: codParam } = req.query
   if (!nome?.trim()) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
 
-  const ma = maParam?.trim() || null
+  const ma  = maParam?.trim()  || null
+  const cod = codParam?.trim() || null
 
   const [banco, adapar, agrofitRows] = await Promise.all([
     // Oracle — por MA se disponível, senão por nome
@@ -181,13 +182,16 @@ router.get('/verificar-produto', async (req, res) => {
       finally { if (conn) await conn.close().catch(() => {}) }
     })(),
 
-    // Adapar/Celepar por Cod (lookup em agrofit_ids via MA)
+    // Adapar/Celepar por Cod (direto via param; fallback lookup em agrofit_ids)
     (async () => {
-      if (!ma) return false
       try {
-        const stored = agrofitDb.prepare('SELECT cod FROM agrofit_ids WHERE ma = ?').get(ma)
-        if (!stored?.cod) return false
-        const html = await fetchPage(buildUrl({ Cod: stored.cod }))
+        let celCod = cod
+        if (!celCod && ma) {
+          const stored = agrofitDb.prepare('SELECT cod FROM agrofit_ids WHERE ma = ?').get(ma)
+          celCod = stored?.cod || null
+        }
+        if (!celCod) return false
+        const html = await fetchPage(buildUrl({ Cod: celCod }))
         return parseRows(html).length > 0
       } catch (_) { return false }
     })(),
