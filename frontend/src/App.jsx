@@ -11,6 +11,7 @@ import { ListagemView } from './views/ListagemView'
 import { ParamsView } from './views/ParamsView'
 import { BulaView } from './views/BulaView'
 import { AuthView } from './views/AuthView'
+import { LinksView } from './views/LinksView'
 import s from './App.module.css'
 
 const VIEWS = {
@@ -21,6 +22,7 @@ const VIEWS = {
   comparar:  CompararView,
   verificar: VerificarView,
   params:    ParamsView,
+  links:     LinksView,
 }
 
 export default function App() {
@@ -72,6 +74,8 @@ export default function App() {
         paramsActive={activeView === 'params'}
         produtoNome={params.nome}
         onParams={() => { setActiveView('params'); setActiveService(null) }}
+        linksActive={activeView === 'links'}
+        onLinks={() => { setActiveView('links'); setActiveService(null) }}
         username={username}
         onLogout={handleLogout}
       />
