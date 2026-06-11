@@ -8,6 +8,7 @@ const requireAdmin = require('../middleware/requireAdmin')
 const agrofitCsv   = require('../lib/agrofitCsv')
 const agrofitApi   = require('../lib/agrofitApi')
 const sigenClient  = require('../lib/sigenClient')
+const agrofitDb    = require('../db')
 
 const TABELAS_JSON = path.join(__dirname, '..', '..', 'banco', 'tabelas.json')
 const DB_PATH      = path.join(__dirname, '..', '..', 'banco', 'local.db')
@@ -106,31 +107,44 @@ router.get('/buscar-produto', async (req, res) => {
   const { nome } = req.query
   if (!nome?.trim()) return res.status(400).json({ ok: false, error: 'nome é obrigatório' })
 
-  const [csvRows, apiRows] = await Promise.all([
+  const [csvRows, apiRows, pesquisaHtml] = await Promise.all([
     agrofitCsv.buscarPorNome(nome.trim()),
     agrofitApi.buscarPorNome(nome.trim()),
+    fetchPesquisa().catch(() => null),
   ])
 
-  // Deduplica por MA (Agrofit é fonte de verdade para nome)
+  // Celepar: filtra pesquisa pelo nome buscado
+  const celeparRows = pesquisaHtml
+    ? parsePesquisaRows(pesquisaHtml).filter(r => norm(r.nome).includes(norm(nome.trim()))).slice(0, 10)
+    : []
+
+  // Agrofit: deduplica por MA (fonte de verdade para nome)
   const byMa = new Map()
   for (const r of [...csvRows, ...apiRows]) {
     const key = r.ma || r.nome
-    if (!byMa.has(key)) byMa.set(key, { nome: r.nome, ma: r.ma || null, ingrediente: r.ingrediente || null })
+    if (!byMa.has(key))
+      byMa.set(key, { nome: r.nome, ma: r.ma || null, cod: null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
   }
-  const agrofitRows = [...byMa.values()].slice(0, 25)
 
-  // Verifica existência na Celepar por NumeroRegistro=ma (em paralelo, sem rate limit problema — poucos itens)
-  const rows = await Promise.all(agrofitRows.map(async r => {
-    if (!r.ma) return { ...r, fonte: 'agrofit' }
-    try {
-      const html = await fetchPage(buildUrl({ ma: r.ma }))
-      const fonte = parseRows(html).length > 0 ? 'ambos' : 'agrofit'
-      return { ...r, fonte }
-    } catch (_) {
-      return { ...r, fonte: 'agrofit' }
+  // Merge Celepar->Agrofit por prefixo de nome (cobre truncacao: "OpteraPr" casa com "OpteraPro")
+  const celeparOrphans = []
+  for (const cel of celeparRows) {
+    const nc = norm(cel.nome)
+    let matched = false
+    for (const agr of byMa.values()) {
+      const na = norm(agr.nome)
+      if (na === nc || na.startsWith(nc) || nc.startsWith(na)) {
+        agr.cod   = cel.cod
+        agr.fonte = 'ambos'
+        matched = true
+        break
+      }
     }
-  }))
+    if (!matched)
+      celeparOrphans.push({ nome: cel.nome, ma: null, cod: cel.cod, ingrediente: null, fonte: 'adapar' })
+  }
 
+  const rows = [...byMa.values(), ...celeparOrphans].slice(0, 25)
   res.json({ ok: true, rows })
 })
 
@@ -167,11 +181,13 @@ router.get('/verificar-produto', async (req, res) => {
       finally { if (conn) await conn.close().catch(() => {}) }
     })(),
 
-    // Adapar/Celepar por MA
+    // Adapar/Celepar por Cod (lookup em agrofit_ids via MA)
     (async () => {
       if (!ma) return false
       try {
-        const html = await fetchPage(buildUrl({ ma }))
+        const stored = agrofitDb.prepare('SELECT cod FROM agrofit_ids WHERE ma = ?').get(ma)
+        if (!stored?.cod) return false
+        const html = await fetchPage(buildUrl({ Cod: stored.cod }))
         return parseRows(html).length > 0
       } catch (_) { return false }
     })(),
