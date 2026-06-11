@@ -52,10 +52,11 @@ export function ParamsView({ params, setParams }) {
   }
 
   function handleSelect(row) {
-    setParams(p => ({ ...p, nome: row.nome, ma: row.ma || '' }))
+    setParams(p => ({ ...p, nome: row.nome, ma: row.ma || '', Cod: row.cod || '' }))
     setSearchTerm(row.nome)
     setSearchResults([])
     checkSources(row.nome, row.ma)
+    if (row.ma && row.cod) api.linkCod(row.ma, row.cod).catch(() => {})
   }
 
   async function handleMaBlur() {
