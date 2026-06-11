@@ -128,7 +128,7 @@ async function checkSources() {
   if (!state.nome) return
   setDots('checking')
   try {
-    const data = await api.verificarProduto(state.nome, state.Cod, state.ma)
+    const data = await api.verificarProduto(state.nome, state.ma, state.Cod)
     if (data.ok) applySourceResult(data)
     else setDots('')
   } catch (_) { setDots('') }
