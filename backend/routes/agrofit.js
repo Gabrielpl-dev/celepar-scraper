@@ -1,7 +1,8 @@
 const express    = require('express');
 const cheerio    = require('cheerio');
 const db         = require('../db');
-const agrofitApi = require('../lib/agrofitApi');
+const agrofitApi   = require('../lib/agrofitApi');
+const requireAdmin = require('../middleware/requireAdmin');
 
 const router = express.Router();
 
@@ -151,7 +152,7 @@ router.get('/agrofit-ids', (req, res) => {
   res.json({ ok: true, ids: rows });
 });
 
-router.post('/agrofit-ids', (req, res) => {
+router.post('/agrofit-ids', requireAdmin, (req, res) => {
   const { ma, id, nome } = req.body;
   if (!ma || !id) return res.status(400).json({ ok: false, error: 'ma e id obrigatórios' });
   UPSERT.run(ma.trim(), String(id), nome?.trim() || null);
@@ -166,7 +167,7 @@ router.post('/agrofit-ids/link-cod', (req, res) => {
   res.json({ ok: true });
 });
 
-router.delete('/agrofit-ids/:ma', (req, res) => {
+router.delete('/agrofit-ids/:ma', requireAdmin, (req, res) => {
   db.prepare('DELETE FROM agrofit_ids WHERE ma = ?').run(req.params.ma.trim());
   res.json({ ok: true });
 });
