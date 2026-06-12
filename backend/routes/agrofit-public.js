@@ -4,7 +4,11 @@ const router  = express.Router()
 // Rota pública — sem JWT — o conteúdo é público no agrofit.agricultura.gov.br
 router.get('/agrofit-pdf', async (req, res) => {
   const { url } = req.query
-  if (!url || !url.includes('agrofit.agricultura.gov.br'))
+  let parsedUrl
+  try { parsedUrl = new URL(url) } catch {
+    return res.status(400).json({ ok: false, error: 'URL inválida' })
+  }
+  if (parsedUrl.protocol !== 'https:' || parsedUrl.hostname !== 'agrofit.agricultura.gov.br')
     return res.status(400).json({ ok: false, error: 'URL inválida' })
 
   const cleanUrl = url.replace(/ /g, '%20')
