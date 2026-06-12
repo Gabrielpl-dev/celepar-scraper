@@ -8,7 +8,8 @@ router.get('/agrofit-pdf', async (req, res) => {
   try { parsedUrl = new URL(url) } catch {
     return res.status(400).json({ ok: false, error: 'URL inválida' })
   }
-  if (parsedUrl.protocol !== 'https:' || parsedUrl.hostname !== 'agrofit.agricultura.gov.br')
+  const host = parsedUrl.hostname
+  if (parsedUrl.protocol !== 'https:' || (host !== 'agrofit.agricultura.gov.br' && !host.endsWith('.agricultura.gov.br')))
     return res.status(400).json({ ok: false, error: 'URL inválida' })
 
   const cleanUrl = url.replace(/ /g, '%20')
