@@ -1,73 +1,56 @@
 # Security Fixes Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** Use superpowers:subagent-driven-development or superpowers:executing-plans to execute task-by-task. Steps use `- [ ]` syntax for tracking.
 
 **Goal:** Fix all security vulnerabilities identified in the June 2026 audit, ordered Medium → High → Critical.
 
 **Architecture:** Surgical changes to backend routes and one frontend adjustment. No new npm dependencies. Each task is independent and commits cleanly.
 
-**Tech Stack:** Node.js/Express, better-sqlite3, jsonwebtoken, bcrypt, cors (already installed).
+**Tech Stack:** Node.js/Express, better-sqlite3, jsonwebtoken, bcrypt, cors (all already installed).
 
-**Deploy note:** This project runs on a remote server (`140.238.238.172`). Local machine is edit-only. After pushing:
-1. On server: `git pull` then `C:\nssm\nssm-2.24\win64\nssm.exe restart CeleparApp`
-2. For Task 7 (C1): also add `GPL_SCRAPER_PASSWORD` to NSSM `AppEnvironmentExtra` on the server **before** deploying that task.
-3. Frontend changes require `cd frontend && npm run build` before committing — build artifacts land in `backend/public/` and must be committed.
+**Deploy context:**
+- This project runs on a remote server (`140.238.238.172`). The local machine is edit-only — do NOT try to run the server locally.
+- After each `git push`, the remote operator must: `git pull` then `C:\nssm\nssm-2.24\win64\nssm.exe restart CeleparApp`
+- Any frontend change requires `cd frontend && npm run build` before committing — artifacts go to `backend/public/` and must be committed too.
 
-**No test framework is configured.** Skip all TDD steps. Implement directly.
+**No test framework is configured.** Do not write tests. Implement and commit directly.
+
+**Multiple tasks touch `backend/routes/auth.js`.** Always re-read the file at the start of each task that modifies it — it will have changed from the previous task.
 
 ---
 
 ## File Map
 
-| File | Task(s) |
-|------|---------|
-| `backend/server.js` | Task 1 (CORS) |
-| `backend/routes/agrofit.js` | Task 2 (tokenBody), Task 3 (errors), Task 5 (requireAdmin) |
-| `backend/routes/auth.js` | Task 3 (errors), Task 6 (registration), Task 7 (admin pwd), Task 8 (token TTL) |
-| `backend/routes/banco.js` | Task 3 (errors) |
-| `backend/routes/agrofit-public.js` | Task 4 (SSRF) |
-| `frontend/src/views/AuthView.jsx` | Task 6 (remove register UI) |
+| File | Tasks |
+|------|-------|
+| `backend/server.js` | 1 |
+| `backend/routes/agrofit.js` | 2, 3b, 5 |
+| `backend/routes/auth.js` | 3a, 6a, 7, 8 |
+| `backend/routes/banco.js` | 3c |
+| `backend/routes/agrofit-public.js` | 4 |
+| `frontend/src/views/AuthView.jsx` | 6b |
+| `frontend/src/views/LoginView.jsx` | 6b |
 
 ---
 
 ## Task 1: Restrict CORS (M3)
 
-**Problem:** `app.use(cors())` in `server.js:9` allows any origin to call the API. In production the frontend is served by the same Express process (same origin), so CORS is only needed for local dev (Vite on port 5173).
-
-**File:** `backend/server.js`
+**Problem:** `app.use(cors())` in `server.js:9` allows any origin. In production, frontend and backend share the same origin, so CORS is only needed for local dev (Vite on port 5173).
 
 - [ ] **Read `backend/server.js`**
 
-- [ ] **Replace the open CORS middleware**
+- [ ] **Replace line 9**
 
-Replace line 9:
+Find:
 ```javascript
 app.use(cors());
 ```
-With:
+Replace with:
 ```javascript
 if (process.env.ALLOWED_ORIGIN) {
   app.use('/api', cors({ origin: process.env.ALLOWED_ORIGIN }))
 }
 ```
-
-The full top of the file should look like:
-```javascript
-require('dotenv').config()
-const express = require('express');
-const cors    = require('cors');
-const path    = require('path');
-
-const app  = express();
-const PORT = process.env.PORT || 3000;
-
-if (process.env.ALLOWED_ORIGIN) {
-  app.use('/api', cors({ origin: process.env.ALLOWED_ORIGIN }))
-}
-app.use(express.json());
-```
-
-In production `ALLOWED_ORIGIN` is not set → no CORS headers (correct, same origin). In dev, set `ALLOWED_ORIGIN=http://localhost:5173` in the local `.env`.
 
 - [ ] **Commit**
 ```bash
@@ -80,24 +63,23 @@ git push
 
 ## Task 2: Remove OAuth token from status response (M1)
 
-**Problem:** `GET /api/agrofit-status` at `backend/routes/agrofit.js:116` returns `tokenBody` which contains the live Embrapa OAuth `access_token`. Any authenticated user can harvest it.
-
-**File:** `backend/routes/agrofit.js`
+**Problem:** `GET /api/agrofit-status` returns `tokenBody` which contains the live Embrapa OAuth `access_token`. Any authenticated user can harvest it.
 
 - [ ] **Read `backend/routes/agrofit.js`**
 
-- [ ] **Remove `tokenBody` from the response (line ~116)**
+- [ ] **Fix the `let` declaration** — remove `tokenBody`:
 
 Find:
 ```javascript
-  res.json({ ok: true, vars, tokenStatus, tokenBody, tokenOk, tokenErr })
+  let tokenStatus = null, tokenBody = null, tokenOk = false, tokenErr = null
 ```
 Replace with:
 ```javascript
-  res.json({ ok: true, vars, tokenStatus, tokenOk, tokenErr })
+  let tokenStatus = null, tokenOk = false, tokenErr = null
 ```
 
-Also remove the `tokenBody` variable assignment a few lines above (line ~109) to keep the code clean:
+- [ ] **Fix the token assignment** — stop storing in outer variable:
+
 Find:
 ```javascript
       tokenBody   = await r.json().catch(() => null)
@@ -108,9 +90,16 @@ Replace with:
       const body  = await r.json().catch(() => null)
       tokenOk     = r.ok && !!body?.access_token
 ```
-And remove `tokenBody` from the `let` declaration on the line that has `let tokenStatus = null, tokenBody = null, tokenOk = false, tokenErr = null`:
+
+- [ ] **Fix the response** — remove `tokenBody`:
+
+Find:
 ```javascript
-  let tokenStatus = null, tokenOk = false, tokenErr = null
+  res.json({ ok: true, vars, tokenStatus, tokenBody, tokenOk, tokenErr })
+```
+Replace with:
+```javascript
+  res.json({ ok: true, vars, tokenStatus, tokenOk, tokenErr })
 ```
 
 - [ ] **Commit**
@@ -124,15 +113,15 @@ git push
 
 ## Task 3: Sanitize error messages (M2)
 
-**Problem:** Many `catch` blocks return `error: err.message` directly to clients, leaking Oracle error codes (`ORA-XXXXX`), schema/column names, and internal paths.
+**Problem:** `catch` blocks return `error: err.message` to clients, leaking Oracle error codes, schema names, and internal paths.
 
-**Rule:** Replace `error: err.message` in every 500 response with `error: 'Erro interno do servidor'`. Add `console.error('[route-name]', err)` before the response.
+**Rule for every fix:** add `console.error('[label]', err)` before the response, then return `'Erro interno do servidor'` instead of `err.message`.
 
 ### 3a — `backend/routes/auth.js`
 
 - [ ] **Read `backend/routes/auth.js`**
 
-- [ ] **Fix login catch (line ~38)**
+- [ ] **Fix login catch**
 
 Find:
 ```javascript
@@ -154,7 +143,7 @@ Replace with:
 router.post('/auth/register',
 ```
 
-- [ ] **Fix register catch (line ~61)**
+- [ ] **Fix register catch**
 
 Find:
 ```javascript
@@ -176,7 +165,7 @@ Replace with:
 // Promover usuário
 ```
 
-- [ ] **Fix promote catch (line ~77)**
+- [ ] **Fix promote catch**
 
 Find:
 ```javascript
@@ -200,32 +189,86 @@ module.exports = router
 
 ### 3b — `backend/routes/agrofit.js`
 
-- [ ] **Read `backend/routes/agrofit.js`** (already read in Task 2 — re-read if needed)
+- [ ] **Re-read `backend/routes/agrofit.js`** (was modified in Task 2)
 
-- [ ] **Fix all `error: err.message` in 500 responses**
+There are exactly two `error: err.message` instances in 500 responses. Replace both:
 
-There are two instances. Find each one that looks like:
+**Instance 1** — at the end of the scraping/lookup handler (around the `buscarDocumentos` area before `/agrofit-status`):
+
+Find:
 ```javascript
-    res.status(500).json({ ok: false, error: err.message })
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+router.get('/agrofit-status',
 ```
-For each, add a `console.error` and change the message. Example for the agrofit-docs handler (line ~143):
+Replace with:
+```javascript
+  } catch (err) {
+    console.error('[agrofit/scrape]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' });
+  }
+});
+
+router.get('/agrofit-status',
+```
+
+**Instance 2** — in the `/agrofit-docs` handler:
+
+Find:
+```javascript
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message })
+  }
+})
+
+router.get('/agrofit-ids',
+```
+Replace with:
 ```javascript
   } catch (err) {
     console.error('[agrofit-docs]', err)
     res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   }
+})
+
+router.get('/agrofit-ids',
 ```
-Apply the same pattern to any other 500 handler in this file.
 
 ### 3c — `backend/routes/banco.js`
 
-- [ ] **Read the 500 error handlers in `backend/routes/banco.js`**
+- [ ] **Read `backend/routes/banco.js`**
 
-Search for all occurrences of `error: err.message` in `res.status(500)` responses. The audit identified them at approximately lines 74, 98, 272, 317, 463 but the file may have drifted — grep for the pattern.
+- [ ] **Find all instances** by running:
+```bash
+grep -n "error: err.message" backend/routes/banco.js
+```
 
-- [ ] **Replace every instance** following the same rule: add `console.error('[banco/<route>]', err)` and return `error: 'Erro interno do servidor'`. Pick a label that matches the route context (e.g. `[banco/sql]`, `[banco/cccb]`).
+- [ ] **Replace every instance** found. For each one, add a `console.error` line above the `res.status(500)` and change `err.message` to `'Erro interno do servidor'`. Use a label that matches the surrounding route context. Example pattern:
 
-- [ ] **Commit all three files together**
+```javascript
+// Before:
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message })
+  }
+
+// After:
+  } catch (err) {
+    console.error('[banco/LABEL]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
+  }
+```
+
+Labels to use based on surrounding route:
+- Oracle SQL console route → `[banco/sql]`
+- `/buscar-produto` → `[banco/buscar-produto]`
+- `/verificar-produto` → `[banco/verificar-produto]`
+- `/cccb` → `[banco/cccb]`
+- Any other → `[banco/route]`
+
+- [ ] **Commit all three files**
 ```bash
 git add backend/routes/auth.js backend/routes/agrofit.js backend/routes/banco.js
 git commit -m "fix: sanitize 500 error messages, log internally instead of leaking to client"
@@ -236,13 +279,11 @@ git push
 
 ## Task 4: Fix SSRF in PDF proxy (H1)
 
-**Problem:** `GET /api/agrofit-pdf` is a **public endpoint (no JWT)**. It validates the target URL with `url.includes('agrofit.agricultura.gov.br')` — a substring check trivially bypassed with `https://attacker.com/?x=agrofit.agricultura.gov.br`. This turns the server into an open proxy accessible without authentication.
-
-**File:** `backend/routes/agrofit-public.js`
+**Problem:** `GET /api/agrofit-pdf` is a **public endpoint (no JWT)**. It checks `url.includes('agrofit.agricultura.gov.br')` — bypassed trivially with `https://attacker.com/?x=agrofit.agricultura.gov.br`. The server becomes an open proxy.
 
 - [ ] **Read `backend/routes/agrofit-public.js`**
 
-- [ ] **Replace substring check with strict hostname validation**
+- [ ] **Replace the validation block**
 
 Find:
 ```javascript
@@ -276,23 +317,25 @@ git push
 
 ## Task 5: Add requireAdmin to mapping mutations (H3)
 
-**Problem:** `DELETE /api/agrofit-ids/:ma` at `agrofit.js:167` lets any authenticated viewer wipe MA→ID mappings permanently. `POST /api/agrofit-ids` (upsert) at line 152 has the same issue.
+**Problem:** `DELETE /api/agrofit-ids/:ma` and `POST /api/agrofit-ids` let any authenticated viewer delete or overwrite MA→ID mappings. `requireAdmin` is not currently imported in `agrofit.js`.
 
-Note: `POST /api/agrofit-ids/link-cod` at line 159 is intentionally called by regular users during normal product selection — **do NOT add requireAdmin to link-cod**.
+**Do NOT protect** `POST /api/agrofit-ids/link-cod` — it is called automatically by regular users during normal product selection.
 
-**File:** `backend/routes/agrofit.js`
+- [ ] **Re-read `backend/routes/agrofit.js`** (was modified in Tasks 2 and 3b)
 
-- [ ] **Read `backend/routes/agrofit.js`** (already read — re-read if needed)
+- [ ] **Add requireAdmin import** at the top of the file, after the existing requires:
 
-- [ ] **Add `requireAdmin` import check**
-
-Check the top of the file. `requireAdmin` may not be imported yet. If missing, add it:
+Find:
 ```javascript
-const requireAdmin = require('../middleware/requireAdmin')
+const agrofitApi = require('../lib/agrofitApi');
 ```
-(It is already imported in `auth.js` and `banco.js` following the same pattern.)
+Replace with:
+```javascript
+const agrofitApi   = require('../lib/agrofitApi');
+const requireAdmin = require('../middleware/requireAdmin');
+```
 
-- [ ] **Protect `POST /agrofit-ids`** (upsert, line ~152)
+- [ ] **Protect `POST /agrofit-ids`**
 
 Find:
 ```javascript
@@ -303,7 +346,7 @@ Replace with:
 router.post('/agrofit-ids', requireAdmin, (req, res) => {
 ```
 
-- [ ] **Protect `DELETE /agrofit-ids/:ma`** (line ~167)
+- [ ] **Protect `DELETE /agrofit-ids/:ma`**
 
 Find:
 ```javascript
@@ -323,19 +366,17 @@ git push
 
 ---
 
-## Task 6: Gate self-registration (H2) — backend + frontend
+## Task 6: Gate self-registration (H2)
 
-**Problem:** `POST /api/auth/register` is public. Anyone can create a `viewer` account and immediately access Oracle data, Celepar, SIGEN, and SIGEN scrapers. `AuthView.jsx` shows a register form to unauthenticated users.
+**Problem:** `POST /api/auth/register` is public — anyone creates a `viewer` account and immediately accesses Oracle, Celepar, SIGEN. `AuthView` shows a register form to unauthenticated users.
 
-**New flow:** Only admins can create new user accounts. The `GPL_SCRAPER` hardcoded admin account is used to bootstrap new users.
+**New flow:** Only admins create accounts. `GPL_SCRAPER` is the bootstrap admin.
 
 ### 6a — Backend
 
-**File:** `backend/routes/auth.js`
+- [ ] **Re-read `backend/routes/auth.js`** (was modified in Task 3a)
 
-- [ ] **Read `backend/routes/auth.js`** (already read)
-
-- [ ] **Add `requireAuth` + `requireAdmin` to the register route**
+- [ ] **Gate the register route**
 
 Find:
 ```javascript
@@ -346,17 +387,14 @@ Replace with:
 router.post('/auth/register', requireAuth, requireAdmin, async (req, res) => {
 ```
 
-Both `requireAuth` and `requireAdmin` are already imported at the top of this file.
+(`requireAuth` and `requireAdmin` are already imported at the top of this file.)
 
 ### 6b — Frontend
 
-**File:** `frontend/src/views/AuthView.jsx`
+- [ ] **Read `frontend/src/views/AuthView.jsx`**
 
-- [ ] **Read `frontend/src/views/AuthView.jsx`** (already read — the file is small)
+- [ ] **Replace the full file** (remove register mode):
 
-- [ ] **Remove the register mode entirely**
-
-Replace the full file content with:
 ```jsx
 import { LoginView } from './LoginView'
 import s from './AuthView.module.css'
@@ -373,11 +411,79 @@ export function AuthView({ onAuth }) {
 }
 ```
 
-Note: `LoginView` receives `onSwitchToRegister` as a prop — after this change it won't be passed. Read `frontend/src/views/LoginView.jsx` and remove any "Cadastrar" / register link/button that calls `onSwitchToRegister`. That prop is now unused.
+- [ ] **Read `frontend/src/views/LoginView.jsx`**
 
-- [ ] **Read `frontend/src/views/LoginView.jsx` and remove register link**
+- [ ] **Remove the register link** — replace the full file:
 
-Find any element that calls `onSwitchToRegister` (likely a button or link near the bottom of the form) and delete it along with the prop from the function signature.
+```jsx
+import { useState } from 'react'
+import s from './AuthView.module.css'
+
+export function LoginView({ onAuth }) {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError]       = useState('')
+  const [loading, setLoading]   = useState(false)
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    try {
+      const r = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      })
+      const data = await r.json()
+      if (data.ok) {
+        localStorage.setItem('token', data.token)
+        onAuth(data.token, data.username)
+      } else {
+        setError(data.error || 'erro ao entrar')
+      }
+    } catch {
+      setError('erro de conexão')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className={s.formWrapper}>
+      <div className={s.brand}>AgroCheck</div>
+      <h1 className={s.heading}>Faça seu<br />login.</h1>
+      <form className={s.form} onSubmit={handleSubmit}>
+        <div className={s.field}>
+          <label htmlFor="au-username">Usuário</label>
+          <input
+            id="au-username"
+            type="text"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            autoFocus
+            autoComplete="username"
+          />
+        </div>
+        <div className={s.field}>
+          <label htmlFor="au-password">Senha</label>
+          <input
+            id="au-password"
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            autoComplete="current-password"
+          />
+        </div>
+        <p className={s.error}>{error}</p>
+        <button className={s.btn} type="submit" disabled={loading || !username || !password}>
+          {loading ? 'Entrando...' : 'Entrar'}
+        </button>
+      </form>
+    </div>
+  )
+}
+```
 
 - [ ] **Build frontend**
 ```bash
@@ -396,18 +502,16 @@ git push
 
 ## Task 7: Decouple admin password from Oracle password (C1)
 
-**Problem:** The hardcoded `GPL_SCRAPER` admin account in `auth.js:22` authenticates by comparing the submitted password against `process.env.ORACLE_PASSWORD`. This means the Oracle DB password doubles as a web admin password — leaking one leaks the other.
+**Problem:** `GPL_SCRAPER` authenticates via `process.env.ORACLE_PASSWORD`, meaning the Oracle DB password is also the web admin password.
 
-**Fix:** Use a dedicated `GPL_SCRAPER_PASSWORD` environment variable.
+**⚠️ STOP — manual server step required BEFORE committing this task:**
+Add `GPL_SCRAPER_PASSWORD=<chosen-password>` to NSSM `AppEnvironmentExtra` for the `CeleparApp` service on the remote server. If you push before this is set, the admin login will return 500 and no one can log in as admin.
 
-**⚠️ Manual step required BEFORE deploying this task:**
-On the server, add `GPL_SCRAPER_PASSWORD=<chosen-password>` to NSSM `AppEnvironmentExtra` for the `CeleparApp` service. This must be done before `git pull` + restart, or the admin account will stop working.
+Only continue to the code steps after confirming this env var is set on the server.
 
-**File:** `backend/routes/auth.js`
+- [ ] **Re-read `backend/routes/auth.js`** (was modified in Tasks 3a and 6a)
 
-- [ ] **Read `backend/routes/auth.js`** (already read)
-
-- [ ] **Replace the password comparison**
+- [ ] **Replace the password check**
 
 Find:
 ```javascript
@@ -427,28 +531,22 @@ Replace with:
         return res.status(401).json({ ok: false, error: 'credenciais inválidas' })
 ```
 
-- [ ] **Commit**
+- [ ] **Commit and push** (only after confirming the env var is set on the server)
 ```bash
 git add backend/routes/auth.js
 git commit -m "fix: decouple GPL_SCRAPER admin password from ORACLE_PASSWORD env var"
 git push
 ```
 
-- [ ] **Add `GPL_SCRAPER_PASSWORD` on the server** (manual — do before restarting)
-
 ---
 
 ## Task 8: Shorten token lifetime (C2)
 
-**Problem:** JWTs are valid for 30 days with no revocation. A leaked token (e.g. via XSS or shared machine) stays valid for a month.
+**Problem:** JWTs are valid for 30 days with no revocation. A leaked token stays valid for a month.
 
-**Fix:** Reduce to 8 hours. This is a partial mitigation — full revocation would require a token blocklist, which is out of scope here.
+- [ ] **Re-read `backend/routes/auth.js`** (was modified in Tasks 3a, 6a, and 7)
 
-**File:** `backend/routes/auth.js`
-
-- [ ] **Read `backend/routes/auth.js`** (already read)
-
-- [ ] **Change token expiry**
+- [ ] **Change expiry**
 
 Find:
 ```javascript
@@ -465,21 +563,3 @@ git add backend/routes/auth.js
 git commit -m "fix: reduce JWT lifetime from 30d to 8h"
 git push
 ```
-
----
-
-## Self-Review Checklist
-
-- [x] M3 (CORS) → Task 1
-- [x] M1 (tokenBody) → Task 2
-- [x] M2 (error messages) → Task 3
-- [x] H1 (SSRF PDF proxy) → Task 4
-- [x] H3 (requireAdmin mutations) → Task 5
-- [x] H2 (open registration) → Task 6
-- [x] C1 (Oracle password reuse) → Task 7
-- [x] C2 (30-day tokens) → Task 8
-- [x] All tasks have exact file paths and full replacement code
-- [x] No TDD steps (no test framework configured)
-- [x] Frontend tasks include `npm run build` and commit of `backend/public/`
-- [x] Tasks are ordered: medium → high → critical
-- [x] Each task commits independently
