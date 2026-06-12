@@ -40,7 +40,7 @@ router.post('/auth/login', async (req, res) => {
   }
 })
 
-router.post('/auth/register', async (req, res) => {
+router.post('/auth/register', requireAuth, requireAdmin, async (req, res) => {
   try {
     const { username, password } = req.body
     if (!username || !password)

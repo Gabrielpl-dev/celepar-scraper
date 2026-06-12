@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import s from './AuthView.module.css'
 
-export function LoginView({ onAuth, onSwitchToRegister }) {
+export function LoginView({ onAuth }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError]       = useState('')
@@ -61,10 +61,6 @@ export function LoginView({ onAuth, onSwitchToRegister }) {
         <button className={s.btn} type="submit" disabled={loading || !username || !password}>
           {loading ? 'Entrando...' : 'Entrar'}
         </button>
-        <p className={s.switch}>
-          Ainda não tem conta?{' '}
-          <button type="button" className={s.link} onClick={onSwitchToRegister}>Cadastrar</button>
-        </p>
       </form>
     </div>
   )
