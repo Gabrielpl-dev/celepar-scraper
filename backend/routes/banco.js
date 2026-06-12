@@ -473,6 +473,48 @@ router.post('/cccb', async (req, res) => {
   }
 })
 
+// ── SSE: watch Oracle para mudanças no produto ───────────────────────────────
+
+router.get('/cccb/watch', async (req, res) => {
+  if (!oracleReady) return res.status(503).end()
+  const { ma } = req.query
+  if (!ma || !/^\d+$/.test(ma)) return res.status(400).end()
+
+  res.setHeader('Content-Type', 'text/event-stream')
+  res.setHeader('Cache-Control', 'no-cache')
+  res.setHeader('Connection', 'keep-alive')
+  res.flushHeaders()
+
+  let lastCount = null
+
+  async function check() {
+    if (res.writableEnded) return
+    let conn
+    try {
+      conn = await oracleConn()
+      const r = await conn.execute(
+        `SELECT COUNT(*) AS QTD FROM RECEITPADRAO r
+         JOIN AGROTOXICO a ON r.DESCRICAO = a.NOME
+         WHERE a.REGISTROMA = :ma AND r.ATIVO = 'S'`,
+        { ma },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+      )
+      const count = Number(r.rows[0]?.QTD ?? 0)
+      if (lastCount !== null && count !== lastCount)
+        res.write(`event: changed\ndata: ${JSON.stringify({ count })}\n\n`)
+      lastCount = count
+    } catch (_) {} finally {
+      if (conn) await conn.close().catch(() => {})
+    }
+  }
+
+  await check()
+  const poll = setInterval(check, 15_000)
+  const ping = setInterval(() => { if (!res.writableEnded) res.write(': ping\n\n') }, 30_000)
+
+  req.on('close', () => { clearInterval(poll); clearInterval(ping) })
+})
+
 // ── Diagnóstico por SIAGROALV ─────────────────────────────────────────────────
 
 router.get('/banco/diagnostico', async (req, res) => {
