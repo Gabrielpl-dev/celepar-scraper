@@ -6,7 +6,9 @@ const path    = require('path');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+if (process.env.ALLOWED_ORIGIN) {
+  app.use('/api', cors({ origin: process.env.ALLOWED_ORIGIN }))
+}
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/teste',      express.static(path.join(__dirname, '..', 'teste')));
