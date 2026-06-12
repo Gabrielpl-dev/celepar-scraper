@@ -59,8 +59,7 @@ export function ParamsView({ params, setParams }) {
     if (row.ma && row.cod) api.linkCod(row.ma, row.cod).catch(() => {})
   }
 
-  async function handleMaBlur() {
-    const ma = params.ma?.trim()
+  async function lookupMa(ma) {
     if (!ma || !/^\d+$/.test(ma)) return
     if (params.nome) { checkSources(params.nome, ma); return }
     try {
@@ -72,6 +71,8 @@ export function ParamsView({ params, setParams }) {
       }
     } catch (_) {}
   }
+
+  function handleMaBlur() { lookupMa(params.ma?.trim()) }
 
   function handleKeyDown(e) {
     if (!searchResults.length) return
@@ -143,7 +144,14 @@ export function ParamsView({ params, setParams }) {
               inputMode="numeric"
               value={params.ma ?? ''}
               placeholder="ex: 00513"
-              onChange={e => setParams(p => ({ ...p, ma: e.target.value.replace(/\D/g, '') }))}
+              onChange={e => {
+                const val = e.target.value.replace(/\D/g, '')
+                setParams(p => ({ ...p, ma: val }))
+                clearTimeout(debounceRef.current)
+                if (val.length >= 4)
+                  debounceRef.current = setTimeout(() => lookupMa(val), 600)
+              }}
+              onKeyDown={e => { if (e.key === 'Enter') { clearTimeout(debounceRef.current); lookupMa(params.ma?.trim()) } }}
               onBlur={handleMaBlur}
             />
           </div>

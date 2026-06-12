@@ -123,7 +123,8 @@ router.get('/buscar-produto', async (req, res) => {
   // Agrofit: deduplica por MA (fonte de verdade para nome)
   const byMa = new Map()
   for (const r of [...csvRows, ...apiRows]) {
-    const normMa = r.ma ? String(parseInt(r.ma, 10)) : null
+    const parsed = r.ma?.trim() ? parseInt(r.ma, 10) : NaN
+    const normMa = r.ma?.trim() ? (isNaN(parsed) ? r.ma.trim() : String(parsed)) : null
     const key    = normMa || r.nome
     if (!byMa.has(key))
       byMa.set(key, { nome: r.nome, ma: normMa, cod: null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
