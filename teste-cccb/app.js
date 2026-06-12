@@ -157,38 +157,75 @@ carregarCulturas()
 
 function setStatus(msg) { document.getElementById('status').textContent = msg }
 
-async function rodarCCCB() {
-  if (!state.nome) { setStatus('Preencha o nome do produto nos parâmetros.'); return }
+// ── Watch SSE ────────────────────────────────────────────────────────────────
+
+let watchAbort = null
+
+function stopWatch() {
+  if (watchAbort) { watchAbort.abort(); watchAbort = null }
+}
+
+async function startWatch(ma) {
+  stopWatch()
+  if (!ma) return
+  const ctrl  = new AbortController()
+  watchAbort  = ctrl
+  const token = localStorage.getItem('token')
+  try {
+    const res = await fetch(`/api/cccb/watch?ma=${encodeURIComponent(ma)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      signal:  ctrl.signal,
+    })
+    if (!res.ok) return
+    const reader  = res.body.getReader()
+    const decoder = new TextDecoder()
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      if (decoder.decode(value, { stream: true }).includes('event: changed'))
+        rodarCCCB(true)
+    }
+  } catch (_) {}
+}
+
+// ── CCCB ─────────────────────────────────────────────────────────────────────
+
+async function rodarCCCB(silent = false) {
+  if (!state.nome) { if (!silent) setStatus('Preencha o nome do produto nos parâmetros.'); return }
 
   const input      = document.getElementById('cultura-input').value.trim()
   const culturaObj = culturas.find(c => c.nome === input)
   const culturaid  = culturaObj?.culturaid ?? null
 
-  setStatus('consultando...')
-  document.getElementById('btn-run').disabled = true
-  document.getElementById('resultado').innerHTML = ''
+  if (!silent) {
+    setStatus('consultando...')
+    document.getElementById('btn-run').disabled = true
+    document.getElementById('resultado').innerHTML = ''
+  }
 
   try {
     const t0   = Date.now()
     const data = await api.cccb(culturaid, state, true)
     const ms   = Date.now() - t0
-    if (!data.ok) { setStatus('erro: ' + data.error); return }
+    if (!data.ok) { if (!silent) setStatus('erro: ' + data.error); return }
     const { oracle, celepar, corretos, errados, faltando } = data
     const matchCelepar = celepar.length - faltando.length
     setStatus(
       `banco: ${oracle.length} = ✓${corretos.length} + ✗${errados.length}` +
       `  |  celepar: ${celepar.length} = ✓${matchCelepar} + ?${faltando.length}` +
-      `  —  ${ms}ms`
+      `  —  ${ms}ms` +
+      (silent ? '  · atualizado automaticamente' : '')
     )
     renderResultado({ oracle, celepar, corretos, errados, faltando })
+    if (!silent && state.ma) startWatch(state.ma)
   } catch (err) {
-    setStatus('erro: ' + err.message)
+    if (!silent) setStatus('erro: ' + err.message)
   } finally {
-    document.getElementById('btn-run').disabled = false
+    if (!silent) document.getElementById('btn-run').disabled = false
   }
 }
 
-document.getElementById('btn-run').onclick = rodarCCCB
+document.getElementById('btn-run').onclick = () => rodarCCCB()
 document.getElementById('cultura-input').addEventListener('keydown', e => { if (e.key === 'Enter') rodarCCCB() })
 
 // ── Render ────────────────────────────────────────────────────────────────────
