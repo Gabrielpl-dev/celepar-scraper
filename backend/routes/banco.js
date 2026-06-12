@@ -473,6 +473,29 @@ router.post('/cccb', async (req, res) => {
   }
 })
 
+// ── Diagnóstico por SIAGROALV ─────────────────────────────────────────────────
+
+router.get('/banco/diagnostico', async (req, res) => {
+  if (!oracleReady) return res.status(503).json({ ok: false, error: 'Oracle não disponível' })
+  const { siagroalv } = req.query
+  if (!siagroalv?.trim()) return res.status(400).json({ ok: false, error: 'siagroalv é obrigatório' })
+  let conn
+  try {
+    conn = await oracleConn()
+    const result = await conn.execute(
+      `SELECT DIAGNOSTICOID, SIAGROALV, DESCRICAO, NOMECIENTIFICO FROM DIAGNOSTICO WHERE SIAGROALV = :siagroalv ORDER BY DESCRICAO`,
+      { siagroalv: siagroalv.trim() },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+    )
+    res.json({ ok: true, rows: result.rows })
+  } catch (err) {
+    console.error('[banco/diagnostico]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
+  } finally {
+    if (conn) await conn.close().catch(() => {})
+  }
+})
+
 // ── Tabelas conhecidas ────────────────────────────────────────────────────────
 
 router.post('/banco/tabelas/salvar', requireAdmin, (req, res) => {

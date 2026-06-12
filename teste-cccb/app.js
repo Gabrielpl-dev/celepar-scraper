@@ -199,11 +199,11 @@ function renderResultado({ oracle, celepar, corretos, errados, faltando }) {
   if (oracle.length)   el.appendChild(renderTabela('Banco',    ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico'],                                oracle.map(r  => [r.cultura, pill(r.siagroalv),      r.diagnostico,            r.nomecientifico])))
   if (celepar.length)  el.appendChild(renderTabela('Celepar',  ['Cultura', 'Alvo Siagro', 'Alvo', 'Nome Comum'],                                        celepar.map(r => [r.cultura, pill(r.siagro),         r.alvo,                   r.nomeComumAlvo])))
   if (errados.length)  el.appendChild(renderTabela('Errados',  ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico', 'Nome Comum'],                   errados.map(r => [r.cultura, pill(r.alvo_sb, 'err'), r.diagnostico,            r.nomecientifico, r.nomeComumAlvo])))
-  if (faltando.length) el.appendChild(renderTabelaFaltando('Faltando', faltando, oracle))
+  if (faltando.length) el.appendChild(renderTabelaFaltando('Faltando', faltando))
   el.appendChild(renderTabela('Corretos', ['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico', 'Nome Científico', 'Nome Comum'],  corretos.map(r => [r.cultura, pill(r.alvo_sb, 'ok'), pill(r.alvo_siagro, 'ok'), r.diagnostico, r.nomecientifico, r.nomeComumAlvo])))
 }
 
-function renderTabelaFaltando(titulo, faltandoRows, oracleRows) {
+function renderTabelaFaltando(titulo, faltandoRows) {
   const wrap = document.createElement('div')
   wrap.className = 'tabela-bloco'
 
@@ -226,17 +226,12 @@ function renderTabelaFaltando(titulo, faltandoRows, oracleRows) {
   const tbody = document.createElement('tbody')
 
   for (const row of faltandoRows) {
-    const matches = oracleRows.filter(o => String(o.siagroalv) === String(row.siagro))
-
     const tr = document.createElement('tr')
 
     const expandTd = document.createElement('td')
-    expandTd.style.cssText = 'width:24px;text-align:center;color:#666;user-select:none;font-size:10px'
+    expandTd.style.cssText = 'width:24px;text-align:center;color:#666;user-select:none;font-size:10px;cursor:pointer'
+    expandTd.textContent = '▸'
 
-    if (matches.length) {
-      expandTd.textContent = '▸'
-      expandTd.style.cursor = 'pointer'
-    }
     tr.appendChild(expandTd)
     tr.insertAdjacentHTML('beforeend',
       `<td>${row.cultura ?? '—'}</td>` +
@@ -246,41 +241,58 @@ function renderTabelaFaltando(titulo, faltandoRows, oracleRows) {
     )
     tbody.appendChild(tr)
 
-    if (matches.length) {
-      const subTr = document.createElement('tr')
-      subTr.style.display = 'none'
-      const subTd = document.createElement('td')
-      subTd.colSpan = 5
-      subTd.style.padding = '0'
+    const subTr = document.createElement('tr')
+    subTr.style.display = 'none'
+    const subTd = document.createElement('td')
+    subTd.colSpan = 5
+    subTd.style.padding = '0'
 
-      const subTable = document.createElement('table')
-      subTable.className = 'sub-tabela'
-      subTable.innerHTML = '<thead><tr><th>Cultura</th><th>Alvo SB</th><th>Diagnóstico</th><th>Nome Científico</th></tr></thead>'
-      const subTbody = document.createElement('tbody')
-      for (const m of matches) {
-        const mtr = document.createElement('tr')
-        mtr.innerHTML =
-          `<td>${m.cultura ?? '—'}</td>` +
-          `<td>${pill(m.siagroalv)}</td>` +
-          `<td>${m.diagnostico ?? '—'}</td>` +
-          `<td>${m.nomecientifico ?? '—'}</td>`
-        subTbody.appendChild(mtr)
-      }
-      subTable.appendChild(subTbody)
-      subTd.appendChild(subTable)
-      subTr.appendChild(subTd)
-      tbody.appendChild(subTr)
+    const subTable = document.createElement('table')
+    subTable.className = 'sub-tabela'
+    subTable.innerHTML = '<thead><tr><th>ID</th><th>Alvo SB</th><th>Diagnóstico</th><th>Nome Científico</th></tr></thead>'
+    const subTbody = document.createElement('tbody')
+    subTbody.innerHTML = '<tr><td colspan="4" style="color:#888;font-style:italic">carregando...</td></tr>'
 
-      let expanded = false
-      const toggle = () => {
-        expanded = !expanded
-        subTr.style.display = expanded ? '' : 'none'
-        expandTd.textContent = expanded ? '▾' : '▸'
+    subTable.appendChild(subTbody)
+    subTd.appendChild(subTable)
+    subTr.appendChild(subTd)
+    tbody.appendChild(subTr)
+
+    let expanded = false
+    let loaded   = false
+
+    const toggle = async () => {
+      expanded = !expanded
+      subTr.style.display = expanded ? '' : 'none'
+      expandTd.textContent = expanded ? '▾' : '▸'
+
+      if (expanded && !loaded) {
+        loaded = true
+        try {
+          const data = await api.buscarDiagnostico(row.siagro)
+          subTbody.innerHTML = ''
+          if (!data.ok || !data.rows.length) {
+            subTbody.innerHTML = '<tr><td colspan="4" style="color:#888;font-style:italic">Nenhum diagnóstico encontrado.</td></tr>'
+          } else {
+            for (const d of data.rows) {
+              const dtr = document.createElement('tr')
+              dtr.innerHTML =
+                `<td>${d.DIAGNOSTICOID ?? '—'}</td>` +
+                `<td>${pill(d.SIAGROALV)}</td>` +
+                `<td>${d.DESCRICAO ?? '—'}</td>` +
+                `<td>${d.NOMECIENTIFICO ?? '—'}</td>`
+              subTbody.appendChild(dtr)
+            }
+          }
+        } catch (err) {
+          subTbody.innerHTML = `<tr><td colspan="4" style="color:red">Erro: ${err.message}</td></tr>`
+        }
       }
-      expandTd.onclick = e => { e.stopPropagation(); toggle() }
-      tr.style.cursor = 'pointer'
-      tr.onclick = toggle
     }
+
+    expandTd.onclick = e => { e.stopPropagation(); toggle() }
+    tr.style.cursor = 'pointer'
+    tr.onclick = toggle
   }
 
   table.appendChild(tbody)
