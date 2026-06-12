@@ -79,7 +79,8 @@ router.get('/agrofit', async (req, res) => {
         : null,
     });
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message });
+    console.error('[agrofit/scrape]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' });
   }
 });
 
@@ -140,7 +141,8 @@ router.get('/agrofit-docs', async (req, res) => {
       return res.json({ ok: true, ma, nome: null, documentos: [], aviso: 'Produto não encontrado na API Agrofit' })
     res.json({ ok: true, ...result })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[agrofit-docs]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   }
 })
 
