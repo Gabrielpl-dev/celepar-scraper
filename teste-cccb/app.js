@@ -226,7 +226,7 @@ function renderTabelaFaltando(titulo, faltandoRows, oracleRows) {
   const tbody = document.createElement('tbody')
 
   for (const row of faltandoRows) {
-    const matches = oracleRows.filter(o => o.siagroalv === row.siagro)
+    const matches = oracleRows.filter(o => String(o.siagroalv) === String(row.siagro))
 
     const tr = document.createElement('tr')
 
