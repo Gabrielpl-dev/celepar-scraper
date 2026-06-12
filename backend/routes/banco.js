@@ -71,7 +71,8 @@ router.post('/banco', requireAdmin, async (req, res) => {
       rows: result.rows ?? [],
     })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[banco/sql]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   } finally {
     if (conn) await conn.close().catch(() => {})
   }
@@ -95,7 +96,8 @@ router.get('/banco/buscar', requireAdmin, async (req, res) => {
     )
     res.json({ ok: true, rows: result.rows.map(r => r[coluna.toUpperCase()]) })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[banco/route]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   } finally {
     if (conn) await conn.close().catch(() => {})
   }
@@ -269,7 +271,8 @@ router.post('/culturas/sincronizar', requireAdmin, async (req, res) => {
 
     res.json({ ok: true, total: result.rows.length })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[banco/route]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   } finally {
     if (conn) await conn.close().catch(() => {})
   }
@@ -282,7 +285,8 @@ router.get('/cccb/culturas', (req, res) => {
     const culturas = db.prepare('SELECT culturaid, nome FROM culturas ORDER BY nome').all()
     res.json({ ok: true, culturas })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[banco/cccb]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   }
 })
 
@@ -314,7 +318,8 @@ router.post('/cccb/build-mapping', requireAdmin, async (req, res) => {
 
     res.json({ ok: true, total: todas.length, matched: todas.length - unmatched.length, unmatched })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[banco/cccb]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   }
 })
 
@@ -460,7 +465,8 @@ router.post('/cccb', async (req, res) => {
       faltando,
     })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[banco/cccb]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   } finally {
     if (conn) await conn.close().catch(() => {})
   }

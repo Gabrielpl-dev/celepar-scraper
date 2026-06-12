@@ -35,7 +35,8 @@ router.post('/auth/login', async (req, res) => {
     const token = signToken({ username, role })
     res.json({ ok: true, token, username, role })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[auth/login]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   }
 })
 
@@ -58,7 +59,8 @@ router.post('/auth/register', async (req, res) => {
     const token = signToken({ username, role: 'viewer' })
     res.json({ ok: true, token, username, role: 'viewer' })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[auth/register]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   }
 })
 
@@ -74,7 +76,8 @@ router.post('/auth/promote', requireAuth, requireAdmin, (req, res) => {
     db.prepare("UPDATE users SET role = 'admin' WHERE username = ?").run(username)
     res.json({ ok: true, message: `${username} promovido a admin` })
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message })
+    console.error('[auth/promote]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
   }
 })
 
