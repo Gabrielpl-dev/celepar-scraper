@@ -95,7 +95,7 @@ router.get('/agrofit-status', async (req, res) => {
     AGROFIT_SECRET:   !!secret,
   }
 
-  let tokenStatus = null, tokenBody = null, tokenOk = false, tokenErr = null
+  let tokenStatus = null, tokenOk = false, tokenErr = null
   if (key && secret) {
     try {
       const basic = Buffer.from(`${key}:${secret}`).toString('base64')
@@ -106,14 +106,14 @@ router.get('/agrofit-status', async (req, res) => {
         signal: AbortSignal.timeout(10_000),
       })
       tokenStatus = r.status
-      tokenBody   = await r.json().catch(() => null)
-      tokenOk     = r.ok && !!tokenBody?.access_token
+      const body  = await r.json().catch(() => null)
+      tokenOk     = r.ok && !!body?.access_token
     } catch (e) {
       tokenErr = e.message
     }
   }
 
-  res.json({ ok: true, vars, tokenStatus, tokenBody, tokenOk, tokenErr })
+  res.json({ ok: true, vars, tokenStatus, tokenOk, tokenErr })
 })
 
 router.get('/agrofit-docs', async (req, res) => {
