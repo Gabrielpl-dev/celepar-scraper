@@ -146,6 +146,18 @@ router.get('/buscar-produto', async (req, res) => {
   }
 
   const rows = [...byMa.values(), ...celeparOrphans].slice(0, 25)
+
+  const upsertRegistry = agrofitDb.prepare(`
+    INSERT INTO produto_registry (ma, nome, cod, ingrediente)
+    VALUES (@ma, @nome, @cod, @ingrediente)
+    ON CONFLICT(ma) DO UPDATE SET
+      nome        = excluded.nome,
+      cod         = COALESCE(excluded.cod, produto_registry.cod),
+      ingrediente = COALESCE(excluded.ingrediente, produto_registry.ingrediente),
+      updated_at  = datetime('now','localtime')
+  `)
+  agrofitDb.transaction(rs => { for (const r of rs) if (r.ma) upsertRegistry.run(r) })(rows)
+
   res.json({ ok: true, rows })
 })
 
