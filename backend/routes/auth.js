@@ -19,7 +19,12 @@ router.post('/auth/login', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'usuário e senha obrigatórios' })
 
     if (username.toUpperCase() === GPL_USER) {
-      if (password !== process.env.ORACLE_PASSWORD)
+      const adminPwd = process.env.GPL_SCRAPER_PASSWORD
+      if (!adminPwd) {
+        console.error('[auth/login] GPL_SCRAPER_PASSWORD não configurado')
+        return res.status(500).json({ ok: false, error: 'Erro de configuração do servidor' })
+      }
+      if (password !== adminPwd)
         return res.status(401).json({ ok: false, error: 'credenciais inválidas' })
       const token = signToken({ username: GPL_USER, role: 'admin' })
       return res.json({ ok: true, token, username: GPL_USER, role: 'admin' })
