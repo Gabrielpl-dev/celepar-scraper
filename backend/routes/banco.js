@@ -112,12 +112,12 @@ router.get('/buscar-produto', async (req, res) => {
   const [csvRows, apiRows, pesquisaHtml] = await Promise.all([
     agrofitCsv.buscarPorNome(nome.trim()),
     agrofitApi.buscarPorNome(nome.trim()),
-    fetchPesquisa(nome.trim()).catch(() => null),
+    fetchPesquisa().catch(() => null),
   ])
 
-  // Celepar já filtra pelo nome via criterioAgrotoxico no POST
+  // Celepar: filtra pesquisa pelo nome buscado
   const celeparRows = pesquisaHtml
-    ? parsePesquisaRows(pesquisaHtml).slice(0, 10)
+    ? parsePesquisaRows(pesquisaHtml).filter(r => norm(r.nome).includes(norm(nome.trim()))).slice(0, 10)
     : []
 
   // Agrofit: deduplica por MA (fonte de verdade para nome)
