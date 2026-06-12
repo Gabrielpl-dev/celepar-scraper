@@ -18,7 +18,7 @@ export function BulaView({ params }) {
     setErro(null)
     setPdfUrl(null)
     setSelected('')
-    api.agrofitDocs(ma)
+    api.agrofitDocs(ma, params?.Cod)
       .then(data => {
         if (!data.ok) { setErro(data.error || 'Erro ao buscar documentos'); return }
         setDocs(data)

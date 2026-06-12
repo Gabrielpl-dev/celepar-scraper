@@ -51,4 +51,15 @@ if (!agrofitCols.find(c => c.name === 'cod')) {
   db.exec('ALTER TABLE agrofit_ids ADD COLUMN cod TEXT');
 }
 
+db.exec(`
+  CREATE TABLE IF NOT EXISTS produto_registry (
+    ma          TEXT PRIMARY KEY,
+    nome        TEXT NOT NULL,
+    cod         TEXT,
+    ingrediente TEXT,
+    updated_at  TEXT DEFAULT (datetime('now','localtime'))
+  )
+`);
+db.exec(`CREATE INDEX IF NOT EXISTS idx_produto_registry_cod ON produto_registry(cod)`);
+
 module.exports = db;

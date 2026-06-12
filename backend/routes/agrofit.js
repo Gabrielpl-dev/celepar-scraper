@@ -117,11 +117,25 @@ router.get('/agrofit-status', async (req, res) => {
 })
 
 router.get('/agrofit-docs', async (req, res) => {
-  const { ma } = req.query
-  if (!ma || !/^\d+$/.test(ma.trim()))
+  const { ma: maParam, cod } = req.query
+  let ma = maParam?.trim()
+
+  if (ma && !/^\d+$/.test(ma))
     return res.status(400).json({ ok: false, error: 'ma deve conter apenas dígitos' })
+  if (!ma && !cod)
+    return res.status(400).json({ ok: false, error: 'ma ou cod são obrigatórios' })
+
   try {
-    const result = await agrofitApi.buscarDocumentos(ma.trim())
+    let result = ma ? await agrofitApi.buscarDocumentos(ma) : null
+
+    if (!result && cod) {
+      const row = db.prepare('SELECT ma FROM produto_registry WHERE cod = ?').get(cod)
+      if (row?.ma) {
+        ma = row.ma
+        result = await agrofitApi.buscarDocumentos(ma)
+      }
+    }
+
     if (!result)
       return res.json({ ok: true, ma, nome: null, documentos: [], aviso: 'Produto não encontrado na API Agrofit' })
     res.json({ ok: true, ...result })
