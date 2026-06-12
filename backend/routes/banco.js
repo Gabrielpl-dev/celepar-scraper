@@ -121,9 +121,10 @@ router.get('/buscar-produto', async (req, res) => {
   // Agrofit: deduplica por MA (fonte de verdade para nome)
   const byMa = new Map()
   for (const r of [...csvRows, ...apiRows]) {
-    const key = r.ma || r.nome
+    const normMa = r.ma ? String(parseInt(r.ma, 10)) : null
+    const key    = normMa || r.nome
     if (!byMa.has(key))
-      byMa.set(key, { nome: r.nome, ma: r.ma || null, cod: null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
+      byMa.set(key, { nome: r.nome, ma: normMa, cod: null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
   }
 
   // Merge Celepar->Agrofit por prefixo de nome (cobre truncacao: "OpteraPr" casa com "OpteraPro")
