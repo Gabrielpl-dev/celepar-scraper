@@ -1,8 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const feedbackDb = require('./feedbackDb');
 
-const SECOES = {
+const SECOES_BASE = {
   nomeComercial:             ['nome do produto', 'nome comercial'],
+  fabricante:                ['titular do registro'],
   concentracao:              ['composição', 'ingrediente ativo', 'concentração'],
   classificacaoToxicologica: ['classificação toxicológica'],
   classificacaoAmbiental:    ['classificação ambiental', 'periculosidade ambiental'],
@@ -13,6 +15,19 @@ const SECOES = {
   armazenamento:             ['armazenamento', 'transporte'],
   destinoFinal:              ['destino final', 'descarte'],
 };
+
+function buildSecoes() {
+  const dinamicas = feedbackDb.getKeywordsDinamicas();
+  const merged = {};
+  for (const [campo, kws] of Object.entries(SECOES_BASE)) {
+    merged[campo] = [...kws];
+  }
+  for (const [campo, kws] of Object.entries(dinamicas)) {
+    const existentes = new Set(merged[campo] ?? []);
+    merged[campo] = [...(merged[campo] ?? []), ...kws.filter(k => !existentes.has(k))];
+  }
+  return merged;
+}
 
 async function mapearPaginas(pdfPath) {
   const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
@@ -38,6 +53,8 @@ async function mapearPaginas(pdfPath) {
     page.cleanup();
   }
   await doc.loadingTask.destroy();
+
+  const SECOES = buildSecoes();
 
   const mapa = {};
   for (const [campo, keywords] of Object.entries(SECOES)) {

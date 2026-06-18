@@ -32,7 +32,7 @@ async function extrairRegistroMA(call) {
 
 async function extrairFabricante(call) {
   return call(
-    'Extraia o nome do fabricante ou empresa registrante do produto (ex: "Bayer S.A.", "Syngenta Proteção de Cultivos Ltda."). Retorne apenas o nome da empresa, sem explicações.',
+    'Extraia o nome do fabricante ou empresa registrante do produto. Procure pelo campo "TITULAR DO REGISTRO" na bula (ex: "Bayer S.A.", "Syngenta Proteção de Cultivos Ltda."). Retorne apenas o nome da empresa, sem explicações.',
     opts({ maxTokens: 60 })
   );
 }

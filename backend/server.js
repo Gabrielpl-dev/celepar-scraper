@@ -34,6 +34,7 @@ app.use('/api', require('./routes/agrofit'));
 app.use('/api', require('./routes/sigen'));
 app.use('/api', require('./routes/banco'));
 app.use('/api', require('./routes/internos'));
+app.use('/api', require('./routes/extracao'));
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 

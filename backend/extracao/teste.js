@@ -25,6 +25,18 @@ const GROUND_TRUTH_DB = {
   'Bio-Green': {
     nomeComercial: 'BIO GREEN',
   },
+  'F1023786651_MATENO PÓS_BULA_06.04.2026': {
+    nomeComercial:             'MATENO',
+    registroMA:                '12525',
+    fabricante:                'Bayer S.A.',
+    formulacao:                'OD',
+    concentracao:              '150 g/L',
+    ingredienteInerte:         '860 g/L',
+    classeDefensivo:           'Herbicida',
+    grupoQuimico:              'não especificado',
+    classificacaoToxicologica: 'Categoria 4',
+    principioAtivo:            'Diflufenican',
+  },
 };
 
 const groundTruth = GROUND_TRUTH_DB[nomePdf] ?? {};
@@ -77,12 +89,12 @@ async function runTeste() {
 
   const casos = [
     { nome: 'nomeComercial',             fn: extrairNomesComerciais,           campo: 'nomeComercial' },
-    { nome: 'registroMA',                fn: extrairRegistroMA,                campo: 'nomeComercial' },
-    { nome: 'fabricante',               fn: extrairFabricante,                campo: 'nomeComercial' },
-    { nome: 'formulacao',               fn: extrairFormulacao,                campo: 'nomeComercial' },
+    { nome: 'registroMA',                fn: extrairRegistroMA,                paginas: [1] },
+    { nome: 'fabricante',               fn: extrairFabricante,                campo: 'fabricante' },
+    { nome: 'formulacao',               fn: extrairFormulacao,                campo: 'concentracao' },
     { nome: 'concentracao',              fn: extrairConcentracao,              campo: 'concentracao' },
     { nome: 'ingredienteInerte',         fn: extrairIngredienteInerte,         campo: 'concentracao' },
-    { nome: 'classeDefensivo',           fn: extrairClasseDefensivo,           campo: 'nomeComercial' },
+    { nome: 'classeDefensivo',           fn: extrairClasseDefensivo,           paginas: [1] },
     { nome: 'grupoQuimico',              fn: extrairGrupoQuimico,              campo: 'concentracao' },
     { nome: 'classificacaoToxicologica', fn: extrairClassificacaoToxicologica, campo: 'classificacaoToxicologica' },
     { nome: 'principioAtivo',            fn: extrairPrincipioAtivo,            campo: 'concentracao' },
@@ -91,9 +103,9 @@ async function runTeste() {
   const linhas = [];
   let pass = 0, fail = 0, sem_gt = 0;
 
-  for (const { nome, fn, campo } of casos) {
+  for (const { nome, fn, campo, paginas } of casos) {
     process.stdout.write(`  Extraindo ${nome}...`);
-    const pages = pagesFor(mapa, campo);
+    const pages = paginas ?? pagesFor(mapa, campo);
     const call  = makeCall(pages);
     const t0    = Date.now();
 
