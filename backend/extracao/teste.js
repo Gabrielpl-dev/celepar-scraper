@@ -5,6 +5,7 @@ const { mapearPaginas }               = require('./mapeador');
 const { extrairNomesComerciais, extrairRegistroMA, extrairFabricante, extrairFormulacao, extrairConcentracao, extrairIngredienteInerte, extrairClasseDefensivo, extrairGrupoQuimico, extrairClassificacaoToxicologica, extrairPrincipioAtivo } = require('./campos_cadastro_produto');
 const { callVision }          = require('../lib/lmstudioClient');
 const { precisaEmitirTermo }  = require('./regras');
+const { confirmarNoTexto }    = require('./confirmador');
 
 // Uso: node teste.js [nome-do-pdf]
 const nomePdf = process.argv[2] || 'Bula-de-teste';
@@ -84,7 +85,7 @@ function renderTabela(linhas) {
 async function runTeste() {
   console.log(`\nPDF: ${path.basename(PDF)}`);
   process.stdout.write('Mapeando páginas... ');
-  const { mapa, totalPaginas } = await mapearPaginas(PDF);
+  const { mapa, pageTexts, totalPaginas } = await mapearPaginas(PDF);
   console.log(`${totalPaginas} páginas\n`);
 
   const casos = [
@@ -130,7 +131,10 @@ async function runTeste() {
       if (ok) { pass++; resultado = '✓ PASS'; } else { fail++; resultado = '✗ FAIL'; }
     } else {
       sem_gt++;
-      resultado = '? SEM GT';
+      const { confirmado } = confirmarNoTexto(extraido, pageTexts, pages);
+      if (confirmado === true)  resultado = '✓ CONF';
+      else if (confirmado === false) resultado = '✗ NÃO CONF';
+      else resultado = '– N/A';
     }
 
     const termo = nome === 'principioAtivo' ? (precisaEmitirTermo(extraido) ? '⚠ SIM' : '✗ NÃO') : '';

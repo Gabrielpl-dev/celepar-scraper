@@ -67,7 +67,7 @@ async function mapearPaginas(pdfPath) {
     mapa[campo] = paginas.length > 0 ? paginas : null;
   }
 
-  return { mapa, totalPaginas: doc.numPages };
+  return { mapa, pageTexts, totalPaginas: doc.numPages };
 }
 
 module.exports = { mapearPaginas };
