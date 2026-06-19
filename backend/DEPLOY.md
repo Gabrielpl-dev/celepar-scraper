@@ -1,4 +1,6 @@
-# Deploy — Máquina Remota (<IP_SERVIDOR>)
+# Deploy — Máquina Remota
+
+> Valores de infraestrutura (IP, paths, connection string) estão em `.envs/infra.md` (arquivo local, não versionado).
 
 ## Serviço Windows (NSSM)
 
@@ -23,7 +25,7 @@ Todos os comandos abaixo precisam de **PowerShell como administrador**.
 ## Atualizar o código
 
 ```powershell
-cd C:\celepar_app
+cd <APP_PATH>
 git pull
 <NSSM_EXE> restart CeleparApp
 ```

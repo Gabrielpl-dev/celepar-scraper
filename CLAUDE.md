@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Ambiente de execução
 
-O servidor e o banco de dados rodam em uma máquina remota (`<IP_SERVIDOR>`). **Esta máquina local é apenas para edição de código.**
+O servidor e o banco de dados rodam em uma máquina remota (ver `.envs/infra.md` para IP e detalhes de infra). **Esta máquina local é apenas para edição de código.**
 
 Fluxo de deploy:
 1. Fazer as alterações aqui localmente
@@ -37,7 +37,7 @@ Node.js/Express backend + React (Vite) frontend. O backend serve o build estáti
 - **Celepar/Adapar** — scraping do site PR (encoding `windows-1252`, cache 5min)
 - **Agrofit/Embrapa** — API REST OAuth2 `client_credentials` (Key+Secret no registry Windows via NSSM)
 - **SIGEN** — scraping Santa Catarina
-- **Oracle REAG** — banco institucional (Instant Client em `C:\oracle\instantclient_21_15`)
+- **Oracle REAG** — banco institucional (Oracle Instant Client, path em `.envs/infra.md`)
 - **SQLite local** — `agrofit_ids.db` (users + mapeamentos MA/ID)
 
 **Backend** (`backend/`):
