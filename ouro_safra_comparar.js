@@ -103,37 +103,35 @@ async function oracleConn() {
   return conn
 }
 
-async function loadOracleProducts(conn) {
+async function loadDescricoes(conn) {
   const r = await conn.execute(
-    'SELECT NOME, REGISTROMA FROM AGROTOXICO',
+    `SELECT DISTINCT DESCRICAO FROM RECEITPADRAO WHERE ATIVO = 'S'`,
     {},
     { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
   )
-  return r.rows
+  return r.rows.map(r => r.DESCRICAO)
 }
 
-function findMa(oracleProdutos, nome) {
+function findDescricao(descricoes, nome) {
   const n = norm(nome)
-  const exact = oracleProdutos.find(r => norm(r.NOME) === n)
-  if (exact) return exact.REGISTROMA
-  const prefix = oracleProdutos
-    .filter(r => {
-      const rn = norm(r.NOME)
-      return rn.length >= 4 && (n.startsWith(rn + ' ') || rn.startsWith(n + ' '))
+  const exact = descricoes.find(d => norm(d) === n)
+  if (exact) return exact
+  return descricoes
+    .filter(d => {
+      const dn = norm(d)
+      return dn.length >= 4 && (n.startsWith(dn + ' ') || dn.startsWith(n + ' '))
     })
-    .sort((a, b) => b.NOME.length - a.NOME.length)[0]
-  return prefix?.REGISTROMA ?? null
+    .sort((a, b) => b.length - a.length)[0] ?? null
 }
 
-async function getOracleRegistros(conn, ma) {
+async function getOracleRegistros(conn, descricao) {
   const r = await conn.execute(
     `SELECT DISTINCT d.SIAGROALV, c.NOME AS CULTURA
      FROM RECEITPADRAO r
      JOIN CULTURA     c ON r.CULTURAID     = c.CULTURAID
      JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
-     JOIN AGROTOXICO  a ON r.DESCRICAO     = a.NOME
-     WHERE a.REGISTROMA = :ma AND r.ATIVO = 'S'`,
-    { ma },
+     WHERE r.DESCRICAO = :descricao AND r.ATIVO = 'S'`,
+    { descricao },
     { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
   )
   return r.rows
@@ -185,9 +183,9 @@ async function main() {
     process.exit(1)
   }
 
-  console.log('Carregando produtos do Oracle...')
-  const oracleProdutos = await loadOracleProducts(conn)
-  console.log(`${oracleProdutos.length} produtos no Oracle.\n`)
+  console.log('Carregando descricoes do Oracle...')
+  const descricoes = await loadDescricoes(conn)
+  console.log(`${descricoes.length} descricoes no Oracle.\n`)
 
   const errados = []
 
@@ -196,10 +194,10 @@ async function main() {
     process.stdout.write(`[${String(i + 1).padStart(3)}/${PRODUTOS.length}] ${nome} ... `)
 
     try {
-      const ma = findMa(oracleProdutos, nome)
-      if (!ma) { console.log('sem MA (nao encontrado no Oracle)'); continue }
+      const descricao = findDescricao(descricoes, nome)
+      if (!descricao) { console.log('sem receituario no Oracle'); continue }
 
-      const oracleRows = await getOracleRegistros(conn, ma)
+      const oracleRows = await getOracleRegistros(conn, descricao)
       if (!oracleRows.length) { console.log('sem receituario'); continue }
 
       const n     = norm(nome)
