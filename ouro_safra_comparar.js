@@ -3,8 +3,9 @@
 
 const fs       = require('fs')
 const path     = require('path')
-const oracledb = require('oracledb')
-const cheerio  = require('cheerio')
+const backendMod = path.join(__dirname, 'backend', 'node_modules')
+const oracledb = require(path.join(backendMod, 'oracledb'))
+const cheerio  = require(path.join(backendMod, 'cheerio'))
 
 // ── Scraper (inline) ──────────────────────────────────────────────────────────
 
