@@ -112,16 +112,20 @@ async function loadDescricoes(conn) {
   return r.rows.map(r => r.DESCRICAO)
 }
 
+function matchesPart(descricao, n) {
+  const parts = descricao.split('/').map(p => norm(p.trim())).filter(p => p.length >= 4)
+  return parts.some(p => p === n || n.startsWith(p + ' ') || p.startsWith(n + ' '))
+}
+
 function findDescricao(descricoes, nome) {
   const n = norm(nome)
   const exact = descricoes.find(d => norm(d) === n)
   if (exact) return exact
-  return descricoes
-    .filter(d => {
-      const dn = norm(d)
-      return dn.length >= 4 && (n.startsWith(dn + ' ') || dn.startsWith(n + ' '))
-    })
-    .sort((a, b) => b.length - a.length)[0] ?? null
+  const prefix = descricoes
+    .filter(d => { const dn = norm(d); return dn.length >= 4 && (n.startsWith(dn + ' ') || dn.startsWith(n + ' ')) })
+    .sort((a, b) => b.length - a.length)[0]
+  if (prefix) return prefix
+  return descricoes.find(d => matchesPart(d, n)) ?? null
 }
 
 async function getOracleRegistros(conn, descricao) {
