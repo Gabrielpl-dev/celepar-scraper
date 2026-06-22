@@ -128,6 +128,14 @@ function findDescricao(descricoes, nome) {
   return descricoes.find(d => matchesPart(d, n)) ?? null
 }
 
+function findCandidatos(descricoes, nome) {
+  const n = norm(nome)
+  const words = n.split(' ').filter(Boolean)
+  return descricoes
+    .filter(d => words.some(w => w.length >= 4 && norm(d).includes(w)))
+    .slice(0, 5)
+}
+
 async function getOracleRegistros(conn, descricao) {
   const r = await conn.execute(
     `SELECT DISTINCT d.SIAGROALV, c.NOME AS CULTURA
@@ -199,7 +207,11 @@ async function main() {
 
     try {
       const descricao = findDescricao(descricoes, nome)
-      if (!descricao) { console.log('sem receituario no Oracle'); continue }
+      if (!descricao) {
+        const candidatos = findCandidatos(descricoes, nome)
+        console.log(`sem receituario no Oracle${candidatos.length ? ' | candidatos: ' + candidatos.join(' / ') : ''}`)
+        continue
+      }
 
       const oracleRows = await getOracleRegistros(conn, descricao)
       if (!oracleRows.length) { console.log('sem receituario'); continue }
@@ -220,8 +232,28 @@ async function main() {
         celeparSets[k].add(String(r.siagro))
       }
 
+      const tokenize = s => {
+        const n = String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+        return new Set(n.replace(/[^a-z0-9 ]/g, ' ').replace(/ +/g, ' ').trim().split(' ').filter(Boolean))
+      }
+      const jaccard = (a, b) => {
+        const sa = tokenize(a), sb = tokenize(b)
+        const inter = [...sa].filter(w => sb.has(w)).length
+        return inter / new Set([...sa, ...sb]).size
+      }
+      const resolveKey = cn => {
+        if (celeparSets[cn]) return cn
+        let bestKey = null, bestScore = 0
+        for (const key of Object.keys(celeparSets)) {
+          const score = jaccard(cn, key)
+          if (score > bestScore) { bestScore = score; bestKey = key }
+        }
+        return (bestScore >= 0.8 && bestKey) ? bestKey : cn
+      }
+
       const temErro = oracleRows.some(row => {
-        const cSet = celeparSets[norm(row.CULTURA)] ?? new Set()
+        const cn   = resolveKey(norm(row.CULTURA))
+        const cSet = celeparSets[cn] ?? new Set()
         return !cSet.has(String(row.SIAGROALV))
       })
 
