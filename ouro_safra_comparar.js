@@ -103,13 +103,26 @@ async function oracleConn() {
   return conn
 }
 
-async function getMa(conn, nome) {
+async function loadOracleProducts(conn) {
   const r = await conn.execute(
-    `SELECT REGISTROMA FROM AGROTOXICO WHERE UPPER(NOME) = UPPER(:nome) AND ROWNUM = 1`,
-    { nome },
-    { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    'SELECT NOME, REGISTROMA FROM AGROTOXICO',
+    {},
+    { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
   )
-  return r.rows[0]?.REGISTROMA ?? null
+  return r.rows
+}
+
+function findMa(oracleProdutos, nome) {
+  const n = norm(nome)
+  const exact = oracleProdutos.find(r => norm(r.NOME) === n)
+  if (exact) return exact.REGISTROMA
+  const prefix = oracleProdutos
+    .filter(r => {
+      const rn = norm(r.NOME)
+      return rn.length >= 4 && (n.startsWith(rn + ' ') || rn.startsWith(n + ' '))
+    })
+    .sort((a, b) => b.NOME.length - a.NOME.length)[0]
+  return prefix?.REGISTROMA ?? null
 }
 
 async function getOracleRegistros(conn, ma) {
@@ -172,6 +185,10 @@ async function main() {
     process.exit(1)
   }
 
+  console.log('Carregando produtos do Oracle...')
+  const oracleProdutos = await loadOracleProducts(conn)
+  console.log(`${oracleProdutos.length} produtos no Oracle.\n`)
+
   const errados = []
 
   for (let i = 0; i < PRODUTOS.length; i++) {
@@ -179,15 +196,19 @@ async function main() {
     process.stdout.write(`[${String(i + 1).padStart(3)}/${PRODUTOS.length}] ${nome} ... `)
 
     try {
-      const ma = await getMa(conn, nome)
-      if (!ma) { console.log('sem MA'); continue }
+      const ma = findMa(oracleProdutos, nome)
+      if (!ma) { console.log('sem MA (nao encontrado no Oracle)'); continue }
 
       const oracleRows = await getOracleRegistros(conn, ma)
       if (!oracleRows.length) { console.log('sem receituario'); continue }
 
       const n     = norm(nome)
-      const match = todosNomes.find(r => norm(r.nome) === n || norm(r.nome).includes(n) || n.includes(norm(r.nome)))
-      if (!match?.cod) { console.log('nao encontrado no CELEPAR'); continue }
+      const match = todosNomes.find(r =>
+        r.cod &&
+        norm(r.nome).length >= 4 &&
+        (norm(r.nome) === n || norm(r.nome).includes(n) || n.includes(norm(r.nome)))
+      )
+      if (!match) { console.log('nao encontrado no CELEPAR'); continue }
 
       const celeparHtml = await fetchHtml(buildUrl(match.cod))
       const celeparSets = {}
