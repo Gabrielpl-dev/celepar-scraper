@@ -2,24 +2,27 @@
 
 > Valores de infraestrutura (IP, paths, connection string) estão em `.envs/infra.md` (arquivo local, não versionado).
 
-## Serviço Windows (NSSM)
+## Serviço Windows (PM2)
 
-O servidor roda como serviço `CeleparApp` — sobe automaticamente com a máquina e não depende de nenhum usuário logado.
+O servidor roda via PM2 — sobe automaticamente com a máquina via `pm2-windows-startup`.
 
 Todos os comandos abaixo precisam de **PowerShell como administrador**.
 
 ```powershell
 # Verificar status
-<NSSM_EXE> status CeleparApp
+pm2 status
 
 # Reiniciar (após atualizar o código)
-<NSSM_EXE> restart CeleparApp
+pm2 restart CeleparApp
 
 # Parar
-<NSSM_EXE> stop CeleparApp
+pm2 stop CeleparApp
 
 # Iniciar
-<NSSM_EXE> start CeleparApp
+pm2 start CeleparApp
+
+# Ver logs
+pm2 logs CeleparApp --lines 50 --nostream
 ```
 
 ## Atualizar o código
@@ -27,7 +30,8 @@ Todos os comandos abaixo precisam de **PowerShell como administrador**.
 ```powershell
 cd <APP_PATH>
 git pull
-<NSSM_EXE> restart CeleparApp
+cd backend && npm install
+pm2 restart CeleparApp
 ```
 
 ## Estrutura
@@ -37,7 +41,7 @@ git pull
 | `<APP_PATH>\` | Repositório git |
 | `<APP_PATH>\backend\.env` | Só a porta (segredos ficam no registry) |
 | `<ORACLE_INSTANT_CLIENT_PATH>\` | Oracle Instant Client (necessário para conexão com o banco) |
-| `<NSSM_EXE>` | Gerenciador do serviço |
+| PM2 | Gerenciador do serviço (`npm install -g pm2 pm2-windows-startup`) |
 
 ## Arquivo .env
 
@@ -62,7 +66,7 @@ $secret = node -e "console.log(require('crypto').randomBytes(64).toString('hex')
 [Environment]::SetEnvironmentVariable("JWT_SECRET",            $secret,                     "Machine")
 
 # Reiniciar para aplicar
-<NSSM_EXE> restart CeleparApp
+pm2 restart CeleparApp
 ```
 
 > Os valores ficam em `HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment` e são lidos pelo Node.js via `process.env` normalmente.
