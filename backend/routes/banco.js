@@ -385,7 +385,7 @@ router.post('/cccb', async (req, res) => {
     }
 
     // Jaccard sobre conjunto de palavras: cobre pontuação diferente e reordenação
-    const tokenize = s => new Set(s.replace(/[^a-z0-9 ]/g, '').replace(/ +/g, ' ').trim().split(' ').filter(Boolean))
+    const tokenize = s => { const n = s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); return new Set(n.replace(/[^a-z0-9 ]/g, ' ').replace(/ +/g, ' ').trim().split(' ').filter(Boolean)) }
     const jaccard = (a, b) => {
       const sa = tokenize(a), sb = tokenize(b)
       const inter = [...sa].filter(w => sb.has(w)).length
