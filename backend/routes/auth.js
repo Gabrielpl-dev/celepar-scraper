@@ -35,10 +35,10 @@ router.post('/auth/login', async (req, res) => {
     }
 
     const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username)
-    if (!user) return res.status(401).json({ ok: false, error: 'credenciais inválidas' })
+    if (!user) return res.status(401).json({ ok: false, error: 'usuário não encontrado' })
 
     const match = await bcrypt.compare(password, user.password_hash)
-    if (!match) return res.status(401).json({ ok: false, error: 'credenciais inválidas' })
+    if (!match) return res.status(401).json({ ok: false, error: 'senha incorreta' })
 
     if (!process.env.JWT_SECRET) {
       console.error('[auth/login] JWT_SECRET não configurado')
