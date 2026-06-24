@@ -77,6 +77,30 @@ router.post('/auth/register', requireAuth, requireAdmin, async (req, res) => {
   }
 })
 
+// Trocar senha — usuário autenticado muda a própria senha
+router.post('/auth/change-password', requireAuth, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body
+    if (!currentPassword || !newPassword)
+      return res.status(400).json({ ok: false, error: 'senhas obrigatórias' })
+
+    const { username } = req.user
+    if (username.toUpperCase() === GPL_USER)
+      return res.status(400).json({ ok: false, error: 'use a variável de ambiente para alterar a senha admin' })
+
+    const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username)
+    const match = await bcrypt.compare(currentPassword, user.password_hash)
+    if (!match) return res.status(401).json({ ok: false, error: 'senha atual incorreta' })
+
+    const hash = await bcrypt.hash(newPassword, 12)
+    db.prepare('UPDATE users SET password_hash = ? WHERE username = ?').run(hash, username)
+    res.json({ ok: true, message: 'senha alterada com sucesso' })
+  } catch (err) {
+    console.error('[auth/change-password]', err)
+    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
+  }
+})
+
 // Promover usuário para admin — apenas admins podem fazer isso
 router.post('/auth/promote', requireAuth, requireAdmin, (req, res) => {
   try {
