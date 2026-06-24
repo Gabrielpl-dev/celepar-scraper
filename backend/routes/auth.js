@@ -26,6 +26,10 @@ router.post('/auth/login', async (req, res) => {
       }
       if (password !== adminPwd)
         return res.status(401).json({ ok: false, error: 'credenciais inválidas' })
+      if (!process.env.JWT_SECRET) {
+        console.error('[auth/login] JWT_SECRET não configurado')
+        return res.status(500).json({ ok: false, error: 'JWT_SECRET não configurado' })
+      }
       const token = signToken({ username: GPL_USER, role: 'admin' })
       return res.json({ ok: true, token, username: GPL_USER, role: 'admin' })
     }
@@ -36,6 +40,10 @@ router.post('/auth/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password_hash)
     if (!match) return res.status(401).json({ ok: false, error: 'credenciais inválidas' })
 
+    if (!process.env.JWT_SECRET) {
+      console.error('[auth/login] JWT_SECRET não configurado')
+      return res.status(500).json({ ok: false, error: 'JWT_SECRET não configurado' })
+    }
     const role  = user.role ?? 'viewer'
     const token = signToken({ username, role })
     res.json({ ok: true, token, username, role })
