@@ -12,6 +12,7 @@ import { ParamsView } from './views/ParamsView'
 import { BulaView } from './views/BulaView'
 import { AuthView } from './views/AuthView'
 import { LinksView } from './views/LinksView'
+import { ChangePasswordModal } from './components/ChangePasswordModal'
 import s from './App.module.css'
 
 const VIEWS = {
@@ -40,6 +41,7 @@ export default function App() {
       return tok
     } catch { localStorage.removeItem('token'); return null }
   })
+  const [changePwdOpen, setChangePwdOpen] = useState(false)
   const [username, setUsername]       = useState(() => {
     const tok = localStorage.getItem('token')
     if (!tok) return null
@@ -78,7 +80,7 @@ export default function App() {
         onLinks={() => { setActiveView('links'); setActiveService(null) }}
         username={username}
         onLogout={handleLogout}
-        onChangePassword={() => {}}
+        onChangePassword={() => setChangePwdOpen(true)}
       />
       <div className={`${s.wrap} ${sidebarOpen ? '' : s.wrapCollapsed}`}>
         <Sidebar
@@ -94,6 +96,9 @@ export default function App() {
           {View && <View params={params} setParams={setParams} />}
         </main>
       </div>
+      {changePwdOpen && (
+        <ChangePasswordModal token={token} onClose={() => setChangePwdOpen(false)} />
+      )}
     </div>
   )
 }
