@@ -1,6 +1,6 @@
 import s from './Header.module.css'
 
-export function Header({ theme, onToggleTheme, onParams, paramsActive, onLinks, linksActive, produtoNome, username, onLogout }) {
+export function Header({ theme, onToggleTheme, onParams, paramsActive, onLinks, linksActive, produtoNome, username, onLogout, onChangePassword }) {
   return (
     <header className={s.header}>
       <div className={s.left}>
@@ -19,6 +19,7 @@ export function Header({ theme, onToggleTheme, onParams, paramsActive, onLinks, 
         {username && (
           <div className={s.userInfo}>
             <span>{username}</span>
+            <button className={s.logoutBtn} onClick={onChangePassword} title="Alterar senha">Senha</button>
             <button className={s.logoutBtn} onClick={onLogout} title="Sair">Sair</button>
           </div>
         )}

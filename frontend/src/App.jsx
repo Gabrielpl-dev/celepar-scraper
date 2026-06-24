@@ -78,6 +78,7 @@ export default function App() {
         onLinks={() => { setActiveView('links'); setActiveService(null) }}
         username={username}
         onLogout={handleLogout}
+        onChangePassword={() => {}}
       />
       <div className={`${s.wrap} ${sidebarOpen ? '' : s.wrapCollapsed}`}>
         <Sidebar
