@@ -166,7 +166,7 @@ const PRODUTOS = [
   '2,4D MIRANT','ENLIST COLEX - D','KRATON 100 EC','DITOR 250EC',
   'PLATINUM NEO','OPERA','ZEUS','ACROBAT MZ','ARADDO','APPROVE','EFFICON',
   'ELEITTO','MAXSAN','VERISMO','GLUCARE','REGENT DUO','JUDOKA SUPER 250CS',
-  'OXI DIFERE','OXI PATRIOTA','VERDICT ULTRA','MIDAS BR','TEBURAZ',
+  'DIFERE','PATRIOTA','VERDICT ULTRA','MIDAS BR','TEBURAZ',
   'ORKESTRA SC','MIBELYA','NOMOLT 150','ACAPELA','HAMPTON 400EC',
   'INTREPID 240 SC','ZAMPRO','IMUNIT','GAMONIUM','FASTAC DUO','CERTEZA N',
   'NORTOX','DOTTE','ABACUS HC','CERCOBIN 875 WG','HEAT','PRIVILEGE',
@@ -202,19 +202,21 @@ async function main() {
   const errados = []
 
   for (let i = 0; i < PRODUTOS.length; i++) {
-    const nome = PRODUTOS[i]
-    process.stdout.write(`[${String(i + 1).padStart(3)}/${PRODUTOS.length}] ${nome} ... `)
+    const nome   = PRODUTOS[i]
+    const prefix = `[${String(i + 1).padStart(3)}/${PRODUTOS.length}] ${nome}`
 
     try {
       const descricao = findDescricao(descricoes, nome)
       if (!descricao) {
-        const candidatos = findCandidatos(descricoes, nome)
-        console.log(`sem receituario no Oracle${candidatos.length ? ' | candidatos: ' + candidatos.join(' / ') : ''}`)
+        console.log(`${prefix} → não cadastrado`)
         continue
       }
 
       const oracleRows = await getOracleRegistros(conn, descricao)
-      if (!oracleRows.length) { console.log('sem receituario'); continue }
+      if (!oracleRows.length) {
+        console.log(`${prefix} → não cadastrado`)
+        continue
+      }
 
       const n     = norm(nome)
       const match = todosNomes.find(r =>
@@ -222,7 +224,7 @@ async function main() {
         norm(r.nome).length >= 4 &&
         (norm(r.nome) === n || norm(r.nome).includes(n) || n.includes(norm(r.nome)))
       )
-      if (!match) { console.log('nao encontrado no CELEPAR'); continue }
+      if (!match) { console.log(`${prefix} → não encontrado no CELEPAR`); continue }
 
       const celeparHtml = await fetchHtml(buildUrl(match.cod))
       const celeparSets = {}
@@ -257,10 +259,12 @@ async function main() {
         return !cSet.has(String(row.SIAGROALV))
       })
 
-      if (temErro) errados.push(nome)
-      console.log(temErro ? 'ERRADO' : 'ok')
+      if (temErro) {
+        errados.push(nome)
+        console.log(`${prefix} → ERRADO`)
+      }
     } catch (e) {
-      console.log(`ERRO: ${e.message}`)
+      console.log(`${prefix} → ERRO: ${e.message}`)
     }
   }
 
