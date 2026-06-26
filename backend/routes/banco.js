@@ -331,9 +331,14 @@ router.post('/cccb', async (req, res) => {
   const ma    = params.ma ?? null
   if (!ma) return res.status(400).json({ ok: false, error: 'params.ma (registro MA) é obrigatório' })
 
+  // Mapeamento direto por culturaid para casos onde os nomes diferem entre banco e Celepar
+  const CULTURAID_CELEPAR = { 216: 'pinus sp' }
+
   function celeparNormFor(cultura, cid) {
     const row = db.prepare('SELECT celepar_nome FROM culturas WHERE culturaid = ?').get(cid)
-    return row?.celepar_nome ? norm(row.celepar_nome) : norm(cultura)
+    if (row?.celepar_nome) return norm(row.celepar_nome)
+    if (CULTURAID_CELEPAR[cid]) return CULTURAID_CELEPAR[cid]
+    return norm(cultura)
   }
 
   let conn
@@ -464,6 +469,14 @@ router.post('/cccb', async (req, res) => {
       : (celeparRows[resolveKey(celeparNormFor(oracleResult.rows[0]?.CULTURA ?? '', Number(culturaid)))] ?? [])
           .map(r => ({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null }))
 
+    const _debug = {
+      celeparKeys: Object.keys(celeparSets),
+      oracleResolved: oracleResult.rows.slice(0, 5).map(r => {
+        const raw = isAll ? celeparNormFor(r.CULTURA, r.CULTURAID) : celeparNormFor(r.CULTURA, Number(culturaid))
+        return { cultura: r.CULTURA, normFor: raw, resolved: resolveKey(raw) }
+      }),
+    }
+
     res.json({
       ok:      true,
       oracle:  oracleResult.rows.map(r => ({ cultura: r.CULTURA, siagroalv: r.SIAGROALV, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO })),
@@ -471,6 +484,7 @@ router.post('/cccb', async (req, res) => {
       corretos,
       errados,
       faltando,
+      _debug,
     })
   } catch (err) {
     console.error('[banco/cccb]', err)
