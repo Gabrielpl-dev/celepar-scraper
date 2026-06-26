@@ -397,6 +397,9 @@ router.post('/cccb', async (req, res) => {
       if (celeparSets[cn]) return cn
       const alias = CULTURA_ALIASES[cn]
       if (alias && celeparSets[alias]) return alias
+      // Prefix match: banco pode ter nome mais curto (ex: PINUS vs PINUS SP)
+      const prefixKey = Object.keys(celeparSets).find(k => k.startsWith(cn + ' ') || cn.startsWith(k + ' '))
+      if (prefixKey) return prefixKey
       let bestKey = null, bestScore = 0
       for (const key of Object.keys(celeparSets)) {
         const score = jaccard(cn, key)
