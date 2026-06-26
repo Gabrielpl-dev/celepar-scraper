@@ -185,7 +185,7 @@ router.get('/verificar-produto', async (req, res) => {
         conn = await oracleConn()
         if (ma) {
           const r = await conn.execute(
-            `SELECT COUNT(*) AS QTD FROM RECEITPADRAO r JOIN AGROTOXICO a ON r.DESCRICAO = a.NOME WHERE a.REGISTROMA = :ma`,
+            `SELECT COUNT(*) AS QTD FROM RECEITPADRAO r JOIN AGROTOXICO a ON a.RECPADRAOID = r.RECPADRAOID WHERE a.REGISTROMA = :ma`,
             { ma },
             { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
           )
@@ -356,7 +356,7 @@ router.post('/cccb', async (req, res) => {
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
-         JOIN AGROTOXICO a ON r.DESCRICAO = a.NOME
+         JOIN AGROTOXICO a ON a.RECPADRAOID = r.RECPADRAOID
          WHERE a.REGISTROMA = :ma
            AND r.CULTURAID = :culturaid
            AND r.ATIVO = 'S'
@@ -370,7 +370,7 @@ router.post('/cccb', async (req, res) => {
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
-         JOIN AGROTOXICO a ON r.DESCRICAO = a.NOME
+         JOIN AGROTOXICO a ON a.RECPADRAOID = r.RECPADRAOID
          WHERE a.REGISTROMA = :ma
            AND r.ATIVO = 'S'
          ORDER BY c.NOME, d.SIAGROALV`,
@@ -523,7 +523,7 @@ router.get('/cccb/watch', async (req, res) => {
       conn = await oracleConn()
       const r = await conn.execute(
         `SELECT COUNT(*) AS QTD FROM RECEITPADRAO r
-         JOIN AGROTOXICO a ON r.DESCRICAO = a.NOME
+         JOIN AGROTOXICO a ON a.RECPADRAOID = r.RECPADRAOID
          WHERE a.REGISTROMA = :ma AND r.ATIVO = 'S'`,
         { ma },
         { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
