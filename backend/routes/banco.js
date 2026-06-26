@@ -331,13 +331,14 @@ router.post('/cccb', async (req, res) => {
   const ma    = params.ma ?? null
   if (!ma) return res.status(400).json({ ok: false, error: 'params.ma (registro MA) é obrigatório' })
 
-  // Mapeamento direto por culturaid para casos onde os nomes diferem entre banco e Celepar
-  const CULTURAID_CELEPAR = { 216: 'pinus sp' }
+  // Nomes do banco que diferem do nome na Celepar — substitui antes de qualquer comparação
+  const BANCO_PARA_CELEPAR = { 'PINUS': 'pinus sp', 'PASTAGEM': 'pastagens' }
 
   function celeparNormFor(cultura, cid) {
     const row = db.prepare('SELECT celepar_nome FROM culturas WHERE culturaid = ?').get(cid)
     if (row?.celepar_nome) return norm(row.celepar_nome)
-    if (CULTURAID_CELEPAR[cid]) return CULTURAID_CELEPAR[cid]
+    const sub = BANCO_PARA_CELEPAR[String(cultura).toUpperCase().trim()]
+    if (sub) return sub
     return norm(cultura)
   }
 
