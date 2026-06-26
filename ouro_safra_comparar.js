@@ -196,6 +196,8 @@ const PRODUTOS = [
 async function main() {
   console.log('Carregando lista do CELEPAR...')
   const todosNomes = parsePesquisaRows(await fetchPesquisa())
+  // Ordena do nome mais longo pro mais curto para preferir matches mais específicos
+  const nomesCelepar = [...todosNomes].sort((a, b) => norm(b.nome).length - norm(a.nome).length)
   console.log(`${todosNomes.length} produtos no CELEPAR.\n`)
 
   let conn
@@ -231,11 +233,13 @@ async function main() {
       }
 
       const n     = norm(nome)
-      const match = todosNomes.find(r =>
-        r.cod &&
-        norm(r.nome).length >= 4 &&
-        (norm(r.nome) === n || norm(r.nome).includes(n) || n.includes(norm(r.nome)))
-      )
+      const match = nomesCelepar.find(r => {
+        const rn = norm(r.nome)
+        if (!r.cod || rn.length < 4) return false
+        if (rn === n || rn.includes(n)) return true
+        // n contém rn: exige boundary de palavra — evita "melyra" casar com "lyra"
+        return n.startsWith(rn + ' ') || n.endsWith(' ' + rn) || n.includes(' ' + rn + ' ')
+      })
       if (!match) { console.log(`${prefix} → não encontrado no CELEPAR`); continue }
 
       const celeparHtml = await fetchHtml(buildUrl(match.cod))
@@ -283,11 +287,7 @@ async function main() {
 
       if (falhas.length) {
         errados.push(nome)
-        console.log(`${prefix} → ERRADO`)
-        console.log(`  oracle desc : ${descricao}`)
-        console.log(`  celepar nome: ${match.nome}`)
-        for (const r of falhas)
-          console.log(`  sem match   : cultura="${r.CULTURA}" siagro=${r.SIAGROALV}`)
+        console.log(`${prefix} → ERRADO (oracle: "${descricao}" | celepar: "${match.nome}" | ${falhas.length} sem match)`)
       }
     } catch (e) {
       console.log(`${prefix} → ERRO: ${e.message}`)
