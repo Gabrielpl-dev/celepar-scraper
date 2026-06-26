@@ -391,8 +391,12 @@ router.post('/cccb', async (req, res) => {
       const inter = [...sa].filter(w => sb.has(w)).length
       return inter / new Set([...sa, ...sb]).size
     }
+    // Culturas onde banco e Celepar usam nomes ligeiramente diferentes
+    const CULTURA_ALIASES = { 'pastagem': 'pastagens' }
     const resolveKey = cn => {
       if (celeparSets[cn]) return cn
+      const alias = CULTURA_ALIASES[cn]
+      if (alias && celeparSets[alias]) return alias
       let bestKey = null, bestScore = 0
       for (const key of Object.keys(celeparSets)) {
         const score = jaccard(cn, key)
