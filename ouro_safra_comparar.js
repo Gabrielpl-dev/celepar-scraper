@@ -12,7 +12,8 @@ const cheerio  = require(path.join(backendMod, 'cheerio'))
 const BASE_URL     = 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp'
 const PESQUISA_URL = 'https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp'
 
-const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase()
+const norm    = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase()
+const normSep = s => norm(s).replace(/[/;|]+/g, ' ').replace(/\s+/g, ' ').trim()
 
 function buildUrl(Cod) {
   const defaults = {
@@ -112,9 +113,17 @@ async function loadDescricoes(conn) {
   return r.rows.map(r => r.DESCRICAO)
 }
 
+function lenRatio(a, b) {
+  return Math.min(a.length, b.length) / Math.max(a.length, b.length)
+}
+
 function matchesPart(descricao, n) {
   const parts = descricao.split('/').map(p => norm(p.trim())).filter(p => p.length >= 4)
-  return parts.some(p => p === n || n.startsWith(p + ' ') || p.startsWith(n + ' '))
+  return parts.some(p => {
+    if (p === n) return true
+    if (lenRatio(p, n) < 0.7) return false
+    return n.startsWith(p + ' ') || p.startsWith(n + ' ')
+  })
 }
 
 function findDescricao(descricoes, nome) {
@@ -122,7 +131,10 @@ function findDescricao(descricoes, nome) {
   const exact = descricoes.find(d => norm(d) === n)
   if (exact) return exact
   const prefix = descricoes
-    .filter(d => { const dn = norm(d); return dn.length >= 4 && (n.startsWith(dn + ' ') || dn.startsWith(n + ' ')) })
+    .filter(d => {
+      const dn = norm(d)
+      return dn.length >= 4 && lenRatio(n, dn) >= 0.7 && (n.startsWith(dn + ' ') || dn.startsWith(n + ' '))
+    })
     .sort((a, b) => b.length - a.length)[0]
   if (prefix) return prefix
   return descricoes.find(d => matchesPart(d, n)) ?? null
@@ -229,9 +241,14 @@ async function main() {
       const celeparHtml = await fetchHtml(buildUrl(match.cod))
       const celeparSets = {}
       for (const r of parseRows(celeparHtml)) {
-        const k = norm(r.cultura)
+        const k = normSep(r.cultura)
         if (!celeparSets[k]) celeparSets[k] = new Set()
         celeparSets[k].add(String(r.siagro))
+      }
+
+      if (Object.keys(celeparSets).length === 0) {
+        console.log(`${prefix} → não cadastrado`)
+        continue
       }
 
       const tokenize = s => {
@@ -243,8 +260,13 @@ async function main() {
         const inter = [...sa].filter(w => sb.has(w)).length
         return inter / new Set([...sa, ...sb]).size
       }
+      const CULTURA_ALIASES = { 'pastagem': 'pastagens', 'pinus': 'pinus sp' }
       const resolveKey = cn => {
         if (celeparSets[cn]) return cn
+        const alias = CULTURA_ALIASES[cn]
+        if (alias && celeparSets[alias]) return alias
+        const prefixKey = Object.keys(celeparSets).find(k => k.startsWith(cn + ' ') || cn.startsWith(k + ' '))
+        if (prefixKey) return prefixKey
         let bestKey = null, bestScore = 0
         for (const key of Object.keys(celeparSets)) {
           const score = jaccard(cn, key)
@@ -254,7 +276,7 @@ async function main() {
       }
 
       const temErro = oracleRows.some(row => {
-        const cn   = resolveKey(norm(row.CULTURA))
+        const cn   = resolveKey(normSep(row.CULTURA))
         const cSet = celeparSets[cn] ?? new Set()
         return !cSet.has(String(row.SIAGROALV))
       })
