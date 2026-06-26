@@ -43,6 +43,10 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`  📡 Acessível na rede em http://<seu-ip>:${PORT}\n`);
 });
 
-// Graceful shutdown: libera a porta limpo quando PM2 reinicia
-process.on('SIGTERM', () => server.close(() => process.exit(0)));
-process.on('SIGINT',  () => server.close(() => process.exit(0)));
+// Graceful shutdown: fecha conexoes ativas e libera a porta antes de sair
+function shutdown() {
+  if (server.closeAllConnections) server.closeAllConnections()
+  server.close(() => process.exit(0))
+}
+process.on('SIGTERM', shutdown);
+process.on('SIGINT',  shutdown);
