@@ -29,6 +29,9 @@ function gravarTabelas(data) {
   fs.writeFileSync(TABELAS_JSON, JSON.stringify(data, null, 2), 'utf8')
 }
 
+// Normaliza separadores / ; | para espaço — cobre divergências de formato entre banco e Celepar
+const normSep = s => norm(s).replace(/[/;|]+/g, ' ').replace(/\s+/g, ' ').trim()
+
 const router = express.Router()
 
 let oracleReady = false
@@ -117,7 +120,7 @@ router.get('/buscar-produto', async (req, res) => {
 
   // Celepar: filtra pesquisa pelo nome buscado
   const celeparRows = pesquisaHtml
-    ? parsePesquisaRows(pesquisaHtml).filter(r => norm(r.nome).includes(norm(nome.trim()))).slice(0, 10)
+    ? parsePesquisaRows(pesquisaHtml).filter(r => normSep(r.nome).includes(normSep(nome.trim()))).slice(0, 10)
     : []
 
   // Agrofit: deduplica por MA (fonte de verdade para nome)
@@ -133,10 +136,10 @@ router.get('/buscar-produto', async (req, res) => {
   // Merge Celepar->Agrofit por prefixo de nome (cobre truncacao: "OpteraPr" casa com "OpteraPro")
   const celeparOrphans = []
   for (const cel of celeparRows) {
-    const nc = norm(cel.nome)
+    const nc = normSep(cel.nome)
     let matched = false
     for (const agr of byMa.values()) {
-      const na = norm(agr.nome)
+      const na = normSep(agr.nome)
       if (na === nc || na.startsWith(nc) || nc.startsWith(na)) {
         agr.cod   = cel.cod
         agr.fonte = 'ambos'
