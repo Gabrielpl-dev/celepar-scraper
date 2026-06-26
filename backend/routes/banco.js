@@ -392,7 +392,7 @@ router.post('/cccb', async (req, res) => {
       return inter / new Set([...sa, ...sb]).size
     }
     // Culturas onde banco e Celepar usam nomes ligeiramente diferentes
-    const CULTURA_ALIASES = { 'pastagem': 'pastagens' }
+    const CULTURA_ALIASES = { 'pastagem': 'pastagens', 'pinus': 'pinus sp' }
     const resolveKey = cn => {
       if (celeparSets[cn]) return cn
       const alias = CULTURA_ALIASES[cn]
