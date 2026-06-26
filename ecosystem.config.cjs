@@ -8,12 +8,8 @@ module.exports = {
       script: path.join(root, 'backend', 'server.js'),
       cwd: path.join(root, 'backend'),
       watch: false,
-    },
-    {
-      name: 'celepar-fe',
-      script: path.join(root, 'frontend', 'node_modules', 'vite', 'bin', 'vite.js'),
-      cwd: path.join(root, 'frontend'),
-      watch: false,
+      max_restarts: 10,
+      exp_backoff_restart_delay: 100,
     },
   ],
 }

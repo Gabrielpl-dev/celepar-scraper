@@ -38,7 +38,11 @@ app.use('/api', require('./routes/extracao'));
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n  🌱 AgroCheck rodando em http://0.0.0.0:${PORT}\n`);
   console.log(`  📡 Acessível na rede em http://<seu-ip>:${PORT}\n`);
 });
+
+// Graceful shutdown: libera a porta limpo quando PM2 reinicia
+process.on('SIGTERM', () => server.close(() => process.exit(0)));
+process.on('SIGINT',  () => server.close(() => process.exit(0)));

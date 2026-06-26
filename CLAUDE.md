@@ -9,10 +9,11 @@ O servidor e o banco de dados rodam em uma máquina remota (ver `.envs/infra.md`
 Fluxo de deploy:
 1. Fazer as alterações aqui localmente
 2. `git push`
-3. No servidor remoto: `git pull` → build frontend → reiniciar via NSSM:
+3. No servidor remoto: `git pull` → build frontend → reiniciar via PM2:
    ```
-   <NSSM_EXE> restart CeleparApp
+   pm2 reload celepar-be
    ```
+   Em caso de falha grave (processo travado): `pm2 delete celepar-be && pm2 start ecosystem.config.cjs && pm2 save`
 
 Nunca tente rodar o servidor ou banco localmente — não faz sentido neste ambiente.
 
