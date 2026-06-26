@@ -335,7 +335,11 @@ router.post('/cccb', async (req, res) => {
   if (!ma) return res.status(400).json({ ok: false, error: 'params.ma (registro MA) é obrigatório' })
 
   // Nomes do banco que diferem do nome na Celepar — substitui antes de qualquer comparação
-  const BANCO_PARA_CELEPAR = { 'PINUS': 'pinus sp', 'PASTAGEM': 'pastagens' }
+  const BANCO_PARA_CELEPAR = { 'PASTAGEM': 'pastagens' }
+
+  // Variantes da Celepar que representam o mesmo conceito do banco
+  const CELEPAR_PARA_BANCO = { 'pinus sp': 'pinus', 'pinus ellioti': 'pinus' }
+  const celNorm = s => { const n = norm(s); return CELEPAR_PARA_BANCO[n] ?? n }
 
   function celeparNormFor(cultura, cid) {
     const sub = BANCO_PARA_CELEPAR[String(cultura).toUpperCase().trim()]
@@ -387,7 +391,7 @@ router.post('/cccb', async (req, res) => {
     const celeparSets = {}
     const celeparRows = {}
     for (const r of allCelepar) {
-      const n = norm(r.cultura)
+      const n = celNorm(r.cultura)
       if (!celeparSets[n]) { celeparSets[n] = new Set(); celeparRows[n] = [] }
       celeparSets[n].add(String(r.siagro))
       celeparRows[n].push(r)
@@ -401,7 +405,7 @@ router.post('/cccb', async (req, res) => {
       return inter / new Set([...sa, ...sb]).size
     }
     // Culturas onde banco e Celepar usam nomes ligeiramente diferentes
-    const CULTURA_ALIASES = { 'pastagem': 'pastagens', 'pinus': 'pinus sp' }
+    const CULTURA_ALIASES = { 'pastagem': 'pastagens' }
     const resolveKey = cn => {
       if (celeparSets[cn]) return cn
       const alias = CULTURA_ALIASES[cn]
@@ -463,7 +467,7 @@ router.post('/cccb', async (req, res) => {
 
     const faltando = []
     for (const r of celeparToCheck) {
-      const oSet = oracleByKey[norm(r.cultura)] ?? new Set()
+      const oSet = oracleByKey[celNorm(r.cultura)] ?? new Set()
       if (!oSet.has(String(r.siagro)))
         faltando.push({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null })
     }
