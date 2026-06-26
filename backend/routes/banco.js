@@ -473,18 +473,6 @@ router.post('/cccb', async (req, res) => {
       : (celeparRows[resolveKey(celeparNormFor(oracleResult.rows[0]?.CULTURA ?? '', Number(culturaid)))] ?? [])
           .map(r => ({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null }))
 
-    const seenDebug = new Set()
-    const _debug = {
-      celeparKeys: Object.keys(celeparSets),
-      oracleResolved: oracleResult.rows
-        .filter(r => { if (seenDebug.has(r.CULTURA)) return false; seenDebug.add(r.CULTURA); return true })
-        .map(r => {
-          const cid = isAll ? r.CULTURAID : Number(culturaid)
-          const raw = celeparNormFor(r.CULTURA, cid)
-          return { cultura: r.CULTURA, culturaid: cid, normFor: raw, resolved: resolveKey(raw), inCelepar: !!celeparSets[resolveKey(raw)] }
-        }),
-    }
-
     res.json({
       ok:      true,
       oracle:  oracleResult.rows.map(r => ({ cultura: r.CULTURA, siagroalv: r.SIAGROALV, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO })),
@@ -492,7 +480,6 @@ router.post('/cccb', async (req, res) => {
       corretos,
       errados,
       faltando,
-      _debug,
     })
   } catch (err) {
     console.error('[banco/cccb]', err)
