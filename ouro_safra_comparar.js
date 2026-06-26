@@ -275,15 +275,19 @@ async function main() {
         return (bestScore >= 0.8 && bestKey) ? bestKey : cn
       }
 
-      const temErro = oracleRows.some(row => {
+      const falhas = oracleRows.filter(row => {
         const cn   = resolveKey(normSep(row.CULTURA))
         const cSet = celeparSets[cn] ?? new Set()
         return !cSet.has(String(row.SIAGROALV))
       })
 
-      if (temErro) {
+      if (falhas.length) {
         errados.push(nome)
         console.log(`${prefix} → ERRADO`)
+        console.log(`  oracle desc : ${descricao}`)
+        console.log(`  celepar nome: ${match.nome}`)
+        for (const r of falhas)
+          console.log(`  sem match   : cultura="${r.CULTURA}" siagro=${r.SIAGROALV}`)
       }
     } catch (e) {
       console.log(`${prefix} → ERRO: ${e.message}`)
