@@ -154,6 +154,7 @@ async function getOracleRegistros(conn, descricao) {
      FROM RECEITPADRAO r
      JOIN CULTURA     c ON r.CULTURAID     = c.CULTURAID
      JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
+     JOIN AGROTOXICO  a ON a.RECPADRAOID   = r.RECPADRAOID
      WHERE r.DESCRICAO = :descricao AND r.ATIVO = 'S'`,
     { descricao },
     { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
