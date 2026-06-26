@@ -469,12 +469,16 @@ router.post('/cccb', async (req, res) => {
       : (celeparRows[resolveKey(celeparNormFor(oracleResult.rows[0]?.CULTURA ?? '', Number(culturaid)))] ?? [])
           .map(r => ({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null }))
 
+    const seenDebug = new Set()
     const _debug = {
       celeparKeys: Object.keys(celeparSets),
-      oracleResolved: oracleResult.rows.slice(0, 5).map(r => {
-        const raw = isAll ? celeparNormFor(r.CULTURA, r.CULTURAID) : celeparNormFor(r.CULTURA, Number(culturaid))
-        return { cultura: r.CULTURA, normFor: raw, resolved: resolveKey(raw) }
-      }),
+      oracleResolved: oracleResult.rows
+        .filter(r => { if (seenDebug.has(r.CULTURA)) return false; seenDebug.add(r.CULTURA); return true })
+        .map(r => {
+          const cid = isAll ? r.CULTURAID : Number(culturaid)
+          const raw = celeparNormFor(r.CULTURA, cid)
+          return { cultura: r.CULTURA, culturaid: cid, normFor: raw, resolved: resolveKey(raw), inCelepar: !!celeparSets[resolveKey(raw)] }
+        }),
     }
 
     res.json({
