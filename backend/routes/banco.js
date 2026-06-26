@@ -335,10 +335,10 @@ router.post('/cccb', async (req, res) => {
   const BANCO_PARA_CELEPAR = { 'PINUS': 'pinus sp', 'PASTAGEM': 'pastagens' }
 
   function celeparNormFor(cultura, cid) {
-    const row = db.prepare('SELECT celepar_nome FROM culturas WHERE culturaid = ?').get(cid)
-    if (row?.celepar_nome) return norm(row.celepar_nome)
     const sub = BANCO_PARA_CELEPAR[String(cultura).toUpperCase().trim()]
     if (sub) return sub
+    const row = db.prepare('SELECT celepar_nome FROM culturas WHERE culturaid = ?').get(cid)
+    if (row?.celepar_nome) return norm(row.celepar_nome)
     return norm(cultura)
   }
 
