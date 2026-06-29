@@ -1,5 +1,6 @@
 const fs   = require('fs')
 const path = require('path')
+const { norm } = require('./normalizer')
 
 const CSV_URL    = 'https://dados.agricultura.gov.br/dataset/6c913699-e82e-4da3-a0a1-fb6c431e367f/resource/d30b30d7-e256-484e-9ab8-cd40974e1238/download/agrofitprodutosformulados.csv'
 const CACHE_PATH = path.join(__dirname, '..', 'cache', 'agrofit_formulados.csv')
@@ -96,10 +97,6 @@ async function ensureCache() {
 
   if (!downloading) downloading = download().finally(() => { downloading = null })
   await downloading
-}
-
-function norm(s) {
-  return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
 }
 
 async function buscarPorNome(nome) {

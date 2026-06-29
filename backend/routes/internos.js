@@ -1,7 +1,7 @@
 const express      = require('express')
 const Database     = require('better-sqlite3')
-const path         = require('path')
 const requireAdmin = require('../middleware/requireAdmin')
+const { CULTURAS_DB } = require('../lib/config')
 
 const router = express.Router()
 
@@ -18,7 +18,7 @@ const DBS = [
   {
     name:   'local.db',
     label:  'Culturas (mapeamento Celepar)',
-    path:   path.join(__dirname, '..', '..', 'banco', 'local.db'),
+    path:   CULTURAS_DB,
     tables: [
       { name: 'culturas', hideCols: [] },
     ],

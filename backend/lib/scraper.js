@@ -1,4 +1,5 @@
 const cheerio = require('cheerio');
+const { norm } = require('./normalizer')
 
 const BASE_URL     = 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp';
 const LINKEA_BASE  = 'https://celepar07web.pr.gov.br/agrotoxicos/';
@@ -20,12 +21,6 @@ function buildPesquisaBody(criterioAgrotoxico = '') {
 
 const cache     = new Map();
 const CACHE_TTL = 5 * 60 * 1000;
-
-const norm = s => String(s || '')
-  .normalize('NFD')
-  .replace(/[̀-ͯ]/g, '')
-  .trim()
-  .toLowerCase();
 
 function buildUrl(params) {
   const { ma, nome, ...celeparParams } = params  // strip non-Celepar fields

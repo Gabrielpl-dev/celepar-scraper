@@ -2,18 +2,16 @@ const express      = require('express')
 const oracledb     = require('oracledb')
 const Database     = require('better-sqlite3')
 const fs           = require('fs')
-const path         = require('path')
-const { fetchPage, fetchPesquisa, parseRows, parsePesquisaRows, buildUrl, norm, enrichLinkeaRows } = require('../lib/scraper')
+const { fetchPage, fetchPesquisa, parseRows, parsePesquisaRows, buildUrl, enrichLinkeaRows } = require('../lib/scraper')
+const { norm, normSep, tokenize } = require('../lib/normalizer')
+const { ORACLE_LIB_DIR, TABELAS_JSON, CULTURAS_DB } = require('../lib/config')
 const requireAdmin = require('../middleware/requireAdmin')
 const agrofitCsv   = require('../lib/agrofitCsv')
 const agrofitApi   = require('../lib/agrofitApi')
 const sigenClient  = require('../lib/sigenClient')
 const agrofitDb    = require('../db')
 
-const TABELAS_JSON = path.join(__dirname, '..', '..', 'banco', 'tabelas.json')
-const DB_PATH      = path.join(__dirname, '..', '..', 'banco', 'local.db')
-
-const db = new Database(DB_PATH)
+const db = new Database(CULTURAS_DB)
 db.exec(`CREATE TABLE IF NOT EXISTS culturas (
   culturaid   INTEGER PRIMARY KEY,
   nome        TEXT NOT NULL,
@@ -29,14 +27,11 @@ function gravarTabelas(data) {
   fs.writeFileSync(TABELAS_JSON, JSON.stringify(data, null, 2), 'utf8')
 }
 
-// Normaliza separadores / ; | para espaço — cobre divergências de formato entre banco e Celepar
-const normSep = s => norm(s).replace(/[/;|]+/g, ' ').replace(/\s+/g, ' ').trim()
-
 const router = express.Router()
 
 let oracleReady = false
 try {
-  oracledb.initOracleClient({ libDir: 'C:\\oracle\\instantclient_21_15' })
+  oracledb.initOracleClient({ libDir: ORACLE_LIB_DIR })
   oracleReady = true
 } catch (_) {
   // Instant Client não instalado — modo Thin não suporta esse servidor Oracle
@@ -400,7 +395,6 @@ router.post('/cccb', async (req, res) => {
     }
 
     // Jaccard sobre conjunto de palavras: cobre pontuação diferente e reordenação
-    const tokenize = s => { const n = s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); return new Set(n.replace(/[^a-z0-9 ]/g, ' ').replace(/ +/g, ' ').trim().split(' ').filter(Boolean)) }
     const jaccard = (a, b) => {
       const sa = tokenize(a), sb = tokenize(b)
       const inter = [...sa].filter(w => sb.has(w)).length
