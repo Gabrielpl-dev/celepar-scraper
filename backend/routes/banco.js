@@ -133,14 +133,16 @@ router.get('/buscar-produto', async (req, res) => {
       byMa.set(key, { nome: r.nome, ma: normMa, cod: null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
   }
 
-  // Merge Celepar->Agrofit por prefixo de nome (cobre truncacao: "OpteraPr" casa com "OpteraPro")
+  // Merge Celepar->Agrofit por prefixo de nome (cobre truncacao mid-word: "OpteraPr" casa com "OpteraPro")
+  // Requer que o prefixo não termine em espaço — evita casar variantes distintas ("Dorai" vs "Dorai Max")
+  const isTruncMatch = (shorter, longer) => longer.startsWith(shorter) && !longer.slice(shorter.length).startsWith(' ')
   const celeparOrphans = []
   for (const cel of celeparRows) {
     const nc = normSep(cel.nome)
     let matched = false
     for (const agr of byMa.values()) {
       const na = normSep(agr.nome)
-      if (na === nc || na.startsWith(nc) || nc.startsWith(na)) {
+      if (na === nc || isTruncMatch(nc, na) || isTruncMatch(na, nc)) {
         agr.cod   = cel.cod
         agr.fonte = 'ambos'
         matched = true
