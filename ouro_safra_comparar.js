@@ -237,7 +237,8 @@ async function main() {
       const match = nomesCelepar.find(r => {
         const rn = norm(r.nome)
         if (!r.cod || rn.length < 4) return false
-        if (rn === n || rn.includes(n)) return true
+        if (rn === n) return true
+        if (rn.includes(n) && lenRatio(rn, n) >= 0.7) return true
         // n contém rn: exige boundary de palavra — evita "melyra" casar com "lyra"
         return n.startsWith(rn + ' ') || n.endsWith(' ' + rn) || n.includes(' ' + rn + ' ')
       })
