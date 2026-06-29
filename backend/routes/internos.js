@@ -1,7 +1,7 @@
 const express      = require('express')
 const Database     = require('better-sqlite3')
 const requireAdmin = require('../middleware/requireAdmin')
-const { CULTURAS_DB } = require('../lib/config')
+const { CULTURAS_DB, AGROFIT_DB } = require('../lib/config')
 
 const router = express.Router()
 
@@ -9,7 +9,7 @@ const DBS = [
   {
     name:   'agrofit_ids.db',
     label:  'Agrofit + Usuários',
-    path:   path.join(__dirname, '..', 'agrofit_ids.db'),
+    path:   AGROFIT_DB,
     tables: [
       { name: 'agrofit_ids', hideCols: [] },
       { name: 'users',       hideCols: ['password_hash'] },
