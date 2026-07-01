@@ -47,6 +47,7 @@ async function fetchPage(url, extraHeaders = {}) {
   const cached = cache.get(url);
   if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.html;
   const res = await fetch(url, {
+    signal: AbortSignal.timeout(15_000),
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36',
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -69,6 +70,7 @@ async function fetchPesquisa(criterioAgrotoxico = '') {
   if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.html;
   const res = await fetch(PESQUISA_URL, {
     method: 'POST',
+    signal: AbortSignal.timeout(15_000),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'
