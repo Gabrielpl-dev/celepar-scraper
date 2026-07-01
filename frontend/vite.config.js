@@ -12,7 +12,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'index.html',
-        estracao: 'estracao.html',
+        extracao: 'extracao.html',
       }
     }
   }

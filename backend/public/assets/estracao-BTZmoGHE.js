@@ -1,1 +1,0 @@
-import{i as e,n as t,r as n,t as r}from"./jsx-runtime-Cl16e4o9.js";var i=e(n(),1),a=t(),o=r();function s(){return(0,o.jsx)(`div`,{children:(0,o.jsx)(`h1`,{children:`Extração`})})}(0,a.createRoot)(document.getElementById(`root`)).render((0,o.jsx)(i.StrictMode,{children:(0,o.jsx)(s,{})}));
