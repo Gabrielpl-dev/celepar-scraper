@@ -38,6 +38,18 @@ const GROUND_TRUTH_DB = {
     classificacaoToxicologica: 'Categoria 4',
     principioAtivo:            'Diflufenican',
   },
+  'F968746149_Bula Mirex-SH - 29mai24': {
+    nomeComercial:             'MIREX-SH',
+    registroMA:                '02897',
+    fabricante:                'Atta-Kill Ind. e Com. de Defensivos Agrícolas Ltda.',
+    formulacao:                'Isca (RB)',
+    concentracao:              '3 g/kg',
+    ingredienteInerte:         '997 g/kg',
+    classeDefensivo:           'Inseticida',
+    grupoQuimico:              'Sulfonamidas Fluoroalifáticas',
+    classificacaoToxicologica: 'NÃO CLASSIFICADO - PRODUTO NÃO CLASSIFICADO',
+    principioAtivo:            'Sulfluramida',
+  },
 };
 
 const groundTruth = GROUND_TRUTH_DB[nomePdf] ?? {};

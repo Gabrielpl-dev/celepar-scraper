@@ -53,7 +53,7 @@ async function extrairIngredienteInerte(call) {
 
 async function extrairClasseDefensivo(call) {
   return call(
-    'Extraia a classe do defensivo agrícola (ex: "Herbicida", "Fungicida", "Inseticida", "Acaricida", "Nematicida"). Retorne apenas a classe, sem explicações.',
+    'Extraia a classe do defensivo agrícola em português brasileiro (ex: "Herbicida", "Fungicida", "Inseticida", "Acaricida", "Nematicida"). Retorne apenas a classe, sem explicações. Use sempre "Inseticida", nunca "Insecticida".',
     opts({ maxTokens: 20 })
   );
 }

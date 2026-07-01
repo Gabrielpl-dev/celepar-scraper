@@ -8,6 +8,12 @@ export default defineConfig({
   },
   build: {
     outDir: '../backend/public',
-    emptyOutDir: true
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        estracao: 'estracao.html',
+      }
+    }
   }
 })

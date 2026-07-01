@@ -11,6 +11,8 @@ if (process.env.ALLOWED_ORIGIN) {
 }
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.get('/estracao',   (_req, res) => res.sendFile(path.join(__dirname, 'public', 'estracao.html')));
+app.get('/estracao/', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'estracao.html')));
 app.use('/teste',      express.static(path.join(__dirname, '..', 'teste')));
 app.use('/banco',      express.static(path.join(__dirname, '..', 'banco')));
 app.use('/caminhos',   express.static(path.join(__dirname, '..', 'caminhos')));
