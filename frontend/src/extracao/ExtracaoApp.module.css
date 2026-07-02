@@ -2,8 +2,15 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--bg);
   color: var(--text);
+  background-color: #241c0c;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.009 0.09' numOctaves='4' seed='11' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 1  0 0 0 0 0.82  0 0 0 0 0.35  0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 15% 10%, rgba(255,255,255,.55), rgba(255,255,172,.22) 22%, transparent 46%),
+    radial-gradient(ellipse at 85% 90%, rgba(159,121,40,.65), rgba(60,44,15,.5) 38%, transparent 62%),
+    linear-gradient(135deg, #3d2f0f 0%, #8a6e2f 22%, #fedb37 38%, #fdb931 48%, #9f7928 58%, #fffac0 72%, #5d4a1f 100%);
+  background-blend-mode: overlay, screen, screen, normal;
+  background-size: 300px 300px, 100% 100%, 100% 100%, 100% 100%;
 }
 
 .header {
@@ -41,6 +48,7 @@
 }
 
 .empty {
-  color: var(--dim);
+  color: #3a2c0d;
   font-size: 12px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.25);
 }
