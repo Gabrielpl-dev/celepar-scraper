@@ -107,10 +107,22 @@ async function buscarPorNome(nome) {
   if (!memCache?.rows?.length) return []
   const { rows, colMA, colNome, colIA } = memCache
   const n = norm(nome)
-  return rows
-    .filter(r => norm(r[colNome]).includes(n))
-    .slice(0, 20)
-    .map(r => ({ ma: r[colMA] || '', nome: r[colNome] || '', ingrediente: colIA ? (r[colIA] || '') : '' }))
+
+  // O CSV tem uma linha por combinação produto x cultura x praga, então um único
+  // produto (ex: "Prefer") pode ocupar dezenas de linhas e lotar o corte de 20
+  // antes que outro produto compatível (ex: "Prefer Max") apareça. Dedup por MA
+  // precisa acontecer antes do slice, não depois.
+  const vistos = new Set()
+  const out = []
+  for (const r of rows) {
+    if (!norm(r[colNome]).includes(n)) continue
+    const ma = r[colMA] || ''
+    if (vistos.has(ma)) continue
+    vistos.add(ma)
+    out.push({ ma, nome: r[colNome] || '', ingrediente: colIA ? (r[colIA] || '') : '' })
+    if (out.length >= 20) break
+  }
+  return out
 }
 
 function status() {
