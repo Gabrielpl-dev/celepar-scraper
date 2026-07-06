@@ -244,13 +244,14 @@ function renderTabelaFaltando(titulo, faltandoRows) {
   const wrap = document.createElement('div')
   wrap.className = 'tabela-bloco'
 
-  let open = true
+  let open = false
   const tituloEl = document.createElement('div')
   tituloEl.className = 'tabela-titulo'
-  tituloEl.innerHTML = `<span class="toggle">▾</span> ${titulo} <span style="color:#444">${faltandoRows.length} registro(s)</span>`
+  tituloEl.innerHTML = `<span class="toggle">▸</span> ${titulo} <span style="color:#444">${faltandoRows.length} registro(s)</span>`
 
   const tabelaWrap = document.createElement('div')
   tabelaWrap.className = 'tabela-wrap'
+  tabelaWrap.style.display = 'none'
 
   tituloEl.onclick = () => {
     open = !open
@@ -348,13 +349,14 @@ function renderTabela(titulo, headers, rows) {
   const wrap = document.createElement('div')
   wrap.className = 'tabela-bloco'
 
-  let open = true
+  let open = false
   const tituloEl = document.createElement('div')
   tituloEl.className = 'tabela-titulo'
-  tituloEl.innerHTML = `<span class="toggle">▾</span> ${titulo} <span style="color:#444">${rows.length} registro(s)</span>`
+  tituloEl.innerHTML = `<span class="toggle">▸</span> ${titulo} <span style="color:#444">${rows.length} registro(s)</span>`
 
   const tabelaWrap = document.createElement('div')
   tabelaWrap.className = 'tabela-wrap'
+  tabelaWrap.style.display = 'none'
 
   tituloEl.onclick = () => {
     open = !open
