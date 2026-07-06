@@ -10,12 +10,7 @@ const INGREDIENTES_TERMO = [
   'halauxifen',
 ];
 
-function norm(str) {
-  return String(str)
-    .toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .trim();
-}
+const { norm } = require('./norm');
 
 // Verifica se o princípio ativo (string, pode ter vários separados por ";") exige termo
 function precisaEmitirTermo(principioAtivo) {

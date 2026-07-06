@@ -1,6 +1,14 @@
+const { norm } = require('./norm');
+
 const SYSTEM = 'Você é um sistema especializado em extração de dados de bulas de agrotóxicos brasileiros. Extraia apenas o que estiver explicitamente no texto. Se um dado não estiver presente, responda "não especificado na bula". Nunca invente informações.';
 
 const opts = (extra = {}) => ({ systemPrompt: SYSTEM, ...extra });
+
+const CLASSES_DEFENSIVO_VALIDAS = [
+  'Herbicida', 'Fungicida', 'Inseticida', 'Acaricida', 'Nematicida',
+  'Bactericida', 'Formicida', 'Cupinicida', 'Raticida', 'Molusquicida',
+  'Regulador de Crescimento', 'Adjuvante', 'Fumigante', 'Antibrotante',
+];
 
 async function extrairNomesComerciais(call) {
   return call(
@@ -51,11 +59,17 @@ async function extrairIngredienteInerte(call) {
   );
 }
 
-async function extrairClasseDefensivo(call) {
-  return call(
-    'Extraia a classe do defensivo agrícola em português brasileiro (ex: "Herbicida", "Fungicida", "Inseticida", "Acaricida", "Nematicida"). Retorne apenas a classe, sem explicações. Use sempre "Inseticida", nunca "Insecticida".',
-    opts({ maxTokens: 20 })
-  );
+async function extrairClasseDefensivo(call, tentativas = 3) {
+  let ultima;
+  for (let i = 0; i < tentativas; i++) {
+    ultima = await call(
+      'Extraia a classe do defensivo agrícola em português brasileiro (ex: "Herbicida", "Fungicida", "Inseticida", "Acaricida", "Nematicida"). Retorne apenas a classe, sem explicações. Use sempre "Inseticida", nunca "Insecticida".',
+      opts({ maxTokens: 20 })
+    );
+    const valida = CLASSES_DEFENSIVO_VALIDAS.some(c => norm(ultima.content).includes(norm(c)));
+    if (valida) return ultima;
+  }
+  return ultima; // esgotou tentativas: retorna a última pra confirmação/feedback sinalizar divergência
 }
 
 async function extrairGrupoQuimico(call) {
@@ -65,11 +79,26 @@ async function extrairGrupoQuimico(call) {
   );
 }
 
+async function extrairGrupoMecanismoAcao(call) {
+  return call(
+    'A bula tem um quadro/selo destacado com 3 partes: a palavra "GRUPO", um código, e a classe do defensivo (ex: o quadro mostra "GRUPO | H | HERBICIDA", ou "GRUPO | 4 | INSETICIDA"). ' +
+    'Extraia SOMENTE o código do meio, sem a palavra "GRUPO" e sem a classe. ' +
+    'Exemplo: se o quadro mostra "GRUPO | H | HERBICIDA", a resposta correta é apenas "H" — não responda "GRUPO H HERBICIDA" nem inclua barras "|". ' +
+    'O código nunca é só um número isolado: ou é uma letra sozinha (ex: "H", "O"), ou uma combinação de letra e número (ex: "4A"). ' +
+    'Se houver mais de um código de grupo DIFERENTE (produto com mais de um princípio ativo de grupos distintos), separe com ";". ' +
+    'Nunca repita o mesmo código duas vezes. Retorne apenas o(s) código(s), sem mais nada.',
+    opts({ maxTokens: 10 })
+  );
+}
+
 async function extrairPrincipioAtivo(call) {
   return call(
-    'Extraia o(s) nome(s) do(s) princípio(s) ativo(s) do produto (apenas o nome, sem concentração). Se houver mais de um, separe com ";". Retorne apenas os nomes, sem explicações.',
+    'Extraia o(s) nome(s) do(s) princípio(s) ativo(s) do produto (apenas o nome, sem concentração). ' +
+    'Se o nome do princípio ativo aparecer como uma fórmula química/IUPAC longa seguida do nome comum entre parênteses (ex: "Ammonium 4-[hydroxy(methyl)phosphinoyl]-DL-homoalaninate (GLUFOSINATO - SAL DE AMÔNIO)"), ' +
+    'trate como um único princípio ativo e retorne apenas o nome comum entre parênteses, ignorando a fórmula IUPAC. ' +
+    'Só separe com ";" quando houver de fato mais de um princípio ativo distinto na composição. Retorne apenas os nomes, sem explicações.',
     opts({ maxTokens: 80 })
   );
 }
 
-module.exports = { extrairNomesComerciais, extrairRegistroMA, extrairFabricante, extrairFormulacao, extrairConcentracao, extrairIngredienteInerte, extrairClasseDefensivo, extrairGrupoQuimico, extrairClassificacaoToxicologica, extrairPrincipioAtivo };
+module.exports = { extrairNomesComerciais, extrairRegistroMA, extrairFabricante, extrairFormulacao, extrairConcentracao, extrairIngredienteInerte, extrairClasseDefensivo, extrairGrupoQuimico, extrairGrupoMecanismoAcao, extrairClassificacaoToxicologica, extrairPrincipioAtivo };

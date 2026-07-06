@@ -1,11 +1,4 @@
-function norm(str) {
-  return String(str)
-    .toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[®™©]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+const { norm } = require('./norm');
 
 /**
  * Busca o valor extraído nos textos das páginas usadas.

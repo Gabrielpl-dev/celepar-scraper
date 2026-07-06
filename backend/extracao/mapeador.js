@@ -4,8 +4,11 @@ const feedbackDb = require('./feedbackDb');
 
 const SECOES_BASE = {
   nomeComercial:             ['nome do produto', 'nome comercial'],
-  fabricante:                ['titular do registro'],
-  concentracao:              ['composição', 'ingrediente ativo', 'concentração'],
+  fabricante:                ['titular do registro', 'titular de registro'],
+  concentracao:              ['composição', 'ingrediente ativo'],
+  formulacao:                ['tipo de formulação'],
+  grupoQuimico:              ['grupo químico'],
+  ingredienteInerte:         ['outros ingredientes'],
   classificacaoToxicologica: ['classificação toxicológica'],
   classificacaoAmbiental:    ['classificação ambiental', 'periculosidade ambiental'],
   orientacoesUso:            ['instruções de uso', 'modo de usar', 'orientações de uso', 'tabela de culturas', 'recomendações de uso'],

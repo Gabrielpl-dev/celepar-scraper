@@ -2,8 +2,8 @@ require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 
 const path = require('path');
 const { mapearPaginas }               = require('./mapeador');
-const { extrairNomesComerciais, extrairRegistroMA, extrairFabricante, extrairFormulacao, extrairConcentracao, extrairIngredienteInerte, extrairClasseDefensivo, extrairGrupoQuimico, extrairClassificacaoToxicologica, extrairPrincipioAtivo } = require('./campos_cadastro_produto');
-const { callVision }          = require('../lib/lmstudioClient');
+const { extrairNomesComerciais, extrairRegistroMA, extrairFabricante, extrairFormulacao, extrairConcentracao, extrairIngredienteInerte, extrairClasseDefensivo, extrairGrupoQuimico, extrairGrupoMecanismoAcao, extrairClassificacaoToxicologica, extrairPrincipioAtivo } = require('./campos_cadastro_produto');
+const { callVision }          = require('../lib/visionClient');
 const { precisaEmitirTermo }  = require('./regras');
 const { confirmarNoTexto }    = require('./confirmador');
 
@@ -38,6 +38,19 @@ const GROUND_TRUTH_DB = {
     classificacaoToxicologica: 'Categoria 4',
     principioAtivo:            'Diflufenican',
   },
+  'F12003211_Prefer-Max_BL_2026-06-22': {
+    nomeComercial:             'PREFER MAX',
+    registroMA:                '21426',
+    fabricante:                'Albaugh Agro Brasil Ltda.',
+    formulacao:                'SL',
+    concentracao:              '500,0 g/L',
+    ingredienteInerte:         '635,0 g/L',
+    classeDefensivo:           'Herbicida',
+    grupoQuimico:              'Homoalanina substituída',
+    grupoMecanismoAcao:        'H',
+    classificacaoToxicologica: 'Categoria 5',
+    principioAtivo:            'Glufosinato-sal de amônio',
+  },
   'F968746149_Bula Mirex-SH - 29mai24': {
     nomeComercial:             'MIREX-SH',
     registroMA:                '02897',
@@ -53,10 +66,7 @@ const GROUND_TRUTH_DB = {
 };
 
 const groundTruth = GROUND_TRUTH_DB[nomePdf] ?? {};
-
-function norm(str) {
-  return String(str).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
-}
+const { norm } = require('./norm');
 
 function passes(extracted, expected) {
   const e = norm(extracted), x = norm(expected);
@@ -104,11 +114,12 @@ async function runTeste() {
     { nome: 'nomeComercial',             fn: extrairNomesComerciais,           campo: 'nomeComercial' },
     { nome: 'registroMA',                fn: extrairRegistroMA,                paginas: [1] },
     { nome: 'fabricante',               fn: extrairFabricante,                campo: 'fabricante' },
-    { nome: 'formulacao',               fn: extrairFormulacao,                campo: 'concentracao' },
+    { nome: 'formulacao',               fn: extrairFormulacao,                campo: 'formulacao' },
     { nome: 'concentracao',              fn: extrairConcentracao,              campo: 'concentracao' },
-    { nome: 'ingredienteInerte',         fn: extrairIngredienteInerte,         campo: 'concentracao' },
+    { nome: 'ingredienteInerte',         fn: extrairIngredienteInerte,         campo: 'ingredienteInerte' },
     { nome: 'classeDefensivo',           fn: extrairClasseDefensivo,           paginas: [1] },
-    { nome: 'grupoQuimico',              fn: extrairGrupoQuimico,              campo: 'concentracao' },
+    { nome: 'grupoQuimico',              fn: extrairGrupoQuimico,              campo: 'grupoQuimico' },
+    { nome: 'grupoMecanismoAcao',        fn: extrairGrupoMecanismoAcao,        paginas: [1] },
     { nome: 'classificacaoToxicologica', fn: extrairClassificacaoToxicologica, campo: 'classificacaoToxicologica' },
     { nome: 'principioAtivo',            fn: extrairPrincipioAtivo,            campo: 'concentracao' },
   ];
