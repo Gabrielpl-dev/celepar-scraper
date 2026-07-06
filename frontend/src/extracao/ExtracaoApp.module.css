@@ -36,11 +36,153 @@
 .main {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px 28px;
+  overflow-y: auto;
+  gap: 16px;
 }
 
 .empty {
   color: var(--dim);
   font-size: 12px;
+}
+
+.uploadForm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.uploadForm button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 7px 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.uploadForm button:disabled {
+  background: var(--panel-2);
+  color: var(--dim);
+  cursor: not-allowed;
+}
+
+.erro {
+  color: var(--red);
+  font-size: 12px;
+  border: 1px solid var(--red);
+  border-radius: 3px;
+  padding: 8px 12px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+.layout:has(.painel) {
+  grid-template-columns: 1fr 360px;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.tabela th {
+  text-align: left;
+  color: var(--dim);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tabela td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.linhaClicavel {
+  cursor: pointer;
+}
+
+.linhaClicavel:hover {
+  background: var(--panel-2);
+}
+
+.seloAguardando, .seloAlta, .seloRevisar, .seloErro {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.seloAguardando { color: var(--dim); }
+.seloAlta       { color: var(--green); }
+.seloRevisar    { color: var(--amber); }
+.seloErro       { color: var(--red); }
+
+.painel {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--panel);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: flex-start;
+}
+
+.painelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.fechar {
+  background: none;
+  border: none;
+  color: var(--dim);
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.painelSelo {
+  font-size: 12px;
+}
+
+.divergencia {
+  font-size: 11px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.divergenciaLabel {
+  color: var(--dim);
+  margin-right: 4px;
+}
+
+.painelImagem {
+  max-height: 480px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+
+.painelImagem img {
+  width: 100%;
+  display: block;
 }

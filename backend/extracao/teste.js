@@ -2,7 +2,7 @@ require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 
 const path = require('path');
 const { mapearPaginas }               = require('./mapeador');
-const { extrairNomesComerciais, extrairRegistroMA, extrairFabricante, extrairFormulacao, extrairConcentracao, extrairIngredienteInerte, extrairClasseDefensivo, extrairGrupoQuimico, extrairGrupoMecanismoAcao, extrairClassificacaoToxicologica, extrairPrincipioAtivo } = require('./campos_cadastro_produto');
+const { CASOS, pagesFor }             = require('./casos');
 const { callVision }          = require('../lib/visionClient');
 const { precisaEmitirTermo }  = require('./regras');
 const { confirmarNoTexto }    = require('./confirmador');
@@ -77,10 +77,6 @@ function makeCall(pages) {
   return (prompt, opts) => callVision(prompt, PDF, { ...opts, pages });
 }
 
-function pagesFor(mapa, campo, fallback = [1]) {
-  return mapa[campo] ?? fallback;
-}
-
 function trunc(str, n) {
   return str.length > n ? str.slice(0, n - 1) + '…' : str;
 }
@@ -110,24 +106,10 @@ async function runTeste() {
   const { mapa, pageTexts, totalPaginas } = await mapearPaginas(PDF);
   console.log(`${totalPaginas} páginas\n`);
 
-  const casos = [
-    { nome: 'nomeComercial',             fn: extrairNomesComerciais,           campo: 'nomeComercial' },
-    { nome: 'registroMA',                fn: extrairRegistroMA,                paginas: [1] },
-    { nome: 'fabricante',               fn: extrairFabricante,                campo: 'fabricante' },
-    { nome: 'formulacao',               fn: extrairFormulacao,                campo: 'formulacao' },
-    { nome: 'concentracao',              fn: extrairConcentracao,              campo: 'concentracao' },
-    { nome: 'ingredienteInerte',         fn: extrairIngredienteInerte,         campo: 'ingredienteInerte' },
-    { nome: 'classeDefensivo',           fn: extrairClasseDefensivo,           paginas: [1] },
-    { nome: 'grupoQuimico',              fn: extrairGrupoQuimico,              campo: 'grupoQuimico' },
-    { nome: 'grupoMecanismoAcao',        fn: extrairGrupoMecanismoAcao,        paginas: [1] },
-    { nome: 'classificacaoToxicologica', fn: extrairClassificacaoToxicologica, campo: 'classificacaoToxicologica' },
-    { nome: 'principioAtivo',            fn: extrairPrincipioAtivo,            campo: 'concentracao' },
-  ];
-
   const linhas = [];
   let pass = 0, fail = 0, sem_gt = 0;
 
-  for (const { nome, fn, campo, paginas } of casos) {
+  for (const { nome, fn, campo, paginas } of CASOS) {
     process.stdout.write(`  Extraindo ${nome}...`);
     const pages = paginas ?? pagesFor(mapa, campo);
     const call  = makeCall(pages);
