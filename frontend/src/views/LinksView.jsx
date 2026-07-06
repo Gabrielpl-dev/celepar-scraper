@@ -5,6 +5,7 @@ const LINKS = [
   { label: 'SIAGRO - PR',    url: 'https://auth-cs.identidadedigital.pr.gov.br/centralautenticacao/login.html?response_type=code&client_id=4c5bde74a8f110656874902f07378009&redirect_uri=https%3A%2F%2Fwww.siagro.adapar.pr.gov.br%2Fsiagro&scope=&state=state&urlCert=https://certauth-cs.identidadedigital.pr.gov.br&dnsCidadao=https://cidadao-cs.identidadedigital.pr.gov.br/centralcidadao&loginPadrao=btnCentral&labelCentral=CPF,E-Mail,Login%20Sentinela&modulosDeAutenticacao=btnSentinela,btnExpresso,btnCertificado,btnSms,btnCpf,btnToken,btnEmail,btnCentral&acesso=2078&tokenFormat=default&exibirLinkAutoCadastro=true&exibirLinkRecuperarSenha=true&exibirLinkAutoCadastroCertificado=false' },
   { label: 'ADAPAR - PR',    url: 'http://celepar07web.pr.gov.br/agrotoxicos/pesquisar.asp' },
   { label: 'SIG@ - RS',      url: 'https://secweb.procergs.com.br/sdae/consultaPublica/SDA-ConsultaPublica-ProdutoAgrotox-Pesquisar.jsf' },
+  { label: 'SDA Upload - RS', url: 'https://secweb.procergs.com.br/sdae/consultaPublica/SDA-ConsultaPublica-Upload-Pesquisar.jsf;jsessionid=r-l9CZuCkZMBgQ1QUrBhaC_XuMZ7ZxEfPQjgFMjb.EAP74-SDAE57' },
   { label: 'SIGEN - SC',     url: 'https://sigen.cidasc.sc.gov.br/consultaagrotoxicocadastropublico/consultaagx' },
   { label: 'CREA - SP',      url: 'https://gedave.defesaagropecuaria.sp.gov.br/gedave/pages/vegetal/consultaPublica/agrotoxico/pesquisa.faces' },
   { label: 'IAGRO - MS',     url: 'http://www.servicos.iagro.ms.gov.br/agrotoxico' },

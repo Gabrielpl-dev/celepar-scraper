@@ -6,9 +6,9 @@ const LINKEA_BASE  = 'https://celepar07web.pr.gov.br/agrotoxicos/';
 const PESQUISA_URL = 'https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp';
 const PESQUISA_KEY = '__pesquisa__';
 
-function buildPesquisaBody(criterioAgrotoxico = '') {
+function buildPesquisaBody() {
   return new URLSearchParams({
-    criterioAgrotoxico, criterioIngredienteAtivo: '', criterioRegistrante: '',
+    criterioAgrotoxico: '', criterioIngredienteAtivo: '', criterioRegistrante: '',
     criterioClassificacaoToxicologica: '', criterioPraga: '', criterioSituacao: '',
     criterioClasse: '', criterioCulturaInfestada: '', criterioExpurgo: '',
     criterioAplicacaoAerea: '', criterioTratamentoSementes: '',
@@ -64,9 +64,11 @@ async function fetchPage(url, extraHeaders = {}) {
   return html;
 }
 
-async function fetchPesquisa(criterioAgrotoxico = '') {
-  const key    = PESQUISA_KEY + ':' + criterioAgrotoxico.toLowerCase().trim();
-  const cached = cache.get(key);
+// resultadoPesquisa.asp ignora criterioAgrotoxico e sempre devolve o catálogo
+// inteiro (~3.9MB) — por isso não há um parâmetro de busca aqui: a chamada é
+// sempre a mesma e cacheada por CACHE_TTL; o filtro por termo é feito no chamador.
+async function fetchPesquisa() {
+  const cached = cache.get(PESQUISA_KEY);
   if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.html;
   const res = await fetch(PESQUISA_URL, {
     method: 'POST',
@@ -75,14 +77,14 @@ async function fetchPesquisa(criterioAgrotoxico = '') {
       'Content-Type': 'application/x-www-form-urlencoded',
       'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'
     },
-    body: buildPesquisaBody(criterioAgrotoxico)
+    body: buildPesquisaBody()
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} ao buscar resultadoPesquisa`);
   const buf = Buffer.from(await res.arrayBuffer());
   let html;
   try { html = new TextDecoder('windows-1252').decode(buf); }
   catch { html = buf.toString('latin1'); }
-  cache.set(key, { html, ts: Date.now() });
+  cache.set(PESQUISA_KEY, { html, ts: Date.now() });
   return html;
 }
 
