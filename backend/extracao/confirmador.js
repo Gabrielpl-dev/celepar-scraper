@@ -6,7 +6,7 @@ const { norm } = require('./norm');
  */
 function confirmarNoTexto(valor, pageTexts, pages) {
   const v = norm(valor);
-  if (!v || v === 'não especificado na bula') return { confirmado: null };
+  if (!v || v === norm('não especificado na bula')) return { confirmado: null };
 
   for (const pageNum of pages) {
     const text = pageTexts[pageNum - 1];

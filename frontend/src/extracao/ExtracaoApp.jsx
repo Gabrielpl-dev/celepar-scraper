@@ -16,11 +16,12 @@ const LABELS = {
   principioAtivo: 'Princípio ativo',
 }
 
-const SELOS = {
-  aguardando: { texto: '…', classe: 'seloAguardando' },
-  alta:       { texto: '✓', classe: 'seloAlta' },
-  revisar:    { texto: '⚠', classe: 'seloRevisar' },
-  erro:       { texto: '✗', classe: 'seloErro' },
+function seloConfianca(confianca) {
+  if (confianca == null) return { texto: '…', classe: 'seloAguardando' }
+  if (confianca === 0) return { texto: '✗ erro', classe: 'seloErro' }
+  if (confianca >= 80) return { texto: `${confianca}%`, classe: 'seloAlta' }
+  if (confianca >= 40) return { texto: `${confianca}%`, classe: 'seloRevisar' }
+  return { texto: `${confianca}%`, classe: 'seloErro' }
 }
 
 export default function ExtracaoApp() {
@@ -49,7 +50,7 @@ export default function ExtracaoApp() {
       await rodarExtracao(arquivo, evento => {
         if (evento.tipo === 'inicio') {
           setPdfNome(evento.pdfNome)
-          setCampos(evento.campos.map(nome => ({ campo: nome, confianca: 'aguardando' })))
+          setCampos(evento.campos.map(nome => ({ campo: nome, confianca: null })))
         } else if (evento.tipo === 'campo') {
           setPdfNome(evento.pdfNome)
           setCampos(atual => atual.map(c => c.campo === evento.campo ? evento : c))
@@ -101,8 +102,8 @@ export default function ExtracaoApp() {
               </thead>
               <tbody>
                 {campos.map(c => {
-                  const selo = SELOS[c.confianca] ?? SELOS.aguardando
-                  const clicavel = c.confianca && c.confianca !== 'aguardando'
+                  const selo = seloConfianca(c.confianca)
+                  const clicavel = c.confianca != null
                   return (
                     <tr
                       key={c.campo}
@@ -152,7 +153,11 @@ function PainelOrigem({ pdfNome, campo, onFechar }) {
     return () => { cancelado = true; if (urlAtual) URL.revokeObjectURL(urlAtual) }
   }, [pdfNome, campo])
 
-  const divergiu = campo.cerebras !== undefined && campo.lmstudio !== undefined && campo.confianca === 'revisar'
+  const divergiu = campo.cerebras !== campo.lmstudio
+    && !campo.cerebras?.startsWith('ERRO')
+    && !campo.lmstudio?.startsWith('ERRO')
+
+  const selo = seloConfianca(campo.confianca)
 
   return (
     <aside className={s.painel}>
@@ -162,9 +167,7 @@ function PainelOrigem({ pdfNome, campo, onFechar }) {
       </div>
 
       <div className={s.painelSelo}>
-        {campo.confianca === 'alta' && <span className={s.seloAlta}>✓ confirmado no texto</span>}
-        {campo.confianca === 'revisar' && <span className={s.seloRevisar}>⚠ não deu pra confirmar automaticamente</span>}
-        {campo.confianca === 'erro' && <span className={s.seloErro}>✗ os dois providers falharam</span>}
+        <span className={s[selo.classe]}>{selo.texto} de confiança</span>
       </div>
 
       {divergiu && (
