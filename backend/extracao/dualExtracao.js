@@ -29,6 +29,8 @@ async function extrairCampo({ nome, fn, campo, paginas }, pdfPath, mapa, pageTex
   const lmstudioValor = lmstudioRes.status === 'fulfilled' ? lmstudioRes.value.content.trim() : null;
   const cerebrasErro  = cerebrasRes.status === 'rejected' ? cerebrasRes.reason.message : null;
   const lmstudioErro  = lmstudioRes.status === 'rejected' ? lmstudioRes.reason.message : null;
+  const cerebrasStack = cerebrasRes.status === 'rejected' ? cerebrasRes.reason.stack : null;
+  const lmstudioStack = lmstudioRes.status === 'rejected' ? lmstudioRes.reason.stack : null;
 
   let valor, confianca;
 
@@ -58,6 +60,8 @@ async function extrairCampo({ nome, fn, campo, paginas }, pdfPath, mapa, pageTex
     paginas: pages,
     cerebras: cerebrasValor ?? `ERRO: ${cerebrasErro}`,
     lmstudio: lmstudioValor ?? `ERRO: ${lmstudioErro}`,
+    cerebrasStack: cerebrasStack ?? undefined,
+    lmstudioStack: lmstudioStack ?? undefined,
   };
 }
 
