@@ -2,7 +2,7 @@ const router     = require('express').Router();
 const path       = require('path');
 const fs         = require('fs');
 const multer     = require('multer');
-const { pdfToPng } = require('pdf-to-png-converter');
+const { converterPaginas } = require('../lib/pdfToImages');
 const feedbackDb = require('../extracao/feedbackDb');
 const { descobrir } = require('../extracao/descobrirKeywords');
 const { rodarExtracaoDual } = require('../extracao/dualExtracao');
@@ -56,7 +56,7 @@ router.get('/extracao/pagina', async (req, res) => {
   const chave = `${pdf}:${pagina}`;
   let png = cachePaginas.get(chave);
   if (!png) {
-    const [pagRenderizada] = await pdfToPng(pdfPath, { pagesToProcess: [Number(pagina)], viewportScale: 1.5, verbosityLevel: 0 });
+    const [pagRenderizada] = await converterPaginas(pdfPath, [Number(pagina)]);
     png = pagRenderizada.content;
     cachePaginas.set(chave, png);
   }

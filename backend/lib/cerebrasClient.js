@@ -1,8 +1,5 @@
 const https = require('https');
-const path = require('path');
-const { pdfToPng } = require('pdf-to-png-converter');
-
-const BACKEND_DIR = path.join(__dirname, '..');
+const { converterPaginas } = require('./pdfToImages');
 
 const CEREBRAS_API_KEY = process.env.CEREBRAS_API_KEY;
 const VISION_MODEL      = process.env.CEREBRAS_VISION_MODEL || 'gemma-4-31b'; // preview: único modelo com suporte a imagem no catálogo público
@@ -34,16 +31,7 @@ async function callVision(prompt, pdfPath, { maxTokens = 1200, temperature = 0, 
     pagesToProcess = pagesToProcess.slice(0, MAX_IMAGES_PER_REQUEST);
   }
 
-  const origCwd = process.cwd();
-  process.chdir(BACKEND_DIR);
-  let pages;
-  try {
-    const opts = { verbosityLevel: 0, viewportScale: 1.5, cMapPacked: true };
-    if (pagesToProcess) opts.pagesToProcess = pagesToProcess;
-    pages = await pdfToPng(pdfPath, opts);
-  } finally {
-    process.chdir(origCwd);
-  }
+  let pages = await converterPaginas(pdfPath, pagesToProcess);
 
   if (pages.length > MAX_IMAGES_PER_REQUEST) {
     pages = pages.slice(0, MAX_IMAGES_PER_REQUEST);

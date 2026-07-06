@@ -1,24 +1,12 @@
 const https = require('https');
-const path = require('path');
-const { pdfToPng } = require('pdf-to-png-converter');
-
-const BACKEND_DIR = path.join(__dirname, '..');
+const { converterPaginas } = require('./pdfToImages');
 
 const LMSTUDIO_BASE_URL = process.env.LMSTUDIO_BASE_URL || 'agent.tricagono.com';
 const LMSTUDIO_API_KEY  = process.env.LMSTUDIO_API_KEY  || 'lm-studio';
 const VISION_MODEL      = process.env.LMSTUDIO_VISION_MODEL || 'qwen2.5-vl-7b-instruct';
 
 async function callVision(prompt, pdfPath, { maxTokens = 1200, temperature = 0, systemPrompt, pages: pagesToProcess } = {}) {
-  const origCwd = process.cwd();
-  process.chdir(BACKEND_DIR);
-  let pages;
-  try {
-    const opts = { verbosityLevel: 0, viewportScale: 1.5, cMapPacked: true };
-    if (pagesToProcess) opts.pagesToProcess = pagesToProcess;
-    pages = await pdfToPng(pdfPath, opts);
-  } finally {
-    process.chdir(origCwd);
-  }
+  const pages = await converterPaginas(pdfPath, pagesToProcess);
 
   const imageContent = pages.map(p => ({
     type: 'image_url',
