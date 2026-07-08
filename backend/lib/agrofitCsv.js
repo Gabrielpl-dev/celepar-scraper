@@ -78,9 +78,19 @@ async function download() {
   const text = await res.text()
   const parsed = parseCSV(text)
   if (!parsed) throw new Error('CSV Agrofit: formato não reconhecido')
-  fs.writeFileSync(CACHE_PATH, text, 'utf8')
   memCache = { ...parsed, at: Date.now() }
   console.log(`[agrofitCsv] Carregados ${parsed.rows.length} produtos formulados`)
+
+  // Persistência em disco é só otimização (evita rebaixar no próximo boot) — uma
+  // falha de escrita (lock, permissão, AV) não pode derrubar o cache em memória
+  // que acabou de ser montado com sucesso.
+  try {
+    const tmpPath = `${CACHE_PATH}.tmp`
+    fs.writeFileSync(tmpPath, text, 'utf8')
+    fs.renameSync(tmpPath, CACHE_PATH)
+  } catch (err) {
+    console.warn('[agrofitCsv] Falha ao persistir cache em disco (seguindo com cache em memória):', err.message)
+  }
 }
 
 async function ensureCache() {
