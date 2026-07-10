@@ -11,9 +11,9 @@ Fluxo de deploy:
 2. `git push`
 3. No servidor remoto: `git pull` → build frontend → reiniciar via PM2:
    ```
-   pm2 reload celepar-be
+   pm2 reload CeleparApp
    ```
-   Em caso de falha grave (processo travado): `pm2 delete celepar-be && pm2 start ecosystem.config.cjs && pm2 save`
+   Em caso de falha grave (processo travado): `pm2 delete CeleparApp && pm2 start ecosystem.config.cjs && pm2 save`
 
 Nunca tente rodar o servidor ou banco localmente — não faz sentido neste ambiente.
 
@@ -53,7 +53,6 @@ Node.js/Express backend + React (Vite) frontend. O backend serve o build estáti
 - `api.js` — chamadas ao backend (sempre envia JWT `Authorization: Bearer`)
 
 **Páginas legacy** (servidas como static pelo Express):
-- `/teste/` — sandbox de desenvolvimento / tester da API Agrofit
 - `/banco/` — explorador Oracle (SQL, tabelas)
 - `/banco/internos` — explorador SQLite
 - `/caminhos/` — mapa de navegação admin (requer role=admin)

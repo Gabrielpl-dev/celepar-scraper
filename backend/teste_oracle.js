@@ -13,11 +13,12 @@ async function main() {
     })
     console.log('Conectado!')
 
+    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
     const result = await conn.execute(`
       SELECT c.nome, d.siagroalv
-      FROM viasoft.cultura c
-      JOIN viasoft.receitapadrao r ON r.culturaid = c.culturaid
-      JOIN viasoft.diagnostico d ON d.diagnosticoid = r.diagnosticoid
+      FROM cultura c
+      JOIN receitapadrao r ON r.culturaid = c.culturaid
+      JOIN diagnostico d ON d.diagnosticoid = r.diagnosticoid
       WHERE rownum <= 5
     `)
     console.log('Colunas:', result.metaData.map(m => m.name))
