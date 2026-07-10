@@ -131,13 +131,19 @@ router.get('/buscar-produto', async (req, res) => {
   // Merge Celepar->Agrofit por prefixo de nome (cobre truncacao mid-word: "OpteraPr" casa com "OpteraPro")
   // Requer que o prefixo não termine em espaço — evita casar variantes distintas ("Dorai" vs "Dorai Max")
   const isTruncMatch = (shorter, longer) => longer.startsWith(shorter) && !longer.slice(shorter.length).startsWith(' ')
+  // Um único MA na Agrofit pode agrupar várias marcas comerciais (ex: "Clopanto; Nanofos;
+  // Teminator;"), enquanto a Celepar cadastra cada marca como produto separado. Comparar
+  // contra a string toda faria "clopanto" virar "clopanto nanofos teminator" (';' -> ' '
+  // no normSep) e cair na guarda anti-falso-positivo acima. Por isso casa contra cada
+  // marca individualmente.
+  const splitAliases = nome => nome.split(/[/;|]+/).map(normSep).filter(Boolean)
   const celeparOrphans = []
   for (const cel of celeparRows) {
     const nc = normSep(cel.nome)
     let matched = false
     for (const agr of byMa.values()) {
-      const na = normSep(agr.nome)
-      if (na === nc || isTruncMatch(nc, na) || isTruncMatch(na, nc)) {
+      const aliases = splitAliases(agr.nome)
+      if (aliases.some(na => na === nc || isTruncMatch(nc, na) || isTruncMatch(na, nc))) {
         agr.cod   = cel.cod
         agr.fonte = 'ambos'
         matched = true
