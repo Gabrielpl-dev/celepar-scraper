@@ -3,91 +3,12 @@
 
 const fs       = require('fs')
 const path     = require('path')
-const backendMod = path.join(__dirname, 'backend', 'node_modules')
-const oracledb = require(path.join(backendMod, 'oracledb'))
-const cheerio  = require(path.join(backendMod, 'cheerio'))
-
-// ── Scraper (inline) ──────────────────────────────────────────────────────────
-
-const BASE_URL     = 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp'
-const PESQUISA_URL = 'https://celepar07web.pr.gov.br/agrotoxicos/resultadoPesquisa.asp'
-
-const norm    = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase()
-const normSep = s => norm(s).replace(/[/;|]+/g, ' ').replace(/\s+/g, ' ').trim()
-
-function buildUrl(Cod) {
-  const defaults = {
-    Cod, descIngrediente: '',
-    CodIngredienteAtivo: 'null', CodFormulacao: 'null', IdRegistrante: 'null',
-    CodFormaAcao: 'null', CodAlvo: 'null', CodGrupoQuimico: 'null',
-    CodClassToxicologica: 'null', CodSituacao: 'null', CodClassificacao: 'null',
-    CodEspecie: 'null', CodAgrotoxico: 'null', NumeroRegistro: 'null',
-    expurgo: 'null', aplica: 'null', tratam: 'null', ClassificacaoQuiBio: 'null',
-    criterioAgrotoxico: '', criterioIngredienteAtivo: '', criterioRegistrante: '',
-    criterioClassificacaoToxicologica: '', criterioPraga: '', criterioSituacao: '',
-    criterioClasse: '', criterioCulturaInfestada: '', criterioExpurgo: '',
-    criterioAplicacaoAerea: '', criterioTratamentoSementes: ''
-  }
-  const qs = Object.entries(defaults).map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v ?? '')}`).join('&')
-  return `${BASE_URL}?${qs}`
-}
-
-async function fetchHtml(url, method = 'GET', body = null) {
-  const opts = {
-    method,
-    headers: { 'User-Agent': 'Mozilla/5.0', 'Content-Type': 'application/x-www-form-urlencoded' },
-  }
-  if (body) opts.body = body
-  const res = await fetch(url, opts)
-  if (!res.ok) throw new Error(`HTTP ${res.status}`)
-  const buf = Buffer.from(await res.arrayBuffer())
-  try { return new TextDecoder('windows-1252').decode(buf) }
-  catch { return buf.toString('latin1') }
-}
-
-async function fetchPesquisa() {
-  const body = new URLSearchParams({
-    criterioAgrotoxico: '', criterioIngredienteAtivo: '', criterioRegistrante: '',
-    criterioClassificacaoToxicologica: '', criterioPraga: '', criterioSituacao: '',
-    criterioClasse: '', criterioCulturaInfestada: '', criterioExpurgo: '',
-    criterioAplicacaoAerea: '', criterioTratamentoSementes: '',
-    select11: 'null', select1: '', select5: 'null', select4: 'null',
-    select9: 'null', select6: 'null', select3: 'null', select7: 'null',
-    descIngrediente: '', numeroRegistro: '', ClassificacaoQuiBio: '',
-    submit1: 'Pesquisar'
-  }).toString()
-  return fetchHtml(PESQUISA_URL, 'POST', body)
-}
-
-function parsePesquisaRows(html) {
-  const $ = cheerio.load(html)
-  const rows = []
-  $('table#tb1 tr').slice(1).each((_, tr) => {
-    const tds  = $(tr).find('td')
-    if (tds.length < 4) return
-    const link = $(tds[0]).find('a').first()
-    const nome = link.text().trim()
-    if (!nome) return
-    const cod  = (link.attr('href') || '').match(/[?&]Cod=(\d+)/)?.[1] ?? null
-    rows.push({ nome, cod })
-  })
-  return rows
-}
-
-function parseRows(html) {
-  const $ = cheerio.load(html)
-  const linhas = []
-  $('tr').each((_, tr) => {
-    const $tds = $(tr).children('td')
-    if ($tds.length < 4) return
-    const $a = $tds.eq(0).find('a').first()
-    if (!$a.length) return
-    const m = ($a.attr('onclick') || '').match(/Cod2=(\d+)/)
-    if (!m) return
-    linhas.push({ cultura: $a.text().trim(), siagro: m[1] })
-  })
-  return linhas
-}
+const backendMod  = path.join(__dirname, 'backend', 'node_modules')
+const oracledb    = require(path.join(backendMod, 'oracledb'))
+const { fetchPesquisa, fetchPage, parseRows, parsePesquisaRows, buildUrl } = require('./backend/lib/scraper')
+const { norm, normSep, tokenize } = require('./backend/lib/normalizer')
+const agrofitCsv  = require('./backend/lib/agrofitCsv')
+const agrofitApi  = require('./backend/lib/agrofitApi')
 
 // ── Oracle ────────────────────────────────────────────────────────────────────
 
@@ -104,59 +25,44 @@ async function oracleConn() {
   return conn
 }
 
-async function loadDescricoes(conn) {
-  const r = await conn.execute(
-    `SELECT DISTINCT DESCRICAO FROM RECEITPADRAO WHERE ATIVO = 'S'`,
-    {},
-    { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
-  )
-  return r.rows.map(r => r.DESCRICAO)
-}
-
 function lenRatio(a, b) {
   return Math.min(a.length, b.length) / Math.max(a.length, b.length)
 }
 
-function matchesPart(descricao, n) {
-  const parts = descricao.split('/').map(p => norm(p.trim())).filter(p => p.length >= 4)
-  return parts.some(p => {
-    if (p === n) return true
-    if (lenRatio(p, n) < 0.7) return false
-    return n.startsWith(p + ' ') || p.startsWith(n + ' ')
-  })
-}
+// Mesma estratégia da rota /api/cccb (routes/banco.js): a MA é a chave de
+// verdade — resolvida via Agrofit (busca exata por marca_comercial), nunca
+// por fuzzy-match do nome contra RECEITPADRAO.DESCRICAO. Ligar direto pela MA
+// evita os falsos "não cadastrado" que o fuzzy-match de texto produzia.
+async function resolveMa(nome) {
+  const [csvRows, apiRows] = await Promise.all([
+    agrofitCsv.buscarPorNome(nome).catch(() => []),
+    agrofitApi.buscarPorNome(nome).catch(() => []),
+  ])
+  const byMa = new Map()
+  for (const r of [...csvRows, ...apiRows]) {
+    const ma = r.ma?.trim()
+    if (ma && !byMa.has(ma)) byMa.set(ma, r.nome)
+  }
+  if (!byMa.size) return null
 
-function findDescricao(descricoes, nome) {
   const n = norm(nome)
-  const exact = descricoes.find(d => norm(d) === n)
-  if (exact) return exact
-  const prefix = descricoes
-    .filter(d => {
-      const dn = norm(d)
-      return dn.length >= 4 && lenRatio(n, dn) >= 0.7 && (n.startsWith(dn + ' ') || dn.startsWith(n + ' '))
-    })
-    .sort((a, b) => b.length - a.length)[0]
-  if (prefix) return prefix
-  return descricoes.find(d => matchesPart(d, n)) ?? null
+  for (const [ma, rNome] of byMa) if (norm(rNome) === n) return ma
+  for (const [ma, rNome] of byMa) {
+    const rn = norm(rNome)
+    if (rn.startsWith(n) || n.startsWith(rn)) return ma
+  }
+  return byMa.keys().next().value
 }
 
-function findCandidatos(descricoes, nome) {
-  const n = norm(nome)
-  const words = n.split(' ').filter(Boolean)
-  return descricoes
-    .filter(d => words.some(w => w.length >= 4 && norm(d).includes(w)))
-    .slice(0, 5)
-}
-
-async function getOracleRegistros(conn, descricao) {
+async function getOracleRegistros(conn, ma) {
   const r = await conn.execute(
     `SELECT DISTINCT d.SIAGROALV, c.NOME AS CULTURA
      FROM RECEITPADRAO r
      JOIN CULTURA     c ON r.CULTURAID     = c.CULTURAID
      JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
      JOIN AGROTOXICO  a ON a.RECPADRAOID   = r.RECPADRAOID
-     WHERE r.DESCRICAO = :descricao AND r.ATIVO = 'S'`,
-    { descricao },
+     WHERE a.REGISTROMA = :ma AND r.ATIVO = 'S'`,
+    { ma },
     { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
   )
   return r.rows
@@ -210,10 +116,6 @@ async function main() {
     process.exit(1)
   }
 
-  console.log('Carregando descricoes do Oracle...')
-  const descricoes = await loadDescricoes(conn)
-  console.log(`${descricoes.length} descricoes no Oracle.\n`)
-
   const errados = []
 
   for (let i = 0; i < PRODUTOS.length; i++) {
@@ -221,13 +123,13 @@ async function main() {
     const prefix = `[${String(i + 1).padStart(3)}/${PRODUTOS.length}] ${nome}`
 
     try {
-      const descricao = findDescricao(descricoes, nome)
-      if (!descricao) {
-        console.log(`${prefix} → não cadastrado`)
+      const ma = await resolveMa(nome)
+      if (!ma) {
+        console.log(`${prefix} → não cadastrado (sem MA na Agrofit)`)
         continue
       }
 
-      const oracleRows = await getOracleRegistros(conn, descricao)
+      const oracleRows = await getOracleRegistros(conn, ma)
       if (!oracleRows.length) {
         console.log(`${prefix} → não cadastrado`)
         continue
@@ -244,7 +146,7 @@ async function main() {
       })
       if (!match) { console.log(`${prefix} → não encontrado no CELEPAR`); continue }
 
-      const celeparHtml = await fetchHtml(buildUrl(match.cod))
+      const celeparHtml = await fetchPage(buildUrl({ Cod: match.cod }))
       const celeparSets = {}
       for (const r of parseRows(celeparHtml)) {
         const k = normSep(r.cultura)
@@ -257,10 +159,6 @@ async function main() {
         continue
       }
 
-      const tokenize = s => {
-        const n = String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-        return new Set(n.replace(/[^a-z0-9 ]/g, ' ').replace(/ +/g, ' ').trim().split(' ').filter(Boolean))
-      }
       const jaccard = (a, b) => {
         const sa = tokenize(a), sb = tokenize(b)
         const inter = [...sa].filter(w => sb.has(w)).length
@@ -289,7 +187,7 @@ async function main() {
 
       if (falhas.length) {
         errados.push(nome)
-        console.log(`${prefix} → ERRADO (oracle: "${descricao}" | celepar: "${match.nome}" | ${falhas.length} sem match)`)
+        console.log(`${prefix} → ERRADO (oracle MA: ${ma} | celepar: "${match.nome}" | ${falhas.length} sem match)`)
       }
     } catch (e) {
       console.log(`${prefix} → ERRO: ${e.message}`)
