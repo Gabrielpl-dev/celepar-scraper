@@ -17,7 +17,7 @@ async function main() {
     const result = await conn.execute(`
       SELECT c.nome, d.siagroalv
       FROM cultura c
-      JOIN receitapadrao r ON r.culturaid = c.culturaid
+      JOIN receitpadrao r ON r.culturaid = c.culturaid
       JOIN diagnostico d ON d.diagnosticoid = r.diagnosticoid
       WHERE rownum <= 5
     `)
