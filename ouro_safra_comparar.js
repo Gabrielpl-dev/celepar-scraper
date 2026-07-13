@@ -1,71 +1,51 @@
 // node ouro_safra_comparar.js
+// Chama os mesmos endpoints que o /teste-cccb usa (GET /api/buscar-produto,
+// POST /api/cccb) contra o servidor já rodando — em vez de reimplementar a
+// resolução de MA e a comparação Oracle x Celepar aqui, delega pro código que
+// já está validado na UI. Roda no mesmo processo (mesmas env vars de
+// AGROFIT_KEY/SECRET, JWT_SECRET etc.) que o PM2 usa, então o comportamento é
+// idêntico ao da página.
 // Saída: errados_banco_celepar.csv no mesmo diretório.
 
 const fs       = require('fs')
 const path     = require('path')
-const backendMod  = path.join(__dirname, 'backend', 'node_modules')
-const oracledb    = require(path.join(backendMod, 'oracledb'))
-const { fetchPesquisa, fetchPage, parseRows, parsePesquisaRows, buildUrl } = require('./backend/lib/scraper')
-const { norm, normSep, tokenize } = require('./backend/lib/normalizer')
-const agrofitCsv  = require('./backend/lib/agrofitCsv')
-const agrofitApi  = require('./backend/lib/agrofitApi')
+const readline = require('readline')
+const { norm } = require('./backend/lib/normalizer')
 
-// ── Oracle ────────────────────────────────────────────────────────────────────
+const BASE_URL = process.env.OURO_SAFRA_BASE_URL || 'http://localhost:3000'
+const GPL_USER = 'GPL_SCRAPER'
 
-try { oracledb.initOracleClient({ libDir: 'C:\\oracle\\instantclient_21_15' }) }
-catch (_) {}
+function ask(pergunta) {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
+  return new Promise(resolve => rl.question(pergunta, resposta => { rl.close(); resolve(resposta) }))
+}
 
-async function oracleConn() {
-  const conn = await oracledb.getConnection({
-    user:          process.env.ORACLE_USER,
-    password:      process.env.ORACLE_PASSWORD,
-    connectString: process.env.ORACLE_CONNECT_STRING,
+async function login() {
+  const password = process.env.GPL_SCRAPER_PASSWORD || await ask('Senha do GPL_SCRAPER: ')
+  const res  = await fetch(`${BASE_URL}/api/auth/login`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ username: GPL_USER, password }),
   })
-  await conn.execute('ALTER SESSION SET CURRENT_SCHEMA = VIASOFT')
-  return conn
+  const data = await res.json()
+  if (!data.ok) throw new Error(`Login falhou: ${data.error}`)
+  return data.token
 }
 
-function lenRatio(a, b) {
-  return Math.min(a.length, b.length) / Math.max(a.length, b.length)
+async function chamarApi(token, rota, opts = {}) {
+  const res = await fetch(`${BASE_URL}${rota}`, {
+    ...opts,
+    headers: { ...(opts.headers || {}), Authorization: `Bearer ${token}` },
+  })
+  return res.json()
 }
 
-// Mesma estratégia da rota /api/cccb (routes/banco.js): a MA é a chave de
-// verdade — resolvida via Agrofit (busca exata por marca_comercial), nunca
-// por fuzzy-match do nome contra RECEITPADRAO.DESCRICAO. Ligar direto pela MA
-// evita os falsos "não cadastrado" que o fuzzy-match de texto produzia.
-async function resolveMa(nome) {
-  const [csvRows, apiRows] = await Promise.all([
-    agrofitCsv.buscarPorNome(nome).catch(() => []),
-    agrofitApi.buscarPorNome(nome).catch(() => []),
-  ])
-  const byMa = new Map()
-  for (const r of [...csvRows, ...apiRows]) {
-    const ma = r.ma?.trim()
-    if (ma && !byMa.has(ma)) byMa.set(ma, r.nome)
-  }
-  if (!byMa.size) return null
-
-  const n = norm(nome)
-  for (const [ma, rNome] of byMa) if (norm(rNome) === n) return ma
-  for (const [ma, rNome] of byMa) {
-    const rn = norm(rNome)
-    if (rn.startsWith(n) || n.startsWith(rn)) return ma
-  }
-  return byMa.keys().next().value
-}
-
-async function getOracleRegistros(conn, ma) {
-  const r = await conn.execute(
-    `SELECT DISTINCT d.SIAGROALV, c.NOME AS CULTURA
-     FROM RECEITPADRAO r
-     JOIN CULTURA     c ON r.CULTURAID     = c.CULTURAID
-     JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
-     JOIN AGROTOXICO  a ON a.RECPADRAOID   = r.RECPADRAOID
-     WHERE a.REGISTROMA = :ma AND r.ATIVO = 'S'`,
-    { ma },
-    { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
-  )
-  return r.rows
+// Mesmo critério de "melhor match" usado ao selecionar um resultado da busca:
+// prioriza nome idêntico, senão o primeiro resultado que já tem MA resolvida.
+function escolherMelhor(rows, nome) {
+  const n     = norm(nome)
+  const exact = rows.find(r => norm(r.nome) === n)
+  return exact ?? rows.find(r => r.ma) ?? rows[0] ?? null
 }
 
 // ── Produtos ──────────────────────────────────────────────────────────────────
@@ -101,20 +81,8 @@ const PRODUTOS = [
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('Carregando lista do CELEPAR...')
-  const todosNomes = parsePesquisaRows(await fetchPesquisa())
-  // Ordena do nome mais longo pro mais curto para preferir matches mais específicos
-  const nomesCelepar = [...todosNomes].sort((a, b) => norm(b.nome).length - norm(a.nome).length)
-  console.log(`${todosNomes.length} produtos no CELEPAR.\n`)
-
-  let conn
-  try {
-    conn = await oracleConn()
-    console.log('Conectado ao Oracle.\n')
-  } catch (e) {
-    console.error('Falha ao conectar Oracle:', e.message)
-    process.exit(1)
-  }
+  const token = await login()
+  console.log('Autenticado.\n')
 
   const errados = []
 
@@ -123,78 +91,44 @@ async function main() {
     const prefix = `[${String(i + 1).padStart(3)}/${PRODUTOS.length}] ${nome}`
 
     try {
-      const ma = await resolveMa(nome)
-      if (!ma) {
+      const busca = await chamarApi(token, `/api/buscar-produto?nome=${encodeURIComponent(nome)}`)
+      if (!busca.ok || !busca.rows.length) {
+        console.log(`${prefix} → não cadastrado (sem resultado na busca)`)
+        continue
+      }
+
+      const escolhido = escolherMelhor(busca.rows, nome)
+      if (!escolhido?.ma) {
         console.log(`${prefix} → não cadastrado (sem MA na Agrofit)`)
         continue
       }
-
-      const oracleRows = await getOracleRegistros(conn, ma)
-      if (!oracleRows.length) {
-        console.log(`${prefix} → não cadastrado`)
+      if (!escolhido.cod) {
+        console.log(`${prefix} → não encontrado no CELEPAR (MA: ${escolhido.ma})`)
         continue
       }
 
-      const n     = norm(nome)
-      const match = nomesCelepar.find(r => {
-        const rn = norm(r.nome)
-        if (!r.cod || rn.length < 4) return false
-        if (rn === n) return true
-        if (rn.includes(n) && lenRatio(rn, n) >= 0.7) return true
-        // n contém rn: exige boundary de palavra — evita "melyra" casar com "lyra"
-        return n.startsWith(rn + ' ') || n.endsWith(' ' + rn) || n.includes(' ' + rn + ' ')
+      const cccb = await chamarApi(token, '/api/cccb', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ culturaid: null, params: { ma: escolhido.ma, Cod: escolhido.cod } }),
       })
-      if (!match) { console.log(`${prefix} → não encontrado no CELEPAR`); continue }
-
-      const celeparHtml = await fetchPage(buildUrl({ Cod: match.cod }))
-      const celeparSets = {}
-      for (const r of parseRows(celeparHtml)) {
-        const k = normSep(r.cultura)
-        if (!celeparSets[k]) celeparSets[k] = new Set()
-        celeparSets[k].add(String(r.siagro))
+      if (!cccb.ok) {
+        console.log(`${prefix} → ERRO: ${cccb.error}`)
+        continue
       }
-
-      if (Object.keys(celeparSets).length === 0) {
-        console.log(`${prefix} → não cadastrado`)
+      if (!cccb.oracle.length) {
+        console.log(`${prefix} → não cadastrado (sem registro no Oracle p/ MA ${escolhido.ma})`)
         continue
       }
 
-      const jaccard = (a, b) => {
-        const sa = tokenize(a), sb = tokenize(b)
-        const inter = [...sa].filter(w => sb.has(w)).length
-        return inter / new Set([...sa, ...sb]).size
-      }
-      const CULTURA_ALIASES = { 'pastagem': 'pastagens', 'pinus': 'pinus sp' }
-      const resolveKey = cn => {
-        if (celeparSets[cn]) return cn
-        const alias = CULTURA_ALIASES[cn]
-        if (alias && celeparSets[alias]) return alias
-        const prefixKey = Object.keys(celeparSets).find(k => k.startsWith(cn + ' ') || cn.startsWith(k + ' '))
-        if (prefixKey) return prefixKey
-        let bestKey = null, bestScore = 0
-        for (const key of Object.keys(celeparSets)) {
-          const score = jaccard(cn, key)
-          if (score > bestScore) { bestScore = score; bestKey = key }
-        }
-        return (bestScore >= 0.8 && bestKey) ? bestKey : cn
-      }
-
-      const falhas = oracleRows.filter(row => {
-        const cn   = resolveKey(normSep(row.CULTURA))
-        const cSet = celeparSets[cn] ?? new Set()
-        return !cSet.has(String(row.SIAGROALV))
-      })
-
-      if (falhas.length) {
+      if (cccb.errados.length) {
         errados.push(nome)
-        console.log(`${prefix} → ERRADO (oracle MA: ${ma} | celepar: "${match.nome}" | ${falhas.length} sem match)`)
+        console.log(`${prefix} → ERRADO (MA: ${escolhido.ma} | celepar: "${escolhido.nome}" | banco: ${cccb.oracle.length} = ✓${cccb.corretos.length} + ✗${cccb.errados.length})`)
       }
     } catch (e) {
       console.log(`${prefix} → ERRO: ${e.message}`)
     }
   }
-
-  await conn.close().catch(() => {})
 
   const OUTPUT = path.join(__dirname, 'errados_banco_celepar.csv')
   fs.writeFileSync(OUTPUT, ['PRODUTO', ...errados].join('\n'), 'utf8')
