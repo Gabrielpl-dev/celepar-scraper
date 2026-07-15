@@ -26,18 +26,31 @@ app.get('/banco/:tabela', (_req, res) =>
 
 const requireAuth = require('./middleware/requireAuth');
 
-app.use('/api', require('./routes/auth'));
-app.use('/api', require('./routes/agrofit-public'));
+const rotasComFalha = []
+
+// Isolamento de falha: erro ao carregar uma rota não derruba o boot do servidor
+// inteiro — só aquele domínio fica indisponível (404), o resto segue no ar.
+function montarRota(nome, caminho) {
+  try {
+    app.use('/api', require(caminho))
+  } catch (err) {
+    rotasComFalha.push(nome)
+    console.error(`[boot] rota "${nome}" falhou ao carregar — endpoints desse módulo ficam indisponíveis (404):\n`, err)
+  }
+}
+
+montarRota('auth', './routes/auth');
+montarRota('agrofit-public', './routes/agrofit-public');
 
 app.use('/api', requireAuth);
-app.use('/api', require('./routes/celepar'));
-app.use('/api', require('./routes/agrofit'));
-app.use('/api', require('./routes/sigen'));
-app.use('/api', require('./routes/banco'));
-app.use('/api', require('./routes/internos'));
-app.use('/api', require('./routes/extracao'));
+montarRota('celepar', './routes/celepar');
+montarRota('agrofit', './routes/agrofit');
+montarRota('sigen', './routes/sigen');
+montarRota('banco', './routes/banco');
+montarRota('internos', './routes/internos');
+montarRota('extracao', './routes/extracao');
 
-app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
+app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now(), rotasComFalha }));
 
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n  🌱 AgroCheck rodando em http://0.0.0.0:${PORT}\n`);
