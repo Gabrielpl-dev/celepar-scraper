@@ -342,14 +342,17 @@ router.post('/cccb', async (req, res) => {
 
   // Variantes da Celepar que representam o mesmo conceito do banco
   const CELEPAR_PARA_BANCO = { 'pinus sp': 'pinus', 'pinus ellioti': 'pinus' }
-  const celNorm = s => { const n = norm(s); return CELEPAR_PARA_BANCO[n] ?? n }
+  // Banco usa "-" como separador solto (ex: "SOJA - GENETICAMENTE MODIFICADA");
+  // remove antes de comparar pra não tratar como cultura diferente da Celepar.
+  const normCultura = s => norm(s).replace(/[-–—]/g, ' ').replace(/\s+/g, ' ').trim()
+  const celNorm = s => { const n = normCultura(s); return CELEPAR_PARA_BANCO[n] ?? n }
 
   function celeparNormFor(cultura, cid) {
     const sub = BANCO_PARA_CELEPAR[String(cultura).toUpperCase().trim()]
     if (sub) return sub
     const row = db.prepare('SELECT celepar_nome FROM culturas WHERE culturaid = ?').get(cid)
-    if (row?.celepar_nome) return norm(row.celepar_nome)
-    return norm(cultura)
+    if (row?.celepar_nome) return normCultura(row.celepar_nome)
+    return normCultura(cultura)
   }
 
   let conn
