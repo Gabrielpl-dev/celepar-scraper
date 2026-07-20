@@ -1,16 +1,16 @@
 .wheel {
   position: fixed;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
   z-index: 40;
   outline: none;
 }
 
 .arc {
   position: absolute;
-  top: 50%;
-  left: 0;
+  bottom: 0;
+  left: 50%;
 }
 
 .item {
@@ -36,8 +36,8 @@
 
 .hub {
   position: absolute;
-  top: 50%;
-  left: 0;
+  bottom: 0;
+  left: 50%;
   border-radius: 50%;
   background: var(--panel);
   border-style: solid;

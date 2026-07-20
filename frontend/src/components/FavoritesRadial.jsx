@@ -9,10 +9,12 @@ import s from './FavoritesRadial.module.css'
  * de verdade via onSelect em vez de só marcar um estado local).
  */
 
-const RADIUS    = 69
-const ITEM_SIZE = 48
-const ARC_HALF  = 98
-const HUB       = 76
+const RADIUS      = 55
+const ITEM_SIZE   = 38
+const ARC_HALF    = 98
+const HUB         = 61
+const HUB_PEEK    = 21
+const FACE_ANGLE  = -90 // hub fica embaixo, arco abre pra cima
 
 const FRICTION_RATE = 6.5
 const MIN_VEL       = 2
@@ -46,7 +48,7 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
   const rafRef       = useRef(null)
   const containerRef = useRef(null)
 
-  const hubSize = revealed ? HUB : 26
+  const hubSize = revealed ? HUB : HUB_PEEK
 
   const centerIndex = useCallback(() => {
     const n = itemsRef.current.length
@@ -156,21 +158,21 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
       onMouseLeave={() => setRevealed(false)}
       onWheel={handleWheel}
       onKeyDown={handleKey}
-      style={{ width: RADIUS + ITEM_SIZE + 15, height: (RADIUS + ITEM_SIZE) * 2 }}
+      style={{ width: (RADIUS + ITEM_SIZE) * 2, height: RADIUS + ITEM_SIZE + 15 }}
     >
       <div
         className={s.arc}
         style={{
           opacity: revealed ? 1 : 0,
           pointerEvents: revealed ? 'auto' : 'none',
-          transform: `translateX(${15 + HUB / 2}px)`,
+          transform: `translateY(-${15 + HUB / 2}px)`,
           transition: `opacity 0.45s ${EASE}`,
         }}
       >
         {items.map((item, i) => {
           const angle   = wrap(i * step + rotationRef.current)
           const visible = Math.abs(angle) <= ARC_HALF
-          const rad     = (angle * Math.PI) / 180
+          const rad     = ((angle + FACE_ANGLE) * Math.PI) / 180
           const x       = Math.cos(rad) * RADIUS
           const y       = Math.sin(rad) * RADIUS
           const edge    = 1 - Math.abs(angle) / ARC_HALF
@@ -207,8 +209,8 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
           height: hubSize,
           borderWidth: revealed ? 2 : 9,
           transform: revealed
-            ? 'translateY(-50%) translateX(15px)'
-            : `translateY(-50%) translateX(-${hubSize / 2}px)`,
+            ? 'translateX(-50%) translateY(-15px)'
+            : `translateX(-50%) translateY(${hubSize / 2}px)`,
           transition: `width 0.5s ${EASE}, height 0.5s ${EASE}, transform 0.5s ${EASE}, border-width 0.5s ${EASE}`,
         }}
       />
