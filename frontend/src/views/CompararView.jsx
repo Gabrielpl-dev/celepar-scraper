@@ -4,7 +4,7 @@ import { StatusBar } from '../components/StatusBar'
 import { SiagroPill } from '../components/SiagroPill'
 import { tableStyles } from '../components/ResultTable'
 import s from './CompararView.module.css'
-import formS from './ExtrairView.module.css'
+import formS from './opPage.module.css'
 
 export function CompararView({ params }) {
   const [c1, setC1]           = useState('')

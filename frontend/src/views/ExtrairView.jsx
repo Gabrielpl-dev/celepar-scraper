@@ -3,7 +3,7 @@ import { api, downloadCSV, csvEsc } from '../api'
 import { StatusBar } from '../components/StatusBar'
 import { ResultTable, tableStyles } from '../components/ResultTable'
 import { SiagroPill } from '../components/SiagroPill'
-import s from './ExtrairView.module.css'
+import s from './opPage.module.css'
 
 function testeCccbUrl(params) {
   const q = new URLSearchParams()

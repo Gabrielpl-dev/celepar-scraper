@@ -3,7 +3,7 @@ import { api } from '../api'
 import { StatusBar } from '../components/StatusBar'
 import { ResultTable, tableStyles } from '../components/ResultTable'
 import { StatusBadge } from '../components/StatusBadge'
-import s from './ExtrairView.module.css'
+import s from './opPage.module.css'
 
 export function VerificarView({ params }) {
   const [termo, setTermo]     = useState('')

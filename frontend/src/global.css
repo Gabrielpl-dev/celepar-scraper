@@ -72,6 +72,16 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(140,198,63,.25);
 }
 
+input[readonly], input:disabled {
+  background: var(--panel-2);
+  color: var(--dim);
+  cursor: not-allowed;
+}
+input[readonly]:focus {
+  border-color: var(--line);
+  box-shadow: none;
+}
+
 label {
   display: block;
   font-size: 10px;
