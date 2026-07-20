@@ -16,13 +16,13 @@ import s from './FavoritesRadial.module.css'
  * favoritos existam.
  */
 
-const RADIUS      = 55
+const RADIUS      = 62
 const ITEM_SIZE   = 38
 const ARC_HALF    = 98
 const HUB         = 61
 const HUB_PEEK    = 21
 const FACE_ANGLE  = -90 // hub fica embaixo, arco abre pra cima
-const TARGET_STEP = 36  // separação angular alvo entre itens vizinhos
+const MIN_STEP    = 50  // separação angular mínima garantida entre vizinhos
 
 const FRICTION_RATE = 6.5
 const MIN_VEL       = 2
@@ -42,11 +42,13 @@ function damp(rate, dt) {
   return 1 - Math.exp(-rate * dt)
 }
 
-// quantas "voltas" da lista de itens cabem no anel mantendo o passo perto
-// do alvo, e o passo exato resultante (sempre divide 360 sem sobra)
+// quantas "voltas" da lista de itens cabem no anel sem deixar o passo cair
+// abaixo de MIN_STEP (floor em vez de round: erra sempre pro lado de mais
+// espaço, nunca de itens colados) — o passo resultante sempre divide 360
+// sem sobra, então o giro nunca tem vão vazio na emenda
 function ringFor(n) {
   if (n === 0) return { slots: 0, step: 0 }
-  const reps = Math.max(1, Math.round(360 / TARGET_STEP / n))
+  const reps = Math.max(1, Math.floor(360 / (MIN_STEP * n)))
   const slots = reps * n
   return { slots, step: 360 / slots }
 }
