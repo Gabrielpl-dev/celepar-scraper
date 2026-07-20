@@ -83,14 +83,12 @@ export function ExtrairView({ params }) {
     r.cultura,
     <SiagroPill key="alv" code={r.siagroalv} />,
     r.diagnostico,
-    <input type="checkbox" key="cb" />,
   ]) ?? []
 
   const celeparRows = result?.celepar.map(r => [
     r.cultura,
     <SiagroPill key="alv" code={r.siagro} />,
     r.alvo,
-    <input type="checkbox" key="cb" />,
   ]) ?? []
 
   const erradoRows = result?.errados.map(r => [
@@ -98,7 +96,6 @@ export function ExtrairView({ params }) {
     <SiagroPill key="sb" code={r.alvo_sb} />,
     r.diagnosticoid,
     r.diagnostico,
-    <input type="checkbox" key="cb" />,
   ]) ?? []
 
   const corretoRows = result?.corretos.map(r => [
@@ -106,7 +103,6 @@ export function ExtrairView({ params }) {
     <SiagroPill key="sb"  code={r.alvo_sb} />,
     <SiagroPill key="cel" code={r.alvo_siagro} />,
     r.diagnostico,
-    <input type="checkbox" key="cb" />,
   ]) ?? []
 
   const exportToolbar = result && (
@@ -163,7 +159,7 @@ export function ExtrairView({ params }) {
         <ResultTable
           collapsible
           defaultOpen={false}
-          headers={['Cultura', 'Alvo SB', 'Diagnóstico', '✓']}
+          headers={['Cultura', 'Alvo SB', 'Diagnóstico']}
           rows={oracleRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Banco — {oracleRows.length} registro(s)</span>}
         />
@@ -173,7 +169,7 @@ export function ExtrairView({ params }) {
         <ResultTable
           collapsible
           defaultOpen={false}
-          headers={['Cultura', 'Alvo Siagro', 'Alvo', '✓']}
+          headers={['Cultura', 'Alvo Siagro', 'Alvo']}
           rows={celeparRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Celepar — {celeparRows.length} registro(s)</span>}
         />
@@ -183,7 +179,7 @@ export function ExtrairView({ params }) {
         <ResultTable
           collapsible
           defaultOpen={false}
-          headers={['Cultura', 'Alvo SB', 'DIAGNOSTICOID', 'Diagnóstico', '✓']}
+          headers={['Cultura', 'Alvo SB', 'DIAGNOSTICOID', 'Diagnóstico']}
           rows={erradoRows}
           toolbar={<span className={tableStyles.toolbarMeta}>Errados — {erradoRows.length} registro(s)</span>}
         />
@@ -192,8 +188,8 @@ export function ExtrairView({ params }) {
       {result && (
         <ResultTable
           collapsible
-          defaultOpen={false}
-          headers={['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico', '✓']}
+          defaultOpen={true}
+          headers={['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico']}
           rows={corretoRows}
           toolbar={exportToolbar}
           emptyNode={

@@ -10,7 +10,6 @@ const SERVICOS = [
 const OPS = {
   cadastro: [
     { id: 'bula', num: '01', label: 'Bula' },
-    { id: 'fe',   num: '02', label: 'FE'   },
   ],
   revisao: [
     { id: 'culturas',  num: '01', label: 'Culturas' },

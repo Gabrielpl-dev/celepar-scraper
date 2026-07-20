@@ -56,7 +56,7 @@ export function CompararView({ params }) {
     <section>
       <div className={formS.opHeader}>
         <h3>Comparar duas culturas</h3>
-        <span className={formS.tag}>script 03</span>
+        <span className={formS.tag}>04</span>
       </div>
       <p className={formS.desc}>
         Compara o conjunto de SIAGRO entre duas culturas. Mostra exclusivos de cada uma e os comuns às duas.

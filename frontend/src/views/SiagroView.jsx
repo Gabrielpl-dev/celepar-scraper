@@ -66,7 +66,7 @@ export function SiagroView({ params }) {
     <section className={s.section}>
       <div className={s.opHeader}>
         <h3>Buscar por SIAGRO</h3>
-        <span className={s.tag}>script 02</span>
+        <span className={s.tag}>03</span>
       </div>
       <p className={s.desc}>
         Dado um código SIAGRO, descobre em quais culturas ele aparece (deduplicando por nome de cultura).

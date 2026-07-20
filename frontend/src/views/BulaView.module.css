@@ -31,7 +31,7 @@
   border: 1px solid var(--line);
   border-radius: 4px;
   background: var(--bg);
-  color: var(--fg);
+  color: var(--text);
   cursor: pointer;
   max-width: 340px;
 }

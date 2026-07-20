@@ -58,7 +58,7 @@ export function VerificarView({ params }) {
     <section className={s.section}>
       <div className={s.opHeader}>
         <h3>Verificar produto</h3>
-        <span className={s.tag}>script 04</span>
+        <span className={s.tag}>05</span>
       </div>
       <p className={s.desc}>
         Procura linhas que contenham um termo (ex: nome de produto). Devolve o status pela cor do &lt;font&gt;:{' '}

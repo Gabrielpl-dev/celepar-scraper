@@ -50,7 +50,6 @@ export function ListagemView({ params }) {
         )
       })}
     </span>,
-    <input type="checkbox" key="cb" />,
   ]) ?? []
 
   const toolbar = result && (
@@ -75,7 +74,7 @@ export function ListagemView({ params }) {
 
       {result && (
         <ResultTable
-          headers={['Cultura', 'SIAGRO', 'Alvo', 'Produtos (cor)', '✓']}
+          headers={['Cultura', 'SIAGRO', 'Alvo', 'Produtos (cor)']}
           rows={tableRows}
           toolbar={toolbar}
           noScroll

@@ -75,9 +75,9 @@ export default function App() {
         onToggleTheme={() => setTheme(t => t === 'light' ? 'dark' : 'light')}
         paramsActive={activeView === 'params'}
         produtoNome={params.nome}
-        onParams={() => { setActiveView('params'); setActiveService(null) }}
+        onParams={() => setActiveView('params')}
         linksActive={activeView === 'links'}
-        onLinks={() => { setActiveView('links'); setActiveService(null) }}
+        onLinks={() => setActiveView('links')}
         username={username}
         onLogout={handleLogout}
         onChangePassword={() => setChangePwdOpen(true)}
