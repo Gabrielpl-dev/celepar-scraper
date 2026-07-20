@@ -10,6 +10,7 @@ import { VerificarView } from './views/VerificarView'
 import { ListagemView } from './views/ListagemView'
 import { ParamsView } from './views/ParamsView'
 import { BulaView } from './views/BulaView'
+import { FeView } from './views/FeView'
 import { AuthView } from './views/AuthView'
 import { LinksView } from './views/LinksView'
 import { ChangePasswordModal } from './components/ChangePasswordModal'
@@ -17,6 +18,7 @@ import s from './App.module.css'
 
 const VIEWS = {
   bula:      BulaView,
+  fe:        FeView,
   culturas:  ListagemView,
   extrair:   ExtrairView,
   siagro:    SiagroView,
