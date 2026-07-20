@@ -7,6 +7,13 @@ import s from './FavoritesRadial.module.css'
  * (lerp/inércia/snap) é a mesma; o que muda é a fonte dos itens (favorites
  * do usuário, não uma lista fixa) e o que acontece ao selecionar (navega
  * de verdade via onSelect em vez de só marcar um estado local).
+ *
+ * "Anel infinito": em vez de espalhar N itens pelos 360° inteiros (o que
+ * deixa 2 itens diametralmente opostos, 3 a 120° etc.), o passo angular é
+ * fixo (~TARGET_STEP) e a lista repete quantas vezes forem necessárias pra
+ * preencher o anel sem sobra — os itens ficam sempre próximos uns dos
+ * outros e o giro continua "infinito" (sem vão vazio), não importa quantos
+ * favoritos existam.
  */
 
 const RADIUS      = 55
@@ -15,6 +22,7 @@ const ARC_HALF    = 98
 const HUB         = 61
 const HUB_PEEK    = 21
 const FACE_ANGLE  = -90 // hub fica embaixo, arco abre pra cima
+const TARGET_STEP = 36  // separação angular alvo entre itens vizinhos
 
 const FRICTION_RATE = 6.5
 const MIN_VEL       = 2
@@ -32,6 +40,15 @@ function wrap(deg) {
 
 function damp(rate, dt) {
   return 1 - Math.exp(-rate * dt)
+}
+
+// quantas "voltas" da lista de itens cabem no anel mantendo o passo perto
+// do alvo, e o passo exato resultante (sempre divide 360 sem sobra)
+function ringFor(n) {
+  if (n === 0) return { slots: 0, step: 0 }
+  const reps = Math.max(1, Math.round(360 / TARGET_STEP / n))
+  const slots = reps * n
+  return { slots, step: 360 / slots }
 }
 
 export function FavoritesRadial({ items, activeView, onSelect }) {
@@ -53,9 +70,9 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
   const centerIndex = useCallback(() => {
     const n = itemsRef.current.length
     if (n === 0) return 0
-    const step = 360 / n
+    const { slots, step } = ringFor(n)
     let best = 0, bestAbs = Infinity
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < slots; i++) {
       const a = Math.abs(wrap(i * step + targetRef.current))
       if (a < bestAbs) { bestAbs = a; best = i }
     }
@@ -65,7 +82,7 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
   const tick = useCallback((now) => {
     const n = itemsRef.current.length
     if (n === 0) { rafRef.current = null; return }
-    const step = 360 / n
+    const { step } = ringFor(n)
 
     const prev = lastTimeRef.current || now
     let dt = (now - prev) / 1000
@@ -118,18 +135,19 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
   const nudge = useCallback((dir) => {
     const n = itemsRef.current.length
     if (n === 0) return
-    targetRef.current += dir * (360 / n)
+    const { step } = ringFor(n)
+    targetRef.current += dir * step
     startLoop()
   }, [startLoop])
 
   const selectIndex = useCallback((i) => {
     const n = itemsRef.current.length
     if (n === 0) return
-    const step = 360 / n
+    const { step } = ringFor(n)
     const rawTarget = -i * step
     const k = Math.round((targetRef.current - rawTarget) / 360)
     targetRef.current = rawTarget + 360 * k
-    const item = itemsRef.current[i]
+    const item = itemsRef.current[i % n]
     if (item) onSelect(item.id)
     startLoop()
   }, [onSelect, startLoop])
@@ -145,7 +163,7 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
 
   const n = items.length
   if (n === 0) return null
-  const step = 360 / n
+  const { slots, step } = ringFor(n)
 
   return (
     <div
@@ -167,7 +185,8 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
           transition: `opacity 0.45s ${EASE}`,
         }}
       >
-        {items.map((item, i) => {
+        {Array.from({ length: slots }, (_, i) => {
+          const item    = items[i % n]
           const angle   = wrap(i * step + rotationRef.current)
           const visible = Math.abs(angle) <= ARC_HALF
           const rad     = ((angle + FACE_ANGLE) * Math.PI) / 180
@@ -179,7 +198,7 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
 
           return (
             <button
-              key={item.id}
+              key={`${item.id}-${i}`}
               title={item.label}
               aria-label={item.label}
               onClick={() => selectIndex(i)}
