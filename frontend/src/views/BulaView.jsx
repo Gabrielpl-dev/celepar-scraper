@@ -63,6 +63,15 @@ export function BulaView({ params }) {
               ))}
             </select>
           )}
+          {pdfUrl && (
+            <button
+              className={s.newTabBtn}
+              title="Abrir em nova aba"
+              onClick={() => window.open(pdfUrl, '_blank')}
+            >
+              ↗
+            </button>
+          )}
         </div>
         {docs?.nome && <p className={s.desc}>{docs.nome} · MA {docs.ma}</p>}
       </div>
