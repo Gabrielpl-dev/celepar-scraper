@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { jwtDecode } from 'jwt-decode'
 import './global.css'
 import { Header } from './components/Header'
-import { Sidebar } from './components/Sidebar'
+import { FavoritesRadial } from './components/FavoritesRadial'
 import { ExtrairView } from './views/ExtrairView'
 import { SiagroView } from './views/SiagroView'
 import { CompararView } from './views/CompararView'
@@ -14,6 +14,7 @@ import { FeView } from './views/FeView'
 import { AuthView } from './views/AuthView'
 import { LinksView } from './views/LinksView'
 import { ChangePasswordModal } from './components/ChangePasswordModal'
+import { ALL_ITEMS } from './navItems'
 import s from './App.module.css'
 
 const VIEWS = {
@@ -31,9 +32,10 @@ const VIEWS = {
 export default function App() {
   const [theme, setTheme]             = useState(() => localStorage.getItem('theme') || 'light')
   const [activeView, setActiveView]   = useState('params')
-  const [activeService, setActiveService] = useState('revisao')
   const [params, setParams]           = useState({ Cod: '', ma: '', nome: '' })
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [favorites, setFavorites]     = useState(() => {
+    try { return JSON.parse(localStorage.getItem('favorites')) ?? [] } catch { return [] }
+  })
   const [token, setToken]             = useState(() => {
     const tok = localStorage.getItem('token')
     if (!tok) return null
@@ -54,6 +56,19 @@ export default function App() {
     document.documentElement.dataset.theme = theme
     localStorage.setItem('theme', theme)
   }, [theme])
+
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites))
+  }, [favorites])
+
+  const favoriteItems = useMemo(
+    () => ALL_ITEMS.filter(it => favorites.includes(it.id)),
+    [favorites]
+  )
+
+  function toggleFavorite(id) {
+    setFavorites(f => f.includes(id) ? f.filter(x => x !== id) : [...f, id])
+  }
 
   function handleAuth(tok, user) {
     setToken(tok)
@@ -83,17 +98,14 @@ export default function App() {
         username={username}
         onLogout={handleLogout}
         onChangePassword={() => setChangePwdOpen(true)}
+        activeView={activeView}
+        setActiveView={setActiveView}
+        favorites={favorites}
+        toggleFavorite={toggleFavorite}
+        params={params}
       />
-      <div className={`${s.wrap} ${sidebarOpen ? '' : s.wrapCollapsed}`}>
-        <Sidebar
-          activeView={activeView}
-          setActiveView={setActiveView}
-          activeService={activeService}
-          setActiveService={setActiveService}
-          open={sidebarOpen}
-          onToggle={() => setSidebarOpen(v => !v)}
-          params={params}
-        />
+      <FavoritesRadial items={favoriteItems} activeView={activeView} onSelect={setActiveView} />
+      <div className={s.wrap}>
         <main className={s.main}>
           {View && <View params={params} setParams={setParams} />}
         </main>

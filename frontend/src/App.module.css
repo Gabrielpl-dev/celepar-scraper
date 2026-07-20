@@ -9,22 +9,13 @@
 }
 
 .wrap {
-  display: grid;
-  grid-template-columns: 260px 1fr;
+  display: flex;
   flex: 1;
   overflow: hidden;
-  transition: grid-template-columns .25s ease;
-}
-
-.wrapCollapsed {
-  grid-template-columns: 40px 1fr;
-}
-
-@media (max-width: 900px) {
-  .wrap { grid-template-columns: 1fr; }
 }
 
 .main {
+  flex: 1;
   padding: 28px 32px;
   min-width: 0;
   overflow-y: auto;

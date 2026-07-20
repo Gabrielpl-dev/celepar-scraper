@@ -1,0 +1,46 @@
+.wheel {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  outline: none;
+}
+
+.arc {
+  position: absolute;
+  top: 50%;
+  left: 0;
+}
+
+.item {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+
+.itemActive {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #10190a;
+}
+
+.hub {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-radius: 50%;
+  background: var(--panel);
+  border-style: solid;
+  border-color: var(--accent);
+  box-sizing: border-box;
+}
