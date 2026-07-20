@@ -12,24 +12,28 @@
   --red:        #e53e3e;
   --green:      #38a169;
   --amber:      #d69e2e;
+  --neon:       #6ea832;
   --header-bg:  rgba(255,255,255,.95);
   --mono:       'JetBrains Mono', ui-monospace, Menlo, monospace;
   --display:    'Space Grotesk', system-ui, sans-serif;
 }
 
 [data-theme="dark"] {
-  --bg:         #111111;
-  --panel:      #1e1e1e;
-  --panel-2:    #2a2a2a;
-  --line:       #3a3a3a;
-  --text:       #e8e8e8;
-  --dim:        #777777;
-  --accent:     #8CC63F;
-  --accent-2:   #aad454;
-  --red:        #f87171;
-  --green:      #4ade80;
-  --amber:      #fbbf24;
-  --header-bg:  rgba(17,17,17,.92);
+  /* agro-tech: solo escuro + verde de safra + linha neon (ver vault
+     projetos/celepar-scraper/design-agro-tech.md) */
+  --bg:         #15120e;
+  --panel:      #221c15;
+  --panel-2:    #2a231a;
+  --line:       #3c3122;
+  --text:       #e9e2d2;
+  --dim:        #9c8f76;
+  --accent:     #8cc63f;
+  --accent-2:   #6ea832;
+  --red:        #c9614a;
+  --green:      #8cc63f;
+  --amber:      #d1a343;
+  --neon:       #4dff8a;
+  --header-bg:  rgba(21,18,14,.92);
 }
 
 [data-theme="dark"] body {

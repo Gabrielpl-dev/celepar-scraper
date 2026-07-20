@@ -30,8 +30,9 @@
 
 .itemActive {
   background: var(--accent);
-  border-color: var(--accent);
+  border-color: var(--neon);
   color: #10190a;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--neon) 55%, transparent);
 }
 
 .hub {
@@ -43,4 +44,10 @@
   border-style: solid;
   border-color: var(--accent);
   box-sizing: border-box;
+  transition: box-shadow .25s ease, border-color .25s ease;
+}
+
+.wheel:hover .hub {
+  border-color: var(--neon);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--neon) 45%, transparent);
 }
