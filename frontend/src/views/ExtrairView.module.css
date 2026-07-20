@@ -24,6 +24,23 @@
   letter-spacing: .08em;
 }
 
+.newTabBtn {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 13px;
+  line-height: 1;
+  transition: color .15s, border-color .15s;
+}
+
+.newTabBtn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 .desc {
   color: var(--dim);
   margin-bottom: 24px;

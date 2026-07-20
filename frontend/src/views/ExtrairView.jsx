@@ -117,6 +117,13 @@ export function ExtrairView({ params }) {
       <div className={s.opHeader}>
         <h3>Comparar Cultura Celepar com o Banco</h3>
         <span className={s.tag}>CCCB</span>
+        <button
+          className={s.newTabBtn}
+          title="Abrir em nova aba"
+          onClick={() => window.open('/teste-cccb', '_blank')}
+        >
+          ↗
+        </button>
       </div>
       <p className={s.desc}>
         Cruza os diagnósticos do banco (ATIVO = Sim) com o Celepar. Deixe o campo vazio para todas as culturas.
