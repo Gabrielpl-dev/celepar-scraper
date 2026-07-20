@@ -16,7 +16,7 @@ import s from './FavoritesRadial.module.css'
  * favoritos existam.
  */
 
-const RADIUS      = 62
+const RADIUS      = 54
 const ITEM_SIZE   = 38
 const ARC_HALF    = 98
 const HUB         = 61
