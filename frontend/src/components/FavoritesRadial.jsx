@@ -82,8 +82,6 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
       targetRef.current -= current * damp(SNAP_RATE, dt)
       if (Math.abs(current) < 0.05) {
         targetRef.current -= wrap(idx * step + targetRef.current)
-        const item = itemsRef.current[idx]
-        if (item) onSelect(item.id)
       }
     }
 
@@ -104,7 +102,7 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
     } else {
       rafRef.current = requestAnimationFrame(tick)
     }
-  }, [centerIndex, onSelect])
+  }, [centerIndex])
 
   const startLoop = useCallback(() => {
     if (rafRef.current == null) rafRef.current = requestAnimationFrame(tick)
