@@ -16,6 +16,19 @@ function setNome(v) { state.nome = v; document.getElementById('p-nome').value = 
 function setCod(v)  { state.Cod  = v; document.getElementById('p-cod').value  = v }
 function setMa(v)   { state.ma   = v; document.getElementById('p-ma').value   = v }
 
+// ── Params vindos da querystring (link do app principal) ─────────────────────
+
+;(function preencherDaQuerystring() {
+  const qp = new URLSearchParams(location.search)
+  const nome = qp.get('nome')
+  const cod  = qp.get('Cod')
+  const ma   = qp.get('ma')
+  if (nome) setNome(nome)
+  if (cod)  setCod(cod)
+  if (ma)   setMa(ma)
+  if (nome) checkSources()
+})()
+
 // ── Params: busca de produto ──────────────────────────────────────────────────
 
 const nomeInput  = document.getElementById('p-nome')

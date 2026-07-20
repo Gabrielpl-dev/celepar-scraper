@@ -5,6 +5,15 @@ import { ResultTable, tableStyles } from '../components/ResultTable'
 import { SiagroPill } from '../components/SiagroPill'
 import s from './ExtrairView.module.css'
 
+function testeCccbUrl(params) {
+  const q = new URLSearchParams()
+  if (params?.nome) q.set('nome', params.nome)
+  if (params?.Cod)  q.set('Cod', params.Cod)
+  if (params?.ma)   q.set('ma', params.ma)
+  const qs = q.toString()
+  return qs ? `/teste-cccb?${qs}` : '/teste-cccb'
+}
+
 export function ExtrairView({ params }) {
   const [culturas, setCulturas]     = useState([])
   const [inputNome, setInputNome]   = useState('')
@@ -120,7 +129,7 @@ export function ExtrairView({ params }) {
         <button
           className={s.newTabBtn}
           title="Abrir em nova aba"
-          onClick={() => window.open('/teste-cccb', '_blank')}
+          onClick={() => window.open(testeCccbUrl(params), '_blank')}
         >
           ↗
         </button>
