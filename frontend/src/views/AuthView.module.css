@@ -17,21 +17,15 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 80% 15%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 55%);
-}
-
-.imagePanel::after {
-  content: 'AgroCheck';
-  position: absolute;
-  right: -36px;
-  bottom: -48px;
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 220px;
-  line-height: 1;
-  color: color-mix(in srgb, var(--accent) 28%, var(--panel));
-  white-space: nowrap;
-  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      115deg,
+      color-mix(in srgb, var(--accent) 9%, transparent) 0px,
+      color-mix(in srgb, var(--accent) 9%, transparent) 1px,
+      transparent 1px,
+      transparent 34px
+    ),
+    radial-gradient(circle at 80% 15%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 55%);
 }
 
 .formPanel {
