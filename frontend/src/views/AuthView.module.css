@@ -10,14 +10,14 @@
   flex: 1;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--panel) 0%, var(--bg) 100%);
+  background: linear-gradient(135deg, var(--panel-2) 0%, var(--panel) 55%, var(--bg) 100%);
 }
 
 .imagePanel::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 80% 15%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 55%);
+  background: radial-gradient(circle at 80% 15%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 55%);
 }
 
 .imagePanel::after {
@@ -29,8 +29,7 @@
   font-weight: 700;
   font-size: 220px;
   line-height: 1;
-  color: var(--line);
-  opacity: .6;
+  color: color-mix(in srgb, var(--accent) 28%, var(--panel));
   white-space: nowrap;
   pointer-events: none;
 }
