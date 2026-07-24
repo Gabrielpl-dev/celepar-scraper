@@ -3,6 +3,7 @@ const path       = require('path');
 const fs         = require('fs');
 const multer     = require('multer');
 const { converterPaginas } = require('../lib/pdfToImages');
+const { createBoundedCache } = require('../lib/boundedCache');
 const feedbackDb = require('../extracao/feedbackDb');
 const { descobrir } = require('../extracao/descobrirKeywords');
 const { rodarExtracaoDual } = require('../extracao/dualExtracao');
@@ -45,7 +46,7 @@ router.post('/extracao/rodar', upload.single('pdf'), async (req, res) => {
 });
 
 // Serve a página do PDF renderizada em PNG (a mesma imagem que os providers de visão recebem).
-const cachePaginas = new Map();
+const cachePaginas = createBoundedCache({ ttlMs: 2 * 60 * 60 * 1000, maxEntries: 150 });
 router.get('/extracao/pagina', async (req, res) => {
   const { pdf, pagina } = req.query;
   if (!pdf || !pagina) return res.status(400).json({ ok: false, error: 'pdf e pagina são obrigatórios' });

@@ -1,5 +1,6 @@
 const cheerio = require('cheerio');
 const { norm } = require('./normalizer')
+const { createBoundedCache } = require('./boundedCache')
 
 const BASE_URL     = 'https://celepar07web.pr.gov.br/agrotoxicos/listar.asp';
 const LINKEA_BASE  = 'https://celepar07web.pr.gov.br/agrotoxicos/';
@@ -19,8 +20,8 @@ function buildPesquisaBody() {
   }).toString();
 }
 
-const cache     = new Map();
 const CACHE_TTL = 5 * 60 * 1000;
+const cache     = createBoundedCache({ ttlMs: CACHE_TTL, maxEntries: 200 });
 
 function buildUrl(params) {
   const { ma, nome, ...celeparParams } = params  // strip non-Celepar fields
@@ -45,7 +46,7 @@ function buildUrl(params) {
 
 async function fetchPage(url, extraHeaders = {}) {
   const cached = cache.get(url);
-  if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.html;
+  if (cached) return cached;
   const res = await fetch(url, {
     signal: AbortSignal.timeout(15_000),
     headers: {
@@ -60,7 +61,7 @@ async function fetchPage(url, extraHeaders = {}) {
   let html;
   try { html = new TextDecoder('windows-1252').decode(buf); }
   catch { html = buf.toString('latin1'); }
-  cache.set(url, { html, ts: Date.now() });
+  cache.set(url, html);
   return html;
 }
 
@@ -69,7 +70,7 @@ async function fetchPage(url, extraHeaders = {}) {
 // sempre a mesma e cacheada por CACHE_TTL; o filtro por termo é feito no chamador.
 async function fetchPesquisa() {
   const cached = cache.get(PESQUISA_KEY);
-  if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.html;
+  if (cached) return cached;
   const res = await fetch(PESQUISA_URL, {
     method: 'POST',
     signal: AbortSignal.timeout(15_000),
@@ -84,7 +85,7 @@ async function fetchPesquisa() {
   let html;
   try { html = new TextDecoder('windows-1252').decode(buf); }
   catch { html = buf.toString('latin1'); }
-  cache.set(PESQUISA_KEY, { html, ts: Date.now() });
+  cache.set(PESQUISA_KEY, html);
   return html;
 }
 
