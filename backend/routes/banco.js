@@ -338,7 +338,7 @@ router.post('/cccb', async (req, res) => {
   if (!ma) return res.status(400).json({ ok: false, error: 'params.ma (registro MA) é obrigatório' })
 
   // Nomes do banco que diferem do nome na Celepar — substitui antes de qualquer comparação
-  const BANCO_PARA_CELEPAR = { 'PASTAGEM': 'pastagens', 'MILHO O.G.M': 'algodao geneticamente modificado' }
+  const BANCO_PARA_CELEPAR = { 'PASTAGEM': 'pastagens', 'MILHO O.G.M': 'milho geneticamente modificado' }
 
   // Variantes da Celepar que representam o mesmo conceito do banco
   const CELEPAR_PARA_BANCO = { 'pinus sp': 'pinus', 'pinus ellioti': 'pinus' }
