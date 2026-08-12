@@ -37,14 +37,40 @@ try {
   // Instant Client não instalado — modo Thin não suporta esse servidor Oracle
 }
 
+const ORACLE_CONNECT_TIMEOUT_S = 5
+
+// Injeta CONNECT_TIMEOUT no nível DESCRIPTION do descriptor TNS — em modo thick
+// (initOracleClient acima) a opção connectTimeout do node-oracledb é ignorada
+// pelo binding nativo, só existe na implementação thin (que esse servidor Oracle
+// não suporta). Sem isso, uma falha de rede até o jump host (ORA-12170, ver
+// .envs/infra.md) trava por um tempo indefinido em vez de falhar rápido.
+function withConnectTimeout(connectString, seconds) {
+  if (!connectString || /connect_timeout/i.test(connectString)) return connectString
+  return connectString.replace(/\(\s*description\s*=/i, `(description=(connect_timeout=${seconds})`)
+}
+
+// Não tenta de novo: os ORA-12170 observados vêm em rajada (rota até o Oracle
+// fora do ar por segundos/minutos, não um blip de milissegundos) — retry só
+// somaria espera sem chance real de sucesso. Falha rápido com o erro real.
 async function oracleConn() {
   const conn = await oracledb.getConnection({
     user:          process.env.ORACLE_USER,
     password:      process.env.ORACLE_PASSWORD,
-    connectString: process.env.ORACLE_CONNECT_STRING,
+    connectString: withConnectTimeout(process.env.ORACLE_CONNECT_STRING, ORACLE_CONNECT_TIMEOUT_S),
   })
   await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
   return conn
+}
+
+// Erro de conexão Oracle (ORA-xxxxx) é seguro de expor — não vaza schema/dados,
+// só diz que o banco está inacessível. Erros sem errorNum (bug de app) continuam
+// genéricos pra não vazar detalhe interno.
+function oracleErrorResponse(res, err, contexto) {
+  console.error(`[banco/${contexto}]`, err)
+  if (err.errorNum) {
+    return res.status(503).json({ ok: false, error: `Oracle indisponível: ${err.message}`, code: `ORA-${err.errorNum}` })
+  }
+  return res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
 }
 
 router.post('/banco', requireAdmin, async (req, res) => {
@@ -69,8 +95,7 @@ router.post('/banco', requireAdmin, async (req, res) => {
       rows: result.rows ?? [],
     })
   } catch (err) {
-    console.error('[banco/sql]', err)
-    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
+    oracleErrorResponse(res, err, 'sql')
   } finally {
     if (conn) await conn.close().catch(() => {})
   }
@@ -94,8 +119,7 @@ router.get('/banco/buscar', requireAdmin, async (req, res) => {
     )
     res.json({ ok: true, rows: result.rows.map(r => r[coluna.toUpperCase()]) })
   } catch (err) {
-    console.error('[banco/route]', err)
-    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
+    oracleErrorResponse(res, err, 'route')
   } finally {
     if (conn) await conn.close().catch(() => {})
   }
@@ -278,8 +302,7 @@ router.post('/culturas/sincronizar', requireAdmin, async (req, res) => {
 
     res.json({ ok: true, total: result.rows.length })
   } catch (err) {
-    console.error('[banco/route]', err)
-    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
+    oracleErrorResponse(res, err, 'route')
   } finally {
     if (conn) await conn.close().catch(() => {})
   }
@@ -491,8 +514,7 @@ router.post('/cccb', async (req, res) => {
       faltando,
     })
   } catch (err) {
-    console.error('[banco/cccb]', err)
-    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
+    oracleErrorResponse(res, err, 'cccb')
   } finally {
     if (conn) await conn.close().catch(() => {})
   }
@@ -556,8 +578,7 @@ router.get('/banco/diagnostico', async (req, res) => {
     )
     res.json({ ok: true, rows: result.rows })
   } catch (err) {
-    console.error('[banco/diagnostico]', err)
-    res.status(500).json({ ok: false, error: 'Erro interno do servidor' })
+    oracleErrorResponse(res, err, 'diagnostico')
   } finally {
     if (conn) await conn.close().catch(() => {})
   }
