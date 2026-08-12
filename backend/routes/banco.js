@@ -49,17 +49,40 @@ function withConnectTimeout(connectString, seconds) {
   return connectString.replace(/\(\s*description\s*=/i, `(description=(connect_timeout=${seconds})`)
 }
 
-// Não tenta de novo: os ORA-12170 observados vêm em rajada (rota até o Oracle
-// fora do ar por segundos/minutos, não um blip de milissegundos) — retry só
-// somaria espera sem chance real de sucesso. Falha rápido com o erro real.
+// Não tenta de novo dentro da mesma request: os ORA-12170 observados vêm em
+// rajada (rota até o Oracle fora do ar por segundos/minutos, não um blip de
+// milissegundos) — retry aqui só somaria espera sem chance real de sucesso.
+// Falha rápido com o erro real.
 async function oracleConn() {
-  const conn = await oracledb.getConnection({
-    user:          process.env.ORACLE_USER,
-    password:      process.env.ORACLE_PASSWORD,
-    connectString: withConnectTimeout(process.env.ORACLE_CONNECT_STRING, ORACLE_CONNECT_TIMEOUT_S),
-  })
-  await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
-  return conn
+  try {
+    const conn = await oracledb.getConnection({
+      user:          process.env.ORACLE_USER,
+      password:      process.env.ORACLE_PASSWORD,
+      connectString: withConnectTimeout(process.env.ORACLE_CONNECT_STRING, ORACLE_CONNECT_TIMEOUT_S),
+    })
+    await conn.execute("ALTER SESSION SET CURRENT_SCHEMA = VIASOFT")
+    return conn
+  } catch (err) {
+    if (err.errorNum === 12170) onOraConnectFailure()
+    throw err
+  }
+}
+
+// Confirmado por teste manual (12/08): esperar a rede se recompor sozinha não
+// resolve o ORA-12170, mas reiniciar o processo resolve na hora — indica algo
+// preso dentro do processo (ex.: cache de resolução de nome do cliente Oracle),
+// não instabilidade pura de rede. Em vez de perseguir a causa exata dentro do
+// binding nativo do OCI, automatiza a própria rotina manual que já comprovou
+// funcionar: na primeira falha, o processo já se derruba de propósito e deixa
+// o PM2 (max_restarts/exp_backoff já configurados no ecosystem.config.cjs)
+// recriar — sem precisar de ninguém rodando taskkill às 7h da manhã.
+let restartingForOraFailure = false
+
+function onOraConnectFailure() {
+  if (restartingForOraFailure) return
+  restartingForOraFailure = true
+  console.error('[banco/oracleConn] ORA-12170 — reiniciando o processo (PM2 recria automaticamente)')
+  process.kill(process.pid, 'SIGTERM')
 }
 
 // Erro de conexão Oracle (ORA-xxxxx) é seguro de expor — não vaza schema/dados,
