@@ -89,8 +89,8 @@ Design completo em `SPEC-restricao-cultura-cccb.md`. Resumo: uma cultura/diagnó
   `<font color="red">`; `Liberado` não tem cor. Capturado como `culturaBloqueada`/`alvoBloqueado`
   em cada linha retornada por `parseRows`.
 - **Oracle** (`routes/banco.js → /cccb`): `RESTRICAOCULTURA`/`RESTRICAODIAG`
-  (`IDAGROTOXICO`+`CULTURAID`[+`DIAGNOSTICOID`]+`UF='PR'`+`ATIVO='Sim'`) — bloqueio registrado
-  no banco. `IDAGROTOXICO` vem de `AGROTOXICO.AGROTOXICOID`, já selecionado na query principal.
+  (`IDAGROTOXICO`+`CULTURAID`[+`DIAGNOSTICOID`]+`UF='PR'`+`ATIVO='S'`) — bloqueio registrado
+  no banco. `IDAGROTOXICO` vem de `AGROTOXICO.ITEM`, já selecionado na query principal.
 
 Classificação (função `classificarOracleRow` em `banco.js`):
 

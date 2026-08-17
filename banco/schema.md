@@ -39,10 +39,10 @@ Produtos agrotóxicos registrados.
 
 | Coluna        | Tipo | Descrição               |
 |---------------|------|-------------------------|
-| AGROTOXICOID  | PK   | Identificador do produto — referenciado por `RESTRICAOCULTURA.IDAGROTOXICO` e `RESTRICAODIAG.IDAGROTOXICO` |
+| ITEM          |      | Identificador do produto — confirmado por teste real (MA 6294/EVIDENCE 700 WG, ITEM 2246 = `RESTRICAOCULTURA.IDAGROTOXICO` da restrição real de Almeirão) — referenciado por `RESTRICAOCULTURA.IDAGROTOXICO` e `RESTRICAODIAG.IDAGROTOXICO` |
 | NOME          |      | Nome do produto         |
 | REGISTROMA    |      | Número de registro MA   |
-| ITEM          |      | Item do produto         |
+| SIAGROAGR     |      | Código SIAGRO do agrotóxico — **não** é o que `IDAGROTOXICO` referencia (confundível, mesma faixa de valores de `ITEM`) |
 
 ---
 
@@ -53,10 +53,10 @@ esperado (produto bloqueado de propósito pra essa cultura).
 
 | Coluna        | Tipo | Descrição                                    |
 |---------------|------|-----------------------------------------------|
-| IDAGROTOXICO  | FK   | → AGROTOXICO.AGROTOXICOID                    |
+| IDAGROTOXICO  | FK   | → AGROTOXICO.ITEM                             |
 | CULTURAID     | FK   | → CULTURA.CULTURAID                          |
 | UF            | TEXT | Unidade federativa do bloqueio (ex: `'PR'`)   |
-| ATIVO         | TEXT | Flag de bloqueio ativo — valor literal `'Sim'` |
+| ATIVO         | TEXT | Flag de bloqueio ativo — valor literal `'S'`/`'N'` (confirmado com dado real) |
 
 Só vale pro CCCB quando `UF = 'PR'` (a Adapar é o órgão do Paraná; bloqueio de outro estado não
 tem correspondência na comparação com a Celepar-PR).
@@ -69,11 +69,11 @@ da cultura — permite bloquear só um diagnóstico sem bloquear a cultura intei
 
 | Coluna         | Tipo | Descrição                                    |
 |----------------|------|-----------------------------------------------|
-| IDAGROTOXICO   | FK   | → AGROTOXICO.AGROTOXICOID                    |
+| IDAGROTOXICO   | FK   | → AGROTOXICO.ITEM                             |
 | CULTURAID      | FK   | → CULTURA.CULTURAID                          |
 | DIAGNOSTICOID  | FK   | → DIAGNOSTICO.DIAGNOSTICOID                  |
 | UF             | TEXT | Unidade federativa do bloqueio (ex: `'PR'`)   |
-| ATIVO          | TEXT | Flag de bloqueio ativo — valor literal `'Sim'` |
+| ATIVO          | TEXT | Flag de bloqueio ativo — valor literal `'S'`/`'N'` |
 
 Mesma regra de `UF = 'PR'` do `RESTRICAOCULTURA`.
 
@@ -87,11 +87,11 @@ RECEITPADRAO
   └── DIAGNOSTICOID → DIAGNOSTICO.DIAGNOSTICOID
 
 RESTRICAOCULTURA
-  ├── IDAGROTOXICO  → AGROTOXICO.AGROTOXICOID
+  ├── IDAGROTOXICO  → AGROTOXICO.ITEM
   └── CULTURAID     → CULTURA.CULTURAID
 
 RESTRICAODIAG
-  ├── IDAGROTOXICO  → AGROTOXICO.AGROTOXICOID
+  ├── IDAGROTOXICO  → AGROTOXICO.ITEM
   ├── CULTURAID     → CULTURA.CULTURAID
   └── DIAGNOSTICOID → DIAGNOSTICO.DIAGNOSTICOID
 ```

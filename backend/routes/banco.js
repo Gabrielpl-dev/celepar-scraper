@@ -412,7 +412,7 @@ router.post('/cccb', async (req, res) => {
     let oracleResult
     if (!isAll) {
       oracleResult = await conn.execute(
-        `SELECT DISTINCT c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO, a.AGROTOXICOID
+        `SELECT DISTINCT c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO, a.ITEM AS AGROTOXICO_ITEM
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
@@ -426,7 +426,7 @@ router.post('/cccb', async (req, res) => {
       )
     } else {
       oracleResult = await conn.execute(
-        `SELECT DISTINCT r.CULTURAID, c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO, a.AGROTOXICOID
+        `SELECT DISTINCT r.CULTURAID, c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO, a.ITEM AS AGROTOXICO_ITEM
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
@@ -439,7 +439,7 @@ router.post('/cccb', async (req, res) => {
       )
     }
 
-    const agrotoxicoId = oracleResult.rows[0]?.AGROTOXICOID ?? null
+    const agrotoxicoId = oracleResult.rows[0]?.AGROTOXICO_ITEM ?? null
 
     // RESTRICAOCULTURA/RESTRICAODIAG — bloqueios ativos (UF=PR) já registrados no banco,
     // pra não tratar cultura/diagnóstico corretamente bloqueado como divergência
@@ -448,11 +448,11 @@ router.post('/cccb', async (req, res) => {
     if (agrotoxicoId != null) {
       const [restCultura, restDiag] = await Promise.all([
         conn.execute(
-          `SELECT CULTURAID FROM RESTRICAOCULTURA WHERE IDAGROTOXICO = :id AND UF = 'PR' AND ATIVO = 'Sim'`,
+          `SELECT CULTURAID FROM RESTRICAOCULTURA WHERE IDAGROTOXICO = :id AND UF = 'PR' AND ATIVO = 'S'`,
           { id: agrotoxicoId }, { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
         ),
         conn.execute(
-          `SELECT CULTURAID, DIAGNOSTICOID FROM RESTRICAODIAG WHERE IDAGROTOXICO = :id AND UF = 'PR' AND ATIVO = 'Sim'`,
+          `SELECT CULTURAID, DIAGNOSTICOID FROM RESTRICAODIAG WHERE IDAGROTOXICO = :id AND UF = 'PR' AND ATIVO = 'S'`,
           { id: agrotoxicoId }, { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
         ),
       ])

@@ -17,31 +17,31 @@ Duas tabelas Oracle separadas, uma por granularidade — documentadas em `banco/
 
 | Coluna       | Descrição                          |
 |--------------|-------------------------------------|
-| IDAGROTOXICO | FK → `AGROTOXICO.AGROTOXICOID`      |
+| IDAGROTOXICO | FK → `AGROTOXICO.ITEM`      |
 | CULTURAID    | → CULTURA.CULTURAID                 |
 | UF           | ex: `'PR'`                          |
-| ATIVO        | flag de bloqueio ativo — valor literal `'Sim'` |
+| ATIVO        | flag de bloqueio ativo — valor literal `'S'`/`'N'` |
 
 ### `RESTRICAODIAG` — bloqueio de um diagnóstico específico dentro da cultura
 
 | Coluna        | Descrição                          |
 |---------------|--------------------------------------|
-| IDAGROTOXICO  | FK → `AGROTOXICO.AGROTOXICOID`       |
+| IDAGROTOXICO  | FK → `AGROTOXICO.ITEM`       |
 | CULTURAID     | → CULTURA.CULTURAID                 |
 | DIAGNOSTICOID | → DIAGNOSTICO.DIAGNOSTICOID         |
 | UF            | ex: `'PR'`                          |
-| ATIVO         | flag de bloqueio ativo — valor literal `'Sim'` |
+| ATIVO         | flag de bloqueio ativo — valor literal `'S'`/`'N'` |
 
 Isso resolve uma dúvida que eu tinha: como o lado Oracle sabe, independente de
 `RECEITPADRAO`/`DIAGNOSTICO`, que um diagnóstico específico está bloqueado — é via
 `RESTRICAODIAG`, não uma coluna dentro de `RECEITPADRAO`. Mapeamento direto pra fórmula:
 
 ```
-culturaBloqOracle = existe linha em RESTRICAOCULTURA (IDAGROTOXICO=a.AGROTOXICOID, CULTURAID=cultura, UF='PR', ATIVO='Sim')
-diagBloqBanco     = existe linha em RESTRICAODIAG     (IDAGROTOXICO=a.AGROTOXICOID, CULTURAID=cultura, DIAGNOSTICOID=diag, UF='PR', ATIVO='Sim')
+culturaBloqOracle = existe linha em RESTRICAOCULTURA (IDAGROTOXICO=a.ITEM, CULTURAID=cultura, UF='PR', ATIVO='S')
+diagBloqBanco     = existe linha em RESTRICAODIAG     (IDAGROTOXICO=a.ITEM, CULTURAID=cultura, DIAGNOSTICOID=diag, UF='PR', ATIVO='S')
 ```
 
-`a.AGROTOXICOID` vem do mesmo join com `AGROTOXICO` que a query do `/cccb` já faz por
+`a.ITEM` vem do mesmo join com `AGROTOXICO` que a query do `/cccb` já faz por
 `REGISTROMA = :ma` — só precisa passar a selecionar essa coluna também.
 
 ## Regra de negócio — validada linha a linha num truth table de 64 combinações
@@ -88,10 +88,10 @@ algo que já nem existe).
 
 ## O que ainda falta confirmar antes de implementar
 
-1. ~~`IDAGROTOXICO` — FK de `AGROTOXICO.AGROTOXICOID` ou `REGISTROMA`?~~ **Confirmado por
-   Gabriel: é FK de `AGROTOXICO.AGROTOXICOID`.** `banco/schema.md` já atualizado com essa
+1. ~~`IDAGROTOXICO` — FK de `AGROTOXICO.ITEM` ou `REGISTROMA`?~~ **Confirmado por
+   Gabriel: é FK de `AGROTOXICO.ITEM`.** `banco/schema.md` já atualizado com essa
    coluna na tabela `AGROTOXICO`.
-2. ~~Valor literal de `ATIVO`~~ **Confirmado por Gabriel: `'Sim'`.**
+2. ~~Valor literal de `ATIVO`~~ **Confirmado por Gabriel (e checado contra dado real): `'S'`/`'N'`.**
 3. ~~Como ler "bloqueada na Adapar" a partir do scraping~~ **Resolvido — investigado ao vivo na
    página real (produto EVIDENCE 700 WG, `Cod=274`, mesma URL/página que `parseRows` já
    busca).** A página tem uma tabela "Cultura/Alvo" com **4 colunas**:
@@ -131,8 +131,8 @@ código.**
 1. `lib/scraper.js → parseRows` — capturar `statusCultura` (`$tds.eq(1)`) e `statusAlvo`
    (`$tds.eq(3)`) em cada linha, junto do que já é extraído (`cultura`, `siagro`, `alvo`).
 2. `routes/banco.js` — junto da query Oracle já existente (linha ~410-436), buscar também
-   `RESTRICAOCULTURA` e `RESTRICAODIAG`, filtrando pelo agrotóxico do MA (`a.AGROTOXICOID`) +
-   `UF = 'PR'` + `ATIVO = 'Sim'`. Montar um `Set<CULTURAID>` (de `RESTRICAOCULTURA`) e um
+   `RESTRICAOCULTURA` e `RESTRICAODIAG`, filtrando pelo agrotóxico do MA (`a.ITEM`) +
+   `UF = 'PR'` + `ATIVO = 'S'`. Montar um `Set<CULTURAID>` (de `RESTRICAOCULTURA`) e um
    `Set<CULTURAID:DIAGNOSTICOID>` (de `RESTRICAODIAG`) bloqueados no banco.
 3. Reescrever a classificação de `corretos`/`errados`/`faltando` em `banco.js` (hoje linhas
    ~475-524) pra aplicar a fórmula validada, cruzando os 6 booleanos (2 de existência, 2 de
@@ -168,7 +168,7 @@ devolve `r.categoria` — enquanto a Task de `banco.js` não for feita, a coluna
 Todos os 5 passos do plano aplicados:
 
 1. `lib/scraper.js → parseRows` — captura `culturaBloqueada`/`alvoBloqueado`.
-2. `routes/banco.js → /cccb` — seleciona `AGROTOXICOID`, consulta `RESTRICAOCULTURA`/
+2. `routes/banco.js → /cccb` — seleciona `a.ITEM`, consulta `RESTRICAOCULTURA`/
    `RESTRICAODIAG`, monta os Sets de bloqueio.
 3. Classificação reescrita (`classificarOracleRow` + loop de `celeparToCheck`) produzindo
    `corretos`, `errados` (com `categoria`), `bloqueados`, `faltando`, `faltandoBloquearCultura`,
@@ -176,7 +176,15 @@ Todos os 5 passos do plano aplicados:
 4. `docs/comparacao-oracle-celepar.md` documentado com a tabela de classificação.
 5. `teste-cccb/app.js` renderiza as 3 categorias novas + a coluna `Categoria` em Errados.
 
-**Não testado contra o Oracle real** (esta máquina não tem acesso — só o servidor remoto tem).
-Validar depois do deploy: `git pull` + build + `pm2 reload CeleparApp` no servidor, depois rodar
-o CCCB num MA conhecido (ex.: um dos MAs do ticket, ou qualquer produto com cultura restrita) e
-conferir se `bloqueados`/`faltandoBloquearCultura`/`faltandoBloquearDiagnostico` fazem sentido.
+**Testado contra o Oracle real (primeira tentativa deu erro, já corrigido):**
+`AGROTOXICOID` não existe em `AGROTOXICO` — `ORA-00904`. Gabriel rodou consultas reais no
+servidor e confirmou: `IDAGROTOXICO` (em `RESTRICAOCULTURA`/`RESTRICAODIAG`) referencia
+`AGROTOXICO.ITEM`, não uma coluna `AGROTOXICOID` (que nunca existiu). Confirmado com dado real:
+MA 6294 (EVIDENCE 700 WG) tem `ITEM = 2246`, e existe linha em `RESTRICAOCULTURA` com
+`IDAGROTOXICO = 2246, CULTURAID = 204 (Almeirão), UF = 'PR', ATIVO = 'S'` — bate exatamente com
+o bloqueio real observado ao vivo no site da Adapar. De quebra, `ATIVO` também estava errado:
+é `'S'`/`'N'` (mesmo padrão de `RECEITPADRAO.ATIVO`), não `'Sim'` como confirmado antes. Ambos
+corrigidos em `banco.js`, `banco/schema.md` e neste arquivo.
+
+Falta só: dar push, `git pull` + `pm2 reload CeleparApp` no servidor, e rodar o CCCB de novo
+num MA real pra confirmar que não há mais erro.
