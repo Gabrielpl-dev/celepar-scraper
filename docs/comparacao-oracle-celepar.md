@@ -78,3 +78,32 @@ SELECT culturaid, nome, celepar_nome FROM culturas WHERE culturaid = ?
 ```
 
 Se `celepar_nome` estiver nulo, `celeparNormFor` usa o nome Oracle direto. Adicionar o mapeamento correto resolve sem tocar no código.
+
+## Restrição de cultura/diagnóstico (RESTRICAOCULTURA/RESTRICAODIAG)
+
+Design completo em `SPEC-restricao-cultura-cccb.md`. Resumo: uma cultura/diagnóstico "errado" ou
+"faltando" pode na verdade estar corretamente bloqueado de propósito — o motor cruza 3 fontes:
+
+- **Adapar** (`lib/scraper.js → parseRows`): cada linha da página `listar.asp` tem 4 `<td>`s —
+  Cultura, **Status Cultura**, Alvo, **Status Alvo**. `Não Liberado` vem marcado com
+  `<font color="red">`; `Liberado` não tem cor. Capturado como `culturaBloqueada`/`alvoBloqueado`
+  em cada linha retornada por `parseRows`.
+- **Oracle** (`routes/banco.js → /cccb`): `RESTRICAOCULTURA`/`RESTRICAODIAG`
+  (`IDAGROTOXICO`+`CULTURAID`[+`DIAGNOSTICOID`]+`UF='PR'`+`ATIVO='Sim'`) — bloqueio registrado
+  no banco. `IDAGROTOXICO` vem de `AGROTOXICO.AGROTOXICOID`, já selecionado na query principal.
+
+Classificação (função `classificarOracleRow` em `banco.js`):
+
+| Situação | Categoria |
+|---|---|
+| Cultura não existe na Adapar pra esse produto | `errados` (categoria `estrutural`) |
+| Banco bloqueou cultura que a Adapar libera | `errados` (categoria `cultura`) |
+| Banco bloqueou diagnóstico que a Adapar libera | `errados` (categoria `diagnostico`) |
+| Alvo não existe na Adapar pra essa cultura, sem bloqueio no banco | `errados` (categoria `diagnostico`) |
+| Bloqueado nos dois lados de forma consistente | `bloqueados` (não é erro) |
+| Nenhum bloqueio, alvo bate | `corretos` |
+| Adapar bloqueia a cultura inteira, banco ainda não | `faltandoBloquearCultura` |
+| Adapar bloqueia só o diagnóstico, banco ainda não (e a cultura em si não está pendente) | `faltandoBloquearDiagnostico` |
+
+`faltando` (existência pura — Celepar tem, Oracle não tem receita ativa nenhuma) continua
+igual a antes, sem relação com bloqueio.

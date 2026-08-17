@@ -116,6 +116,8 @@ function parseRows(html) {
       cultura: $a.text().trim(),
       siagro:  m[1],
       alvo:    $tds.eq(2).text().trim(),
+      culturaBloqueada: $tds.eq(1).text().trim() === 'Não Liberado',
+      alvoBloqueado:    $tds.eq(3).text().trim() === 'Não Liberado',
       linkeaUrl,
       rawText: $tr.text().replace(/\s+/g, ' ').trim(),
       produtos

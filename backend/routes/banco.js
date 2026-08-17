@@ -412,7 +412,7 @@ router.post('/cccb', async (req, res) => {
     let oracleResult
     if (!isAll) {
       oracleResult = await conn.execute(
-        `SELECT DISTINCT c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO
+        `SELECT DISTINCT c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO, a.AGROTOXICOID
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
@@ -426,7 +426,7 @@ router.post('/cccb', async (req, res) => {
       )
     } else {
       oracleResult = await conn.execute(
-        `SELECT DISTINCT r.CULTURAID, c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO
+        `SELECT DISTINCT r.CULTURAID, c.NOME AS CULTURA, d.DIAGNOSTICOID, d.SIAGROALV, d.DESCRICAO AS DIAGNOSTICO, d.NOMECIENTIFICO, a.AGROTOXICOID
          FROM RECEITPADRAO r
          JOIN CULTURA c ON r.CULTURAID = c.CULTURAID
          JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
@@ -438,6 +438,28 @@ router.post('/cccb', async (req, res) => {
         { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
       )
     }
+
+    const agrotoxicoId = oracleResult.rows[0]?.AGROTOXICOID ?? null
+
+    // RESTRICAOCULTURA/RESTRICAODIAG — bloqueios ativos (UF=PR) já registrados no banco,
+    // pra não tratar cultura/diagnóstico corretamente bloqueado como divergência
+    let culturasBloqueadasBanco = new Set()
+    let diagsBloqueadosBanco    = new Set()
+    if (agrotoxicoId != null) {
+      const [restCultura, restDiag] = await Promise.all([
+        conn.execute(
+          `SELECT CULTURAID FROM RESTRICAOCULTURA WHERE IDAGROTOXICO = :id AND UF = 'PR' AND ATIVO = 'Sim'`,
+          { id: agrotoxicoId }, { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+        ),
+        conn.execute(
+          `SELECT CULTURAID, DIAGNOSTICOID FROM RESTRICAODIAG WHERE IDAGROTOXICO = :id AND UF = 'PR' AND ATIVO = 'Sim'`,
+          { id: agrotoxicoId }, { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+        ),
+      ])
+      culturasBloqueadasBanco = new Set(restCultura.rows.map(r => r.CULTURAID))
+      diagsBloqueadosBanco    = new Set(restDiag.rows.map(r => `${r.CULTURAID}:${r.DIAGNOSTICOID}`))
+    }
+
     await conn.close(); conn = null
 
     const html           = await fetchPage(buildUrl(params))
@@ -476,42 +498,48 @@ router.post('/cccb', async (req, res) => {
       return (bestScore >= 0.8 && bestKey) ? bestKey : cn
     }
 
-    const corretos = []
-    const errados  = []
+    // Classificação por linha do Oracle, cruzando bloqueio de cultura/diagnóstico dos dois
+    // lados (Adapar via culturaBloqueada/alvoBloqueado do scraper, banco via
+    // RESTRICAOCULTURA/RESTRICAODIAG) — ver SPEC-restricao-cultura-cccb.md pra fórmula completa.
+    const corretos   = []
+    const errados    = []
+    const bloqueados = []
+    const cnToCulturaId = {}
+
+    function classificarOracleRow(r, culturaidRow) {
+      const cn = resolveKey(celeparNormFor(r.CULTURA, culturaidRow))
+      cnToCulturaId[cn] = culturaidRow
+      const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO }
+
+      const matched = celeparSets[cn] !== undefined
+      if (!matched) { errados.push({ ...item, categoria: 'estrutural' }); return }
+
+      const cRows  = celeparRows[cn] ?? []
+      const celRow = cRows.find(cr => String(cr.siagro) === String(r.SIAGROALV))
+      const culturaBloqAdapar = cRows[0]?.culturaBloqueada ?? false
+      const diagBloqAdapar    = celRow?.alvoBloqueado ?? false
+      const culturaBloqOracle = culturasBloqueadasBanco.has(culturaidRow)
+      const diagBloqBanco     = diagsBloqueadosBanco.has(`${culturaidRow}:${r.DIAGNOSTICOID}`)
+
+      if (culturaBloqOracle && !culturaBloqAdapar) { errados.push({ ...item, categoria: 'cultura' }); return }
+      if (diagBloqBanco && !diagBloqAdapar)        { errados.push({ ...item, categoria: 'diagnostico' }); return }
+      if (!celRow && !diagBloqBanco)                { errados.push({ ...item, categoria: 'diagnostico' }); return }
+
+      const resultado = { ...item, alvo_siagro: r.SIAGROALV, nomeComumAlvo: celRow?.nomeComumAlvo ?? null }
+      if (culturaBloqOracle || diagBloqBanco) bloqueados.push(resultado)
+      else corretos.push(resultado)
+    }
+
     if (!isAll) {
-      const oracleNome = oracleResult.rows[0]?.CULTURA ?? ''
-      const cn   = resolveKey(celeparNormFor(oracleNome, Number(culturaid)))
-      const cSet = celeparSets[cn] ?? new Set()
-      const cRows = celeparRows[cn] ?? []
-      for (const r of oracleResult.rows) {
-        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO }
-        if (cSet.has(String(r.SIAGROALV))) {
-          const celRow = cRows.find(cr => String(cr.siagro) === String(r.SIAGROALV))
-          corretos.push({ ...item, alvo_siagro: r.SIAGROALV, nomeComumAlvo: celRow?.nomeComumAlvo ?? null })
-        } else {
-          errados.push(item)
-        }
-      }
+      for (const r of oracleResult.rows) classificarOracleRow(r, Number(culturaid))
     } else {
-      for (const r of oracleResult.rows) {
-        const cn   = resolveKey(celeparNormFor(r.CULTURA, r.CULTURAID))
-        const cSet = celeparSets[cn] ?? new Set()
-        const cRows = celeparRows[cn] ?? []
-        const item = { cultura: r.CULTURA, alvo_sb: r.SIAGROALV, diagnosticoid: r.DIAGNOSTICOID, diagnostico: r.DIAGNOSTICO, nomecientifico: r.NOMECIENTIFICO }
-        if (cSet.has(String(r.SIAGROALV))) {
-          const celRow = cRows.find(cr => String(cr.siagro) === String(r.SIAGROALV))
-          corretos.push({ ...item, alvo_siagro: r.SIAGROALV, nomeComumAlvo: celRow?.nomeComumAlvo ?? null })
-        } else {
-          errados.push(item)
-        }
-      }
+      for (const r of oracleResult.rows) classificarOracleRow(r, r.CULTURAID)
     }
 
     const oracleByKey = {}
     for (const r of oracleResult.rows) {
-      const cn = isAll
-        ? resolveKey(celeparNormFor(r.CULTURA, r.CULTURAID))
-        : resolveKey(celeparNormFor(r.CULTURA, Number(culturaid)))
+      const culturaidRow = isAll ? r.CULTURAID : Number(culturaid)
+      const cn = resolveKey(celeparNormFor(r.CULTURA, culturaidRow))
       if (!oracleByKey[cn]) oracleByKey[cn] = new Set()
       oracleByKey[cn].add(String(r.SIAGROALV))
     }
@@ -520,11 +548,28 @@ router.post('/cccb', async (req, res) => {
       ? allCelepar
       : (celeparRows[resolveKey(celeparNormFor(oracleResult.rows[0]?.CULTURA ?? '', Number(culturaid)))] ?? [])
 
-    const faltando = []
+    const faltando                    = []
+    const faltandoBloquearCultura     = []
+    const culturaIdsFaltandoBloqueio  = new Set()
+    const faltandoBloquearDiagnostico = []
+
     for (const r of celeparToCheck) {
-      const oSet = oracleByKey[celNorm(r.cultura)] ?? new Set()
+      const cn            = celNorm(r.cultura)
+      const oSet          = oracleByKey[cn] ?? new Set()
+      const culturaidRow  = cnToCulturaId[cn] ?? null
+      const culturaBloqOracle = culturaidRow != null && culturasBloqueadasBanco.has(culturaidRow)
+
       if (!oSet.has(String(r.siagro)))
         faltando.push({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null })
+
+      if (r.culturaBloqueada && !culturaBloqOracle) {
+        if (culturaidRow == null || !culturaIdsFaltandoBloqueio.has(culturaidRow)) {
+          if (culturaidRow != null) culturaIdsFaltandoBloqueio.add(culturaidRow)
+          faltandoBloquearCultura.push({ culturaid: culturaidRow, cultura: r.cultura })
+        }
+      } else if (!r.culturaBloqueada && r.alvoBloqueado) {
+        faltandoBloquearDiagnostico.push({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null })
+      }
     }
 
     const celeparForResponse = isAll
@@ -539,6 +584,9 @@ router.post('/cccb', async (req, res) => {
       corretos,
       errados,
       faltando,
+      bloqueados,
+      faltandoBloquearCultura,
+      faltandoBloquearDiagnostico,
     })
   } catch (err) {
     oracleErrorResponse(res, err, 'cccb')
