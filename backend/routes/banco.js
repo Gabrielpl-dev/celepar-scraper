@@ -568,7 +568,30 @@ router.post('/cccb', async (req, res) => {
           faltandoBloquearCultura.push({ culturaid: culturaidRow, cultura: r.cultura })
         }
       } else if (!r.culturaBloqueada && r.alvoBloqueado) {
-        faltandoBloquearDiagnostico.push({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null })
+        faltandoBloquearDiagnostico.push({ culturaid: culturaidRow, cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null })
+      }
+    }
+
+    // Anexa o DIAGNOSTICOID (código do banco) de cada alvo pendente de bloqueio — a Celepar só
+    // devolve o SIAGROALV, quem sabe o DIAGNOSTICOID é o Oracle.
+    if (faltandoBloquearDiagnostico.length) {
+      const siagrosFaltantes = [...new Set(faltandoBloquearDiagnostico.map(r => String(r.siagro)))]
+      let connLookup
+      try {
+        connLookup = await oracleConn()
+        const binds = Object.fromEntries(siagrosFaltantes.map((s, i) => [`s${i}`, s]))
+        const placeholders = siagrosFaltantes.map((_, i) => `:s${i}`).join(', ')
+        const diagResult = await connLookup.execute(
+          `SELECT DIAGNOSTICOID, SIAGROALV FROM DIAGNOSTICO WHERE SIAGROALV IN (${placeholders})`,
+          binds, { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
+        )
+        const diagnosticoIdBySiagro = new Map(diagResult.rows.map(d => [String(d.SIAGROALV), d.DIAGNOSTICOID]))
+        for (const r of faltandoBloquearDiagnostico) r.diagnosticoid = diagnosticoIdBySiagro.get(String(r.siagro)) ?? null
+      } catch (_) {
+        // Não bloqueia a resposta principal — só fica sem diagnosticoid nesse caso
+        for (const r of faltandoBloquearDiagnostico) r.diagnosticoid = null
+      } finally {
+        if (connLookup) await connLookup.close().catch(() => {})
       }
     }
 
