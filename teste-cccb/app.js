@@ -252,15 +252,17 @@ function renderResultado({ oracle, celepar, corretos, errados, faltando, bloquea
   if (errados.length)  el.appendChild(renderTabela('Errados',  ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico', 'Categoria'],                   errados.map(r => [r.cultura, pill(r.alvo_sb, 'err'), r.diagnostico,            r.nomecientifico, r.categoria])))
   if (faltandoBloquearCultura.length)     el.appendChild(renderTabela(
     'Faltando bloquear cultura',
-    ['Defensivo', 'IDAgrotoxico', 'Cultura', 'CulturaID'],
-    faltandoBloquearCultura.map(r => [state.nome, agrotoxicoItem, r.cultura, r.culturaid]),
-    row => `CULTURAID=${row[3]} IDAGROTOXICO=${row[1]}`
+    ['Defensivo', 'Cultura'],
+    faltandoBloquearCultura.map(r => [state.nome, r.cultura]),
+    [() => agrotoxicoItem, r => r.culturaid],
+    faltandoBloquearCultura
   ))
   if (faltandoBloquearDiagnostico.length) el.appendChild(renderTabela(
     'Faltando bloquear diagnóstico',
-    ['Defensivo', 'IDAgrotoxico', 'Cultura', 'CulturaID', 'Alvo Siagro', 'Alvo', 'Nome Comum', 'DiagnosticoID'],
-    faltandoBloquearDiagnostico.map(r => [state.nome, agrotoxicoItem, r.cultura, r.culturaid, pill(r.siagro), r.alvo, r.nomeComumAlvo, r.diagnosticoid]),
-    row => `CULTURAID=${row[3]} DIAGNOSTICOID=${row[7]} IDAGROTOXICO=${row[1]}`
+    ['Defensivo', 'Cultura', 'Alvo Siagro', 'Alvo', 'Nome Comum'],
+    faltandoBloquearDiagnostico.map(r => [state.nome, r.cultura, pill(r.siagro), r.alvo, r.nomeComumAlvo]),
+    [() => agrotoxicoItem, r => r.culturaid, undefined, r => r.diagnosticoid],
+    faltandoBloquearDiagnostico
   ))
   if (faltando.length) el.appendChild(renderTabelaFaltando('Faltando', faltando))
   if (bloqueados.length) el.appendChild(renderTabela('Bloqueado (OK)', ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico', 'Nome Comum'], bloqueados.map(r => [r.cultura, pill(r.alvo_sb), r.diagnostico, r.nomecientifico, r.nomeComumAlvo])))
@@ -372,7 +374,7 @@ function pill(code, tipo) {
   return `<span class="${cls}">${code ?? '—'}</span>`
 }
 
-function renderTabela(titulo, headers, rows, onRowClick) {
+function renderTabela(titulo, headers, rows, cellCopy, rawRows) {
   const wrap = document.createElement('div')
   wrap.className = 'tabela-bloco'
 
@@ -398,20 +400,28 @@ function renderTabela(titulo, headers, rows, onRowClick) {
   if (!rows.length) {
     tbody.innerHTML = `<tr><td colspan="${headers.length}" style="color:#444;font-style:italic">Nenhum registro.</td></tr>`
   } else {
-    for (const row of rows) {
-      const tr = document.createElement('tr')
-      tr.innerHTML = row.map(cell => `<td>${cell ?? '—'}</td>`).join('')
-      if (onRowClick) {
-        tr.style.cursor = 'pointer'
-        tr.title = 'Clique pra copiar o código'
-        tr.onclick = () => {
-          const valor = onRowClick(row)
-          if (valor == null) return
-          navigator.clipboard.writeText(String(valor)).then(() => setStatus(`código copiado: ${valor}`))
+    rows.forEach((row, ri) => {
+      const tr  = document.createElement('tr')
+      const raw = rawRows?.[ri]
+      row.forEach((cell, i) => {
+        const td = document.createElement('td')
+        td.innerHTML = cell ?? '—'
+        const getCopyValue = cellCopy?.[i]
+        if (getCopyValue) {
+          td.style.cursor = 'pointer'
+          td.title = 'Clique pra copiar o código'
+          td.onclick = () => {
+            const valor = getCopyValue(raw)
+            if (valor == null) return
+            navigator.clipboard.writeText(String(valor))
+              .then(() => setStatus(`código copiado: ${valor}`))
+              .catch(() => setStatus('não foi possível copiar — sem permissão de clipboard'))
+          }
         }
-      }
+        tr.appendChild(td)
+      })
       tbody.appendChild(tr)
-    }
+    })
   }
 
   table.appendChild(tbody)
