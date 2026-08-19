@@ -374,6 +374,25 @@ function pill(code, tipo) {
   return `<span class="${cls}">${code ?? '—'}</span>`
 }
 
+// navigator.clipboard só existe em contexto seguro (HTTPS/localhost) — este app roda em HTTP
+// puro num IP direto, então cai sempre no fallback via execCommand.
+async function copiarTexto(texto) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(texto)
+    return
+  }
+  const textarea = document.createElement('textarea')
+  textarea.value = texto
+  textarea.style.position = 'fixed'
+  textarea.style.opacity = '0'
+  document.body.appendChild(textarea)
+  textarea.focus()
+  textarea.select()
+  const ok = document.execCommand('copy')
+  document.body.removeChild(textarea)
+  if (!ok) throw new Error('execCommand copy falhou')
+}
+
 function renderTabela(titulo, headers, rows, cellCopy, rawRows) {
   const wrap = document.createElement('div')
   wrap.className = 'tabela-bloco'
@@ -413,7 +432,7 @@ function renderTabela(titulo, headers, rows, cellCopy, rawRows) {
           td.onclick = () => {
             const valor = getCopyValue(raw)
             if (valor == null) return
-            navigator.clipboard.writeText(String(valor))
+            copiarTexto(String(valor))
               .then(() => setStatus(`código copiado: ${valor}`))
               .catch(() => setStatus('não foi possível copiar — sem permissão de clipboard'))
           }
