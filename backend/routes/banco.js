@@ -506,6 +506,10 @@ router.post('/cccb', async (req, res) => {
     const bloqueados = []
     const cnToCulturaId = {}
 
+    // Chaves culturaid:diagnosticoid já classificadas em `bloqueados`, pra `celeparToCheck` (loop
+    // abaixo, que não conhece o DIAGNOSTICOID de cara) não duplicar o mesmo par numa segunda vez.
+    const bloqueadosKeys = new Set()
+
     function classificarOracleRow(r, culturaidRow) {
       const cn = resolveKey(celeparNormFor(r.CULTURA, culturaidRow))
       cnToCulturaId[cn] = culturaidRow
@@ -526,8 +530,10 @@ router.post('/cccb', async (req, res) => {
       if (!celRow && !diagBloqBanco)                { errados.push({ ...item, categoria: 'diagnostico' }); return }
 
       const resultado = { ...item, alvo_siagro: r.SIAGROALV, nomeComumAlvo: celRow?.nomeComumAlvo ?? null }
-      if (culturaBloqOracle || diagBloqBanco) bloqueados.push(resultado)
-      else corretos.push(resultado)
+      if (culturaBloqOracle || diagBloqBanco) {
+        bloqueadosKeys.add(`${culturaidRow}:${r.DIAGNOSTICOID}`)
+        bloqueados.push(resultado)
+      } else corretos.push(resultado)
     }
 
     if (!isAll) {
@@ -552,6 +558,7 @@ router.post('/cccb', async (req, res) => {
     const faltandoBloquearCultura     = []
     const culturaIdsFaltandoBloqueio  = new Set()
     const faltandoBloquearDiagnostico = []
+    const candidatosDiagBloqueado     = []
 
     for (const r of celeparToCheck) {
       const cn            = celNorm(r.cultura)
@@ -568,30 +575,47 @@ router.post('/cccb', async (req, res) => {
           faltandoBloquearCultura.push({ culturaid: culturaidRow, cultura: r.cultura })
         }
       } else if (!r.culturaBloqueada && r.alvoBloqueado) {
-        faltandoBloquearDiagnostico.push({ culturaid: culturaidRow, cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null })
+        // Ainda não sabemos se o banco já bloqueou esse diagnóstico específico (RESTRICAODIAG é
+        // indexado por DIAGNOSTICOID, e a Celepar só devolve o SIAGROALV) — decide depois de
+        // resolver o DIAGNOSTICOID de todos os candidatos, pra não duplicar com `bloqueados`.
+        candidatosDiagBloqueado.push({ culturaidRow, cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null })
       }
     }
 
-    // Anexa o DIAGNOSTICOID (código do banco) de cada alvo pendente de bloqueio — a Celepar só
-    // devolve o SIAGROALV, quem sabe o DIAGNOSTICOID é o Oracle.
-    if (faltandoBloquearDiagnostico.length) {
-      const siagrosFaltantes = [...new Set(faltandoBloquearDiagnostico.map(r => String(r.siagro)))]
+    // Resolve o DIAGNOSTICOID (a Celepar só devolve o SIAGROALV) e só então decide se cada
+    // candidato já está corretamente bloqueado (RESTRICAODIAG ativa) ou se falta bloquear.
+    if (candidatosDiagBloqueado.length) {
+      const siagrosCandidatos = [...new Set(candidatosDiagBloqueado.map(r => String(r.siagro)))]
       let connLookup
+      let diagnosticoIdBySiagro = new Map()
       try {
         connLookup = await oracleConn()
-        const binds = Object.fromEntries(siagrosFaltantes.map((s, i) => [`s${i}`, s]))
-        const placeholders = siagrosFaltantes.map((_, i) => `:s${i}`).join(', ')
+        const binds = Object.fromEntries(siagrosCandidatos.map((s, i) => [`s${i}`, s]))
+        const placeholders = siagrosCandidatos.map((_, i) => `:s${i}`).join(', ')
         const diagResult = await connLookup.execute(
           `SELECT DIAGNOSTICOID, SIAGROALV FROM DIAGNOSTICO WHERE SIAGROALV IN (${placeholders})`,
           binds, { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
         )
-        const diagnosticoIdBySiagro = new Map(diagResult.rows.map(d => [String(d.SIAGROALV), d.DIAGNOSTICOID]))
-        for (const r of faltandoBloquearDiagnostico) r.diagnosticoid = diagnosticoIdBySiagro.get(String(r.siagro)) ?? null
+        diagnosticoIdBySiagro = new Map(diagResult.rows.map(d => [String(d.SIAGROALV), d.DIAGNOSTICOID]))
       } catch (_) {
-        // Não bloqueia a resposta principal — só fica sem diagnosticoid nesse caso
-        for (const r of faltandoBloquearDiagnostico) r.diagnosticoid = null
+        // Não bloqueia a resposta principal — os candidatos ficam sem diagnosticoid resolvido
       } finally {
         if (connLookup) await connLookup.close().catch(() => {})
+      }
+
+      for (const c of candidatosDiagBloqueado) {
+        const diagnosticoid = diagnosticoIdBySiagro.get(String(c.siagro)) ?? null
+        const key           = `${c.culturaidRow}:${diagnosticoid}`
+        const diagBloqBanco = diagnosticoid != null && diagsBloqueadosBanco.has(key)
+
+        if (diagBloqBanco) {
+          if (!bloqueadosKeys.has(key)) {
+            bloqueadosKeys.add(key)
+            bloqueados.push({ cultura: c.cultura, alvo_sb: c.siagro, diagnosticoid, diagnostico: c.alvo, nomecientifico: null, alvo_siagro: c.siagro, nomeComumAlvo: c.nomeComumAlvo })
+          }
+        } else {
+          faltandoBloquearDiagnostico.push({ culturaid: c.culturaidRow, cultura: c.cultura, siagro: c.siagro, alvo: c.alvo, nomeComumAlvo: c.nomeComumAlvo, diagnosticoid })
+        }
       }
     }
 
