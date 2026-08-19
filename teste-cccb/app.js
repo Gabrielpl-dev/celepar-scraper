@@ -221,7 +221,7 @@ async function rodarCCCB(silent = false) {
     const data = await api.cccb(culturaid, state, true)
     const ms   = Date.now() - t0
     if (!data.ok) { if (!silent) setStatus('erro: ' + data.error); return }
-    const { oracle, celepar, corretos, errados, faltando, bloqueados = [], faltandoBloquearCultura = [], faltandoBloquearDiagnostico = [] } = data
+    const { oracle, celepar, corretos, errados, faltando, bloqueados = [], faltandoBloquearCultura = [], faltandoBloquearDiagnostico = [], agrotoxicoItem = null } = data
     const matchCelepar = celepar.length - faltando.length
     setStatus(
       `banco: ${oracle.length} = ✓${corretos.length} + ✗${errados.length} + 🔒${bloqueados.length}` +
@@ -230,7 +230,7 @@ async function rodarCCCB(silent = false) {
       `  —  ${ms}ms` +
       (silent ? '  · atualizado automaticamente' : '')
     )
-    renderResultado({ oracle, celepar, corretos, errados, faltando, bloqueados, faltandoBloquearCultura, faltandoBloquearDiagnostico })
+    renderResultado({ oracle, celepar, corretos, errados, faltando, bloqueados, faltandoBloquearCultura, faltandoBloquearDiagnostico, agrotoxicoItem })
     if (!silent && state.ma) startWatch(state.ma)
   } catch (err) {
     if (!silent) setStatus('erro: ' + err.message)
@@ -244,14 +244,24 @@ document.getElementById('cultura-input').addEventListener('keydown', e => { if (
 
 // ── Render ────────────────────────────────────────────────────────────────────
 
-function renderResultado({ oracle, celepar, corretos, errados, faltando, bloqueados = [], faltandoBloquearCultura = [], faltandoBloquearDiagnostico = [] }) {
+function renderResultado({ oracle, celepar, corretos, errados, faltando, bloqueados = [], faltandoBloquearCultura = [], faltandoBloquearDiagnostico = [], agrotoxicoItem = null }) {
   const el = document.getElementById('resultado')
   el.innerHTML = ''
   if (oracle.length)   el.appendChild(renderTabela('Banco',    ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico'],                                oracle.map(r  => [r.cultura, pill(r.siagroalv),      r.diagnostico,            r.nomecientifico])))
   if (celepar.length)  el.appendChild(renderTabela('Celepar',  ['Cultura', 'Alvo Siagro', 'Alvo', 'Nome Comum'],                                        celepar.map(r => [r.cultura, pill(r.siagro),         r.alvo,                   r.nomeComumAlvo])))
   if (errados.length)  el.appendChild(renderTabela('Errados',  ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico', 'Categoria'],                   errados.map(r => [r.cultura, pill(r.alvo_sb, 'err'), r.diagnostico,            r.nomecientifico, r.categoria])))
-  if (faltandoBloquearCultura.length)     el.appendChild(renderTabela('Faltando bloquear cultura',     ['Cultura', 'CulturaID'],                                          faltandoBloquearCultura.map(r => [r.cultura, r.culturaid])))
-  if (faltandoBloquearDiagnostico.length) el.appendChild(renderTabela('Faltando bloquear diagnóstico', ['Cultura', 'CulturaID', 'Alvo Siagro', 'Alvo', 'Nome Comum', 'DiagnosticoID'],     faltandoBloquearDiagnostico.map(r => [r.cultura, r.culturaid, pill(r.siagro), r.alvo, r.nomeComumAlvo, r.diagnosticoid])))
+  if (faltandoBloquearCultura.length)     el.appendChild(renderTabela(
+    'Faltando bloquear cultura',
+    ['Defensivo', 'IDAgrotoxico', 'Cultura', 'CulturaID'],
+    faltandoBloquearCultura.map(r => [state.nome, agrotoxicoItem, r.cultura, r.culturaid]),
+    row => `CULTURAID=${row[3]} IDAGROTOXICO=${row[1]}`
+  ))
+  if (faltandoBloquearDiagnostico.length) el.appendChild(renderTabela(
+    'Faltando bloquear diagnóstico',
+    ['Defensivo', 'IDAgrotoxico', 'Cultura', 'CulturaID', 'Alvo Siagro', 'Alvo', 'Nome Comum', 'DiagnosticoID'],
+    faltandoBloquearDiagnostico.map(r => [state.nome, agrotoxicoItem, r.cultura, r.culturaid, pill(r.siagro), r.alvo, r.nomeComumAlvo, r.diagnosticoid]),
+    row => `CULTURAID=${row[3]} DIAGNOSTICOID=${row[7]} IDAGROTOXICO=${row[1]}`
+  ))
   if (faltando.length) el.appendChild(renderTabelaFaltando('Faltando', faltando))
   if (bloqueados.length) el.appendChild(renderTabela('Bloqueado (OK)', ['Cultura', 'Alvo SB', 'Diagnóstico', 'Nome Científico', 'Nome Comum'], bloqueados.map(r => [r.cultura, pill(r.alvo_sb), r.diagnostico, r.nomecientifico, r.nomeComumAlvo])))
   el.appendChild(renderTabela('Corretos', ['Cultura', 'Alvo SB', 'Alvo Siagro', 'Diagnóstico', 'Nome Científico', 'Nome Comum'],  corretos.map(r => [r.cultura, pill(r.alvo_sb, 'ok'), pill(r.alvo_siagro, 'ok'), r.diagnostico, r.nomecientifico, r.nomeComumAlvo])))
@@ -362,7 +372,7 @@ function pill(code, tipo) {
   return `<span class="${cls}">${code ?? '—'}</span>`
 }
 
-function renderTabela(titulo, headers, rows) {
+function renderTabela(titulo, headers, rows, onRowClick) {
   const wrap = document.createElement('div')
   wrap.className = 'tabela-bloco'
 
@@ -391,6 +401,15 @@ function renderTabela(titulo, headers, rows) {
     for (const row of rows) {
       const tr = document.createElement('tr')
       tr.innerHTML = row.map(cell => `<td>${cell ?? '—'}</td>`).join('')
+      if (onRowClick) {
+        tr.style.cursor = 'pointer'
+        tr.title = 'Clique pra copiar o código'
+        tr.onclick = () => {
+          const valor = onRowClick(row)
+          if (valor == null) return
+          navigator.clipboard.writeText(String(valor)).then(() => setStatus(`código copiado: ${valor}`))
+        }
+      }
       tbody.appendChild(tr)
     }
   }

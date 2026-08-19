@@ -610,6 +610,7 @@ router.post('/cccb', async (req, res) => {
       bloqueados,
       faltandoBloquearCultura,
       faltandoBloquearDiagnostico,
+      agrotoxicoItem: agrotoxicoId,
     })
   } catch (err) {
     oracleErrorResponse(res, err, 'cccb')
