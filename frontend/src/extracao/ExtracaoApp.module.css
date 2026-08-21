@@ -17,14 +17,14 @@
 }
 
 .title {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: .04em;
   color: var(--text);
 }
 
 .badge {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--dim);
   border: 1px solid var(--line);
   padding: 1px 7px;
@@ -45,7 +45,7 @@
 
 .empty {
   color: var(--dim);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .uploadForm {
@@ -61,7 +61,7 @@
   border-radius: 3px;
   padding: 7px 16px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -73,7 +73,7 @@
 
 .erro {
   color: var(--red);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .layout {
@@ -90,13 +90,13 @@
 .tabela {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .tabela th {
   text-align: left;
   color: var(--dim);
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: .06em;
   padding: 6px 10px;
@@ -117,7 +117,7 @@
 }
 
 .seloAguardando, .seloAlta, .seloRevisar, .seloErro {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -141,7 +141,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .fechar {
@@ -154,11 +154,11 @@
 }
 
 .painelSelo {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .divergencia {
-  font-size: 11px;
+  font-size: 13px;
   display: flex;
   flex-direction: column;
   gap: 4px;

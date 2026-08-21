@@ -9,14 +9,14 @@
 .title {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 22px;
+  font-size: 24px;
   letter-spacing: -.01em;
   margin-bottom: 4px;
 }
 
 .desc {
   color: var(--dim);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* nada de painel/caixa envolvendo tudo — form e fontes flutuam direto
@@ -44,7 +44,7 @@
 }
 
 .sourcesTitle {
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: .08em;
   color: var(--dim);
@@ -60,7 +60,7 @@
 .sourceRowOn .sourceLabel { color: var(--green); }
 
 .sourceLabel {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -90,7 +90,7 @@
 .searchWrap { position: relative; }
 
 .hint {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--dim);
   padding: 4px 0;
   display: block;
@@ -118,7 +118,7 @@
   cursor: pointer;
   border-bottom: 1px solid var(--line);
   gap: 8px;
-  font-size: 11px;
+  font-size: 13px;
   transition: background .1s;
 }
 .dropdownItem:last-child { border-bottom: 0; }
@@ -148,13 +148,13 @@
 
 .dropMa {
   color: var(--dim);
-  font-size: 10px;
+  font-size: 12px;
   flex-shrink: 0;
   font-style: italic;
 }
 
 .sourceMa {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--accent);
   font-family: var(--mono);
   margin-left: auto;

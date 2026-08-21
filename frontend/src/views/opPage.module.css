@@ -15,7 +15,7 @@
 }
 
 .tag {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--accent);
   border: 1px solid var(--accent);
   padding: 2px 6px;
@@ -31,7 +31,7 @@
   cursor: pointer;
   border-radius: 4px;
   padding: 4px 8px;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1;
   transition: color .15s, border-color .15s;
 }
@@ -45,7 +45,7 @@
   color: var(--dim);
   margin-bottom: 24px;
   max-width: 720px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* campos flutuam direto, sem caixa em volta — usado por Comparar,
@@ -69,7 +69,7 @@
   border: none;
   padding: 0 20px;
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   border-radius: 3px;

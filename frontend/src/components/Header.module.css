@@ -35,13 +35,13 @@
 
 .meta {
   color: var(--dim);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: .04em;
   text-transform: uppercase;
 }
 
 .produtoLabel {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--dim);
 }
 
@@ -58,7 +58,7 @@
   border-radius: 4px;
   padding: 5px 12px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: .06em;
   transition: color .15s, border-color .15s;
@@ -93,7 +93,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--dim);
 }
 
@@ -105,7 +105,7 @@
   border-radius: 4px;
   padding: 5px 10px;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: .06em;
   transition: color .15s, border-color .15s;
@@ -120,7 +120,7 @@
 }
 
 .caret {
-  font-size: 9px;
+  font-size: 11px;
   margin-left: 2px;
   display: inline-block;
 }
@@ -162,7 +162,7 @@
   cursor: pointer;
   padding: 8px 8px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .dropdownItemActive .dropdownItemBtn {
@@ -187,7 +187,7 @@
 }
 
 .newTabBtn {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--dim);
   padding: 2px 4px;
   border-radius: 3px;

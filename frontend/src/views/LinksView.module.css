@@ -16,7 +16,7 @@
 }
 
 .desc {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--dim);
   margin: 0;
 }
@@ -35,7 +35,7 @@
   background: none;
   color: var(--text);
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: .04em;
   text-decoration: none;

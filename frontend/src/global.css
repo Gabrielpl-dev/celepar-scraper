@@ -59,7 +59,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--display);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   background-image: none;
@@ -72,7 +72,7 @@ input[type="text"], input[type="number"], input[type="password"] {
   color: var(--text);
   padding: 8px 10px;
   font-family: var(--display);
-  font-size: 13px;
+  font-size: 15px;
   border-radius: 3px;
   outline: none;
   transition: border-color .15s;
@@ -94,7 +94,7 @@ input[readonly]:focus {
 
 label {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: .08em;
   color: var(--dim);
