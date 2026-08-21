@@ -431,7 +431,7 @@ function renderTabela(titulo, headers, rows, cellCopy, rawRows) {
           td.title = 'Clique pra copiar o código'
           td.onclick = () => {
             const valor = getCopyValue(raw)
-            if (valor == null) return
+            if (valor == null) { setStatus('corrija o cadastro primeiro'); return }
             copiarTexto(String(valor))
               .then(() => setStatus(`código copiado: ${valor}`))
               .catch(() => setStatus('não foi possível copiar — sem permissão de clipboard'))
