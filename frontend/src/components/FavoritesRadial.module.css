@@ -31,7 +31,7 @@
 .itemActive {
   background: var(--accent);
   border-color: var(--neon);
-  color: #10190a;
+  color: #fff;
   box-shadow: 0 0 8px color-mix(in srgb, var(--neon) 55%, transparent);
 }
 

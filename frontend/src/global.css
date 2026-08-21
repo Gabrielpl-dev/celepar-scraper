@@ -1,41 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fragment+Mono&display=swap');
 
 :root {
-  /* agro-tech, versão clara: mesmo terreno da paleta dark (papel/solo
-     claro em vez de solo escuro), mesmo verde de safra de marca */
-  --bg:         #f1efe1;
-  --panel:      #fdfcf6;
-  --panel-2:    #ece6d3;
-  --line:       #ddd5bd;
-  --text:       #2b2620;
-  --dim:        #8a8060;
-  --accent:     #8CC63F;
-  --accent-2:   #6ea832;
-  --red:        #a8492f;
-  --green:      #8CC63F;
-  --amber:      #a67c26;
-  --neon:       #6ea832;
-  --header-bg:  rgba(253,252,246,.95);
-  --mono:       'JetBrains Mono', ui-monospace, Menlo, monospace;
-  --display:    'Space Grotesk', system-ui, sans-serif;
+  /* dossiê regulatório, versão clara: papel neutro + accent tinta-de-carimbo.
+     verde/âmbar/vermelho só como sinal de status (ver padroes/ai-slop-checklist.md
+     no vault) — nunca decorativo. */
+  --bg:         #EBE7DC;
+  --panel:      #F7F5EE;
+  --panel-2:    #DFDACB;
+  --line:       #CBC4AE;
+  --text:       #2A2820;
+  --dim:        #726B58;
+  --accent:     #33586A;
+  --accent-2:   #26424F;
+  --red:        #A2432B;
+  --green:      #5B7B4A;
+  --amber:      #A8792A;
+  --neon:       #33586A;
+  --header-bg:  rgba(247,245,238,.95);
+  --mono:       'Fragment Mono', ui-monospace, Menlo, monospace;
+  --display:    'Archivo', system-ui, sans-serif;
 }
 
 [data-theme="dark"] {
-  /* agro-tech: solo escuro + verde de safra + linha neon (ver vault
-     projetos/celepar-scraper/design-agro-tech.md) */
-  --bg:         #15120e;
-  --panel:      #221c15;
-  --panel-2:    #2a231a;
-  --line:       #3c3122;
-  --text:       #e9e2d2;
-  --dim:        #9c8f76;
-  --accent:     #8cc63f;
-  --accent-2:   #6ea832;
-  --red:        #c9614a;
-  --green:      #8cc63f;
-  --amber:      #d1a343;
-  --neon:       #4dff8a;
-  --header-bg:  rgba(21,18,14,.92);
+  /* dossiê regulatório, versão escura: solo neutro quente, sem glow acid-green
+     (era o principal tell de "AI slop" da paleta anterior) */
+  --bg:         #1B1A15;
+  --panel:      #232219;
+  --panel-2:    #2C2A1E;
+  --line:       #3E3B2C;
+  --text:       #E9E4D4;
+  --dim:        #9C9481;
+  --accent:     #6FA6B8;
+  --accent-2:   #5C93A8;
+  --red:        #C4735A;
+  --green:      #86A46B;
+  --amber:      #C99A45;
+  --neon:       #6FA6B8;
+  --header-bg:  rgba(27,26,21,.92);
 }
 
 [data-theme="dark"] body {
@@ -54,7 +55,7 @@ html, body, #root { height: 100%; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--mono);
+  font-family: var(--display);
   font-size: 13px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -67,7 +68,7 @@ input[type="text"], input[type="number"], input[type="password"] {
   border: 1px solid var(--line);
   color: var(--text);
   padding: 8px 10px;
-  font-family: var(--mono);
+  font-family: var(--display);
   font-size: 13px;
   border-radius: 3px;
   outline: none;

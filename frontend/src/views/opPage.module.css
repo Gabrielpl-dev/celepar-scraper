@@ -67,7 +67,7 @@
 
 .runBtn {
   background: var(--accent);
-  color: #0b0d0e;
+  color: #fff;
   border: none;
   padding: 0 20px;
   font-family: var(--mono);

@@ -112,7 +112,7 @@
 .btn {
   width: 100%;
   padding: 13px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  background: var(--accent);
   color: #fff;
   border: none;
   border-radius: 8px;
