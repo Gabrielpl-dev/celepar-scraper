@@ -1,18 +1,33 @@
+/* sinal de estado e uma borda inteira + indicador redondo, nao uma
+   faixa colorida de destaque na lateral (o "accent bar" e um tell
+   classico de slop — ver padroes/ai-slop-checklist.md no vault). */
 .status {
   display: flex;
-  gap: 16px;
+  gap: 10px;
   align-items: center;
-  padding: 10px 14px;
-  background: var(--panel-2);
-  border-left: 3px solid var(--dim);
+  padding: 9px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
   font-size: 12px;
   margin-bottom: 16px;
-  border-radius: 0 4px 4px 0;
 }
 
-.ok      { border-left-color: var(--green); }
-.err     { border-left-color: var(--red); color: var(--red); }
-.loading { border-left-color: var(--amber); }
+.err {
+  color: var(--red);
+  background: color-mix(in srgb, var(--red) 8%, var(--panel));
+  border-color: color-mix(in srgb, var(--red) 35%, var(--line));
+}
+
+.indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--dim);
+}
+.ok .indicator  { background: var(--green); }
+.err .indicator { background: var(--red); }
 
 .count { color: var(--accent); font-weight: 700; }
 

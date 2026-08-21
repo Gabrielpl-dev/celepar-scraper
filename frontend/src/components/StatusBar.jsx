@@ -14,6 +14,7 @@ export function StatusBar({ status, message, count, took }) {
 
   return (
     <div className={`${s.status} ${s[status]}`}>
+      <span className={s.indicator} />
       {message}
       {count != null && <span className={s.count}>{count}</span>}
       {count != null && ' resultado(s)'}

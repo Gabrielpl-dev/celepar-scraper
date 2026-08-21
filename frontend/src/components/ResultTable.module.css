@@ -48,7 +48,7 @@ th {
   font-weight: 500;
 }
 
-tr:hover td { background: rgba(255,255,255,.02); }
+tr:hover td { background: var(--panel-2); }
 
 .emptyState {
   padding: 60px 20px;
