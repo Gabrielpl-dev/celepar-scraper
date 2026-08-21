@@ -171,7 +171,7 @@ export function ParamsView({ params, setParams }) {
         <div className={s.sourcesPanel}>
           <div className={s.sourcesTitle}>Fontes</div>
           {SOURCES.map(src => (
-            <div key={src.id} className={s.sourceRow}>
+            <div key={src.id} className={`${s.sourceRow} ${!checking && sources?.[src.id] === true ? s.sourceRowOn : ''}`}>
               <span className={`${s.dot} ${checking ? s.dotChecking : dotClass(sources?.[src.id])}`} />
               <span className={s.sourceLabel}>{src.label}</span>
               {src.id === 'agrofit' && sources?.agrofitInfo?.ma && (
