@@ -1,17 +1,15 @@
+/* sem caixa em volta da tabela inteira — so a toolbar mantem divisoria
+   embaixo (transicao pro corpo), e o cabecalho sticky + linhas com
+   hairline ja dao a estrutura sem precisar de moldura. */
 .results {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  overflow: hidden;
 }
 
 .toolbar {
   display: flex;
   gap: 10px;
   align-items: center;
-  padding: 10px 14px;
+  padding: 8px 2px;
   border-bottom: 1px solid var(--line);
-  background: var(--panel-2);
 }
 
 .tableWrap {

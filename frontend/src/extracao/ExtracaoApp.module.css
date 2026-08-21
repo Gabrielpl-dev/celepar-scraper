@@ -74,9 +74,6 @@
 .erro {
   color: var(--red);
   font-size: 12px;
-  border: 1px solid var(--red);
-  border-radius: 3px;
-  padding: 8px 12px;
 }
 
 .layout {
@@ -129,11 +126,11 @@
 .seloRevisar    { color: var(--amber); }
 .seloErro       { color: var(--red); }
 
+/* divisoria so na lateral (e um detalhe anexado a lista, nao um card
+   solto) — sem fundo/moldura completa em volta. */
 .painel {
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  background: var(--panel);
-  padding: 14px;
+  border-left: 1px solid var(--line);
+  padding: 4px 0 4px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -162,9 +159,6 @@
 
 .divergencia {
   font-size: 11px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 4px;

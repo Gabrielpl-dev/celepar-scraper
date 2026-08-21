@@ -48,15 +48,13 @@
   font-size: 12px;
 }
 
+/* campos flutuam direto, sem caixa em volta — usado por Comparar,
+   Listagem, Verificar, Siagro e Extrair (mesmo modulo compartilhado) */
 .formRow {
   display: flex;
-  gap: 10px;
+  gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 22px;
-  padding: 16px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 6px;
   align-items: flex-end;
 }
 
