@@ -19,34 +19,28 @@
   font-size: 12px;
 }
 
-/* corpo vira um painel de registro (borda, nao pagina em branco) — a lista
-   de fontes fica como coluna anexada, separada por divisoria, nao flutuando
-   solta ao lado do formulario. */
+/* nada de painel/caixa envolvendo tudo — form e fontes flutuam direto
+   no fundo da pagina, so o input em si tem borda (ele precisa, pra ser
+   reconhecivel como campo clicavel). */
 .body {
   display: flex;
-  align-items: stretch;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
+  gap: 48px;
+  align-items: flex-start;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
   flex: 1;
-  padding: 20px 24px;
 }
 
 .sourcesPanel {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 160px;
-  padding: 20px;
-  border-left: 1px solid var(--line);
-  background: var(--panel-2);
+  gap: 10px;
+  min-width: 110px;
+  padding-top: 2px;
 }
 
 .sourcesTitle {
@@ -54,31 +48,19 @@
   text-transform: uppercase;
   letter-spacing: .08em;
   color: var(--dim);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
-/* status de fonte e um pill (fundo + borda), nao so um ponto solto com
-   texto ao lado — sinal de estado tem que ter forma, nao so cor. */
 .sourceRow {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  width: fit-content;
-  max-width: 100%;
-  padding: 4px 10px 4px 8px;
-  border-radius: 100px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  transition: background .2s, border-color .2s;
+  gap: 8px;
 }
 
-.sourceRowOn {
-  background: color-mix(in srgb, var(--green) 14%, var(--panel));
-  border-color: color-mix(in srgb, var(--green) 40%, var(--line));
-}
+.sourceRowOn .sourceLabel { color: var(--green); }
 
 .sourceLabel {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text);
   overflow: hidden;
   text-overflow: ellipsis;
