@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fragment+Mono&display=swap');
+/* fonte carregada via <link> no index.html/extracao.html, nao @import:
+   o Vite concatena os CSS modules e @import so e valido como 1a regra
+   do arquivo — no bundle final ele parava de ser o 1o e era descartado
+   silenciosamente (era por isso que a fonte nunca trocava). */
 
 :root {
   /* dossiê regulatório, versão clara: papel neutro + accent tinta-de-carimbo.
@@ -76,7 +79,7 @@ input[type="text"], input[type="number"], input[type="password"] {
 }
 input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(140,198,63,.25);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 
 input[readonly], input:disabled {

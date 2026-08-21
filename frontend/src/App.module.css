@@ -1,9 +1,13 @@
 .app {
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  /* zoom:0.8 e 125vw/125vh sao intencionais, nao gambiarra: encolhe a UI
+     inteira 20% pra caber mais densidade em tela sem redesenhar cada
+     componente. NAO remover/"corrigir" sem confirmar com o Gabriel antes. */
+  width: 125vw;
+  height: 125vh;
   overflow: hidden;
+  zoom: 0.8;
 }
 
 .wrap {
