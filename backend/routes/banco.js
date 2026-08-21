@@ -559,11 +559,18 @@ router.post('/cccb', async (req, res) => {
     }
 
     const oracleByKey = {}
+    // DIAGNOSTICOID já registrado (RECEITPADRAO) pra este produto/MA especificamente — "culturaid:
+    // siagro" só existe aqui se já é um diagnóstico de fato cadastrado pra este produto, então não
+    // tem ambiguidade nenhuma pra resolver: é só reaproveitar o que a query principal já trouxe,
+    // sem precisar de outra ida ao Oracle (evita depender de conexão nova numa rota já sujeita a
+    // ORA-12170 intermitente — ver .envs/infra.md).
+    const diagnosticoIdRegistrado = new Map()
     for (const r of oracleResult.rows) {
       const culturaidRow = isAll ? r.CULTURAID : Number(culturaid)
       const cn = resolveKey(celeparNormFor(r.CULTURA, culturaidRow))
       if (!oracleByKey[cn]) oracleByKey[cn] = new Set()
       oracleByKey[cn].add(String(r.SIAGROALV))
+      diagnosticoIdRegistrado.set(`${culturaidRow}:${r.SIAGROALV}`, r.DIAGNOSTICOID)
     }
 
     const celeparToCheck = isAll
@@ -617,44 +624,15 @@ router.post('/cccb', async (req, res) => {
         return false
       })
 
-      let diagnosticoIdByCulturaSiagro = new Map()
-      if (naoBloqueados.length) {
-        const siagrosCandidatos = [...new Set(naoBloqueados.map(r => String(r.siagro)))]
-        let connLookup
-        try {
-          connLookup = await oracleConn()
-          const binds = Object.fromEntries(siagrosCandidatos.map((s, i) => [`s${i}`, s]))
-          const placeholders = siagrosCandidatos.map((_, i) => `:s${i}`).join(', ')
-          // Escopa por cultura via RECEITPADRAO (mesma ligação CULTURAID<->DIAGNOSTICOID usada na
-          // query principal deste arquivo) — o SIAGRO pode se repetir em cultura diferente sem
-          // tornar ambíguo o DIAGNOSTICOID daquela cultura específica.
-          const diagResult = await connLookup.execute(
-            `SELECT DISTINCT r.CULTURAID, d.DIAGNOSTICOID, d.SIAGROALV
-             FROM RECEITPADRAO r
-             JOIN DIAGNOSTICO d ON r.DIAGNOSTICOID = d.DIAGNOSTICOID
-             WHERE d.SIAGROALV IN (${placeholders})
-               AND r.ATIVO = 'S'`,
-            binds, { outFormat: oracledb.OUT_FORMAT_OBJECT, maxRows: 0 }
-          )
-          const porCulturaSiagro = new Map()
-          for (const d of diagResult.rows) {
-            const k = `${d.CULTURAID}:${d.SIAGROALV}`
-            if (!porCulturaSiagro.has(k)) porCulturaSiagro.set(k, [])
-            porCulturaSiagro.get(k).push(d.DIAGNOSTICOID)
-          }
-          // só atribui DIAGNOSTICOID quando cultura+SIAGRO tem exatamente 1 candidato no banco —
-          // ambíguo (2+ na mesma cultura) vira null pra não copiar/exibir um código que pode estar errado
-          for (const [k, ids] of porCulturaSiagro) diagnosticoIdByCulturaSiagro.set(k, ids.length === 1 ? ids[0] : null)
-        } catch (_) {
-          // Não bloqueia a resposta principal — os candidatos ficam sem diagnosticoid resolvido
-        } finally {
-          if (connLookup) await connLookup.close().catch(() => {})
-        }
-      }
-
+      // O DIAGNOSTICOID só existe pra copiar quando o diagnóstico já está de fato cadastrado
+      // (RECEITPADRAO) pra este produto+cultura — nesse caso `diagnosticoIdRegistrado` (montado a
+      // partir de oracleResult, a mesma query principal desta rota) já tem a resposta certa, sem
+      // ambiguidade nenhuma: não tem outro jeito de existir 2 diagnósticos pra este produto na
+      // mesma cultura com o mesmo SIAGRO. Se não estiver lá, é porque o diagnóstico realmente
+      // ainda não foi cadastrado — não há código pra sugerir.
       for (const c of naoBloqueados) {
         const diagnosticoid = c.culturaidRow != null
-          ? diagnosticoIdByCulturaSiagro.get(`${c.culturaidRow}:${c.siagro}`) ?? null
+          ? diagnosticoIdRegistrado.get(`${c.culturaidRow}:${c.siagro}`) ?? null
           : null
         faltandoBloquearDiagnostico.push({ culturaid: c.culturaidRow, cultura: c.cultura, siagro: c.siagro, alvo: c.alvo, nomeComumAlvo: c.nomeComumAlvo, diagnosticoid })
       }
