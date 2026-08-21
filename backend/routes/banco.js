@@ -515,6 +515,13 @@ router.post('/cccb', async (req, res) => {
     const bloqueados = []
     const cnToCulturaId = {}
 
+    // Fallback pra cultura que ainda não tem nada registrado no Oracle pra este agrotóxico
+    // (cnToCulturaId só é preenchido a partir de oracleResult, ou seja, só cobre o que já existe
+    // pra este MA) — usa o mapeamento local Celepar<->CULTURAID sincronizado via build-mapping.
+    const culturaIdByCn = {}
+    for (const row of db.prepare('SELECT culturaid, celepar_nome FROM culturas WHERE celepar_nome IS NOT NULL').all())
+      culturaIdByCn[celNorm(row.celepar_nome)] = row.culturaid
+
     // Chaves culturaid:diagnosticoid já classificadas em `bloqueados`, pra `celeparToCheck` (loop
     // abaixo, que não conhece o DIAGNOSTICOID de cara) não duplicar o mesmo par numa segunda vez.
     const bloqueadosKeys = new Set()
@@ -572,7 +579,7 @@ router.post('/cccb', async (req, res) => {
     for (const r of celeparToCheck) {
       const cn            = celNorm(r.cultura)
       const oSet          = oracleByKey[cn] ?? new Set()
-      const culturaidRow  = cnToCulturaId[cn] ?? null
+      const culturaidRow  = cnToCulturaId[cn] ?? culturaIdByCn[cn] ?? null
       const culturaBloqOracle = culturaidRow != null && culturasBloqueadasBanco.has(culturaidRow)
 
       if (!oSet.has(String(r.siagro)))
