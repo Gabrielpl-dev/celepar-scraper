@@ -10,7 +10,7 @@
 const fs       = require('fs')
 const path     = require('path')
 const readline = require('readline')
-const { norm } = require('./backend/lib/normalizer')
+const { norm } = require('../backend/lib/normalizer')
 
 const BASE_URL = process.env.OURO_SAFRA_BASE_URL || 'http://localhost:3000'
 const GPL_USER = 'GPL_SCRAPER'

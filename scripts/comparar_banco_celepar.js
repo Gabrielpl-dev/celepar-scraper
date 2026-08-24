@@ -9,7 +9,7 @@
 const fs       = require('fs')
 const path     = require('path')
 const oracledb = require('oracledb')
-const { fetchPesquisa, parsePesquisaRows, fetchPage, parseRows, buildUrl, norm } = require('./backend/lib/scraper')
+const { fetchPesquisa, parsePesquisaRows, fetchPage, parseRows, buildUrl, norm } = require('../backend/lib/scraper')
 
 const INPUT  = path.join(__dirname, '..', 'ouro-safra', 'docs', 'produtos_normalizados.csv')
 const OUTPUT = path.join(__dirname, '..', 'ouro-safra', 'docs', 'errados_banco_celepar.csv')
