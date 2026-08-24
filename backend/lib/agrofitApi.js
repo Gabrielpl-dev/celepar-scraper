@@ -5,8 +5,6 @@ let _token     = null
 let _expiresAt = 0
 
 async function fetchToken() {
-  const user   = process.env.AGROFIT_USER
-  const pass   = process.env.AGROFIT_PASSWORD
   const key    = process.env.AGROFIT_KEY
   const secret = process.env.AGROFIT_SECRET
   if (!key || !secret) return null

@@ -86,13 +86,9 @@ router.get('/agrofit', async (req, res) => {
 });
 
 router.get('/agrofit-status', async (req, res) => {
-  const user   = process.env.AGROFIT_USER
-  const pass   = process.env.AGROFIT_PASSWORD
   const key    = process.env.AGROFIT_KEY
   const secret = process.env.AGROFIT_SECRET
   const vars = {
-    AGROFIT_USER:     !!user,
-    AGROFIT_PASSWORD: !!pass,
     AGROFIT_KEY:      !!key,
     AGROFIT_SECRET:   !!secret,
   }
