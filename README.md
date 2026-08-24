@@ -14,6 +14,8 @@ Documentação adicional em [`docs/`](docs/).
 - `scripts/` — utilitários de linha de comando avulsos (rodar com `node scripts/<arquivo>.js`).
 - `docs/` — documentação de referência (schema, gotchas, specs históricas).
 - `site_padrao_adapar_pesquisa/` — assets estáticos salvos do site da Adapar, só material de referência pro scraping.
+- `notas/` — anotações pessoais do Gabriel (passo a passo manual, processos internos) — não é documentação de projeto.
+- `SPEC-*.md` (raiz) — specs de features ativas ou recém-concluídas. Convenção: fica na raiz enquanto relevante, é removida quando a spec é totalmente implementada.
 - `.envs/` — dados sensíveis de infra (gitignored, não existe num clone novo — ver `CLAUDE.md`).
 
 Há também branches de trabalho isoladas em `git worktree` (`.claude/worktrees/`) — rode
