@@ -1,16 +1,26 @@
-# React + Vite
+# Frontend — Celepar Scraper
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React (Vite) — consulta e verificação de agrotóxicos (Celepar/Adapar, Agrofit, SIGEN).
 
-Currently, two official plugins are available:
+## Rodando
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm run dev       # dev server com HMR, proxy /api -> http://localhost:3000
+npm run build     # compila pra ../backend/public/ (é isso que o Express serve em produção)
+npm run preview   # serve o build localmente, sem proxy
+npm run lint      # eslint
+```
 
-## React Compiler
+Duas entradas de build (`vite.config.js → rollupOptions.input`): `index.html` (app principal) e
+`extracao.html` (fluxo de extração de bula, servido em `/extracao`).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Estrutura
 
-## Expanding the ESLint configuration
+- `src/App.jsx` — router + estado global de parâmetros (`{ Cod, ma, nome }`)
+- `src/views/` — uma tela por arquivo: `ParamsView`, `BulaView`, `ExtrairView`, `SiagroView`,
+  `CompararView`, `VerificarView`, `ListagemView`, `AuthView`/`LoginView`/`RegisterView`,
+  `FeView`, `LinksView`
+- `src/api.js` — chamadas ao backend, sempre com `Authorization: Bearer <JWT>`
+- `src/extracao/` — app separado (entrada `extracao.html`) pro fluxo de extração via IA
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Arquitetura completa do projeto (backend, integrações externas, gotchas): [`../CLAUDE.md`](../CLAUDE.md).

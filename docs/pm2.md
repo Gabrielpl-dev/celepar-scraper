@@ -1,8 +1,11 @@
 # PM2 — Desenvolvimento local
 
-> **Produção usa NSSM** (`<NSSM_EXE> restart CeleparApp`), não PM2.
+> **Produção também usa PM2** (processo `CeleparApp`, ver deploy em `../CLAUDE.md`) — NSSM entra
+> só como serviço Windows que mantém o PM2 rodando no boot, e como armazenamento de secrets
+> (`AppEnvironmentExtra`), não como gerenciador de processo substituto. `pm2 reload CeleparApp`,
+> `pm2 logs CeleparApp`, `pm2 env 0` são os comandos reais usados no servidor de produção.
 
-PM2 é opcional para rodar backend + frontend em paralelo **localmente**:
+PM2 também roda backend + frontend em paralelo **localmente** durante desenvolvimento:
 
 ```bash
 pm2 start ecosystem.config.cjs   # sobe celepar-be + celepar-fe

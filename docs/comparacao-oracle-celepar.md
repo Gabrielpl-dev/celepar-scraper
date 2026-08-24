@@ -81,8 +81,8 @@ Se `celepar_nome` estiver nulo, `celeparNormFor` usa o nome Oracle direto. Adici
 
 ## Restrição de cultura/diagnóstico (RESTRICAOCULTURA/RESTRICAODIAG)
 
-Design completo em `SPEC-restricao-cultura-cccb.md`. Resumo: uma cultura/diagnóstico "errado" ou
-"faltando" pode na verdade estar corretamente bloqueado de propósito — o motor cruza 3 fontes:
+Uma cultura/diagnóstico "errado" ou "faltando" pode na verdade estar corretamente bloqueado de
+propósito — o motor cruza 2 fontes:
 
 - **Adapar** (`lib/scraper.js → parseRows`): cada linha da página `listar.asp` tem 4 `<td>`s —
   Cultura, **Status Cultura**, Alvo, **Status Alvo**. `Não Liberado` vem marcado com

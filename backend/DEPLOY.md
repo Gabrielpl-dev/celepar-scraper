@@ -31,7 +31,9 @@ pm2 logs CeleparApp --lines 50 --nostream
 cd <APP_PATH>
 git pull
 cd backend && npm install
-pm2 restart CeleparApp
+cd ../frontend && npm run build   # obrigatório se algo em frontend/ mudou -- compila pra backend/public/
+cd ..
+pm2 reload CeleparApp             # reload = zero-downtime, preferir a restart
 ```
 
 ## Estrutura
@@ -39,37 +41,25 @@ pm2 restart CeleparApp
 | Caminho | O que é |
 |---|---|
 | `<APP_PATH>\` | Repositório git |
-| `<APP_PATH>\backend\.env` | Só a porta (segredos ficam no registry) |
+| `<APP_PATH>\backend\.env` | Todos os secrets (JWT_SECRET, ORACLE_*, AGROFIT_*, GPL_SCRAPER_PASSWORD, etc.) |
 | `<ORACLE_INSTANT_CLIENT_PATH>\` | Oracle Instant Client (necessário para conexão com o banco) |
 | PM2 | Gerenciador do serviço (`npm install -g pm2 pm2-windows-startup`) |
 
 ## Arquivo .env
 
-Contém **apenas a porta**. Os segredos ficam no registry do Windows (escopo Machine), não em arquivo.
+Fonte de verdade pra todos os secrets (gitignored, nunca commitado). Lista completa de
+variáveis necessárias em `backend/.env.example` — copiar pra `.env` e preencher com valor real
+(cofre de senhas Celepar / portal Agrofit-Embrapa / `pm2 env 0` no servidor atual).
 
-```
-PORT=3000
-```
-
-## Configurar segredos (primeira vez ou troca de credenciais)
-
-PowerShell como admin:
+Histórico: até 24/08 os secrets viviam só no registry do Windows via NSSM `AppEnvironmentExtra`
+(`SetEnvironmentVariable ... "Machine"`), com `.env` tendo só `PORT=3000`. Migrado pra `.env`
+nessa data — os dois mecanismos podem conviver sem conflito (`dotenv` nunca sobrescreve uma
+variável de ambiente já setada), mas `.env` é o caminho documentado e atualizado a partir de agora.
 
 ```powershell
-# Gerar JWT_SECRET
-$secret = node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-
-# Setar no registry (escopo sistema — requer admin)
-[Environment]::SetEnvironmentVariable("ORACLE_USER",          "<ORACLE_USER>",               "Machine")
-[Environment]::SetEnvironmentVariable("ORACLE_PASSWORD",       "<senha>",                   "Machine")
-[Environment]::SetEnvironmentVariable("ORACLE_CONNECT_STRING", "<ORACLE_CONNECT_STRING>", "Machine")
-[Environment]::SetEnvironmentVariable("JWT_SECRET",            $secret,                     "Machine")
-
-# Reiniciar para aplicar
-pm2 restart CeleparApp
+# Reiniciar pra aplicar depois de editar .env
+pm2 reload CeleparApp
 ```
-
-> Os valores ficam em `HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment` e são lidos pelo Node.js via `process.env` normalmente.
 
 ## Acesso
 

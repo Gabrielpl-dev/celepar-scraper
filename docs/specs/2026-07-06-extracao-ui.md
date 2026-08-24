@@ -1,5 +1,11 @@
 # UI de extração de bulas (v1)
 
+> **Status: implementado.** `POST /api/extracao/rodar` (`backend/routes/extracao.js`) e
+> `ExtracaoApp.jsx` existem de verdade hoje — a afirmação abaixo de que é "só um placeholder"
+> não é mais verdade, ficou congelada desde a data deste doc (06/07). Mantido como registro
+> histórico de design (arquivo já vive em `docs/specs/`, arquivo datado — convenção diferente
+> dos `SPEC-*.md` da raiz, que são removidos quando concluídos).
+
 ## Contexto
 
 O pipeline de extração (`backend/extracao/`) já roda via CLI (`teste.js`): mapeia páginas por
