@@ -13,15 +13,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/extracao',   (_req, res) => res.sendFile(path.join(__dirname, 'public', 'extracao.html')));
 app.get('/extracao/', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'extracao.html')));
-app.use('/banco',      express.static(path.join(__dirname, '..', 'banco')));
-app.use('/caminhos',   express.static(path.join(__dirname, '..', 'caminhos')));
+app.use('/banco',      express.static(path.join(__dirname, '..', 'legacy', 'banco')));
+app.use('/caminhos',   express.static(path.join(__dirname, '..', 'legacy', 'caminhos')));
 app.use('/teste-cccb', express.static(path.join(__dirname, '..', 'teste-cccb')));
 app.get('/shared/api.js', (_req, res) => res.sendFile(path.join(__dirname, '..', 'frontend', 'src', 'api.js')));
 app.get('/banco/internos', (_req, res) =>
-  res.sendFile(path.join(__dirname, '..', 'banco', 'internos.html'))
+  res.sendFile(path.join(__dirname, '..', 'legacy', 'banco', 'internos.html'))
 );
 app.get('/banco/:tabela', (_req, res) =>
-  res.sendFile(path.join(__dirname, '..', 'banco', 'tabela.html'))
+  res.sendFile(path.join(__dirname, '..', 'legacy', 'banco', 'tabela.html'))
 );
 
 const requireAuth = require('./middleware/requireAuth');
