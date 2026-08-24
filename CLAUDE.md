@@ -61,8 +61,8 @@ Node.js/Express backend + React (Vite) frontend. O backend serve o build estáti
 
 - **Encoding Celepar**: site serve `windows-1252`. `lib/scraper.js → fetchPage` usa `TextDecoder('windows-1252')` com fallback `latin1`. Corrupção de acentos quase sempre começa aqui.
 - **Espaços em URLs Agrofit**: `URLSearchParams` codifica espaços como `+`, mas Agrofit retorna 503. Sempre usar `.replace(/\+/g, '%20')`.
-- **Agrofit token**: `lib/agrofitApi.js` faz auto-refresh 60s antes de expirar. Credenciais `AGROFIT_KEY`/`AGROFIT_SECRET` ficam no NSSM `AppEnvironmentExtra` (não no registry do Windows — NSSM tem precedência).
+- **Agrofit token**: `lib/agrofitApi.js` faz auto-refresh 60s antes de expirar. Credenciais `AGROFIT_KEY`/`AGROFIT_SECRET` vêm de env var (ver `.env.example`).
 - **PDF Agrofit**: `/api/agrofit-pdf` é público (sem JWT) — iframes não enviam headers. Registrado em `routes/agrofit-public.js` **antes** do `requireAuth`.
 - **Merge de fontes**: `routes/banco.js → /api/buscar-produto` mescla Celepar + Agrofit por `norm(nome)` — mesmo produto de fontes diferentes vira uma entrada com `fonte: 'ambos'`.
 - **`buildUrl` defaults**: objeto `defaults` em `lib/scraper.js` tem os 30 parâmetros estáticos do Celepar. Só `Cod` e `descIngrediente` variam.
-- **Secrets**: `JWT_SECRET`, `ORACLE_*`, `AGROFIT_*` ficam no NSSM `AppEnvironmentExtra` no servidor. `.env` só tem `PORT=3000`.
+- **Secrets**: todos ficam em `backend/.env` (gitignored, nunca commitado — nem no servidor nem localmente). Lista completa de variáveis necessárias em `backend/.env.example`; copiar pra `.env` e preencher com valor real (cofre de senhas Celepar / portal Agrofit-Embrapa). Se o servidor ainda usa NSSM `AppEnvironmentExtra` pra alguma dessas, convive sem conflito — `dotenv` nunca sobrescreve variável já setada.
