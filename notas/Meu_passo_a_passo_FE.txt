@@ -1,0 +1,33 @@
+Parte 2 cadastro de produto:
+Ficha de Emergência
+
+Primeiro pegamos a ficha de emergência, por padrão no Siagro. Caso não tenha no siagro vc se fodeu, tem que achar no google, mas dificilmente tem.
+O primeiro campo é o Nome Cientifico, mas que na verdade nós colocamos o nome apropriado para embarque. **Destaco aqui, é correto é o nome apropriado para embarque** (em AGROTOXICO/NOMECIENTIFICO)
+Nome comercial (em AGROTOXICO/NOMECOMERCIAL)
+Número de Risco (em AGROTOXICO/NRORISCO)
+Número da ONU (em AGROTOXICO/NROONU)
+Em AGROTOXICO/CLASSERISCO deixa em branco
+Classe/subclasse de risco (em AGROTOXICO/CLASSESUBRISCO)
+Grupo de Embalagem (em AGROTOXICO/GRUPOEMBALAGEM)
+Descrição da classe de sub risco (em AGROTOXICO/CLASSUBRISCO)
+
+Até agora era só copia e cola o as informações. Mas apartir daqui será necessario resumir. Eu usa o Gemini pro resumo, então temos que planejar como vamos fazer aqui.
+
+Aspecto (em AGROTOXICO/ASPECTO)
+EPI (em AGROTOXICO/EPI)
+Fogo (em AGROTOXICO/FOGO)
+Saúde (em AGROTOXICO/SAUDE)
+Meio ambiente (em AGROTOXICO/MEIOAMBIENTE)
+Vazamento (em AGROTOXICO/VAZAMENTO)
+Acidente com fogo (em AGROTOXICO/ACIDENTEFOGO)
+Poluição (em AGROTOXICO/POLUICAO)
+Envolvimento de pessoas (em AGROTOXICO/ENVOLVIMENTOPESSOAS)
+Informações ao médico (em AGROTOXICO/INFOMEDICO)
+Obervações (em AGROTOXICO/OBSERVACOES)
+Aqui a tarja é de escolher opções ou vermelha(E -vErmelha) ou verde(V-erde) (em AGROTOXICO/TARJA)
+Identificação deixmaos em branco (em AGROTOXICO/IDENTIFICACAO)
+Data de Revisão (em AGROTOXICO/DTREVISAO)
+
+
+
+

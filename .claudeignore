@@ -1,0 +1,7 @@
+node_modules/
+package-lock.json
+.git/
+site_padrao_adapar_pesquisa/
+*.pdf
+*.db
+*.sqlite

@@ -1,0 +1,39 @@
+Para indicar a tabela e coluna vou usar "tabela/bula"
+Para fazer o cadastro de um produto no Reag, eu sigo este passo a passo:
+- Recebo o ticket no kanban: "https://viasoft.movidesk.com/Ticket"
+- Caso seja pedido o cadastro, eu procuro o produto na agrofit, ou na agrocheck (http://140.238.238.172:3000/). 
+- Pego a bula, e extraio os seguintes campos em ordem:
+Nome do produto, caso tenha mais de um nome, colocamos "/" para separar (colocado em AGROTOXICO/NOME)
+Registro MA da agrofit em AGROTOXICO/REGISTROMA e depois o registro ma que aparece na bula em AGROTOXICO/REGISTROMABULA.
+Então eu salvo o cadastro após ja ter preenchido os 3 campos acima. Aparecerá o código do Defensivo em AGROTOXICO/ITEM. Pego este código, copio e colo em AGROTOXICO/RECPADRAOID.
+Classe Toxicológica, somente "CATEGORIA 5" não precisa de mais nada (em AGROTOXICO/CLASSETOXICOLOGICA)
+Coloco 1, independente do caso (em AGROTOXICO/QUANTIDADE)
+Com base na concentração coloco se a unidade é em Litros, ou Quilos (em AGROTOXICO/UNIDADE). A unidade escolhida afeta os campos seguintes:
+- AGROTOXICO/SIGAUN: 199 para Litros e 198 para Quilos
+- AGROTOXICO/UNIDADESIGEN: 12 para Litros e 4 para Quilos
+- AGROTOXICO/SIDAGOUN: "L -Litro" para Litros e "Kg - Quilo" para Quilos
+Pego o principio ativo, caso tenha mais de um principio ativo, colocamos assim: "principio1 + principio2 + principioN..." (em AGROTOXICO/PRINCIPIOATIVO)
+No campo AGROTOXICO/HORMONAL, decido se é hormonal ou não, caso o principio ativo se encaixe em algum desse tabela:
+- 2,4-D
+- Dicamba
+- Picloram
+- Fluroxipir
+- Quincloraque
+- Triclopir
+- Aminopiralide
+- Halauxifen [1, 2]
+
+Então seguimos para o Grupo quimico. Caso haja mais de um principio ativo, colocamos seus respectivos grupos no mesmo modelo que o principio: "grupo1 + grupo2 + grupoN..." (em AGROTOXICO/GRUPOQUIMICO)
+Na classe do defensivo, só escolhemos classes cujo o AGROTOXICOCLASSE/CLASSE seja 100 ou maior. (em AGROTOXICO/CLASSE)
+AGROTOXICO/CLASSUSO Fica vazio
+AGROTOXICO/REFERENCIAINDEA Fica vazio
+Formulação (em AGROTOXICO/FORMULACAO)
+AGROTOXICO/FICHAEMERGENCIA fica vazio
+Fabricante (em AGROTOXICO/FABRICANTE)
+Concentração, também no modelo c1 + c2 + cN... caso tenha mais de um pricipio ativo (em AGROTOXICO/DOSAGEM)
+Ingrediente Inerte (em AGROTOXICO/INERTE)
+Código da embalagem, por padrão, Plástica (em AGROTOXICO/CODEMB)
+Caso tenha o código Siagro/Adapar/Celepar (em AGROTOXICO/SIAGROAGR)
+Caso tenha o código SIAFRO (em AGROTOXICO/SIAFROAGR)
+Ativo para consulta, sempre S (em AGROTOXICO/ATIVO)
+Caso tenha o código do SIGEN (em AGROTOXICO/IDSIGENAGR)

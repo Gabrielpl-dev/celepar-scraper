@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tasklist *)",
+      "Bash(where *)",
+      "mcp__trello-mcp__trello_listar_cards",
+      "mcp__trello-mcp__trello_listar_listas"
+    ]
+  }
+}
