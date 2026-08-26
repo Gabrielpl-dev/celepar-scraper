@@ -496,14 +496,25 @@ router.post('/cccb', async (req, res) => {
       if (celeparSets[cn]) return cn
       const alias = CULTURA_ALIASES[cn]
       if (alias && celeparSets[alias]) return alias
-      // Prefix match: banco pode ter nome mais curto (ex: PINUS vs PINUS SP)
-      const prefixKey = Object.keys(celeparSets).find(k => k.startsWith(cn + ' ') || cn.startsWith(k + ' '))
-      if (prefixKey) return prefixKey
+
       let bestKey = null, bestScore = 0
       for (const key of Object.keys(celeparSets)) {
         const score = jaccard(cn, key)
         if (score > bestScore) { bestScore = score; bestKey = key }
       }
+      // Match perfeito de tokens (ex: "algodao cultivar cnpa/ita 90" vs "algodao (cultivar
+      // cnpa/ita 90)" — só difere em pontuação) tem prioridade sobre o prefixo abaixo, que é
+      // ingênuo demais: "ALGODÃO - Cultivar CNPA/ITA-90" normalizado vira prefixo textual de
+      // "algodao" e roubava esse match, apesar de existir uma cultura mais específica e idêntica
+      // por tokens — misturava o culturaid de "Algodão" com o de "Algodão (cultivar ...)" e fazia
+      // a cultura específica nunca resolver seu próprio culturaid (bloqueio real no banco não era
+      // reconhecido — falso positivo em "faltando bloquear cultura").
+      if (bestScore >= 0.999) return bestKey
+
+      // Prefix match: banco pode ter nome mais curto (ex: PINUS vs PINUS SP)
+      const prefixKey = Object.keys(celeparSets).find(k => k.startsWith(cn + ' ') || cn.startsWith(k + ' '))
+      if (prefixKey) return prefixKey
+
       return (bestScore >= 0.8 && bestKey) ? bestKey : cn
     }
 
@@ -579,7 +590,10 @@ router.post('/cccb', async (req, res) => {
 
     const faltando                    = []
     const faltandoBloquearCultura     = []
-    const culturaIdsFaltandoBloqueio  = new Set()
+    // Dedup por `cn` (chave normalizada), não por culturaidRow — quando a cultura não tem
+    // mapeamento local (culturaidRow fica null), deduplicar só por id deixava passar uma linha
+    // por cada registro da Celepar pra mesma cultura (ex: um por siagro/alvo diferente).
+    const culturasFaltandoBloqueio    = new Set()
     const faltandoBloquearDiagnostico = []
     const candidatosDiagBloqueado     = []
 
@@ -593,8 +607,8 @@ router.post('/cccb', async (req, res) => {
         faltando.push({ cultura: r.cultura, siagro: r.siagro, alvo: r.alvo, nomeComumAlvo: r.nomeComumAlvo ?? null })
 
       if (r.culturaBloqueada && !culturaBloqOracle) {
-        if (culturaidRow == null || !culturaIdsFaltandoBloqueio.has(culturaidRow)) {
-          if (culturaidRow != null) culturaIdsFaltandoBloqueio.add(culturaidRow)
+        if (!culturasFaltandoBloqueio.has(cn)) {
+          culturasFaltandoBloqueio.add(cn)
           faltandoBloquearCultura.push({ culturaid: culturaidRow, cultura: r.cultura })
         }
       } else if (!r.culturaBloqueada && r.alvoBloqueado) {
