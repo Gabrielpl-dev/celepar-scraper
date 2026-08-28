@@ -1,0 +1,16 @@
+{
+  "name": "celepar-scraper-mcp",
+  "version": "0.1.0",
+  "description": "Servidor MCP que expõe o fluxo de negócio do celepar_scraper (buscar/verificar/comparar produtos) como tools pra agentes de IA próprios.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "setup-agent-account": "node scripts/setup-agent-account.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "dotenv": "^17.4.2",
+    "zod": "^3.23.8"
+  }
+}
