@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { api } from '../api'
 import { StatusBar } from '../components/StatusBar'
-import { ResultTable, tableStyles } from '../components/ResultTable'
+import { ResultTable } from '../components/ResultTable'
+import tableStyles from '../components/ResultTable.module.css'
 import { StatusBadge } from '../components/StatusBadge'
 import s from './opPage.module.css'
 

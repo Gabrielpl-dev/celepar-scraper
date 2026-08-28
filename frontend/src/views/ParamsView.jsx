@@ -10,7 +10,7 @@ const SOURCES = [
 ]
 
 export function ParamsView({ params, setParams }) {
-  const [searchTerm, setSearchTerm]        = useState('')
+  const [searchTerm, setSearchTerm]        = useState(params.nome || '')
   const [searchResults, setSearchResults]  = useState([])
   const [searching, setSearching]          = useState(false)
   const [highlightedIndex, setHighlighted] = useState(-1)
@@ -20,7 +20,6 @@ export function ParamsView({ params, setParams }) {
   const inputRef    = useRef(null)
 
   useEffect(() => { inputRef.current?.focus() }, [])
-  useEffect(() => { if (params.nome) setSearchTerm(params.nome) }, [])
 
   function handleSearchChange(e) {
     const val = e.target.value
@@ -69,7 +68,9 @@ export function ParamsView({ params, setParams }) {
         setSearchTerm(data.nome)
         checkSources(data.nome, ma)
       }
-    } catch (_) {}
+    } catch {
+      // best-effort -- falha aqui só significa "sem nome pra preencher", não bloqueia o fluxo
+    }
   }
 
   function handleMaBlur() { lookupMa(params.ma?.trim()) }

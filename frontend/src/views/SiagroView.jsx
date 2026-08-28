@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { api, downloadCSV, csvEsc } from '../api'
 import { StatusBar } from '../components/StatusBar'
-import { ResultTable, tableStyles } from '../components/ResultTable'
+import { ResultTable } from '../components/ResultTable'
+import tableStyles from '../components/ResultTable.module.css'
 import { SiagroPill } from '../components/SiagroPill'
 import s from './opPage.module.css'
 

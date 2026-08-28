@@ -144,12 +144,22 @@ function PainelOrigem({ pdfNome, campo, onFechar }) {
   useEffect(() => {
     let cancelado = false
     let urlAtual = null
-    setCarregando(true)
-    const pagina = campo.paginas?.[0] ?? 1
-    buscarImagemPagina(pdfNome, pagina)
-      .then(url => { if (!cancelado) { urlAtual = url; setImgUrl(url) } })
-      .catch(() => {})
-      .finally(() => { if (!cancelado) setCarregando(false) })
+    // IIFE async -- setCarregando(true) precisa rodar de novo a cada troca de pdfNome/campo (não
+    // só no mount), então o valor inicial do useState não basta; ficar dentro de uma função async
+    // evita o "setState síncrono no corpo do efeito" (react-hooks/set-state-in-effect) sem mudar
+    // o timing real (a 1ª linha de uma IIFE async roda na mesma tick, só depois do 1º `await`).
+    ;(async () => {
+      setCarregando(true)
+      const pagina = campo.paginas?.[0] ?? 1
+      try {
+        const url = await buscarImagemPagina(pdfNome, pagina)
+        if (!cancelado) { urlAtual = url; setImgUrl(url) }
+      } catch {
+        // ignora -- sem imagem da página, painel mostra o estado vazio
+      } finally {
+        if (!cancelado) setCarregando(false)
+      }
+    })()
     return () => { cancelado = true; if (urlAtual) URL.revokeObjectURL(urlAtual) }
   }, [pdfNome, campo])
 

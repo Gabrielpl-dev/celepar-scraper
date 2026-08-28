@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { api, downloadCSV, csvEsc } from '../api'
 import { StatusBar } from '../components/StatusBar'
 import { SiagroPill } from '../components/SiagroPill'
-import { tableStyles } from '../components/ResultTable'
+import tableStyles from '../components/ResultTable.module.css'
 import s from './CompararView.module.css'
 import formS from './opPage.module.css'
 

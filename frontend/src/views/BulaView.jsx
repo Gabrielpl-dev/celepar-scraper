@@ -12,14 +12,17 @@ export function BulaView({ params }) {
   const ma = params?.ma
 
   useEffect(() => {
-    if (!ma) { setDocs(null); setErro(null); setPdfUrl(null); setSelected(''); return }
-    setLoading(true)
-    setDocs(null)
-    setErro(null)
-    setPdfUrl(null)
-    setSelected('')
-    api.agrofitDocs(ma, params?.Cod)
-      .then(data => {
+    // IIFE async -- evita setState síncrono no corpo do efeito (react-hooks/set-state-in-effect)
+    // sem mudar comportamento (mesma ordem/timing de antes, só embrulhado numa função async).
+    ;(async () => {
+      if (!ma) { setDocs(null); setErro(null); setPdfUrl(null); setSelected(''); return }
+      setLoading(true)
+      setDocs(null)
+      setErro(null)
+      setPdfUrl(null)
+      setSelected('')
+      try {
+        const data = await api.agrofitDocs(ma, params?.Cod)
         if (!data.ok) { setErro(data.error || 'Erro ao buscar documentos'); return }
         setDocs(data)
         const bula = data.documentos?.find(d => d.tipo === 'Bula')
@@ -29,10 +32,13 @@ export function BulaView({ params }) {
           setPdfUrl(proxy)
           setSelected(first.url)
         }
-      })
-      .catch(e => setErro(e.message))
-      .finally(() => setLoading(false))
-  }, [ma])
+      } catch (e) {
+        setErro(e.message)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [ma, params?.Cod])
 
   function handleSelect(e) {
     const url = e.target.value

@@ -43,5 +43,3 @@ export function ResultTable({ headers, rows, toolbar, emptyNode, noScroll, colla
     </div>
   )
 }
-
-export { s as tableStyles }

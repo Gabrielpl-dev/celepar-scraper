@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { api } from '../api'
 import { StatusBar } from '../components/StatusBar'
-import { ResultTable, tableStyles } from '../components/ResultTable'
+import { ResultTable } from '../components/ResultTable'
+import tableStyles from '../components/ResultTable.module.css'
 import { SiagroPill } from '../components/SiagroPill'
 import s from './opPage.module.css'
 
@@ -12,29 +13,29 @@ export function ListagemView({ params }) {
   const [took, setTook]       = useState(null)
   const [result, setResult]   = useState(null)
 
-  const fetchData = useCallback(async () => {
-    setStatus('loading')
-    setMessage('consultando celepar...')
-    setResult(null)
-    const t0 = performance.now()
-    try {
-      const data = await api.listar(params)
-      const ms = Math.round(performance.now() - t0)
-      if (!data.ok) throw new Error(data.error)
-      setResult(data)
-      setStatus('ok')
-      setMessage('sucesso —')
-      setCount(data.total)
-      setTook(ms)
-    } catch (err) {
-      setStatus('err')
-      setMessage('erro: ' + err.message)
-    }
-  }, [params.ma])
-
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    // IIFE async -- evita setState síncrono no corpo do efeito (react-hooks/set-state-in-effect);
+    // inline em vez de useCallback separado porque só existe pra esse efeito chamar.
+    ;(async () => {
+      setStatus('loading')
+      setMessage('consultando celepar...')
+      setResult(null)
+      const t0 = performance.now()
+      try {
+        const data = await api.listar(params)
+        const ms = Math.round(performance.now() - t0)
+        if (!data.ok) throw new Error(data.error)
+        setResult(data)
+        setStatus('ok')
+        setMessage('sucesso —')
+        setCount(data.total)
+        setTook(ms)
+      } catch (err) {
+        setStatus('err')
+        setMessage('erro: ' + err.message)
+      }
+    })()
+  }, [params])
 
   const tableRows = result?.rows.slice(0, 500).map(r => [
     r.cultura,

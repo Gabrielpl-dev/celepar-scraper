@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, useCallback } from 'react'
 import s from './FavoritesRadial.module.css'
 
 /**
@@ -55,7 +55,7 @@ function ringFor(n) {
 
 export function FavoritesRadial({ items, activeView, onSelect }) {
   const [revealed, setRevealed] = useState(false)
-  const [, force] = useState(0)
+  const [rotation, setRotation] = useState(0)
 
   const itemsRef = useRef(items)
   useEffect(() => { itemsRef.current = items }, [items])
@@ -66,6 +66,10 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
   const lastTimeRef  = useRef(0)
   const rafRef       = useRef(null)
   const containerRef = useRef(null)
+  // Última versão de `tick` sempre acessível por ref -- o loop chama a si mesmo via
+  // `tickRef.current` (nunca `tick` direto) pra não referenciar o `const` antes dele terminar
+  // de ser atribuído (react-hooks/immutability).
+  const tickRef = useRef(null)
 
   const hubSize = revealed ? HUB : HUB_PEEK
 
@@ -107,8 +111,6 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
     const diff = targetRef.current - rotationRef.current
     rotationRef.current += diff * damp(SMOOTH_RATE, dt)
 
-    force(x => x + 1)
-
     const settled =
       Math.abs(velocityRef.current) <= MIN_VEL &&
       Math.abs(targetRef.current - rotationRef.current) < 0.01 &&
@@ -119,13 +121,22 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
       rafRef.current = null
       lastTimeRef.current = 0
     } else {
-      rafRef.current = requestAnimationFrame(tick)
+      rafRef.current = requestAnimationFrame(tickRef.current)
     }
+
+    // Lido DEPOIS do possível snap de settle acima, pra refletir o valor final do frame (mesmo
+    // timing que o "force(x=>x+1)" antigo tinha, já que a leitura dele só acontecia no render
+    // seguinte, depois deste ref já ter sido ajustado).
+    setRotation(rotationRef.current)
   }, [centerIndex])
+  // "Latest ref" (padrão React pra callback sempre fresco sem recriar o loop) -- não pode ser
+  // atribuído direto no corpo do componente (react-hooks/refs também proíbe ESCREVER ref durante
+  // o render), por isso via useLayoutEffect sem deps (roda a cada render, antes do paint).
+  useLayoutEffect(() => { tickRef.current = tick })
 
   const startLoop = useCallback(() => {
-    if (rafRef.current == null) rafRef.current = requestAnimationFrame(tick)
-  }, [tick])
+    if (rafRef.current == null) rafRef.current = requestAnimationFrame(tickRef.current)
+  }, [])
 
   const handleWheel = useCallback((e) => {
     if (!revealed) return
@@ -189,7 +200,7 @@ export function FavoritesRadial({ items, activeView, onSelect }) {
       >
         {Array.from({ length: slots }, (_, i) => {
           const item    = items[i % n]
-          const angle   = wrap(i * step + rotationRef.current)
+          const angle   = wrap(i * step + rotation)
           const visible = Math.abs(angle) <= ARC_HALF
           const rad     = ((angle + FACE_ANGLE) * Math.PI) / 180
           const x       = Math.cos(rad) * RADIUS
