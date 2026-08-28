@@ -54,7 +54,7 @@ async function extrairFormulacao(call) {
 
 async function extrairIngredienteInerte(call) {
   return call(
-    'Extraia a concentração do ingrediente inerte na formulação (ex: "300 g/kg", "760 g/L"). Retorne apenas o valor com a unidade, sem explicações.',
+    'Extraia a concentração do ingrediente inerte na formulação, priorizando a unidade em massa/volume (g/kg ou g/L) -- ex: "300 g/kg", "760 g/L". Se a bula mostrar mais de uma unidade pro mesmo valor (ex: "207,5 g/kg (20,75% m/m)"), responda com o valor em g/kg ou g/L, nunca em % m/m ou % m/v. Retorne apenas o valor com a unidade, sem explicações.',
     opts({ maxTokens: 20 })
   );
 }
