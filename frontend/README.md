@@ -1,4 +1,4 @@
-# Frontend — Celepar Scraper
+# Frontend — AgroCheck
 
 React (Vite) — consulta e verificação de agrotóxicos (Celepar/Adapar, Agrofit, SIGEN).
 
@@ -19,7 +19,7 @@ Duas entradas de build (`vite.config.js → rollupOptions.input`): `index.html` 
 - `src/App.jsx` — router + estado global de parâmetros (`{ Cod, ma, nome }`)
 - `src/views/` — uma tela por arquivo: `ParamsView`, `BulaView`, `ExtrairView`, `SiagroView`,
   `CompararView`, `VerificarView`, `ListagemView`, `AuthView`/`LoginView`/`RegisterView`,
-  `FeView`, `LinksView`
+  `FeView`, `LinksView`, `EstaduaisView`
 - `src/api.js` — chamadas ao backend, sempre com `Authorization: Bearer <JWT>`
 - `src/extracao/` — app separado (entrada `extracao.html`) pro fluxo de extração via IA
 
