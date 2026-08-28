@@ -22,54 +22,22 @@ router.get('/sigen', async (req, res) => {
     if (!ma) return res.status(400).json({ ok: false, error: 'ma (registro) é obrigatório' })
     if (!/^\d+$/.test(ma)) return res.status(400).json({ ok: false, error: 'MA deve conter apenas dígitos' })
 
-    const searchData = await sigenClient.sigenPost(
-      '/ConsultaAgrotoxicoCadastroPublico/CarregarConsultaAgrotoxico',
-      {
-        nrRegistro: ma, nmMarcaComercial: '',
-        csTipoRegistro: '', idRegistroEmpresa: '', nrDocumento: '',
-        cdClasses: '', csSituacao: '', csClassificacaoToxicologica: '',
-        csNovaClassificacaoToxicologica: '', csClassificacaoAmbiental: '',
-        cdFormulacao: '', cdFormaAcao: '', cdModalidade: '', cdIngredienteAtivo: '',
-        cdNmComumEspecieVegetal: '', cdNmComumPraga: '', cdGrupoQuimico: '',
-        flInflamavel: '', flCorrosivo: '', flMinorCrops: '', flOrganico: '',
-      }
-    )
-
-    if (!searchData.success || !searchData.data?.length) {
+    const detalhe = await sigenClient.buscarDetalhe(ma)
+    if (!detalhe) {
       return res.json({ ok: true, ma, nome: null, documentos: [], aviso: 'Nenhum produto encontrado no SIGEN' })
     }
 
-    const produto        = searchData.data[0]
-    const id             = produto.idAgrotoxicoCadastro
-    const nomeConfirmado = (produto.nmMarcaComercial || '').trim()
+    res.json({ ok: true, ...detalhe })
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message })
+  }
+})
 
-    const detailData = await sigenClient.sigenPost(
-      '/ConsultaAgrotoxicoCadastroPublico/CarregarAgrotoxicoCadastro',
-      { idAgrotoxicoCadastro: String(id) }
-    )
-
-    if (!detailData.success) throw new Error('SIGEN retornou erro no detalhe')
-    const d = detailData.data
-
-    const documentos = []
-    if (d.cdRepositorioArquivoFichaEmergencia > 0) {
-      documentos.push({
-        tipo:        'Ficha de Emergência',
-        nomeArquivo: `${nomeConfirmado} - Ficha de Emergência`,
-        url:         `/api/sigen-pdf?id=${d.cdRepositorioArquivoFichaEmergencia}`,
-        fonte:       'SIGEN',
-      })
-    }
-    if (d.cdRepositorioArquivoBula > 0) {
-      documentos.push({
-        tipo:        'Bula',
-        nomeArquivo: `${nomeConfirmado} - Bula`,
-        url:         `/api/sigen-pdf?id=${d.cdRepositorioArquivoBula}`,
-        fonte:       'SIGEN',
-      })
-    }
-
-    res.json({ ok: true, ma, nome: nomeConfirmado, id: String(id), documentos })
+// Tabela mestra de cultura do SIGEN (~526 registros) — ver docs/sigen.md.
+router.get('/sigen-culturas', async (req, res) => {
+  try {
+    const culturas = await sigenClient.listarCulturas()
+    res.json({ ok: true, total: culturas.length, culturas })
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message })
   }
