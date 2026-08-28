@@ -37,6 +37,7 @@ export const api = {
   buscarSiagro:   (siagro, params)  => call('buscar-siagro', { siagro, params }),
   comparar:       (c1, c2, params)  => call('comparar', { cultura1: c1, cultura2: c2, params }),
   verificar:      (termo, params)   => call('verificar', { termo, params }),
+  verificarEstaduais: (nome) => call('estaduais?nome=' + encodeURIComponent(nome), null, 'GET'),
   listar:         (params)          => fetch('/api/listar?' + new URLSearchParams(params), { headers: authHeaders() }).then(r => {
     if (r.status === 401) { localStorage.removeItem('token'); window.location.reload(); return }
     return r.json()

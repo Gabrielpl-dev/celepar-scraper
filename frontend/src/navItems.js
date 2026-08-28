@@ -17,6 +17,7 @@ export const NAV_GROUPS = [
       { id: 'siagro',    label: 'Buscar por SIAGRO', code: 'SIAG' },
       { id: 'comparar',  label: 'Comparar culturas', code: 'CMP'  },
       { id: 'verificar', label: 'Verificar produto', code: 'VER'  },
+      { id: 'estaduais', label: 'Verificar nos estados', code: 'UF' },
     ],
   },
 ]

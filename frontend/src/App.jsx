@@ -7,6 +7,7 @@ import { ExtrairView } from './views/ExtrairView'
 import { SiagroView } from './views/SiagroView'
 import { CompararView } from './views/CompararView'
 import { VerificarView } from './views/VerificarView'
+import { EstaduaisView } from './views/EstaduaisView'
 import { ListagemView } from './views/ListagemView'
 import { ParamsView } from './views/ParamsView'
 import { BulaView } from './views/BulaView'
@@ -25,6 +26,7 @@ const VIEWS = {
   siagro:    SiagroView,
   comparar:  CompararView,
   verificar: VerificarView,
+  estaduais: EstaduaisView,
   params:    ParamsView,
   links:     LinksView,
 }
