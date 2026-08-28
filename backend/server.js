@@ -11,8 +11,6 @@ if (process.env.ALLOWED_ORIGIN) {
 }
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('/extracao',   (_req, res) => res.sendFile(path.join(__dirname, 'public', 'extracao.html')));
-app.get('/extracao/', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'extracao.html')));
 app.use('/banco',      express.static(path.join(__dirname, '..', 'legacy', 'banco')));
 app.use('/caminhos',   express.static(path.join(__dirname, '..', 'legacy', 'caminhos')));
 app.use('/teste-cccb', express.static(path.join(__dirname, '..', 'teste-cccb')));
@@ -46,9 +44,9 @@ app.use('/api', requireAuth);
 montarRota('celepar', './routes/celepar');
 montarRota('agrofit', './routes/agrofit');
 montarRota('sigen', './routes/sigen');
+montarRota('estaduais', './routes/estaduais');
 montarRota('banco', './routes/banco');
 montarRota('internos', './routes/internos');
-montarRota('extracao', './routes/extracao');
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now(), rotasComFalha }));
 

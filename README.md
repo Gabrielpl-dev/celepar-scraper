@@ -16,8 +16,11 @@ Documentação adicional em [`docs/`](docs/).
   código diferente (MA/Cod).
 - Compara o cadastro Oracle x Celepar por cultura (comparador CCCB): aponta o que tá certo,
   errado, faltando ou bloqueado por diagnóstico.
-- Extrai campos de bula em PDF via IA pro fluxo de cadastro manual (`/extracao`).
 - Expõe a mesma lógica de negócio como tools MCP pra agentes de IA (`mcp-server/`).
+
+Extração de bula em PDF via IA (agora só via CLI do Claude Code, sem provider externo) é
+protótipo em andamento no worktree `extracao-claude-code` (kanban de cadastro) — ainda não é
+feature do `main`.
 
 ## Rodando (dev local, opcional)
 
