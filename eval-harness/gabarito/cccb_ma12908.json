@@ -1,0 +1,3808 @@
+{
+  "ok": true,
+  "oracle": [
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 388,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 1949,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 388,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 1949,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "ARROZ",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 182,
+      "diagnostico": "Aveia[pós-emergência]",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano (pós-emergência)",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara [Pós-emergência]",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole [pós-emergência]",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, Timbête, Capim-roseta [Pós-emergência]",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 337,
+      "diagnostico": "Rabo-de-foguete, Buva, Arranha-gato, Voadeira [Pós-emergência]",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Flor-de-poetas, Café-do-diabo [pós-emergência]",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana [PÓS-EMERGÊNCIA]",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó (pós-emergência)",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev [Pós-emergência]",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens [Pós-emergência]",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 566,
+      "diagnostico": "Capim-marmelada, Capim-papuã, Capim-são-paulo, Marmelada [pós-emergência]",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade (pós-emergência)",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã [Pós-emergência]",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade. [pós-emergência]",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto [Pós-emergência]",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 1949,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto (pós-emergência)",
+      "nomecientifico": "Brachiaria brizantha"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa [pós-emergência]",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "AVEIA",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio [Pós-emergência]",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "BANANA",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "BANANA",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 388,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "CAFÉ",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 388,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 1949,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 388,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 1949,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "CITROS",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 388,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 1949,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "FUMO",
+      "siagroalv": 566,
+      "diagnostico": "Capim-marmelada, Capim-papuã, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "FUMO",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "FUMO",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 388,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 1949,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "siagroalv": 283,
+      "diagnostico": "Caruru-de-mancha, Caruru-verde, Bredo, Caruru",
+      "nomecientifico": "Amaranthus viridis"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "siagroalv": 484,
+      "diagnostico": "Trapoeraba, Capoeraba, Mata-brasil, Marianinha",
+      "nomecientifico": "Commelina benghalensis"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "PASTAGEM",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "PASTAGEM",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "PASTAGEM",
+      "siagroalv": 3400,
+      "diagnostico": "Capim-capeta, Capim-Pt",
+      "nomecientifico": "Sporobolus indicus"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 388,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1949,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "siagroalv": 283,
+      "diagnostico": "Caruru-de-mancha, Caruru-verde, Bredo, Caruru",
+      "nomecientifico": "Amaranthus viridis"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "siagroalv": 484,
+      "diagnostico": "Trapoeraba, Capoeraba, Mata-brasil, Marianinha",
+      "nomecientifico": "Commelina benghalensis"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 182,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 210,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 337,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 352,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 384,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 388,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 430,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 773,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 1517,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 1949,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 2159,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 2174,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia"
+    },
+    {
+      "cultura": "UVA",
+      "siagroalv": 566,
+      "diagnostico": "Capim-marmelada, Capim-papuã, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "UVA",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "UVA",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    }
+  ],
+  "celepar": [],
+  "corretos": [],
+  "errados": [
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 182,
+      "diagnosticoid": 2443,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 388,
+      "diagnosticoid": 2763,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 1949,
+      "diagnosticoid": 2820,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ALGODÃO",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 182,
+      "diagnosticoid": 2449,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 388,
+      "diagnosticoid": 2763,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 1949,
+      "diagnosticoid": 2820,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "ARROZ",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 182,
+      "diagnosticoid": 3484,
+      "diagnostico": "Aveia[pós-emergência]",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 188,
+      "diagnosticoid": 4659,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano (pós-emergência)",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 202,
+      "diagnosticoid": 4658,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara [Pós-emergência]",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 210,
+      "diagnosticoid": 4172,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole [pós-emergência]",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 273,
+      "diagnosticoid": 3278,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, Timbête, Capim-roseta [Pós-emergência]",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 337,
+      "diagnosticoid": 3432,
+      "diagnostico": "Rabo-de-foguete, Buva, Arranha-gato, Voadeira [Pós-emergência]",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 352,
+      "diagnosticoid": 3357,
+      "diagnostico": "Amendoim-bravo, Leiteira, Flor-de-poetas, Café-do-diabo [pós-emergência]",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 384,
+      "diagnosticoid": 3541,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana [PÓS-EMERGÊNCIA]",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 419,
+      "diagnosticoid": 4186,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó (pós-emergência)",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 424,
+      "diagnosticoid": 4698,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev [Pós-emergência]",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 430,
+      "diagnosticoid": 3377,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens [Pós-emergência]",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 566,
+      "diagnosticoid": 3277,
+      "diagnostico": "Capim-marmelada, Capim-papuã, Capim-são-paulo, Marmelada [pós-emergência]",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 773,
+      "diagnosticoid": 4657,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade (pós-emergência)",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 1183,
+      "diagnosticoid": 3280,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã [Pós-emergência]",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 1627,
+      "diagnosticoid": 3306,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade. [pós-emergência]",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 1943,
+      "diagnosticoid": 4743,
+      "diagnostico": "Milheto [Pós-emergência]",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 1949,
+      "diagnosticoid": 4656,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto (pós-emergência)",
+      "nomecientifico": "Brachiaria brizantha",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 2159,
+      "diagnosticoid": 3472,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa [pós-emergência]",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "AVEIA",
+      "alvo_sb": 2174,
+      "diagnosticoid": 3297,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio [Pós-emergência]",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "BANANA",
+      "alvo_sb": 1183,
+      "diagnosticoid": 4025,
+      "diagnostico": "Capim-colchão, milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "BANANA",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 182,
+      "diagnosticoid": 2449,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 388,
+      "diagnosticoid": 2763,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CAFÉ",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 182,
+      "diagnosticoid": 2449,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 388,
+      "diagnosticoid": 2763,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 1949,
+      "diagnosticoid": 2820,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CANA-DE-AÇÚCAR",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 182,
+      "diagnosticoid": 2449,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 388,
+      "diagnosticoid": 2763,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 1949,
+      "diagnosticoid": 2820,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "CITROS",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 182,
+      "diagnosticoid": 2449,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 388,
+      "diagnosticoid": 2763,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 1949,
+      "diagnosticoid": 2820,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FEIJÃO",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FUMO",
+      "alvo_sb": 566,
+      "diagnosticoid": 4015,
+      "diagnostico": "Capim-marmelada, Capim-papuã, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FUMO",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "FUMO",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 182,
+      "diagnosticoid": 2449,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MAÇÃ",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 182,
+      "diagnosticoid": 2449,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 388,
+      "diagnosticoid": 2763,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 1949,
+      "diagnosticoid": 2820,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "alvo_sb": 283,
+      "diagnosticoid": 2284,
+      "diagnostico": "Caruru-de-mancha, Caruru-verde, Bredo, Caruru",
+      "nomecientifico": "Amaranthus viridis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "alvo_sb": 484,
+      "diagnosticoid": 2261,
+      "diagnostico": "Trapoeraba, Capoeraba, Mata-brasil, Marianinha",
+      "nomecientifico": "Commelina benghalensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO GENETICAMENTE MODIFICADO",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "PASTAGEM",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "PASTAGEM",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "PASTAGEM",
+      "alvo_sb": 3400,
+      "diagnosticoid": 24,
+      "diagnostico": "Capim-capeta, Capim-Pt",
+      "nomecientifico": "Sporobolus indicus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 182,
+      "diagnosticoid": 2449,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 388,
+      "diagnosticoid": 2763,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1949,
+      "diagnosticoid": 2820,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "alvo_sb": 283,
+      "diagnosticoid": 2284,
+      "diagnostico": "Caruru-de-mancha, Caruru-verde, Bredo, Caruru",
+      "nomecientifico": "Amaranthus viridis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "alvo_sb": 484,
+      "diagnosticoid": 2261,
+      "diagnostico": "Trapoeraba, Capoeraba, Mata-brasil, Marianinha",
+      "nomecientifico": "Commelina benghalensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA - GENETICAMENTE MODIFICADA",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 182,
+      "diagnosticoid": 2449,
+      "diagnostico": "Aveia",
+      "nomecientifico": "Avena sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 202,
+      "diagnosticoid": 2215,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 210,
+      "diagnosticoid": 2573,
+      "diagnostico": "Flor-das-almas, Flor-de-finados, Vassoura-mole, Maria-mole",
+      "nomecientifico": "Senecio brasiliensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 273,
+      "diagnosticoid": 2210,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 337,
+      "diagnosticoid": 2397,
+      "diagnostico": "Buva, Rabo-de-foguete, Arranha-gato, Voadeira",
+      "nomecientifico": "Conyza bonariensis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 352,
+      "diagnosticoid": 2293,
+      "diagnostico": "Amendoim-bravo, Leiteira, Café-do-diabo",
+      "nomecientifico": "Euphorbia heterophylla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 384,
+      "diagnosticoid": 2312,
+      "diagnostico": "Corda-de-viola, Campainha, Corriola, Jetirana",
+      "nomecientifico": "Ipomoea grandifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 388,
+      "diagnosticoid": 2763,
+      "diagnostico": "Cana-de-Açúcar - Cana Soca",
+      "nomecientifico": "Saccharum officinarum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 430,
+      "diagnosticoid": 2207,
+      "diagnostico": "Capim-braquiária, Braquiária, Braquiária-decumbens",
+      "nomecientifico": "Brachiaria decumbens",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 773,
+      "diagnosticoid": 2526,
+      "diagnostico": "Grama-seda, Grama-bermuda, Capim-de-burro, Capim-da-cidade",
+      "nomecientifico": "Cynodon dactylon",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 1517,
+      "diagnosticoid": 2422,
+      "diagnostico": "Tiririca, Capim-dandá, Junça-aromática, Alho",
+      "nomecientifico": "Cyperus rotundus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 1943,
+      "diagnosticoid": 2399,
+      "diagnostico": "Milheto",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 1949,
+      "diagnosticoid": 2820,
+      "diagnostico": "Braquiarão, Braquiaria-brizanta, Braquiaria-do-alto",
+      "nomecientifico": "Brachiaria brizantha",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 2159,
+      "diagnosticoid": 2260,
+      "diagnostico": "Picão-preto, Picão, Pico-pico, Fura-capa",
+      "nomecientifico": "Bidens pilosa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 2174,
+      "diagnosticoid": 2265,
+      "diagnostico": "Guanxuma, Mata-pasto, Vassourinha, Relógio",
+      "nomecientifico": "Sida rhombifolia",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "UVA",
+      "alvo_sb": 566,
+      "diagnosticoid": 3519,
+      "diagnostico": "Capim-marmelada, Capim-papuã, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "UVA",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "UVA",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    }
+  ],
+  "faltando": [],
+  "bloqueados": [],
+  "faltandoBloquearCultura": [],
+  "faltandoBloquearDiagnostico": [],
+  "agrotoxicoItem": 2689
+}

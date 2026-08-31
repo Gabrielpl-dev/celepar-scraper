@@ -43,6 +43,16 @@ Os arquivos de `gabarito/` são versionados no git de propósito (fixture, igual
 de exemplo em `docs/exemplos/`) — servem de histórico de "isso é o que a API respondia
 quando confirmamos que estava certo".
 
+`--casos=nome1,nome2` filtra quais gravar. Útil quando um caso testa rota **nova** (sem
+gabarito "certo" possível antes do deploy, porque a rota nem existia) — depois de
+deployar e conferir visualmente que ficou certo, recaptura só esse caso, sem sobrescrever
+o gabarito das rotas antigas com a resposta do código novo (que é o que queremos conferir,
+não redefinir como "certo" de cara):
+
+```bash
+npm run capturar-gabarito -- --casos=sigen_culturas,estaduais_ma6715,estaduais_ma12525
+```
+
 ## Rodar
 
 ```bash

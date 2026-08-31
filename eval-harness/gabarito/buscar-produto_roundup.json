@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "rows": [
+    {
+      "nome": "Roundup Original",
+      "ma": "898793",
+      "cod": null,
+      "ingrediente": "glifosato-sal de isopropilamina (glicina substituída) (480 g/L)",
+      "fonte": "ambos"
+    },
+    {
+      "nome": "Roundup Original DI",
+      "ma": "513",
+      "cod": "1880",
+      "ingrediente": "Glifosato-Sal de Di-amônio (glicina substituída) (445 g/L)",
+      "fonte": "ambos"
+    },
+    {
+      "nome": "Roundup Original Mais",
+      "ma": "1119",
+      "cod": "2379",
+      "ingrediente": "Glifosato-Sal de Di-amônio (glicina substituída) (577 g/L)",
+      "fonte": "ambos"
+    },
+    {
+      "nome": "Roundup Transorb B",
+      "ma": "52225",
+      "cod": null,
+      "ingrediente": "glifosato-sal de potássio (glicina substituída) (705 g/L)",
+      "fonte": "agrofit"
+    },
+    {
+      "nome": "Roundup Transorb R",
+      "ma": "9306",
+      "cod": "1639",
+      "ingrediente": "glifosato-sal de potássio (glicina substituída) (588 g/L)",
+      "fonte": "ambos"
+    },
+    {
+      "nome": "Roundup Transorb Top",
+      "ma": "4626",
+      "cod": "4478",
+      "ingrediente": "glifosato (glicina substituída) (705 g/L)",
+      "fonte": "ambos"
+    },
+    {
+      "nome": "Roundup Ultra",
+      "ma": "9106",
+      "cod": "1638",
+      "ingrediente": "glifosato-sal de amônio (glicina substituída) (715 g/kg)",
+      "fonte": "ambos"
+    },
+    {
+      "nome": "Roundup WG",
+      "ma": "2094",
+      "cod": "966",
+      "ingrediente": "glifosato-sal de amônio (glicina substituída) (792.5 g/kg)",
+      "fonte": "ambos"
+    },
+    {
+      "nome": "Roundup Xtend",
+      "ma": "33125",
+      "cod": null,
+      "ingrediente": "Dicamba (Ácido Benzóico) (160 g/L) + glifosato (glicina substituída) (320 g/L)",
+      "fonte": "agrofit"
+    },
+    {
+      "nome": "Roundup Xtendicam",
+      "ma": "52925",
+      "cod": null,
+      "ingrediente": "Dicamba (Ácido Benzóico) (204.2 g/L) + glifosato (glicina substituída) (435.6 g/L)",
+      "fonte": "agrofit"
+    },
+    {
+      "nome": "ROUNDUP READY",
+      "ma": null,
+      "cod": null,
+      "ingrediente": null,
+      "fonte": "adapar"
+    },
+    {
+      "nome": "ROUNDUP READY MILHO",
+      "ma": null,
+      "cod": null,
+      "ingrediente": null,
+      "fonte": "adapar"
+    },
+    {
+      "nome": "ROUNDUP TRANSORB",
+      "ma": null,
+      "cod": null,
+      "ingrediente": null,
+      "fonte": "adapar"
+    }
+  ]
+}

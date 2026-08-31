@@ -132,10 +132,15 @@ async function rodarBateria() {
   console.log(JSON.stringify(resumo))
 }
 
-async function capturarGabarito() {
+// --casos=nome1,nome2 filtra quais gravar -- útil pra recapturar só uma rota nova
+// (ex: depois de confirmar visualmente que ela ficou certa) sem sobrescrever o gabarito
+// bom das rotas já existentes com a resposta do código NOVO (que é justamente o que
+// estamos tentando conferir, não redefinir como "certo" de cara).
+async function capturarGabarito(filtroNomes) {
   mkdirSync(GABARITO_DIR, { recursive: true })
   await login()
-  for (const caso of CASOS) {
+  const casos = filtroNomes ? CASOS.filter(c => filtroNomes.includes(c.nome)) : CASOS
+  for (const caso of casos) {
     const { status, json, erroRede } = await chamar(caso)
     if (erroRede || status >= 500) {
       console.error(`[capturar-gabarito] ${caso.nome}: falhou (status=${status}, erro=${erroRede}) -- não gravado, gabarito antigo (se existir) fica intocado`)
@@ -148,7 +153,8 @@ async function capturarGabarito() {
 
 async function main() {
   if (process.argv.includes('--capturar-gabarito')) {
-    await capturarGabarito()
+    const argCasos = process.argv.find(a => a.startsWith('--casos='))
+    await capturarGabarito(argCasos ? argCasos.slice('--casos='.length).split(',') : null)
     return
   }
 

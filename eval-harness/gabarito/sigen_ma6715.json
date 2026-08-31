@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "ma": "6715",
+  "nome": "2,4-D 806 SL ALAMOS",
+  "id": "1078",
+  "documentos": [
+    {
+      "tipo": "Ficha de Emergência",
+      "nomeArquivo": "2,4-D 806 SL ALAMOS - Ficha de Emergência",
+      "url": "/api/sigen-pdf?id=89109",
+      "fonte": "SIGEN"
+    },
+    {
+      "tipo": "Bula",
+      "nomeArquivo": "2,4-D 806 SL ALAMOS - Bula",
+      "url": "/api/sigen-pdf?id=1639943",
+      "fonte": "SIGEN"
+    }
+  ]
+}

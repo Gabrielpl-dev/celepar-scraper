@@ -1,0 +1,518 @@
+{
+  "ok": true,
+  "oracle": [
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 196,
+      "diagnostico": "Capim-rabo-de-raposa, Capim-rabo-de-gato, Bambuzinho, Espart",
+      "nomecientifico": "Setaria geniculata"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara [Pós-emergência]",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 273,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, Timbête, Capim-roseta [Pós-emergência]",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó (pós-emergência)",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev [Pós-emergência]",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 428,
+      "diagnostico": "Capim-penacho, Capim-de-rola, Capim-de-canário, Capim-mimoso (PÓS-EMERGÊNCIA)",
+      "nomecientifico": "Eragrostis ciliaris"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 566,
+      "diagnostico": "Capim-marmelada, Capim-papuã, Capim-são-paulo, Marmelada [pós-emergência]",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 649,
+      "diagnostico": "Capim-camalote, Capim-alto, Rabo-de-lagarto [Pós-emergência]",
+      "nomecientifico": "Rottboellia exaltata"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 869,
+      "diagnostico": "Trigo voluntário[pós-emergência]",
+      "nomecientifico": "Triticum aestivum"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 1101,
+      "diagnostico": "Capim-custódio, Capim-oferecido, Capim-mandante, Capim-avião (PÓS-EMÊRGENCIA)",
+      "nomecientifico": "Pennisetum setosum"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã [Pós-emergência]",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade. [pós-emergência]",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné [Pós-emergência]",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 1943,
+      "diagnostico": "Milheto [Pós-emergência]",
+      "nomecientifico": "Pennisetum americanum"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 2872,
+      "diagnostico": "Milho voluntário [Pós-emergência]",
+      "nomecientifico": "Zea mays"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "siagroalv": 2881,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz [Pós-emergência]",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "MILHO",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano (pós-emergência)",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 166,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano (pós-emergência)",
+      "nomecientifico": "Lolium multiflorum"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 196,
+      "diagnostico": "Capim-rabo-de-raposa, Capim-rabo-de-gato, Bambuzinho, Espart",
+      "nomecientifico": "Setaria geniculata"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 202,
+      "diagnostico": "Capim-arroz, Capim-canevão, Capim-capivara, Jervão",
+      "nomecientifico": "Echinochloa crusgalli"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 273,
+      "diagnostico": "Capim carrapicho, Capim amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 419,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó [pré-semeadura]",
+      "nomecientifico": "Digitaria insularis"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 424,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 428,
+      "diagnostico": "Capim-penacho, Capim-de-rola, Capim-de-canário, Capim-mimoso (PÓS-EMERGÊNCIA)",
+      "nomecientifico": "Eragrostis ciliaris"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 566,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 649,
+      "diagnostico": "Capim-camalote, Capim-alto, Rabo-de-lagarto",
+      "nomecientifico": "Rottboellia exaltata"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1101,
+      "diagnostico": "Capim-custódio, Capim-oferecido, Capim-mandante, Capim-avião",
+      "nomecientifico": "Pennisetum setosum"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1183,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1627,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 1853,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 2872,
+      "diagnostico": "Milho voluntário [Pós-emergência]",
+      "nomecientifico": "Zea mays"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 2958,
+      "diagnostico": "Capim-branco",
+      "nomecientifico": "Chloris polydactyla"
+    },
+    {
+      "cultura": "SOJA",
+      "siagroalv": 3014,
+      "diagnostico": "Milho voluntário",
+      "nomecientifico": "Zea Mays"
+    },
+    {
+      "cultura": "TRIGO",
+      "siagroalv": 188,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum"
+    }
+  ],
+  "celepar": [],
+  "corretos": [],
+  "errados": [
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 196,
+      "diagnosticoid": 2324,
+      "diagnostico": "Capim-rabo-de-raposa, Capim-rabo-de-gato, Bambuzinho, Espart",
+      "nomecientifico": "Setaria geniculata",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 202,
+      "diagnosticoid": 4658,
+      "diagnostico": "Capim-arroz, Jervão, Capim-canevão, Capim-capivara [Pós-emergência]",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 273,
+      "diagnosticoid": 3278,
+      "diagnostico": "Capim-carrapicho, Capim-amoroso, Timbête, Capim-roseta [Pós-emergência]",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 419,
+      "diagnosticoid": 4186,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó (pós-emergência)",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 424,
+      "diagnosticoid": 4698,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev [Pós-emergência]",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 428,
+      "diagnosticoid": 2897,
+      "diagnostico": "Capim-penacho, Capim-de-rola, Capim-de-canário, Capim-mimoso (PÓS-EMERGÊNCIA)",
+      "nomecientifico": "Eragrostis ciliaris",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 566,
+      "diagnosticoid": 3277,
+      "diagnostico": "Capim-marmelada, Capim-papuã, Capim-são-paulo, Marmelada [pós-emergência]",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 649,
+      "diagnosticoid": 4692,
+      "diagnostico": "Capim-camalote, Capim-alto, Rabo-de-lagarto [Pós-emergência]",
+      "nomecientifico": "Rottboellia exaltata",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 869,
+      "diagnosticoid": 3937,
+      "diagnostico": "Trigo voluntário[pós-emergência]",
+      "nomecientifico": "Triticum aestivum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 1101,
+      "diagnosticoid": 13,
+      "diagnostico": "Capim-custódio, Capim-oferecido, Capim-mandante, Capim-avião (PÓS-EMÊRGENCIA)",
+      "nomecientifico": "Pennisetum setosum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 1183,
+      "diagnosticoid": 3280,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã [Pós-emergência]",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 1627,
+      "diagnosticoid": 3306,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade. [pós-emergência]",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 1853,
+      "diagnosticoid": 3390,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné [Pós-emergência]",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 1943,
+      "diagnosticoid": 4743,
+      "diagnostico": "Milheto [Pós-emergência]",
+      "nomecientifico": "Pennisetum americanum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 2872,
+      "diagnosticoid": 3214,
+      "diagnostico": "Milho voluntário [Pós-emergência]",
+      "nomecientifico": "Zea mays",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MANDIOCA",
+      "alvo_sb": 2881,
+      "diagnosticoid": 3220,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz [Pós-emergência]",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "MILHO",
+      "alvo_sb": 188,
+      "diagnosticoid": 4659,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano (pós-emergência)",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 166,
+      "diagnosticoid": 2216,
+      "diagnostico": "Arroz-vermelho, Arroz-preto, Arroz",
+      "nomecientifico": "Oryza sativa",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 188,
+      "diagnosticoid": 4659,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano (pós-emergência)",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 196,
+      "diagnosticoid": 2324,
+      "diagnostico": "Capim-rabo-de-raposa, Capim-rabo-de-gato, Bambuzinho, Espart",
+      "nomecientifico": "Setaria geniculata",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 202,
+      "diagnosticoid": 4138,
+      "diagnostico": "Capim-arroz, Capim-canevão, Capim-capivara, Jervão",
+      "nomecientifico": "Echinochloa crusgalli",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 273,
+      "diagnosticoid": 3374,
+      "diagnostico": "Capim carrapicho, Capim amoroso, timbête, capim roseta",
+      "nomecientifico": "Cenchrus echinatus",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 419,
+      "diagnosticoid": 2321,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 419,
+      "diagnosticoid": 3200,
+      "diagnostico": "Capim-amargoso, Capim-flexa, Capim-açu, Capim-pororó [pré-semeadura]",
+      "nomecientifico": "Digitaria insularis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 424,
+      "diagnosticoid": 2447,
+      "diagnostico": "Capim-massambará, Capim-argentino, Sorgo-de-alepo, Capim-cev",
+      "nomecientifico": "Sorghum halepense",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 428,
+      "diagnosticoid": 2897,
+      "diagnostico": "Capim-penacho, Capim-de-rola, Capim-de-canário, Capim-mimoso (PÓS-EMERGÊNCIA)",
+      "nomecientifico": "Eragrostis ciliaris",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 566,
+      "diagnosticoid": 2209,
+      "diagnostico": "Capim-papuã, Capim-marmelada, Capim-são-paulo, Marmelada",
+      "nomecientifico": "Brachiaria plantaginea",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 649,
+      "diagnosticoid": 2446,
+      "diagnostico": "Capim-camalote, Capim-alto, Rabo-de-lagarto",
+      "nomecientifico": "Rottboellia exaltata",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1101,
+      "diagnosticoid": 2214,
+      "diagnostico": "Capim-custódio, Capim-oferecido, Capim-mandante, Capim-avião",
+      "nomecientifico": "Pennisetum setosum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1183,
+      "diagnosticoid": 2211,
+      "diagnostico": "Capim-colchão, Capim-milhã, Capim-de-roça, Milhã",
+      "nomecientifico": "Digitaria horizontalis",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1627,
+      "diagnosticoid": 2213,
+      "diagnostico": "Capim-pé-de-galinha, Capim-de-pomar, Capim-da-cidade.",
+      "nomecientifico": "Eleusine indica",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 1853,
+      "diagnosticoid": 2279,
+      "diagnostico": "Capim-colonião, Capim-coloninho, Capim-milhã, Capim-guiné",
+      "nomecientifico": "Panicum maximum",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 2872,
+      "diagnosticoid": 3214,
+      "diagnostico": "Milho voluntário [Pós-emergência]",
+      "nomecientifico": "Zea mays",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 2958,
+      "diagnosticoid": 3481,
+      "diagnostico": "Capim-branco",
+      "nomecientifico": "Chloris polydactyla",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "SOJA",
+      "alvo_sb": 3014,
+      "diagnosticoid": 4206,
+      "diagnostico": "Milho voluntário",
+      "nomecientifico": "Zea Mays",
+      "categoria": "estrutural"
+    },
+    {
+      "cultura": "TRIGO",
+      "alvo_sb": 188,
+      "diagnosticoid": 2445,
+      "diagnostico": "Azevém, Azevém-anual, Jôio, Azevém-italiano",
+      "nomecientifico": "Lolium multiflorum",
+      "categoria": "estrutural"
+    }
+  ],
+  "faltando": [],
+  "bloqueados": [],
+  "faltandoBloquearCultura": [],
+  "faltandoBloquearDiagnostico": [],
+  "agrotoxicoItem": 5130
+}
