@@ -41,9 +41,11 @@ Deploy de verdade não é isso — servidor e Oracle REAG rodam numa máquina re
 - `mcp-server/` — servidor MCP standalone que expõe o fluxo de negócio (buscar/verificar/comparar
   produto) como tools pra agentes de IA — cliente HTTP do backend já deployado, não roda no
   servidor de produção (ver `mcp-server/README.md`).
-- `eval-harness/` — cliente HTTP standalone que bate uma bateria de casos reais contra a API em
-  loop, comparando contra um gabarito capturado, pra pegar regressão silenciosa em refactors
-  (ver `eval-harness/README.md`).
+- `eval-harness/` — cliente HTTP standalone, **já rodando** (Agendador de Tarefas, 10 em 10min),
+  que bate uma bateria de casos reais contra a API e compara contra um gabarito capturado, pra
+  pegar regressão silenciosa em refactors — motivação completa em `eval-harness/POR_QUE.md`,
+  como usar em `eval-harness/README.md`. Toda rota nova precisa ganhar um caso ali (regra em
+  `CLAUDE.md`).
 - `legacy/` — páginas estáticas antigas ainda servidas pelo Express (`/banco`, `/caminhos`).
 - `teste-cccb/` — sandbox standalone pra desenvolvimento do comparador CCCB.
 - `scripts/` — utilitários de linha de comando avulsos (rodar com `node scripts/<arquivo>.js`).

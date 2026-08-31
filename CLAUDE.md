@@ -30,6 +30,18 @@ cd frontend && npm run build   # compila React → backend/public/
 
 No tests, no linter configured.
 
+## Eval harness (regressão silenciosa)
+
+`eval-harness/` bate uma bateria de casos reais contra a API rodando (Agendador de
+Tarefas local, 10 em 10min) e compara contra um gabarito capturado — pega regressão que
+não crasha nada (resposta muda de conteúdo, mas continua 200 OK). Ver
+`eval-harness/README.md` e `eval-harness/POR_QUE.md`.
+
+**Toda rota nova ou mudança de comportamento numa rota existente precisa de um caso em
+`eval-harness/src/casos.js`.** Ao adicionar: rodar `npm run capturar-gabarito -- --casos=<nome>`
+só depois de confirmar visualmente que a resposta está certa — nunca capturar gabarito de
+uma rota cujo comportamento ainda não foi validado.
+
 ## Architecture
 
 Node.js/Express backend + React (Vite) frontend. O backend serve o build estático do frontend em `backend/public/`. Em dev, Vite roda separado com proxy.
