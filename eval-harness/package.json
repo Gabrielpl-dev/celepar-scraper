@@ -1,0 +1,15 @@
+{
+  "name": "celepar-scraper-eval-harness",
+  "version": "0.1.0",
+  "description": "Roda uma bateria de casos reais contra a API do AgroCheck em loop, comparando a resposta contra um gabarito capturado -- detecta regressão silenciosa (resposta muda sem erro visível) em qualquer deploy, não só quebra visível.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "capturar-gabarito": "node src/index.js --capturar-gabarito",
+    "setup-agent-account": "node scripts/setup-agent-account.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
+}
