@@ -73,11 +73,16 @@ não tinha gabarito ainda), e `diffs` (caminhos que divergiram, só quando não 
 
 ## Onde rodar
 
-Hoje: Agendador de Tarefas do Windows nesta máquina, gatilho recorrente (ex: a cada
-10min) chamando `node src/index.js`, batendo em
-`CELEPAR_API_BASE_URL=http://140.238.238.172:3000` (confirmado alcançável). Não depende
-de sessão do Claude Code nem do servidor de produção pra existir — só desta máquina
-ligada.
+**Já rodando** nesta máquina: tarefa `CeleparEvalHarness` no Agendador de Tarefas do
+Windows, a cada 10min (`rodar.ps1`), batendo em
+`CELEPAR_API_BASE_URL=http://140.238.238.172:3000`. `MultipleInstances=IgnoreNew` (não
+empilha se uma rodada atrasar) + `ExecutionTimeLimit=5min` (mata sozinho se travar — ver
+histórico de ORA-12170 travando indefinidamente em `.envs/infra.md`). Log acumula em
+`logs/eval.log` (gitignored). Não depende de sessão do Claude Code nem do servidor de
+produção pra existir — só desta máquina ligada.
+
+Ver/editar a tarefa: `Get-ScheduledTask -TaskName CeleparEvalHarness` /
+`Get-ScheduledTaskInfo -TaskName CeleparEvalHarness` (PowerShell).
 
 Alternativa mais robusta (não depende desta máquina): mesma ideia rodando dentro de
 `C:\celepar_app\` no servidor de produção (Agendador de Tarefas de lá, ou PM2 com
