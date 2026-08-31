@@ -1,1 +1,2110 @@
-null
+{
+  "ok": true,
+  "total": 526,
+  "culturas": [
+    {
+      "codigo": 327,
+      "nome": "**Infestação**"
+    },
+    {
+      "codigo": 533,
+      "nome": ". . ."
+    },
+    {
+      "codigo": 1,
+      "nome": "Abacate"
+    },
+    {
+      "codigo": 344,
+      "nome": "Abacaxi"
+    },
+    {
+      "codigo": 292,
+      "nome": "Abacaxi ananas"
+    },
+    {
+      "codigo": 4,
+      "nome": "Abacaxi Pérola"
+    },
+    {
+      "codigo": 169,
+      "nome": "Abiu"
+    },
+    {
+      "codigo": 5,
+      "nome": "Abóbora"
+    },
+    {
+      "codigo": 295,
+      "nome": "Abóbora CABOTIÁ / Tetsukabuto"
+    },
+    {
+      "codigo": 294,
+      "nome": "Abóbora Gila"
+    },
+    {
+      "codigo": 296,
+      "nome": "Abóbora MORANGA"
+    },
+    {
+      "codigo": 298,
+      "nome": "Abóbora-ornamental"
+    },
+    {
+      "codigo": 6,
+      "nome": "Abobrinha"
+    },
+    {
+      "codigo": 297,
+      "nome": "Abobrinha CASERTA"
+    },
+    {
+      "codigo": 210,
+      "nome": "Acácia"
+    },
+    {
+      "codigo": 507,
+      "nome": "Acácia Mangium"
+    },
+    {
+      "codigo": 235,
+      "nome": "Acacia Negra"
+    },
+    {
+      "codigo": 301,
+      "nome": "Açafrão-da-terra"
+    },
+    {
+      "codigo": 286,
+      "nome": "Açaí"
+    },
+    {
+      "codigo": 229,
+      "nome": "acelga"
+    },
+    {
+      "codigo": 166,
+      "nome": "Acerola"
+    },
+    {
+      "codigo": 526,
+      "nome": "Achacha"
+    },
+    {
+      "codigo": 525,
+      "nome": "Achachairu"
+    },
+    {
+      "codigo": 334,
+      "nome": "Agave-dragão ou Agave-palito"
+    },
+    {
+      "codigo": 326,
+      "nome": "Agrião"
+    },
+    {
+      "codigo": 232,
+      "nome": "Agrião d'água"
+    },
+    {
+      "codigo": 293,
+      "nome": "Agrião seco"
+    },
+    {
+      "codigo": 7,
+      "nome": "Aipo"
+    },
+    {
+      "codigo": 8,
+      "nome": "Álamo"
+    },
+    {
+      "codigo": 302,
+      "nome": "Alcachofra"
+    },
+    {
+      "codigo": 303,
+      "nome": "Alecrim"
+    },
+    {
+      "codigo": 9,
+      "nome": "Alface"
+    },
+    {
+      "codigo": 10,
+      "nome": "Alfafa"
+    },
+    {
+      "codigo": 304,
+      "nome": "Alfavaca"
+    },
+    {
+      "codigo": 11,
+      "nome": "Algodão"
+    },
+    {
+      "codigo": 12,
+      "nome": "Algodão - cultivar CNPA/ITA-90"
+    },
+    {
+      "codigo": 201,
+      "nome": "ALGODÃO (SEMENTES E PLUMAS)"
+    },
+    {
+      "codigo": 208,
+      "nome": "Algodão Genéticamente Modificado"
+    },
+    {
+      "codigo": 13,
+      "nome": "Algodão Liberty Link"
+    },
+    {
+      "codigo": 14,
+      "nome": "Alho"
+    },
+    {
+      "codigo": 352,
+      "nome": "Alho gigante"
+    },
+    {
+      "codigo": 15,
+      "nome": "Alho Poró"
+    },
+    {
+      "codigo": 16,
+      "nome": "Almeirão"
+    },
+    {
+      "codigo": 351,
+      "nome": "Alstroeméria"
+    },
+    {
+      "codigo": 17,
+      "nome": "Ameixa"
+    },
+    {
+      "codigo": 186,
+      "nome": "Amendoeira"
+    },
+    {
+      "codigo": 18,
+      "nome": "Amendoim"
+    },
+    {
+      "codigo": 143,
+      "nome": "Amora"
+    },
+    {
+      "codigo": 390,
+      "nome": "Amor-perfeito"
+    },
+    {
+      "codigo": 265,
+      "nome": "Anonáceas"
+    },
+    {
+      "codigo": 19,
+      "nome": "Antúrio"
+    },
+    {
+      "codigo": 238,
+      "nome": "Araticum"
+    },
+    {
+      "codigo": 349,
+      "nome": "Araucária"
+    },
+    {
+      "codigo": 144,
+      "nome": "Ardisia"
+    },
+    {
+      "codigo": 531,
+      "nome": "Área não agrícola"
+    },
+    {
+      "codigo": 20,
+      "nome": "Áreas Não Cultivadas"
+    },
+    {
+      "codigo": 512,
+      "nome": "Áreas não cultivadas e não urbanas"
+    },
+    {
+      "codigo": 274,
+      "nome": "Areca triandra"
+    },
+    {
+      "codigo": 273,
+      "nome": "Areca-bambu"
+    },
+    {
+      "codigo": 21,
+      "nome": "Armazéns"
+    },
+    {
+      "codigo": 496,
+      "nome": "Arnica"
+    },
+    {
+      "codigo": 22,
+      "nome": "Arroz"
+    },
+    {
+      "codigo": 23,
+      "nome": "Arroz Irrigado"
+    },
+    {
+      "codigo": 499,
+      "nome": "Artemisia"
+    },
+    {
+      "codigo": 278,
+      "nome": "Árvore de guarda-chuva"
+    },
+    {
+      "codigo": 24,
+      "nome": "Aspargo"
+    },
+    {
+      "codigo": 253,
+      "nome": "Atemóia"
+    },
+    {
+      "codigo": 25,
+      "nome": "Aveia"
+    },
+    {
+      "codigo": 447,
+      "nome": "Aveia branca"
+    },
+    {
+      "codigo": 26,
+      "nome": "Aveia preta"
+    },
+    {
+      "codigo": 27,
+      "nome": "Azalea"
+    },
+    {
+      "codigo": 371,
+      "nome": "Azaleia"
+    },
+    {
+      "codigo": 328,
+      "nome": "Azedinha"
+    },
+    {
+      "codigo": 445,
+      "nome": "Azeitona"
+    },
+    {
+      "codigo": 28,
+      "nome": "Azevém"
+    },
+    {
+      "codigo": 489,
+      "nome": "Babosa (Aloe vera)"
+    },
+    {
+      "codigo": 167,
+      "nome": "Bacupari"
+    },
+    {
+      "codigo": 155,
+      "nome": "Bálsamo"
+    },
+    {
+      "codigo": 509,
+      "nome": "Bambu"
+    },
+    {
+      "codigo": 2,
+      "nome": "Banana"
+    },
+    {
+      "codigo": 455,
+      "nome": "Banana Terra (Musa spp.)"
+    },
+    {
+      "codigo": 465,
+      "nome": "Bardana"
+    },
+    {
+      "codigo": 29,
+      "nome": "Batata"
+    },
+    {
+      "codigo": 240,
+      "nome": "Batata Yacon"
+    },
+    {
+      "codigo": 239,
+      "nome": "Batata-doce"
+    },
+    {
+      "codigo": 31,
+      "nome": "Begônia"
+    },
+    {
+      "codigo": 188,
+      "nome": "Bergamota"
+    },
+    {
+      "codigo": 33,
+      "nome": "Berinjela"
+    },
+    {
+      "codigo": 34,
+      "nome": "Beterraba"
+    },
+    {
+      "codigo": 168,
+      "nome": "Bilimbi"
+    },
+    {
+      "codigo": 372,
+      "nome": "Boca de Leão"
+    },
+    {
+      "codigo": 364,
+      "nome": "Boca-de-leão"
+    },
+    {
+      "codigo": 490,
+      "nome": "Boldo (Boldo-do-Chile)"
+    },
+    {
+      "codigo": 454,
+      "nome": "Bougainvíllea"
+    },
+    {
+      "codigo": 448,
+      "nome": "Brinco de princesa"
+    },
+    {
+      "codigo": 35,
+      "nome": "Brócolis"
+    },
+    {
+      "codigo": 345,
+      "nome": "Bromélia"
+    },
+    {
+      "codigo": 271,
+      "nome": "Bromélia imperial"
+    },
+    {
+      "codigo": 338,
+      "nome": "Buganvília"
+    },
+    {
+      "codigo": 346,
+      "nome": "Butiá"
+    },
+    {
+      "codigo": 300,
+      "nome": "Butia bonnetti"
+    },
+    {
+      "codigo": 299,
+      "nome": "Butiá eriospatha"
+    },
+    {
+      "codigo": 145,
+      "nome": "Buxinho"
+    },
+    {
+      "codigo": 36,
+      "nome": "Cacau"
+    },
+    {
+      "codigo": 37,
+      "nome": "Café"
+    },
+    {
+      "codigo": 379,
+      "nome": "Cagaita"
+    },
+    {
+      "codigo": 170,
+      "nome": "Cajá"
+    },
+    {
+      "codigo": 38,
+      "nome": "Caju"
+    },
+    {
+      "codigo": 366,
+      "nome": "Calandiva"
+    },
+    {
+      "codigo": 487,
+      "nome": "Calendula"
+    },
+    {
+      "codigo": 39,
+      "nome": "Caminho"
+    },
+    {
+      "codigo": 40,
+      "nome": "Camomila"
+    },
+    {
+      "codigo": 305,
+      "nome": "Cana de açúcar"
+    },
+    {
+      "codigo": 484,
+      "nome": "Cana de Açucar Geneticamente Modificada"
+    },
+    {
+      "codigo": 41,
+      "nome": "Cana-de-açúcar"
+    },
+    {
+      "codigo": 515,
+      "nome": "Cana-de-açúcar Soqueira"
+    },
+    {
+      "codigo": 516,
+      "nome": "Cana-de-açúcar Soqueira Seca"
+    },
+    {
+      "codigo": 517,
+      "nome": "Cana-de-açúcar Soqueira úmida"
+    },
+    {
+      "codigo": 236,
+      "nome": "Canela Preta"
+    },
+    {
+      "codigo": 42,
+      "nome": "Canola"
+    },
+    {
+      "codigo": 255,
+      "nome": "Canola var. CL"
+    },
+    {
+      "codigo": 225,
+      "nome": "capim"
+    },
+    {
+      "codigo": 392,
+      "nome": "Capim cidró"
+    },
+    {
+      "codigo": 357,
+      "nome": "Capim-cidreira"
+    },
+    {
+      "codigo": 389,
+      "nome": "Capuchinha"
+    },
+    {
+      "codigo": 43,
+      "nome": "Caqui"
+    },
+    {
+      "codigo": 241,
+      "nome": "Cará"
+    },
+    {
+      "codigo": 147,
+      "nome": "Carambola"
+    },
+    {
+      "codigo": 530,
+      "nome": "Carinata"
+    },
+    {
+      "codigo": 279,
+      "nome": "Carpentaria"
+    },
+    {
+      "codigo": 263,
+      "nome": "Castanha de Cajú"
+    },
+    {
+      "codigo": 359,
+      "nome": "Castanha do Pará"
+    },
+    {
+      "codigo": 462,
+      "nome": "Castanha-portuguesa"
+    },
+    {
+      "codigo": 44,
+      "nome": "Cebola"
+    },
+    {
+      "codigo": 45,
+      "nome": "Cebolinha"
+    },
+    {
+      "codigo": 477,
+      "nome": "Cedro"
+    },
+    {
+      "codigo": 506,
+      "nome": "Cedro Australiano"
+    },
+    {
+      "codigo": 365,
+      "nome": "Celósia"
+    },
+    {
+      "codigo": 46,
+      "nome": "Cenoura"
+    },
+    {
+      "codigo": 266,
+      "nome": "Centeio"
+    },
+    {
+      "codigo": 142,
+      "nome": "Cereja"
+    },
+    {
+      "codigo": 47,
+      "nome": "Cevada"
+    },
+    {
+      "codigo": 48,
+      "nome": "Chá"
+    },
+    {
+      "codigo": 243,
+      "nome": "Chalota"
+    },
+    {
+      "codigo": 148,
+      "nome": "Cherimóia"
+    },
+    {
+      "codigo": 400,
+      "nome": "Chia"
+    },
+    {
+      "codigo": 49,
+      "nome": "Chicória"
+    },
+    {
+      "codigo": 220,
+      "nome": "chuchu"
+    },
+    {
+      "codigo": 283,
+      "nome": "Cica"
+    },
+    {
+      "codigo": 195,
+      "nome": "Cidra"
+    },
+    {
+      "codigo": 380,
+      "nome": "Cipó-capeta"
+    },
+    {
+      "codigo": 374,
+      "nome": "Ciriguela"
+    },
+    {
+      "codigo": 50,
+      "nome": "Citros"
+    },
+    {
+      "codigo": 479,
+      "nome": "Clementina IAC 1742"
+    },
+    {
+      "codigo": 51,
+      "nome": "Coco"
+    },
+    {
+      "codigo": 259,
+      "nome": "Coentro"
+    },
+    {
+      "codigo": 52,
+      "nome": "Cogumelos comestíveis"
+    },
+    {
+      "codigo": 529,
+      "nome": "Conservação pós colheita"
+    },
+    {
+      "codigo": 53,
+      "nome": "Couve"
+    },
+    {
+      "codigo": 54,
+      "nome": "Couve Brócoli"
+    },
+    {
+      "codigo": 460,
+      "nome": "Couve rabano roxa"
+    },
+    {
+      "codigo": 221,
+      "nome": "couve-chinesa"
+    },
+    {
+      "codigo": 217,
+      "nome": "couve-de-bruxelas"
+    },
+    {
+      "codigo": 55,
+      "nome": "Couve-flor"
+    },
+    {
+      "codigo": 402,
+      "nome": "Couve-nabo"
+    },
+    {
+      "codigo": 391,
+      "nome": "Cravina"
+    },
+    {
+      "codigo": 360,
+      "nome": "Cravínea"
+    },
+    {
+      "codigo": 56,
+      "nome": "Cravo"
+    },
+    {
+      "codigo": 478,
+      "nome": "Crem do mato"
+    },
+    {
+      "codigo": 57,
+      "nome": "Crisântemo"
+    },
+    {
+      "codigo": 198,
+      "nome": "Cunquat Ácido"
+    },
+    {
+      "codigo": 199,
+      "nome": "Cunquat Doce"
+    },
+    {
+      "codigo": 58,
+      "nome": "Cupim De Montículo"
+    },
+    {
+      "codigo": 242,
+      "nome": "Cupuaçu"
+    },
+    {
+      "codigo": 59,
+      "nome": "Dália"
+    },
+    {
+      "codigo": 149,
+      "nome": "Dama da Noite"
+    },
+    {
+      "codigo": 146,
+      "nome": "Damasco"
+    },
+    {
+      "codigo": 60,
+      "nome": "Dendê"
+    },
+    {
+      "codigo": 452,
+      "nome": "Dente-de-leão"
+    },
+    {
+      "codigo": 61,
+      "nome": "Depósitos"
+    },
+    {
+      "codigo": 519,
+      "nome": "Desinfestação de silos e armazéns"
+    },
+    {
+      "codigo": 532,
+      "nome": "Dessecação pré plantio - Manejo outonal"
+    },
+    {
+      "codigo": 337,
+      "nome": "Dianela ou Paroo-lili"
+    },
+    {
+      "codigo": 280,
+      "nome": "Dracena vermelha"
+    },
+    {
+      "codigo": 378,
+      "nome": "Duboisia"
+    },
+    {
+      "codigo": 203,
+      "nome": "EMBALAGEM DE MADEIRA - TRATAMENTO FITOSSANITÁRIO"
+    },
+    {
+      "codigo": 492,
+      "nome": "Endro"
+    },
+    {
+      "codigo": 385,
+      "nome": "Epina blanch-Caruru gigante"
+    },
+    {
+      "codigo": 444,
+      "nome": "Erva Baleeira"
+    },
+    {
+      "codigo": 466,
+      "nome": "Erva-cidreira"
+    },
+    {
+      "codigo": 493,
+      "nome": "Erva-de-santa-maria"
+    },
+    {
+      "codigo": 393,
+      "nome": "Erva-doce"
+    },
+    {
+      "codigo": 62,
+      "nome": "Erva-Mate"
+    },
+    {
+      "codigo": 63,
+      "nome": "Ervilha"
+    },
+    {
+      "codigo": 377,
+      "nome": "escarola"
+    },
+    {
+      "codigo": 369,
+      "nome": "Espatifilo"
+    },
+    {
+      "codigo": 222,
+      "nome": "espinafre"
+    },
+    {
+      "codigo": 467,
+      "nome": "Espinheira-santa"
+    },
+    {
+      "codigo": 64,
+      "nome": "Essências Florestais"
+    },
+    {
+      "codigo": 227,
+      "nome": "estévia"
+    },
+    {
+      "codigo": 394,
+      "nome": "Estragão"
+    },
+    {
+      "codigo": 65,
+      "nome": "Eucalipto"
+    },
+    {
+      "codigo": 237,
+      "nome": "Eucalipto em viveiro"
+    },
+    {
+      "codigo": 511,
+      "nome": "Eucalipto Geneticamente Modificado"
+    },
+    {
+      "codigo": 383,
+      "nome": "Exclusivo para importados"
+    },
+    {
+      "codigo": 339,
+      "nome": "Extremosa"
+    },
+    {
+      "codigo": 66,
+      "nome": "Farelo de Soja"
+    },
+    {
+      "codigo": 446,
+      "nome": "Farelo de Trigo"
+    },
+    {
+      "codigo": 67,
+      "nome": "Farinha"
+    },
+    {
+      "codigo": 355,
+      "nome": "Farinha (preparado composto)"
+    },
+    {
+      "codigo": 200,
+      "nome": "FARINHA DE TRIGO"
+    },
+    {
+      "codigo": 403,
+      "nome": "Fava"
+    },
+    {
+      "codigo": 68,
+      "nome": "Feijão"
+    },
+    {
+      "codigo": 309,
+      "nome": "Feijão branco"
+    },
+    {
+      "codigo": 308,
+      "nome": "Feijão carioca"
+    },
+    {
+      "codigo": 306,
+      "nome": "Feijão preto"
+    },
+    {
+      "codigo": 307,
+      "nome": "Feijão vermeho"
+    },
+    {
+      "codigo": 244,
+      "nome": "Feijão-caupi"
+    },
+    {
+      "codigo": 397,
+      "nome": "Feijão-fava"
+    },
+    {
+      "codigo": 398,
+      "nome": "Feijão-guandu"
+    },
+    {
+      "codigo": 399,
+      "nome": "Feijão-mungo"
+    },
+    {
+      "codigo": 69,
+      "nome": "Feijão-vagem"
+    },
+    {
+      "codigo": 480,
+      "nome": "Feijoa"
+    },
+    {
+      "codigo": 70,
+      "nome": "Figo"
+    },
+    {
+      "codigo": 342,
+      "nome": "Fisalis"
+    },
+    {
+      "codigo": 156,
+      "nome": "Flamboyant"
+    },
+    {
+      "codigo": 451,
+      "nome": "Flor-de-mel"
+    },
+    {
+      "codigo": 71,
+      "nome": "Flores"
+    },
+    {
+      "codigo": 483,
+      "nome": "Florestais"
+    },
+    {
+      "codigo": 202,
+      "nome": "FOLHAS DE FUMO"
+    },
+    {
+      "codigo": 257,
+      "nome": "Framboesa"
+    },
+    {
+      "codigo": 245,
+      "nome": "Fruta do conde"
+    },
+    {
+      "codigo": 171,
+      "nome": "Fruta Pão"
+    },
+    {
+      "codigo": 72,
+      "nome": "Frutíferas"
+    },
+    {
+      "codigo": 189,
+      "nome": "Fuji Suprema"
+    },
+    {
+      "codigo": 73,
+      "nome": "Fumo"
+    },
+    {
+      "codigo": 150,
+      "nome": "Gengibre"
+    },
+    {
+      "codigo": 373,
+      "nome": "Gerânio"
+    },
+    {
+      "codigo": 74,
+      "nome": "Gérbera"
+    },
+    {
+      "codigo": 246,
+      "nome": "Gergelim"
+    },
+    {
+      "codigo": 498,
+      "nome": "Gervão"
+    },
+    {
+      "codigo": 468,
+      "nome": "Ginseg"
+    },
+    {
+      "codigo": 370,
+      "nome": "Gipsofila"
+    },
+    {
+      "codigo": 75,
+      "nome": "Girassol"
+    },
+    {
+      "codigo": 254,
+      "nome": "Girassol var. CL"
+    },
+    {
+      "codigo": 76,
+      "nome": "Gladíolo"
+    },
+    {
+      "codigo": 77,
+      "nome": "Goiaba"
+    },
+    {
+      "codigo": 78,
+      "nome": "Gramados"
+    },
+    {
+      "codigo": 247,
+      "nome": "Grão-de-bico"
+    },
+    {
+      "codigo": 79,
+      "nome": "Grãos Armazenados"
+    },
+    {
+      "codigo": 152,
+      "nome": "Graviola"
+    },
+    {
+      "codigo": 153,
+      "nome": "Grumixama"
+    },
+    {
+      "codigo": 469,
+      "nome": "Guaçatonga"
+    },
+    {
+      "codigo": 474,
+      "nome": "Guaco"
+    },
+    {
+      "codigo": 248,
+      "nome": "Guaraná"
+    },
+    {
+      "codigo": 173,
+      "nome": "Helicônia"
+    },
+    {
+      "codigo": 80,
+      "nome": "Hibisco"
+    },
+    {
+      "codigo": 81,
+      "nome": "Hortaliças"
+    },
+    {
+      "codigo": 310,
+      "nome": "Hortelã"
+    },
+    {
+      "codigo": 82,
+      "nome": "Hortênsia"
+    },
+    {
+      "codigo": 249,
+      "nome": "Inhame"
+    },
+    {
+      "codigo": 336,
+      "nome": "Íris-da-praia"
+    },
+    {
+      "codigo": 311,
+      "nome": "Jaboticaba"
+    },
+    {
+      "codigo": 172,
+      "nome": "Jaca"
+    },
+    {
+      "codigo": 347,
+      "nome": "Jambo"
+    },
+    {
+      "codigo": 176,
+      "nome": "Jambo Branco"
+    },
+    {
+      "codigo": 187,
+      "nome": "Jambo D'Água"
+    },
+    {
+      "codigo": 165,
+      "nome": "Jambo vermelho"
+    },
+    {
+      "codigo": 178,
+      "nome": "Jamborosa"
+    },
+    {
+      "codigo": 158,
+      "nome": "Jasmim-manga"
+    },
+    {
+      "codigo": 282,
+      "nome": "Jerivá"
+    },
+    {
+      "codigo": 83,
+      "nome": "Jiló"
+    },
+    {
+      "codigo": 179,
+      "nome": "Jujuba"
+    },
+    {
+      "codigo": 367,
+      "nome": "Kalanche"
+    },
+    {
+      "codigo": 234,
+      "nome": "Kalanchoe"
+    },
+    {
+      "codigo": 404,
+      "nome": "kinkan"
+    },
+    {
+      "codigo": 84,
+      "nome": "Kiwi"
+    },
+    {
+      "codigo": 386,
+      "nome": "Koupye-Erva gorda"
+    },
+    {
+      "codigo": 384,
+      "nome": "Lalo-Caruru da Bahia"
+    },
+    {
+      "codigo": 85,
+      "nome": "Laranja"
+    },
+    {
+      "codigo": 458,
+      "nome": "Laranja Charmute de Brotas"
+    },
+    {
+      "codigo": 177,
+      "nome": "Laranja da Terra"
+    },
+    {
+      "codigo": 180,
+      "nome": "Laranja Doce"
+    },
+    {
+      "codigo": 312,
+      "nome": "Laranja kinkan"
+    },
+    {
+      "codigo": 457,
+      "nome": "Laranja Lima verde"
+    },
+    {
+      "codigo": 485,
+      "nome": "Lavanda"
+    },
+    {
+      "codigo": 250,
+      "nome": "Lentilha"
+    },
+    {
+      "codigo": 159,
+      "nome": "Lichia"
+    },
+    {
+      "codigo": 343,
+      "nome": "Licuri"
+    },
+    {
+      "codigo": 216,
+      "nome": "Lima"
+    },
+    {
+      "codigo": 87,
+      "nome": "Lima Doce"
+    },
+    {
+      "codigo": 86,
+      "nome": "Limão"
+    },
+    {
+      "codigo": 181,
+      "nome": "Limão Cayena"
+    },
+    {
+      "codigo": 453,
+      "nome": "Limão siciliano"
+    },
+    {
+      "codigo": 193,
+      "nome": "Limão tahiti"
+    },
+    {
+      "codigo": 212,
+      "nome": "Limão Thaitti"
+    },
+    {
+      "codigo": 194,
+      "nome": "Limão-taiti"
+    },
+    {
+      "codigo": 251,
+      "nome": "Linhaça"
+    },
+    {
+      "codigo": 341,
+      "nome": "linho-da-nova-zelândia"
+    },
+    {
+      "codigo": 361,
+      "nome": "Lírio"
+    },
+    {
+      "codigo": 362,
+      "nome": "Lisianthus"
+    },
+    {
+      "codigo": 500,
+      "nome": "Losna"
+    },
+    {
+      "codigo": 160,
+      "nome": "Louro"
+    },
+    {
+      "codigo": 350,
+      "nome": "Lúpulo"
+    },
+    {
+      "codigo": 88,
+      "nome": "Maçã"
+    },
+    {
+      "codigo": 331,
+      "nome": "Maçã Fuji"
+    },
+    {
+      "codigo": 330,
+      "nome": "Maçã Gala"
+    },
+    {
+      "codigo": 332,
+      "nome": "Maçã Golden"
+    },
+    {
+      "codigo": 333,
+      "nome": "Maçã Outras"
+    },
+    {
+      "codigo": 289,
+      "nome": "Macadâmia"
+    },
+    {
+      "codigo": 504,
+      "nome": "Macaúba"
+    },
+    {
+      "codigo": 486,
+      "nome": "Macela"
+    },
+    {
+      "codigo": 270,
+      "nome": "Macieira"
+    },
+    {
+      "codigo": 264,
+      "nome": "Madeira e seus subprodutos"
+    },
+    {
+      "codigo": 495,
+      "nome": "Malva"
+    },
+    {
+      "codigo": 382,
+      "nome": "Malva-relógio"
+    },
+    {
+      "codigo": 89,
+      "nome": "Mamão"
+    },
+    {
+      "codigo": 90,
+      "nome": "Mamona"
+    },
+    {
+      "codigo": 91,
+      "nome": "Mandioca"
+    },
+    {
+      "codigo": 30,
+      "nome": "Mandioquinha Salsa"
+    },
+    {
+      "codigo": 92,
+      "nome": "Mandioquinha-salsa"
+    },
+    {
+      "codigo": 508,
+      "nome": "Manejo Antecipado"
+    },
+    {
+      "codigo": 441,
+      "nome": "Manejo Outonal"
+    },
+    {
+      "codigo": 93,
+      "nome": "Manga"
+    },
+    {
+      "codigo": 368,
+      "nome": "Mangaba"
+    },
+    {
+      "codigo": 260,
+      "nome": "Manjericão"
+    },
+    {
+      "codigo": 356,
+      "nome": "Manjerona"
+    },
+    {
+      "codigo": 94,
+      "nome": "Maracujá"
+    },
+    {
+      "codigo": 440,
+      "nome": "Maracujá do mato"
+    },
+    {
+      "codigo": 450,
+      "nome": "Margarida"
+    },
+    {
+      "codigo": 387,
+      "nome": "Maria-sem-vergonha"
+    },
+    {
+      "codigo": 95,
+      "nome": "Marmelo"
+    },
+    {
+      "codigo": 228,
+      "nome": "maxixe"
+    },
+    {
+      "codigo": 96,
+      "nome": "Melancia"
+    },
+    {
+      "codigo": 97,
+      "nome": "Melão"
+    },
+    {
+      "codigo": 502,
+      "nome": "Melissa"
+    },
+    {
+      "codigo": 98,
+      "nome": "Milheto"
+    },
+    {
+      "codigo": 99,
+      "nome": "Milho"
+    },
+    {
+      "codigo": 100,
+      "nome": "Milho Geneticamente Modificado"
+    },
+    {
+      "codigo": 101,
+      "nome": "Milho Liberty Link"
+    },
+    {
+      "codigo": 313,
+      "nome": "Milho pipoca"
+    },
+    {
+      "codigo": 388,
+      "nome": "Mini-rosa"
+    },
+    {
+      "codigo": 290,
+      "nome": "Mirtilo"
+    },
+    {
+      "codigo": 524,
+      "nome": "Mix Cheiro Verde"
+    },
+    {
+      "codigo": 157,
+      "nome": "Mogno"
+    },
+    {
+      "codigo": 505,
+      "nome": "Mogno Africano"
+    },
+    {
+      "codigo": 470,
+      "nome": "Moinga oleifera"
+    },
+    {
+      "codigo": 102,
+      "nome": "Moinhos"
+    },
+    {
+      "codigo": 103,
+      "nome": "Morango"
+    },
+    {
+      "codigo": 335,
+      "nome": "Moreia ou Dietes"
+    },
+    {
+      "codigo": 218,
+      "nome": "mostarda"
+    },
+    {
+      "codigo": 528,
+      "nome": "Mostarda Carinata"
+    },
+    {
+      "codigo": 527,
+      "nome": "Mostarda da Etiópia"
+    },
+    {
+      "codigo": 381,
+      "nome": "Mucunã"
+    },
+    {
+      "codigo": 407,
+      "nome": "muda Laranja Abacaxi (Citrus sinensis)"
+    },
+    {
+      "codigo": 405,
+      "nome": "muda Laranja Bahia (C. sinensis)"
+    },
+    {
+      "codigo": 414,
+      "nome": "muda Laranja Cara cara (Citrus sinensis)"
+    },
+    {
+      "codigo": 409,
+      "nome": "muda Laranja Champanha (Citrus sinensis)"
+    },
+    {
+      "codigo": 417,
+      "nome": "muda Laranja Cipó (Citrus sinensis)"
+    },
+    {
+      "codigo": 410,
+      "nome": "muda Laranja Folha Murcha (Citrus sinensis)"
+    },
+    {
+      "codigo": 411,
+      "nome": "muda Laranja IAPAR 73 (Citrus sinensis)"
+    },
+    {
+      "codigo": 412,
+      "nome": "muda Laranja Lanelate (Citrus sinensis)"
+    },
+    {
+      "codigo": 413,
+      "nome": "muda Laranja Lima (Citrus sinensis)"
+    },
+    {
+      "codigo": 408,
+      "nome": "muda Laranja Monteparnaso (Citrus sinensis)"
+    },
+    {
+      "codigo": 416,
+      "nome": "muda Laranja Natal (C. sinensis)"
+    },
+    {
+      "codigo": 415,
+      "nome": "muda Laranja Navelina (C. sinensis)"
+    },
+    {
+      "codigo": 418,
+      "nome": "muda Laranja Pera (C. sinensis)"
+    },
+    {
+      "codigo": 419,
+      "nome": "muda Laranja Ruby (C. sinensis)"
+    },
+    {
+      "codigo": 421,
+      "nome": "muda Laranja Salustiana (C. sinensis)"
+    },
+    {
+      "codigo": 423,
+      "nome": "muda Laranja Sangüínea (C. sinensis)"
+    },
+    {
+      "codigo": 406,
+      "nome": "muda Laranja SCS454Catarina (Citrus sinensis)"
+    },
+    {
+      "codigo": 420,
+      "nome": "muda Laranja Seleta (C. sinensis)"
+    },
+    {
+      "codigo": 422,
+      "nome": "muda Laranja Valência (C. sinensis)"
+    },
+    {
+      "codigo": 436,
+      "nome": "muda Lima ácida (C. aurantifolia)"
+    },
+    {
+      "codigo": 435,
+      "nome": "muda Lima da Pérsia (C. limettioides)"
+    },
+    {
+      "codigo": 433,
+      "nome": "muda Limão tahiti (C. latifolia)"
+    },
+    {
+      "codigo": 434,
+      "nome": "muda Limão-cravo (C. limonia)"
+    },
+    {
+      "codigo": 439,
+      "nome": "muda Limão-verdadeiro Siciliano (C. limon)"
+    },
+    {
+      "codigo": 429,
+      "nome": "muda Mexerica Comum (C. deliciosa)"
+    },
+    {
+      "codigo": 427,
+      "nome": "muda Mexerica Montenegrina (C. deliciosa)"
+    },
+    {
+      "codigo": 426,
+      "nome": "muda Mexerica Rio (C. deliciosa)"
+    },
+    {
+      "codigo": 428,
+      "nome": "muda Tangerina Clemenules (C. reticulata)"
+    },
+    {
+      "codigo": 432,
+      "nome": "muda Tangerina Satsuma Okitsu (C. unshiu)"
+    },
+    {
+      "codigo": 425,
+      "nome": "muda Tangor Dekopon (C.reticulata×C.sinensis)"
+    },
+    {
+      "codigo": 430,
+      "nome": "muda Tangor Murcott (C.reticulata×C.sinen sis)"
+    },
+    {
+      "codigo": 431,
+      "nome": "muda Tangor Ortanique (C.reticul.×C.sinensis )"
+    },
+    {
+      "codigo": 438,
+      "nome": "muda Ximxim - Kumquat ácido (Fortunella spp.)"
+    },
+    {
+      "codigo": 437,
+      "nome": "muda Ximxim - Kumquat doce (Fortunella spp.)"
+    },
+    {
+      "codigo": 226,
+      "nome": "Mudas Cítricas (Citrus spp.)"
+    },
+    {
+      "codigo": 104,
+      "nome": "Mudas De Ornamentais"
+    },
+    {
+      "codigo": 424,
+      "nome": "mudaTangerina Ponkan (C. reticulata)"
+    },
+    {
+      "codigo": 161,
+      "nome": "Murta"
+    },
+    {
+      "codigo": 105,
+      "nome": "Nabo"
+    },
+    {
+      "codigo": 106,
+      "nome": "Nectarina"
+    },
+    {
+      "codigo": 107,
+      "nome": "Nêspera"
+    },
+    {
+      "codigo": 206,
+      "nome": "Nicotina tabacum L."
+    },
+    {
+      "codigo": 108,
+      "nome": "Noz pecã"
+    },
+    {
+      "codigo": 475,
+      "nome": "Noz-da-índia"
+    },
+    {
+      "codigo": 109,
+      "nome": "Nozes"
+    },
+    {
+      "codigo": 110,
+      "nome": "Oliveira"
+    },
+    {
+      "codigo": 442,
+      "nome": "Ora-pro-nóbis"
+    },
+    {
+      "codigo": 358,
+      "nome": "Orégano"
+    },
+    {
+      "codigo": 111,
+      "nome": "Ornamentais"
+    },
+    {
+      "codigo": 275,
+      "nome": "Orquídea-bambu"
+    },
+    {
+      "codigo": 112,
+      "nome": "Orquídeas"
+    },
+    {
+      "codigo": 354,
+      "nome": "Osmarin"
+    },
+    {
+      "codigo": 482,
+      "nome": "Paineira-rosa, paineira-de-seda, árvore-de-lã"
+    },
+    {
+      "codigo": 113,
+      "nome": "Palma Forrageira"
+    },
+    {
+      "codigo": 277,
+      "nome": "Palmeira azul"
+    },
+    {
+      "codigo": 284,
+      "nome": "Palmeira moinho de vento"
+    },
+    {
+      "codigo": 285,
+      "nome": "Palmeira samambaia"
+    },
+    {
+      "codigo": 314,
+      "nome": "Palmito"
+    },
+    {
+      "codigo": 481,
+      "nome": "Palo Borracho Blanco"
+    },
+    {
+      "codigo": 395,
+      "nome": "Paricá"
+    },
+    {
+      "codigo": 471,
+      "nome": "Pariparoba"
+    },
+    {
+      "codigo": 209,
+      "nome": "PASTAGEM"
+    },
+    {
+      "codigo": 114,
+      "nome": "Pastagens"
+    },
+    {
+      "codigo": 329,
+      "nome": "Pastagens (reforma)"
+    },
+    {
+      "codigo": 276,
+      "nome": "Pata de elefante"
+    },
+    {
+      "codigo": 494,
+      "nome": "Pata de vaca"
+    },
+    {
+      "codigo": 115,
+      "nome": "Pepino"
+    },
+    {
+      "codigo": 116,
+      "nome": "Pêra"
+    },
+    {
+      "codigo": 117,
+      "nome": "Pêssego"
+    },
+    {
+      "codigo": 262,
+      "nome": "Pimenta"
+    },
+    {
+      "codigo": 376,
+      "nome": "Pimenta Cambuci"
+    },
+    {
+      "codigo": 182,
+      "nome": "Pimenta Picante"
+    },
+    {
+      "codigo": 315,
+      "nome": "Pimenta vermelha"
+    },
+    {
+      "codigo": 118,
+      "nome": "Pimenta-do-reino"
+    },
+    {
+      "codigo": 119,
+      "nome": "Pimentão"
+    },
+    {
+      "codigo": 162,
+      "nome": "Pinha"
+    },
+    {
+      "codigo": 291,
+      "nome": "Pinhão"
+    },
+    {
+      "codigo": 215,
+      "nome": "Pinhão-manso"
+    },
+    {
+      "codigo": 272,
+      "nome": "Pinheiro-de-norfolk"
+    },
+    {
+      "codigo": 3,
+      "nome": "Pinus"
+    },
+    {
+      "codigo": 316,
+      "nome": "Pitaia"
+    },
+    {
+      "codigo": 267,
+      "nome": "Pitanga"
+    },
+    {
+      "codigo": 183,
+      "nome": "Pitangueira Vermelha"
+    },
+    {
+      "codigo": 120,
+      "nome": "Poinsetia"
+    },
+    {
+      "codigo": 510,
+      "nome": "Polpa Cítrica Peletizada"
+    },
+    {
+      "codigo": 196,
+      "nome": "Pomelo"
+    },
+    {
+      "codigo": 396,
+      "nome": "Populus"
+    },
+    {
+      "codigo": 443,
+      "nome": "Porongo"
+    },
+    {
+      "codigo": 513,
+      "nome": "Pousio"
+    },
+    {
+      "codigo": 121,
+      "nome": "Pré-semeadura do Trigo"
+    },
+    {
+      "codigo": 287,
+      "nome": "Pupunha"
+    },
+    {
+      "codigo": 501,
+      "nome": "Quebra-pedra"
+    },
+    {
+      "codigo": 122,
+      "nome": "Quiabo"
+    },
+    {
+      "codigo": 488,
+      "nome": "Quinoa"
+    },
+    {
+      "codigo": 252,
+      "nome": "Rabanete"
+    },
+    {
+      "codigo": 317,
+      "nome": "Radite"
+    },
+    {
+      "codigo": 401,
+      "nome": "Raiz Forte"
+    },
+    {
+      "codigo": 123,
+      "nome": "Reflorestamento"
+    },
+    {
+      "codigo": 124,
+      "nome": "Repolho"
+    },
+    {
+      "codigo": 163,
+      "nome": "Romã"
+    },
+    {
+      "codigo": 125,
+      "nome": "Rosa"
+    },
+    {
+      "codigo": 219,
+      "nome": "rúcula"
+    },
+    {
+      "codigo": 463,
+      "nome": "Ruibarbo"
+    },
+    {
+      "codigo": 261,
+      "nome": "Salsa"
+    },
+    {
+      "codigo": 318,
+      "nome": "Salsão"
+    },
+    {
+      "codigo": 319,
+      "nome": "Salvia"
+    },
+    {
+      "codigo": 164,
+      "nome": "Sapoti"
+    },
+    {
+      "codigo": 288,
+      "nome": "Seriguela"
+    },
+    {
+      "codigo": 258,
+      "nome": "Seriguela"
+    },
+    {
+      "codigo": 126,
+      "nome": "Seringueira"
+    },
+    {
+      "codigo": 476,
+      "nome": "Serralha mirim"
+    },
+    {
+      "codigo": 127,
+      "nome": "Silos"
+    },
+    {
+      "codigo": 128,
+      "nome": "Sisal"
+    },
+    {
+      "codigo": 129,
+      "nome": "Soja"
+    },
+    {
+      "codigo": 514,
+      "nome": "Soja Enlist"
+    },
+    {
+      "codigo": 130,
+      "nome": "Soja Geneticamente Modificada"
+    },
+    {
+      "codigo": 461,
+      "nome": "Soja Guaxa/ Tiguera"
+    },
+    {
+      "codigo": 268,
+      "nome": "Soja Liberty Link"
+    },
+    {
+      "codigo": 131,
+      "nome": "Sorgo"
+    },
+    {
+      "codigo": 464,
+      "nome": "Stevia"
+    },
+    {
+      "codigo": 151,
+      "nome": "Tabaco"
+    },
+    {
+      "codigo": 449,
+      "nome": "Tagetes"
+    },
+    {
+      "codigo": 320,
+      "nome": "taiá"
+    },
+    {
+      "codigo": 281,
+      "nome": "Tamareira de jardim"
+    },
+    {
+      "codigo": 491,
+      "nome": "Tanchagem"
+    },
+    {
+      "codigo": 185,
+      "nome": "Tangerina"
+    },
+    {
+      "codigo": 191,
+      "nome": "Tangerina Mexerica"
+    },
+    {
+      "codigo": 213,
+      "nome": "Tangerina Montenegrina"
+    },
+    {
+      "codigo": 459,
+      "nome": "Tangerina Montenegrina Rainha"
+    },
+    {
+      "codigo": 321,
+      "nome": "Tangerina murgot"
+    },
+    {
+      "codigo": 214,
+      "nome": "Tangerina Ponkan"
+    },
+    {
+      "codigo": 192,
+      "nome": "Tangerina Satsuma"
+    },
+    {
+      "codigo": 190,
+      "nome": "Tangor"
+    },
+    {
+      "codigo": 211,
+      "nome": "Tangor murcott"
+    },
+    {
+      "codigo": 154,
+      "nome": "Teca"
+    },
+    {
+      "codigo": 497,
+      "nome": "Terramicina"
+    },
+    {
+      "codigo": 224,
+      "nome": "tiririca"
+    },
+    {
+      "codigo": 132,
+      "nome": "Todas"
+    },
+    {
+      "codigo": 520,
+      "nome": "Todas de ocorrência do alvo biológico"
+    },
+    {
+      "codigo": 207,
+      "nome": "Tomate"
+    },
+    {
+      "codigo": 133,
+      "nome": "Tomate industrial / rasteiro"
+    },
+    {
+      "codigo": 322,
+      "nome": "Tomate-cereja"
+    },
+    {
+      "codigo": 323,
+      "nome": "Tomilho"
+    },
+    {
+      "codigo": 197,
+      "nome": "Torange"
+    },
+    {
+      "codigo": 184,
+      "nome": "Toranja"
+    },
+    {
+      "codigo": 523,
+      "nome": "Tramoço"
+    },
+    {
+      "codigo": 134,
+      "nome": "Tratamento De Solo"
+    },
+    {
+      "codigo": 269,
+      "nome": "TRATAMENTO FITOSSANITÁRIO COM FINS QUARENTENÁRIOS"
+    },
+    {
+      "codigo": 363,
+      "nome": "trevo"
+    },
+    {
+      "codigo": 175,
+      "nome": "Trifoliata"
+    },
+    {
+      "codigo": 135,
+      "nome": "Trigo"
+    },
+    {
+      "codigo": 522,
+      "nome": "Trigo Mourisco"
+    },
+    {
+      "codigo": 256,
+      "nome": "Trigo var. CL"
+    },
+    {
+      "codigo": 136,
+      "nome": "Triticale"
+    },
+    {
+      "codigo": 137,
+      "nome": "Tulipa"
+    },
+    {
+      "codigo": 472,
+      "nome": "Tupinambor"
+    },
+    {
+      "codigo": 473,
+      "nome": "Urucum"
+    },
+    {
+      "codigo": 138,
+      "nome": "Uva"
+    },
+    {
+      "codigo": 139,
+      "nome": "Uva - videira"
+    },
+    {
+      "codigo": 231,
+      "nome": "Uva com Sementes"
+    },
+    {
+      "codigo": 518,
+      "nome": "Uva de Mesa"
+    },
+    {
+      "codigo": 324,
+      "nome": "Uva isabel"
+    },
+    {
+      "codigo": 325,
+      "nome": "Uva niagara"
+    },
+    {
+      "codigo": 230,
+      "nome": "Uva sem Sementes"
+    },
+    {
+      "codigo": 140,
+      "nome": "Vagem"
+    },
+    {
+      "codigo": 521,
+      "nome": "Vazio Sanitário"
+    },
+    {
+      "codigo": 456,
+      "nome": "Verbena"
+    },
+    {
+      "codigo": 141,
+      "nome": "Violeta"
+    },
+    {
+      "codigo": 233,
+      "nome": "voadeira"
+    },
+    {
+      "codigo": 174,
+      "nome": "Ximxim"
+    },
+    {
+      "codigo": 353,
+      "nome": "Yucca"
+    },
+    {
+      "codigo": 375,
+      "nome": "zzzzzzzzzzzzzzzz"
+    }
+  ]
+}

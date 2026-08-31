@@ -3,6 +3,722 @@
   "ma": "6715",
   "nome": "2,4-D 806 SL ALAMOS",
   "id": "1078",
+  "situacao": "Liberado",
+  "classificacaoToxicologica": "Categoria 4 – Produto Pouco Tóxico",
+  "classificacaoAmbiental": "III - PRODUTO PERIGOSO AO MEIO AMBIENTE",
+  "formulacao": "CONCENTRADO SOLÚVEL ",
+  "validade": "2026-10-03T00:00:00",
+  "empresa": "CROTECT Crop Science Ltda",
+  "classes": "Herbicida",
+  "formaAcao": "SISTEMICA",
+  "culturas": [
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Acanthospermum hispidum",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Acanthospermum hispidum",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Acanthospermum hispidum",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Acanthospermum hispidum",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Acanthospermum hispidum",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Acanthospermum hispidum",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Commelina benghalensis",
+      "observacao": "Intervalo de segurança não determinado por ser de uso até a fase de emborrachamento. Aplicar em área total em pós-emergência das plantas daninhas. No caso de trigo, a aplicação deve ser feita no período após o início do perfilhamento e antes do emborrachamento.As aplicações mais tardias deverão ser feitas em jato dirigido, sobre as plantas infestantes."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Commelina benghalensis",
+      "observacao": "Uso permitido somente em pré-plantio. Aplicar no mínimo 7 dias antes da semeadura (plantio direto). Obs.: Usar menores doses para plantas infestantes menos desenvolvidas e as maiores para as mais desenvolvidas."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Commelina benghalensis",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Commelina benghalensis",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Commelina benghalensis",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Commelina benghalensis",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Euphorbia heterophylla",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Euphorbia heterophylla",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Euphorbia heterophylla",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Euphorbia heterophylla",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Euphorbia heterophylla",
+      "observacao": "Uso permitido somente em pré-plantio. Aplicar no mínimo 7 dias antes da semeadura (plantio direto). Obs.: Usar menores doses para plantas infestantes menos desenvolvidas e as maiores para as mais desenvolvidas."
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Euphorbia heterophylla",
+      "observacao": "Intervalo de segurança não determinado por ser de uso até a fase de emborrachamento. Aplicar em área total em pós-emergência das plantas daninhas. No caso de trigo, a aplicação deve ser feita no período após o início do perfilhamento e antes do emborrachamento. As aplicações mais tardias deverão ser feitas em jato dirigido, sobre as plantas infestantes."
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Raphanus raphanistrum",
+      "observacao": "Intervalo de segurança não determinado por ser de uso até a fase de emborrachamento. Aplicar em área total em pós-emergência das plantas daninhas. No caso de trigo, a aplicação deve ser feita no período após o início do perfilhamento e antes do emborrachamento.As aplicações mais tardias deverão ser feitas em jato dirigido, sobre as plantas infestantes."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Raphanus raphanistrum",
+      "observacao": "Uso permitido somente em pré-plantio. Aplicar no mínimo 7 dias antes da semeadura (plantio direto). Obs.: Usar menores doses para plantas infestantes menos desenvolvidas e as maiores para as mais desenvolvidas."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Raphanus raphanistrum",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Raphanus raphanistrum",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Raphanus raphanistrum",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Raphanus raphanistrum",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Ageratum conyzoides",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Ageratum conyzoides",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Ageratum conyzoides",
+      "observacao": null
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Ageratum conyzoides",
+      "observacao": null
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Ageratum conyzoides",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Ageratum conyzoides",
+      "observacao": null
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Amaranthus deflexus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Amaranthus deflexus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Amaranthus deflexus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Amaranthus deflexus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Amaranthus deflexus",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Amaranthus deflexus",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Amaranthus hybridus",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Amaranthus hybridus",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Amaranthus hybridus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Amaranthus hybridus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Amaranthus hybridus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Amaranthus hybridus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Amaranthus viridis",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Amaranthus viridis",
+      "observacao": null
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Amaranthus viridis",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Amaranthus viridis",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Amaranthus viridis",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Amaranthus viridis",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Bidens pilosa",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Bidens pilosa",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Bidens pilosa",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Bidens pilosa",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Bidens pilosa",
+      "observacao": "Uso permitido somente em pré-plantio. Aplicar no mínimo 7 dias antes da semeadura (plantio direto). Obs.: Usar menores doses para plantas infestantes menos desenvolvidas e as maiores para as mais desenvolvidas."
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Bidens pilosa",
+      "observacao": "Intervalo de segurança não determinado por ser de uso até a fase de emborrachamento. Aplicar em área total em pós-emergência das plantas daninhas. No caso de trigo, a aplicação deve ser feita no período após o início do perfilhamento e antes do emborrachamento. As aplicações mais tardias deverão ser feitas em jato dirigido, sobre as plantas infestantes."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Brassica rapa",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Brassica rapa",
+      "observacao": null
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Brassica rapa",
+      "observacao": null
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Brassica rapa",
+      "observacao": null
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Brassica rapa",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Brassica rapa",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 114,
+      "cultura": "Pastagens",
+      "pragaCientifico": "Conyza bonariensis",
+      "observacao": null
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Galinsoga parviflora",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Galinsoga parviflora",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Galinsoga parviflora",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Galinsoga parviflora",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Galinsoga parviflora",
+      "observacao": "Intervalo de segurança não determinado por ser de uso até a fase de emborrachamento. Aplicar em área total em pós-emergência das plantas daninhas. No caso de trigo, a aplicação deve ser feita no período após o início do perfilhamento e antes do emborrachamento. As aplicações mais tardias deverão ser feitas em jato dirigido, sobre as plantas infestantes."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Galinsoga parviflora",
+      "observacao": "Uso permitido somente em pré-plantio. Aplicar no mínimo 7 dias antes da semeadura (plantio direto). Obs.: Usar menores doses para plantas infestantes menos desenvolvidas e as maiores para as mais desenvolvidas."
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Ipomoea aristolochiaefolia",
+      "observacao": null
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Ipomoea aristolochiaefolia",
+      "observacao": null
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Ipomoea aristolochiaefolia",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Ipomoea aristolochiaefolia",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Ipomoea aristolochiaefolia",
+      "observacao": null
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Ipomoea aristolochiaefolia",
+      "observacao": null
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Ipomoea purpurea",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Ipomoea purpurea",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Ipomoea purpurea",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Ipomoea purpurea",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Ipomoea purpurea",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Ipomoea purpurea",
+      "observacao": "Intervalo de segurança não determinado por ser de uso até a fase de emborrachamento. Aplicar em área total em pós-emergência das plantas daninhas. No caso de trigo, a aplicação deve ser feita no período após o início do perfilhamento e antes do emborrachamento. As aplicações mais tardias deverão ser feitas em jato dirigido, sobre as plantas infestantes."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Leonurus sibiricus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Leonurus sibiricus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Leonurus sibiricus",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Leonurus sibiricus",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Leonurus sibiricus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Leonurus sibiricus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Lepidium virginicum",
+      "observacao": null
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Lepidium virginicum",
+      "observacao": null
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Lepidium virginicum",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Lepidium virginicum",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Lepidium virginicum",
+      "observacao": null
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Lepidium virginicum",
+      "observacao": null
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Portulaca oleracea",
+      "observacao": null
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Portulaca oleracea",
+      "observacao": null
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Portulaca oleracea",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Portulaca oleracea",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Portulaca oleracea",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Portulaca oleracea",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Richardia brasiliensis",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Richardia brasiliensis",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Richardia brasiliensis",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Richardia brasiliensis",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Richardia brasiliensis",
+      "observacao": "Uso permitido somente em pré-plantio. Aplicar no mínimo 7 dias antes da semeadura (plantio direto). Obs.: Usar menores doses para plantas infestantes menos desenvolvidas e as maiores para as mais desenvolvidas."
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Richardia brasiliensis",
+      "observacao": null
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Sida rhombifolia",
+      "observacao": "Uso permitido somente em pré-plantio. Aplicar no mínimo 7 dias antes da semeadura (plantio direto). Obs.: Usar menores doses para plantas infestantes menos desenvolvidas e as maiores para as mais desenvolvidas."
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Sida rhombifolia",
+      "observacao": "Intervalo de segurança não determinado por ser de uso até a fase de emborrachamento. Aplicar em área total em pós-emergência das plantas daninhas. No caso de trigo, a aplicação deve ser feita no período após o início do perfilhamento e antes do emborrachamento. As aplicações mais tardias deverão ser feitas em jato dirigido, sobre as plantas infestantes."
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Sida rhombifolia",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Sida rhombifolia",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Sida rhombifolia",
+      "observacao": "Intervalo de segurança não determinado por ser de uso em pré e pós-emergência até 3 meses após o plantio ou corte. Aplicar quando a cana atingir 30 cm de altura até a formação do colmo e a planta daninha estiver em pleno crescimento vegetativo, evitando-se períodos de estresse hídrico."
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Sida rhombifolia",
+      "observacao": "Intervalo de segurança não determinado por ser de uso desde a fase de pré-emergência até o milho atingir a altura de 25 cm. Aplicar em área total em pós-emergência das plantas daninhas. A aplicação deve ser feita em pré-plantio (dessecação) e/ou em pós-emergência, com o milho até o estádio de 4 folhas, quando a planta do milho atingir 25 cm de altura. Em ambos os casos realizar apenas uma aplicação do produto durante o ciclo da cultura desde que não ultrapasse a dose de 1,5 litro/ha. Obs.: Para maiores informações sobre seletividade do produto aos diferentes milhos híbridos disponíveis no mercado, a empresa fornecedora do hibrido deverá ser contatada."
+    },
+    {
+      "cdCultura": 114,
+      "cultura": "Pastagens",
+      "pragaCientifico": "Sida rhombifolia",
+      "observacao": null
+    },
+    {
+      "cdCultura": 99,
+      "cultura": "Milho",
+      "pragaCientifico": "Sonchus oleraceus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 41,
+      "cultura": "Cana-de-açúcar",
+      "pragaCientifico": "Sonchus oleraceus",
+      "observacao": null
+    },
+    {
+      "cdCultura": 37,
+      "cultura": "Café",
+      "pragaCientifico": "Sonchus oleraceus",
+      "observacao": "Aplicar o produto logo após a arruação ou esparramação do café quando a planta daninha atingir de 5 a 10 cm de altura. Aplicar o produto em jato dirigido nas entrelinhas da cultura do café. Aplicar em épocas quentes."
+    },
+    {
+      "cdCultura": 22,
+      "cultura": "Arroz",
+      "pragaCientifico": "Sonchus oleraceus",
+      "observacao": "Aplicar na pós-emergência através de tratamento em área total, logo em um intervalo compreendido entre o perfilhamento e o emborrachamento da cultura. Não aplicar 2,4-D 806 SL ALAMOS com solo seco, principalmente se antecedeu um período de estiagem prolongado que predispõe as plantas infestantes ao estado de “stress” por deficiência hídrica, comprometendo o controle. O solo deve estar úmido durante a aplicação. Não adicionar adjuvante ou espalhantes adesivos."
+    },
+    {
+      "cdCultura": 135,
+      "cultura": "Trigo",
+      "pragaCientifico": "Sonchus oleraceus",
+      "observacao": "Intervalo de segurança não determinado por ser de uso até a fase de emborrachamento. Aplicar em área total em pós-emergência das plantas daninhas. No caso de trigo, a aplicação deve ser feita no período após o início do perfilhamento e antes do emborrachamento.As aplicações mais tardias deverão ser feitas em jato dirigido, sobre as plantas infestantes."
+    },
+    {
+      "cdCultura": 129,
+      "cultura": "Soja",
+      "pragaCientifico": "Sonchus oleraceus",
+      "observacao": null
+    }
+  ],
+  "ingredientesAtivos": [
+    {
+      "codigo": 83,
+      "nomeComum": "2,4-D",
+      "nomeQuimico": "2,4-D",
+      "concentracao": 806,
+      "unidade": "g/l",
+      "grupoQuimico": "ácido ariloxialcanóico"
+    }
+  ],
   "documentos": [
     {
       "tipo": "Ficha de Emergência",

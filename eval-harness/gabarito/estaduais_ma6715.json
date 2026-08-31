@@ -1,1 +1,30 @@
-null
+{
+  "ok": true,
+  "nome": null,
+  "ma": "6715",
+  "resultados": {
+    "SC": {
+      "encontrado": true,
+      "nome": "2,4-D 806 SL ALAMOS"
+    },
+    "RO": {
+      "encontrado": true,
+      "nome": "2,4-D 806 SL ALAMOS",
+      "situacao": "Não Apto para Comercialização"
+    },
+    "GO": {
+      "encontrado": true,
+      "nome": "2,4-D 806 SL ALAMOS; 2,4-D 806 SL CROTECT",
+      "titular": "CROTECT CROP SCIENCE LTDA"
+    },
+    "RN": {
+      "encontrado": true
+    },
+    "ES": {
+      "encontrado": true,
+      "nome": "2,4-D 806 SL Alamos; 2,4-D 806 SL CROTECT",
+      "titular": "CROTECT CROP SCIENCE LTDA.",
+      "classe": "Herbicida"
+    }
+  }
+}
