@@ -110,10 +110,24 @@ Cada fase é independente das posteriores. Parar após qualquer fase deixa o sis
 - [ ] Testar: busca de produto, CCCB, Celepar listing
 
 ### Fase 2 — Matchers
-- [ ] Criar `backend/lib/culturaMatcher.js`
-- [ ] Criar `backend/lib/produtoMatcher.js`
-- [ ] Atualizar `banco.js` para usar os dois
-- [ ] Testar: `/api/cccb`, `/api/buscar-produto`
+- [x] Criar `backend/lib/culturaMatcher.js` — `BANCO_PARA_CELEPAR`, `CELEPAR_PARA_BANCO`,
+      `normCultura`, `celNorm`, `celeparNormFor`, `jaccard`, `resolveKey`
+- [x] Criar `backend/lib/produtoMatcher.js` — `isTruncMatch`, `mesclarCeleparNaAgrofit`
+      (loop de merge Celepar→Agrofit/orphans)
+- [x] Atualizar `banco.js` para usar os dois
+- [x] Verificado sem servidor local (não dá — CLAUDE.md proíbe rodar Oracle localmente):
+      script standalone reproduzindo os casos documentados nos comentários originais
+      (truncamento "OpteraPr"/"OpteraPro", alias "pinus sp", multi-marca "Clopanto; Nanofos;
+      Teminator;", prioridade de match exato de tokens sobre prefixo em `resolveKey`,
+      `celeparNormFor` com override/DB/fallback) — todos batendo
+- [ ] **Deliberadamente fora desta fase**: a lógica de classificação correto/errado/faltando
+      dentro de `/cccb` (`classificarOracleRow` + os loops de `faltando`/`bloqueados`) NÃO foi
+      extraída. Ela é fortemente acoplada a ~8 variáveis mutáveis locais da rota
+      (`cnToCulturaId`, `bloqueadosKeys`, `oracleByKey`, `diagnosticoIdRegistrado` etc.) e tem
+      histórico documentado de bugs sutis (ver comentários sobre falso-positivo de
+      "faltando bloquear cultura"). Extrair isso sem conseguir rodar `/api/cccb` de verdade
+      contra o Oracle é risco real sem verificação possível — fica pra quando puder ser feito
+      em sessão interativa testando ao vivo com o Gabriel, não como refactor mecânico às cegas.
 
 ### Fase 3 — Config ✓
 - [x] Criar `backend/lib/config.js`

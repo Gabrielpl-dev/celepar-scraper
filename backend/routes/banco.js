@@ -3,7 +3,9 @@ const oracledb     = require('oracledb')
 const Database     = require('better-sqlite3')
 const fs           = require('fs')
 const { fetchPage, fetchPesquisa, parseRows, parsePesquisaRows, buildUrl, enrichLinkeaRows } = require('../lib/scraper')
-const { norm, normSep, tokenize } = require('../lib/normalizer')
+const { norm, normSep } = require('../lib/normalizer')
+const culturaMatcher = require('../lib/culturaMatcher')
+const produtoMatcher = require('../lib/produtoMatcher')
 const { ORACLE_LIB_DIR, TABELAS_JSON, CULTURAS_DB } = require('../lib/config')
 const requireAdmin = require('../middleware/requireAdmin')
 const agrofitCsv   = require('../lib/agrofitCsv')
@@ -175,31 +177,7 @@ router.get('/buscar-produto', async (req, res) => {
       byMa.set(key, { nome: r.nome, ma: normMa, cod: null, ingrediente: r.ingrediente || null, fonte: 'agrofit' })
   }
 
-  // Merge Celepar->Agrofit por prefixo de nome (cobre truncacao mid-word: "OpteraPr" casa com "OpteraPro")
-  // Requer que o prefixo não termine em espaço — evita casar variantes distintas ("Dorai" vs "Dorai Max")
-  const isTruncMatch = (shorter, longer) => longer.startsWith(shorter) && !longer.slice(shorter.length).startsWith(' ')
-  // Um único MA na Agrofit pode agrupar várias marcas comerciais (ex: "Clopanto; Nanofos;
-  // Teminator;"), enquanto a Celepar cadastra cada marca como produto separado. Comparar
-  // contra a string toda faria "clopanto" virar "clopanto nanofos teminator" (';' -> ' '
-  // no normSep) e cair na guarda anti-falso-positivo acima. Por isso casa contra cada
-  // marca individualmente.
-  const splitAliases = nome => nome.split(/[/;|]+/).map(normSep).filter(Boolean)
-  const celeparOrphans = []
-  for (const cel of celeparRows) {
-    const nc = normSep(cel.nome)
-    let matched = false
-    for (const agr of byMa.values()) {
-      const aliases = splitAliases(agr.nome)
-      if (aliases.some(na => na === nc || isTruncMatch(nc, na) || isTruncMatch(na, nc))) {
-        agr.cod   = cel.cod
-        agr.fonte = 'ambos'
-        matched = true
-        break
-      }
-    }
-    if (!matched)
-      celeparOrphans.push({ nome: cel.nome, ma: null, cod: cel.cod, ingrediente: null, fonte: 'adapar' })
-  }
+  const celeparOrphans = produtoMatcher.mesclarCeleparNaAgrofit(celeparRows, byMa)
 
   const rows = [...byMa.values(), ...celeparOrphans].slice(0, 25)
 
@@ -383,27 +361,8 @@ router.post('/cccb', async (req, res) => {
   const ma    = params.ma ?? null
   if (!ma) return res.status(400).json({ ok: false, error: 'params.ma (registro MA) é obrigatório' })
 
-  // Nomes do banco que diferem do nome na Celepar — substitui antes de qualquer comparação
-  const BANCO_PARA_CELEPAR = {
-    'PASTAGEM': 'pastagens',
-    'MILHO O.G.M': 'milho geneticamente modificado',
-    'SOJA - O.G.M [TOLERANTE AO GLIFOSATO]': 'soja geneticamente modificada',
-  }
-
-  // Variantes da Celepar que representam o mesmo conceito do banco
-  const CELEPAR_PARA_BANCO = { 'pinus sp': 'pinus', 'pinus ellioti': 'pinus' }
-  // Banco usa "-" como separador solto (ex: "SOJA - GENETICAMENTE MODIFICADA");
-  // remove antes de comparar pra não tratar como cultura diferente da Celepar.
-  const normCultura = s => norm(s).replace(/[-–—]/g, ' ').replace(/\s+/g, ' ').trim()
-  const celNorm = s => { const n = normCultura(s); return CELEPAR_PARA_BANCO[n] ?? n }
-
-  function celeparNormFor(cultura, cid) {
-    const sub = BANCO_PARA_CELEPAR[String(cultura).toUpperCase().trim()]
-    if (sub) return sub
-    const row = db.prepare('SELECT celepar_nome FROM culturas WHERE culturaid = ?').get(cid)
-    if (row?.celepar_nome) return normCultura(row.celepar_nome)
-    return normCultura(cultura)
-  }
+  const celNorm         = s => culturaMatcher.celNorm(s)
+  const celeparNormFor  = (cultura, cid) => culturaMatcher.celeparNormFor(cultura, cid, db)
 
   let conn
   try {
@@ -484,39 +443,7 @@ router.post('/cccb', async (req, res) => {
       celeparRows[n].push(r)
     }
 
-    // Jaccard sobre conjunto de palavras: cobre pontuação diferente e reordenação
-    const jaccard = (a, b) => {
-      const sa = tokenize(a), sb = tokenize(b)
-      const inter = [...sa].filter(w => sb.has(w)).length
-      return inter / new Set([...sa, ...sb]).size
-    }
-    // Culturas onde banco e Celepar usam nomes ligeiramente diferentes
-    const CULTURA_ALIASES = { 'pastagem': 'pastagens' }
-    const resolveKey = cn => {
-      if (celeparSets[cn]) return cn
-      const alias = CULTURA_ALIASES[cn]
-      if (alias && celeparSets[alias]) return alias
-
-      let bestKey = null, bestScore = 0
-      for (const key of Object.keys(celeparSets)) {
-        const score = jaccard(cn, key)
-        if (score > bestScore) { bestScore = score; bestKey = key }
-      }
-      // Match perfeito de tokens (ex: "algodao cultivar cnpa/ita 90" vs "algodao (cultivar
-      // cnpa/ita 90)" — só difere em pontuação) tem prioridade sobre o prefixo abaixo, que é
-      // ingênuo demais: "ALGODÃO - Cultivar CNPA/ITA-90" normalizado vira prefixo textual de
-      // "algodao" e roubava esse match, apesar de existir uma cultura mais específica e idêntica
-      // por tokens — misturava o culturaid de "Algodão" com o de "Algodão (cultivar ...)" e fazia
-      // a cultura específica nunca resolver seu próprio culturaid (bloqueio real no banco não era
-      // reconhecido — falso positivo em "faltando bloquear cultura").
-      if (bestScore >= 0.999) return bestKey
-
-      // Prefix match: banco pode ter nome mais curto (ex: PINUS vs PINUS SP)
-      const prefixKey = Object.keys(celeparSets).find(k => k.startsWith(cn + ' ') || cn.startsWith(k + ' '))
-      if (prefixKey) return prefixKey
-
-      return (bestScore >= 0.8 && bestKey) ? bestKey : cn
-    }
+    const resolveKey = cn => culturaMatcher.resolveKey(cn, celeparSets)
 
     // Classificação por linha do Oracle, cruzando bloqueio de cultura/diagnóstico dos dois
     // lados (Adapar via culturaBloqueada/alvoBloqueado do scraper, banco via
