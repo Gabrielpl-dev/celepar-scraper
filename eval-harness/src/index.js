@@ -19,7 +19,6 @@ const GABARITO_DIR = join(__dirname, '..', 'gabarito')
 const BASE_URL      = process.env.CELEPAR_API_BASE_URL || 'http://140.238.238.172:3000'
 const USERNAME      = process.env.CELEPAR_EVAL_USERNAME
 const PASSWORD      = process.env.CELEPAR_EVAL_PASSWORD
-const INTERVAL_MS   = Number(process.env.EVAL_INTERVAL_MIN || 10) * 60_000
 const TEMPO_LENTO_MS = 5000 // acima disso, loga aviso (ver histórico de ORA-12170 no .envs/infra.md)
 
 if (!USERNAME || !PASSWORD) {
@@ -158,13 +157,12 @@ async function main() {
     return
   }
 
+  // Uma rodada por invocação, não um daemon com loop interno -- quem repete é o
+  // Agendador de Tarefas (mesmo padrão do ATLAS-Loop). Processo de vida curta que
+  // trava/crasha só perde UMA rodada, não vira zumbi restart-loopando pra sempre
+  // (foi exatamente esse padrão que corrompeu backend/agrofit_ids.db por meses).
   await login()
-  console.log(JSON.stringify({ ts: new Date().toISOString(), tipo: 'inicio', baseUrl: BASE_URL, intervaloMin: INTERVAL_MS / 60_000, casos: CASOS.length }))
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    await rodarBateria()
-    await new Promise(r => setTimeout(r, INTERVAL_MS))
-  }
+  await rodarBateria()
 }
 
 main().catch(err => {

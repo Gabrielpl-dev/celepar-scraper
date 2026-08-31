@@ -1,14 +1,19 @@
 # celepar-scraper-eval-harness
 
-Bate uma bateria de casos reais contra a API do AgroCheck em loop, comparando cada
-resposta contra um **gabarito capturado antes** — pensado especificamente pra pegar
-regressão silenciosa (a rota continua respondendo 200 OK, mas o conteúdo mudou) que um
-refactor como o desacoplamento de `banco.js` poderia introduzir sem crashar nada.
+Bate uma bateria de casos reais contra a API do AgroCheck, comparando cada resposta
+contra um **gabarito capturado antes** — pensado especificamente pra pegar regressão
+silenciosa (a rota continua respondendo 200 OK, mas o conteúdo mudou) que um refactor
+como o desacoplamento de `banco.js` poderia introduzir sem crashar nada.
 
 Não é rota de deploy do app — é um **cliente** standalone que fala HTTP com o backend já
-deployado (`.envs/infra.md`), igual o `mcp-server/`. Roda onde for conveniente (esta
-máquina via Agendador de Tarefas, ou dentro do próprio `C:\celepar_app\` como app PM2
-irmão do `CeleparApp` — ver "Onde rodar" abaixo).
+deployado (`.envs/infra.md`), igual o `mcp-server/`.
+
+**Uma rodada por invocação, não um daemon com loop interno** — quem repete é o Agendador
+de Tarefas do Windows (ver "Onde rodar"), mesmo padrão do ATLAS-Loop do Gabriel. De
+propósito: um processo de vida curta que trava ou crasha só perde uma rodada; um daemon
+com loop interno que trava fica preso pra sempre e, se estiver sob PM2 sem cuidado, vira
+restart-loop igual o que corrompeu `backend/agrofit_ids.db` por meses (achado real desta
+mesma sessão) — nunca mais esse padrão de propósito.
 
 ## Setup
 
@@ -53,15 +58,14 @@ não redefinir como "certo" de cara):
 npm run capturar-gabarito -- --casos=sigen_culturas,estaduais_ma6715,estaduais_ma12525
 ```
 
-## Rodar
+## Rodar (uma rodada)
 
 ```bash
 npm start
 ```
 
-Roda pra sempre (`EVAL_INTERVAL_MIN` no `.env`, default 10min), logando uma linha JSON
-por caso + um resumo por rodada em stdout. Pensado pra ir direto pro log do PM2 (ou pro
-Agendador de Tarefas capturar a saída em arquivo).
+Loga uma linha JSON por caso + um resumo, em stdout, e termina. Pensado pra ir direto pro
+log de quem invocar (Agendador de Tarefas capturando a saída em arquivo).
 
 Cada linha de caso tem: `status`, `tempoMs` (com `lento: true` se > 5s — o padrão do
 ORA-12170 documentado em `.envs/infra.md`), `bateuGabarito` (`true`/`false`/`null` se
@@ -69,32 +73,18 @@ não tinha gabarito ainda), e `diffs` (caminhos que divergiram, só quando não 
 
 ## Onde rodar
 
-Hoje: Agendador de Tarefas do Windows nesta máquina, batendo em
+Hoje: Agendador de Tarefas do Windows nesta máquina, gatilho recorrente (ex: a cada
+10min) chamando `node src/index.js`, batendo em
 `CELEPAR_API_BASE_URL=http://140.238.238.172:3000` (confirmado alcançável). Não depende
 de sessão do Claude Code nem do servidor de produção pra existir — só desta máquina
 ligada.
 
-Alternativa mais robusta (não depende desta máquina): deployar como app PM2 irmão do
-`CeleparApp` dentro de `C:\celepar_app\`. Precisa de deploy manual no servidor — sem
-acesso remoto automatizado ainda (ver card do Trello sobre isso). De propósito, essa
-entrada NÃO está em `ecosystem.config.cjs` ainda — o fluxo de recuperação de emergência
-do `CeleparApp` (`pm2 delete CeleparApp && pm2 start ecosystem.config.cjs`) sobe TODAS as
-apps do arquivo, e um harness sem `.env` configurado no servidor ainda ia falhar junto
-sem motivo. Quando for de fato deployar lá, adicionar em `ecosystem.config.cjs`:
-
-```js
-{
-  name: 'CeleparEval',
-  script: path.join(root, 'eval-harness', 'src', 'index.js'),
-  cwd: path.join(root, 'eval-harness'),
-  watch: false,
-  max_restarts: 10,
-  exp_backoff_restart_delay: 100,
-  log_date_format: 'YYYY-MM-DD HH:mm:ss',
-}
-```
-
-com `eval-harness/.env` no servidor apontando `CELEPAR_API_BASE_URL=http://localhost:3000`.
+Alternativa mais robusta (não depende desta máquina): mesma ideia rodando dentro de
+`C:\celepar_app\` no servidor de produção (Agendador de Tarefas de lá, ou PM2 com
+`cron_restart` em vez de `autorestart` — nunca daemon com loop interno sob PM2 puro, é
+o padrão que já causou o crash-loop). Precisa de deploy manual no servidor — sem acesso
+remoto automatizado ainda (ver card do Trello sobre isso). Nesse caso,
+`eval-harness/.env` lá aponta `CELEPAR_API_BASE_URL=http://localhost:3000`.
 
 ## Casos cobertos
 
