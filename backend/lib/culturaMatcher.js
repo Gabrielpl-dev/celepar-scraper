@@ -5,6 +5,8 @@ const BANCO_PARA_CELEPAR = {
   'PASTAGEM': 'pastagens',
   'MILHO O.G.M': 'milho geneticamente modificado',
   'SOJA - O.G.M [TOLERANTE AO GLIFOSATO]': 'soja geneticamente modificada',
+  'ALGODÃO O.G.M': 'algodao geneticamente modificado',
+  'ALGODÃO O.G.M(RESISTENTE A GLIFOSATO)': 'algodao geneticamente modificado',
 }
 
 // Variantes da Celepar que representam o mesmo conceito do banco

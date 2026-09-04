@@ -12,4 +12,6 @@ export const CASOS = [
   { nome: 'estaduais_ma12525',      metodo: 'GET',  caminho: '/api/estaduais?ma=12525' },
   { nome: 'cccb_ma9525',            metodo: 'POST', caminho: '/api/cccb', body: { params: { ma: '9525' } } },
   { nome: 'cccb_ma12908',           metodo: 'POST', caminho: '/api/cccb', body: { params: { ma: '12908' } } },
+  // Cobre o matching de "ALGODÃO O.G.M" (banco) -> "Algodão Geneticamente Modificado" (Celepar)
+  { nome: 'cccb_ma41818',           metodo: 'POST', caminho: '/api/cccb', body: { params: { ma: '41818' } } },
 ]
